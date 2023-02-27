@@ -195,7 +195,7 @@ function StepOne()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
 
-    $dir = 'external-work-directory/images';
+    $dir = 'external-work-directory/images/';
     $imageName = $_FILES['image']['name'];
     $imageTmpName = $_FILES['image']['tmp_name'];
     $vendor_id = trim($_POST['vendor_id']);
@@ -224,6 +224,8 @@ function StepOne()
 
     $pName = $dir . '/' . $time . '-' . $imageName;
 
+    $array = array();
+
     $qry3 = "SELECT * FROM `product` WHERE `id` = '$code'";
     $qry3Statement = $pdo->prepare($qry3);
     $qry3Statement->execute();
@@ -235,7 +237,7 @@ function StepOne()
         $qry1Statement = $pdo->prepare($qry1);
 
         $qry1Statement->bindParam(':code', $code);
-        $array = array();
+        
         if ($qry1Statement->execute()) {
             array_push($array, 'success');
         }
@@ -273,7 +275,7 @@ function StepOne()
     if ($qryStatement->execute()) {
         array_push($array, 'success');
     }
-    echo json_encode($array, true);
+    echo json_encode($array);
 }
 
 function StepTwo()
@@ -436,7 +438,6 @@ function StepThree()
 
         if ($statement->execute()) {
             array_push($array, 'success');
-            echo json_encode($array, true);
         }
     }
 
@@ -453,7 +454,6 @@ function StepThree()
 
         if ($statement1->execute()) {
             array_push($array, 'success');
-            echo json_encode($array, true);
         }
     }
 
@@ -635,7 +635,11 @@ function GetStoneSetterRate(){
     $qryStatement->bindParam(':id', $id);
     $qryStatement->execute();
 
-    $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result, true);
+    if($qryStatement->rowCount() > 0){
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, true);
+    }else{
+        echo json_encode('error', true);
+    }
 
 }
