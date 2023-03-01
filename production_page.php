@@ -162,19 +162,17 @@
 
  					</div><!-- end row-->
 
-
-
  					<div class="row mb-2">
  						<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Product:</label>
- 						<div class="col-sm-3">
+ 						<div class="col-sm-2">
+ 							<input type="text" class="form-control" id="product" name="product" placeholder="Product ID" value="" >
 
- 							<select id="select-product" placeholder="Pick a Product...">
- 								<option value="">Select a Product...</option>
-
- 							</select>
  						</div>
  						<div class="col d-flex justify-content-end me-4">
- 							<button type="button" onclick="DeleteProduct()" class="btn btn-danger" id="delete-product">Delete Product</button>
+ 							<button type="button" onclick="DeleteProduct()" class="btn btn-danger me-3" id="delete-product">Delete Product</button>
+ 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
+ 								Select Product
+ 							</button>
  						</div>
  					</div>
 
@@ -788,49 +786,9 @@
  										</div>
 
 
-										 <table class="table table-bordered" id="returnTable">
- 															<tr>
- 																<th>Received weight:</th>
- 																<th>Stone received:</th>
- 																<th>Qty:</th>
- 																<th>Rate:</th>
- 																<th>Wastage:</th>
- 															</tr>
- 															<tr>
- 																<td>
-
- 																</td>
- 																<td>
- 																	<input type="number" step="any" name="stone_received" value="" id="stone_received" class="form-control" placeholder="Stone Received">
- 																</td>
- 																<td>
- 																	<input type="number" step="any" name="Qty" value="" id="Qty" class="form-control" placeholder="Qty">
- 																</td>
- 																<td>
- 																	<input type="number" step="any" value="" id="s_rate" class="form-control" placeholder="Rate">
- 																</td>
- 																<td>
- 																	<input type="number" step="any" name="wastage" value="" id="wastage1" class="form-control" placeholder="Wastage">
- 																</td>
- 															</tr>
- 														</table>
-
- 														<table class="table table-bordered" id="returnTable">
- 															<tr>
- 																<th>Total:</th>
- 																<th>Payable:</th>
- 															</tr>
- 															<tr>
- 																<td>
- 																	<input type="number" step="any" name="Total" id="Total" class="form-control" placeholder="Received weight+Stone received+Wastage">
- 																</td>
- 																<td>
- 																	<input type="number" step="any" name="Payable" id="Payable" class="form-control" placeholder="Total-Total">
- 																</td>
 
 
- 															</tr>
- 														</table>
+
 
 
 
@@ -869,7 +827,7 @@
  												<div class="mt-4 mt-lg-0">
 
 
- 													<form action="external-work-db.php?from=additional" method="POST">
+ 													<form id="stepthree" method="POST">
  														<?php
 
 															$randomadditional = random_int(0000000000, 819900000000);
@@ -890,7 +848,7 @@
  																	</td>
  																	<td>
 
- 																		<select id="select-vendor" placeholder="Pick a vendor...">
+ 																		<select id="select-vendor" name="vendor_id" placeholder="Pick a vendor...">
  																			<option value="">Select a vendor...</option>
 
  																		</select>
@@ -987,6 +945,63 @@
  </div>
  <!-- END layout-wrapper -->
 
+ <!-- Modal -->
+ <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ 	<div class="modal-dialog modal-dialog-scrollable modal-xl">
+ 		<div class="modal-content">
+ 			<div class="modal-header">
+ 				<h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
+ 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 			</div>
+ 			<div class="modal-body">
+ 				<form id="filter_data" method="POST" enctype="multipart/form-data">
+ 					<div class="card">
+ 						<div class="row my-4">
+ 							<label for="from-date" class="col-sm-1 col-form-label d-flex justify-content-end">From:</label>
+ 							<div class="col-sm-1">
+ 								<input type="date" name="from-date" id="from-date" class="form-control">
+ 							</div>
+ 							<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">To:</label>
+ 							<div class="col-sm-1">
+ 								<input type="date" name="to-date" id="to-date" class="form-control">
+ 							</div>
+ 							<label for="product_id" class="col-sm-1 col-form-label d-flex justify-content-end">Product ID:</label>
+ 							<div class="col-sm-2">
+ 								<input type="number" name="product_id" id="product_id" class="form-control" placeholder="Product ID" readonly>
+ 							</div>
+ 							<label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor ID:</label>
+ 							<div class="col-sm-2">
+ 								<input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID" readonly>
+ 							</div>
+ 							<div class="col-sm-2">
+ 								<button type="submit" name="submit" class="btn btn-primary">Save</button>
+ 							</div>
+ 						</div>
+ 					</div>
+ 				</form>
+ 				<table id="product-table" class="table table-hover ">
+ 					<thead>
+ 						<tr>
+ 							<th scope="col">#</th>
+ 							<th scope="col">Product ID</th>
+ 							<th scope="col">Vendor ID</th>
+ 							<th scope="col">Vendor Name</th>
+ 							<th scope="col">Date</th>
+ 							<th scope="col">Action</th>
+ 						</tr>
+ 					</thead>
+ 					<tbody id="product-table-body">
+
+ 					</tbody>
+ 				</table>
+ 			</div>
+ 			<div class="modal-footer">
+ 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
+
  <!-- Right Sidebar -->
  <?php include 'layouts/right-sidebar.php'; ?>
  <!-- /Right-bar -->
@@ -995,13 +1010,21 @@
  <?php include 'layouts/vendor-scripts.php'; ?>
 
  <script>
-	function ReturnedPayable() {
-		var payable = document.getElementById("r_payable");
-		var r_grand_total_weight = document.getElementById("r_grand_total_weight");
-		var stepIssueweight = document.getElementById("stepIssueweight");
-		payable.value = parseInt(r_grand_total_weight.value) - parseInt(stepIssueweight.value);
+ 	function GetProductId(btn) {
+ 		var id = btn.parentNode.parentNode.id;
+ 		$('#product-modal').modal('hide');
+ 		var product = document.getElementById("product");
+ 		product.value = id;
+		 $("#product").trigger('input');
+ 	}
 
-	}
+ 	function ReturnedPayable() {
+ 		var payable = document.getElementById("r_payable");
+ 		var r_grand_total_weight = document.getElementById("r_grand_total_weight");
+ 		var stepIssueweight = document.getElementById("stepIssueweight");
+ 		payable.value = parseInt(r_grand_total_weight.value) - parseInt(stepIssueweight.value);
+
+ 	}
 
  	function ReturnTotalWeight() {
  		let total = document.getElementById("r_grand_total_weight");
@@ -1011,29 +1034,29 @@
 
  	}
 
-	function CalculateReturnedWastage(){
-		var quantity= document.getElementById("r_total_quantity");
-		var rate=document.getElementById("r_rate");
-		var wastage= document.getElementById("r_wastage");
-		wastage.value=quantity.value*(rate.value/100);
-		GrandWeight();
-	}
+ 	function CalculateReturnedWastage() {
+ 		var quantity = document.getElementById("r_total_quantity");
+ 		var rate = document.getElementById("r_rate");
+ 		var wastage = document.getElementById("r_wastage");
+ 		wastage.value = (quantity.value * (rate.value / 100)).toFixed(3);
+ 		GrandWeight();
+ 	}
 
-	function TotalWeight(){
-		var total_weight= document.getElementById("r_total_weight");
-		var wastage= document.getElementById("r_wastage");
-		var grand_total_weight= document.getElementById("r_grand_total_weight");
-		grand_total_weight.value=parseInt(total_weight.value)+parseInt(wastage.value);
-		GrandWeight();
-		ReturnedPayable();
-	}
+ 	function TotalWeight() {
+ 		var total_weight = document.getElementById("r_grand_total_weight");
+ 		var stone_weight = document.getElementById("r_total_weight");
+ 		var received_weight = document.getElementById("received_weight");
+ 		total_weight.value = parseInt(stone_weight.value) + parseInt(received_weight.value);
+ 		GrandWeight();
+ 		ReturnedPayable();
+ 	}
 
-	function GrandWeight(){
-		var total_weight= document.getElementById("r_grand_total_weight");
-		var wastage= document.getElementById("r_wastage");
-		var grand_total_weight= document.getElementById("r_grand_weight");
-		grand_total_weight.value=parseInt(total_weight.value)+parseInt(wastage.value);
-	}
+ 	function GrandWeight() {
+ 		var total_weight = document.getElementById("r_grand_total_weight");
+ 		var wastage = document.getElementById("r_wastage");
+ 		var grand_total_weight = document.getElementById("r_grand_weight");
+ 		grand_total_weight.value = parseInt(total_weight.value) + parseInt(wastage.value);
+ 	}
 
  	function AddReturned() {
  		var returned_area = document.getElementById('returned-area');
@@ -1178,14 +1201,14 @@
  				var manufacturer_rate = document.getElementById('manufacturer-rate').value = data[0].rate;
  				var wastage = document.getElementById('wastage').value = data[0].wastage;
  				var tValues = document.getElementById('tValues').value = data[0].tValues;
- 				GetPolsherData(id);
+ 				GetPolisherData(id);
  				GetStoneSetterData(id);
 
  			}
  		});
  	}
 
- 	function GetPolsherData(id) {
+ 	function GetPolisherData(id) {
 
  		$.ajax({
  			url: "functions.php",
@@ -1268,7 +1291,6 @@
  						var selectedOption = selectElement.options[selectedValue];
  						var selectedText = selectedOption.text;
  					}
-					console.log(selectedText);
 
  					$.ajax({
  						url: "functions.php",
@@ -1279,12 +1301,12 @@
  							id: code
  						},
  						success: function(response) {
-							console.log(response);
  							var data = JSON.parse(response);
  							var s_rate = document.getElementById('s_rate').value = data[0]['18k'];
- 						},error: function(response){
-							console.log(response);
-						}
+ 						},
+ 						error: function(response) {
+ 							console.log(response);
+ 						}
  					});
  				}
  				var polish_weight = document.getElementById('polish_weight');
@@ -1413,10 +1435,10 @@
  			tValues.value = total.toFixed(3);
  		} else if (selectedText == '21k') {
  			var tValues = document.getElementById('tValues');
- 			tValues.value = (unpolish_weight + wastage) * 0.875;
+ 			tValues.value = ((unpolish_weight + wastage) * 0.875).toFixed(3);
  		} else if (selectedText == '22k') {
  			var tValues = document.getElementById('tValues');
- 			tValues.value = (unpolish_weight + wastage) * 0.916;
+ 			tValues.value = ((unpolish_weight + wastage) * 0.916).toFixed(3);
  		}
  		CalculateDifference()
 
@@ -1424,11 +1446,8 @@
  	}
 
  	function DeleteProduct() {
- 		const mySelect = $('#select-product')[0].selectize;
-
- 		// Get the selected value
- 		const selectedValue = mySelect.getValue();
- 		if (selectedValue == '') {
+ 		var product = document.getElementById('product');
+ 		if (product.value == '') {
  			alert('Please Select Product');
  		} else {
  			$.ajax({
@@ -1436,7 +1455,7 @@
  				method: "POST",
  				data: {
  					function: "DeleteProduct",
- 					id: selectedValue
+ 					id: product.value
  				},
  				success: function(response) {
  					var data = JSON.parse(response);
@@ -1545,7 +1564,7 @@
 
  			var total = received_weight + stone_received + wastage;
  			$(document).find('#Total').val(total);
- 			var payable = (total_weight_issue - total).toFixed(2);
+ 			var payable = (total_weight_issue - total).toFixed(3);
  			$(document).find('#Payable').val(payable);
  		}
  	}
@@ -1555,7 +1574,7 @@
  		var Zircon = parseFloat($(document).find('#Zircon').val());
  		var stone_weight = parseFloat($(document).find('#stone_weight').val());
  		if (stepIssueweight != '' && Zircon != '' && stone_weight != '') {
- 			var total = (stepIssueweight + Zircon + stone_weight).toFixed(2);
+ 			var total = (stepIssueweight + Zircon + stone_weight).toFixed(3);
  			$(document).find('#total-weight-issue').val(total);
  		}
  	}
@@ -1642,7 +1661,7 @@
  		var polished_weight = parseFloat($(document).find('#polish_weight').val());
  		var stepIssueweight = document.getElementById('stepIssueweight').value = polished_weight;
  		if (unpolished_weight != '' && polished_weight != '') {
- 			var difference = (unpolished_weight - polished_weight).toFixed(2);
+ 			var difference = (unpolished_weight - polished_weight).toFixed(3);
  			if (difference == 0) {
  				var polisher_save_btn = document.getElementById('polisher_save_btn');
  				var polisher_print_btn = document.getElementById('polisher_print_btn');
@@ -1690,9 +1709,9 @@
  				if (difference == 0) {
  					poWas.value = 0;
  				} else {
- 					poWas.value = ((unpolish_weight / 96) * p_rate).toFixed(2);
+ 					poWas.value = ((unpolish_weight / 96) * p_rate).toFixed(3);
  				}
- 				payable.value = (poWas.value - difference).toFixed(2);
+ 				payable.value = (poWas.value - difference).toFixed(3);
  			}
  		});
  	}
@@ -1704,9 +1723,9 @@
  		if (difference == 0) {
  			poWas.value = 0;
  		} else {
- 			poWas.value = ((difference / rate) / 96).toFixed(2);
+ 			poWas.value = ((difference / rate) / 96).toFixed(3);
  		}
- 		payable.value = (difference - poWas.value).toFixed(2);
+ 		payable.value = (difference - poWas.value).toFixed(3);
 
  	}
 
@@ -1725,6 +1744,212 @@
  			$('#preview').css("display", "block");
  		}
  	}
+
+ 	$(document).ready(function() {
+ 		GetDate();
+
+ 		$('select').selectize({
+ 			sortField: 'text'
+ 		});
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetFilteredProducts"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var tbody = document.getElementById("product-table-body");
+ 				for (var i = 0; i < data.length; i++) {
+ 					var tr = document.createElement("tr");
+ 					var td1 = document.createElement("td");
+ 					var td2 = document.createElement("td");
+ 					var td3 = document.createElement("td");
+ 					var td4 = document.createElement("td");
+ 					var td5 = document.createElement("td");
+ 					var td6 = document.createElement("td");
+ 					var btn = document.createElement("button");
+ 					btn.innerHTML = "Select";
+ 					btn.className = "btn btn-primary";
+ 					btn.addEventListener("click",function(){
+ 						GetProductId(this);
+ 					});
+ 					tr.id = data[i].product_id;
+ 					td1.innerHTML = i + 1;
+ 					td2.innerHTML = data[i].product_id;
+ 					td3.innerHTML = data[i].vendor_id;
+ 					td4.innerHTML = data[i].vendor_name;
+ 					date = data[i].date;
+ 					td5.innerHTML = date.slice(0, 10);
+ 					td6.classList.add("p-1");
+ 					td6.appendChild(btn);
+ 					tr.appendChild(td1);
+ 					tr.appendChild(td2);
+ 					tr.appendChild(td3);
+ 					tr.appendChild(td4);
+ 					tr.appendChild(td5);
+ 					tr.appendChild(td6);
+ 					tbody.appendChild(tr);
+ 				};
+ 			}
+ 		});
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetAllVendorData",
+ 				type: "manufacturer"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var select = $('#select-manufacturer')[0].selectize;
+ 				for (var i = 0; i < data.length; i++) {
+ 					var newOption = {
+ 						value: data[i].id,
+ 						text: data[i].id + " | " + data[i].name
+ 					};
+ 					select.addOption(newOption);
+ 				}
+
+ 			}
+ 		});
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetAllVendorData",
+ 				type: "polisher"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var select = $('#select-polisher')[0].selectize;
+ 				for (var i = 0; i < data.length; i++) {
+ 					var newOption = {
+ 						value: data[i].id,
+ 						text: data[i].id + " | " + data[i].name
+ 					};
+ 					select.addOption(newOption);
+ 				}
+
+ 			}
+ 		});
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetAllVendorData",
+ 				type: "stone setter"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var select = $('#select-stone_setter')[0].selectize;
+ 				for (var i = 0; i < data.length; i++) {
+ 					var newOption = {
+ 						value: data[i].id,
+ 						text: data[i].id + " | " + data[i].name
+ 					};
+ 					select.addOption(newOption);
+ 				}
+
+ 			}
+ 		});
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetAllVendorData",
+ 				type: "vendor"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var select = $('#select-vendor')[0].selectize;
+ 				for (var i = 0; i < data.length; i++) {
+ 					var newOption = {
+ 						value: data[i].id,
+ 						text: data[i].id + " | " + data[i].name
+ 					};
+ 					select.addOption(newOption);
+ 				}
+
+ 			}
+ 		});
+
+
+ 		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
+ 		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
+ 		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
+ 		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
+ 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 		var grand_total_weight = document.getElementById("r_grand_total_weight");
+ 		var received_weight = document.getElementById("received_weight");
+ 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
+ 		var r_total_weight = document.getElementById("r_total_weight");
+ 		var zircon_total = document.getElementById('zircon_total');
+ 		var stone_total = document.getElementById('stone_total');
+ 		var select_manufacturer_purity = document.getElementById('select-manufacturer-purity');
+ 		var select_polisher_purity = document.getElementById('select-polisher-purity');
+ 		var unpolish_weight = document.getElementById('unpolish_weight');
+ 		var polish_weight = document.getElementById('polish_weight');
+ 		var p_rate = document.getElementById('p_rate');
+ 		var r_total_quantity = document.getElementById("r_total_quantity");
+ 		var r_rate = document.getElementById("r_rate");
+ 		var r_wastage = document.getElementById("r_wastage");
+
+ 		r_rate.addEventListener("change", CalculateReturnedWastage);
+ 		r_total_weight.addEventListener("change", TotalWeight);
+ 		r_wastage.addEventListener("change", TotalWeight);
+ 		r_total_quantity.addEventListener("change", CalculateReturnedWastage);
+ 		received_weight.addEventListener("change", ReturnTotalWeight);
+ 		r_total_weight.addEventListener("change", ReturnTotalWeight);
+ 		zircon_total.addEventListener('change', GrandTotal);
+ 		stone_total.addEventListener('change', GrandTotal);
+ 		unpolish_weight.addEventListener('change', CalculateWastage);
+ 		unpolish_weight.addEventListener('change', CalculateDifference);
+ 		polish_weight.addEventListener('change', CalculateDifference);
+ 		p_rate.addEventListener('change', function() {
+ 			CalculateNewPayable($(this).val());
+ 		});
+ 		r_total_weight.addEventListener("input", function() {
+
+ 		});
+ 		received_weight.addEventListener("input", function() {
+ 			TotalWeight();
+ 		});
+ 		grand_total_weight.addEventListener("input", function() {
+ 			ReturnedPayable();
+ 		});
+ 		var stepIssueweight = document.getElementById("stepIssueweight");
+ 		stepIssueweight.addEventListener("input", function() {
+ 			ReturnedPayable();
+ 		});
+ 		for (let i = 0; i < r_quantity.length; i++) {
+ 			r_quantity[i].addEventListener('input', ReturnedQuantity);
+ 			r_quantity[i].addEventListener('input', TotalWeight);
+ 		}
+
+ 		for (let i = 0; i < r_weight.length; i++) {
+ 			r_weight[i].addEventListener('input', ReturnedWeight);
+ 			r_weight[i].addEventListener('input', TotalWeight);
+ 		}
+ 		stone_quantity.forEach(function(input) {
+ 			input.addEventListener('input', StoneQuantity);
+ 		})
+ 		stone_weight.forEach(function(input) {
+ 			input.addEventListener('input', StoneWeight);
+ 		})
+ 		zircon_quantity.forEach(function(input) {
+ 			input.addEventListener('input', ZirconQuantity);
+ 		})
+ 		zircon_weight.forEach(function(input) {
+ 			input.addEventListener('input', ZirconWeight);
+ 		})
+
+ 	});
 
  	$(document).on('submit', '#stepone', function(e) {
  		e.preventDefault();
@@ -1826,6 +2051,40 @@
 
  	})
 
+ 	$(document).on('submit', '#stepfour', function(e) {
+ 		e.preventDefault();
+ 		var product = document.getElementById('product').value;
+ 		var form = new FormData(this);
+ 		form.append('function', 'StepFour');
+ 		form.append('product_id', product);
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: form,
+ 			contentType: false,
+ 			processData: false,
+ 			success: function(data) {
+ 				data = JSON.parse(data);
+ 				if (data[0] == "success") {
+ 					Swal.fire({
+ 						title: 'Success!',
+ 						text: 'Additional Vendor Record Saved Successfully',
+ 						icon: 'success',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				} else {
+ 					Swal.fire({
+ 						title: 'Error!',
+ 						text: 'Something went wrong.',
+ 						icon: 'error',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				}
+ 			}
+ 		});
+
+ 	})
+
  	$(document).on('click', '.delete-stone', function() {
  		$(this).parent().parent().remove();
  		StoneQuantity();
@@ -1843,150 +2102,21 @@
  		ReturnedQuantity();
  		ReturnedWeight();
  	});
-
- 	$(document).ready(function() {
- 		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
- 		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
- 		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
- 		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
- 		stone_quantity.forEach(function(input) {
- 			input.addEventListener('input', StoneQuantity);
- 		})
- 		stone_weight.forEach(function(input) {
- 			input.addEventListener('input', StoneWeight);
- 		})
- 		zircon_quantity.forEach(function(input) {
- 			input.addEventListener('input', ZirconQuantity);
- 		})
- 		zircon_weight.forEach(function(input) {
- 			input.addEventListener('input', ZirconWeight);
- 		})
-
- 		$('select').selectize({
- 			sortField: 'text'
- 		});
-
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllVendorData",
- 				type: "manufacturer"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-manufacturer')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id + " | " + data[i].name
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
-
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllVendorData",
- 				type: "polisher"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-polisher')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id + " | " + data[i].name
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
-
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllVendorData",
- 				type: "stone setter"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-stone_setter')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id + " | " + data[i].name
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
-
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllVendorData",
- 				type: "vendor"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-vendor')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id + " | " + data[i].name
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
-
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllProduct"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-product')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
- 	});
-
- 	$(document).on('change', '#select-product', function(e) {
+	
+ 	$(document).on('input', '#product', function(e) {
  		e.preventDefault();
  		const inputs = document.querySelectorAll('input');
  		const selects = document.querySelectorAll('select');
  		const textareas = document.querySelectorAll('textarea');
 
- 		inputs.forEach(input => input.value = '');
- 		textareas.forEach(textarea => textarea.value = '');
- 		const selectToKeep = 'select-product';
- 		const selects1 = document.querySelectorAll('select');
-
- 		selects1.forEach(select => {
- 			if (select.id !== selectToKeep && !select.classList.contains(selectToKeep)) {
- 				select.selectize.clear(); // clear the selectize value
+ 		inputs.forEach(input => {
+ 			if (input.id !== 'product') {
+ 				input.value = '';
  			}
  		});
+ 		textareas.forEach(textarea => textarea.value = '');
+ 		selects.forEach(select => select.selectize.clear());
+
  		GetDate();
  		GetManufacturerData($(this).val());
 
@@ -1994,10 +2124,9 @@
 
  	$(document).on('change', '#select-manufacturer', function(e) {
  		e.preventDefault();
- 		var select = $('#select-product').selectize(); // initialize Selectize.js on your select input
- 		var selectize = select[0].selectize; // get the Selectize.js instance
+ 		var product = document.getElementById('product');
 
- 		if (selectize.items.length <= 0) {
+ 		if (product.value === "") {
  			var select1 = $(this).val();
  			code = document.getElementsByClassName("code")
  			$.ajax({
@@ -2066,6 +2195,55 @@
  		polisher_rate.value = this.value;
  	});
 
+ 	$(document).on('change', '#stepThreeCode', function(e) {
+ 		e.preventDefault();
+ 		$.ajax({
+ 			url: "external-work-db.php?ajax=getData",
+ 			method: "POST",
+ 			data: {
+ 				code: $(this).val()
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var name = data[0].name;
+ 				var constantwestage = 0.0035;
+ 				var upEmail = parseFloat(data[0].unpolish_weight, 10);
+ 				var pemail = parseFloat(data[0].polish_weight, 10);
+
+ 				var Zircon = parseFloat($(document).find('#Zircon').val());
+ 				var stone_weight = parseFloat($(document).find('#stone_weight').val());
+ 				var totalweightissue = (pemail + Zircon + stone_weight).toFixed(3);
+
+
+ 				var received_weight = parseFloat($(document).find('#received_weight').val());
+ 				var stone_received = parseFloat($(document).find('#stone_received').val());
+ 				var Qty = parseFloat($(document).find('#Qty').val());
+
+ 				var wastageqty = (Qty * constantwestage).toFixed(3);
+
+
+
+ 				$(document).find('#stepThreeName').val(name);
+ 				$(document).find('#stepIssueweight').val(pemail);
+ 				$(document).find('#total-weight-issue').val(totalweightissue);
+
+ 				$(document).find('#wastage1').val(wastageqty);
+
+
+
+
+
+ 			},
+ 			error: function(xhr, status) {
+ 				alert("Sorry, there was a problem!");
+ 			},
+ 			complete: function(xhr, status) {
+ 				//$('#showresults').slideDown('slow')
+ 			}
+ 		})
+
+ 	});
+
  	$(document).on('input', '#rate', function(e) {
  		e.preventDefault();
  		var constantValue = 96;
@@ -2084,21 +2262,21 @@
  		} else {
 
 
- 			var wtgValue = (upEmail * rFlowValue / constantValue).toFixed(2);
+ 			var wtgValue = (upEmail * rFlowValue / constantValue).toFixed(3);
 
  			$(document).find('#wastage').val(wtgValue);
 
  			var wtgValue1 = wtgValue = (upEmail * rFlowValue / constantValue);
 
- 			var rr = parseFloat(upEmail + wtgValue1).toFixed(2);
+ 			var rr = parseFloat(upEmail + wtgValue1).toFixed(3);
 
- 			var rr2 = parseFloat(sPValue).toFixed(2);
+ 			var rr2 = parseFloat(sPValue).toFixed(3);
 
- 			//var rr3=parseFloat(wtgValue).toFixed(2);
- 			//var rr3 = parseFloat(sPValue).toFixed(2);
+ 			//var rr3=parseFloat(wtgValue).toFixed(3);
+ 			//var rr3 = parseFloat(sPValue).toFixed(3);
 
 
- 			var tValues = (rr * sPValue).toFixed(2);
+ 			var tValues = (rr * sPValue).toFixed(3);
 
  			$(document).find('#tValues').val(tValues);
 
@@ -2146,10 +2324,6 @@
  		})
  	});
 
- 	$(document).ready(function() {
- 		GetDate();
- 	});
-
  	$(document).on('input', '#Zircon', function(e) {
  		e.preventDefault();
  		CalculateTotal();
@@ -2174,158 +2348,7 @@
  		e.preventDefault();
  		CalculatePayable();
  	});
-
- 	$(document).on('change', '#stepThreeCode', function(e) {
- 		e.preventDefault();
- 		$.ajax({
- 			url: "external-work-db.php?ajax=getData",
- 			method: "POST",
- 			data: {
- 				code: $(this).val()
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var name = data[0].name;
- 				var constantwestage = 0.0035;
- 				var upEmail = parseFloat(data[0].unpolish_weight, 10);
- 				var pemail = parseFloat(data[0].polish_weight, 10);
-
- 				var Zircon = parseFloat($(document).find('#Zircon').val());
- 				var stone_weight = parseFloat($(document).find('#stone_weight').val());
- 				var totalweightissue = (pemail + Zircon + stone_weight).toFixed(2);
-
-
- 				var received_weight = parseFloat($(document).find('#received_weight').val());
- 				var stone_received = parseFloat($(document).find('#stone_received').val());
- 				var Qty = parseFloat($(document).find('#Qty').val());
-
- 				var wastageqty = (Qty * constantwestage).toFixed(2);
-
-
-
- 				$(document).find('#stepThreeName').val(name);
- 				$(document).find('#stepIssueweight').val(pemail);
- 				$(document).find('#total-weight-issue').val(totalweightissue);
-
- 				$(document).find('#wastage1').val(wastageqty);
-
-
-
-
-
- 			},
- 			error: function(xhr, status) {
- 				alert("Sorry, there was a problem!");
- 			},
- 			complete: function(xhr, status) {
- 				//$('#showresults').slideDown('slow')
- 			}
- 		})
-
- 	});
-
- 	var zircon_total = document.getElementById('zircon_total');
- 	var stone_total = document.getElementById('stone_total');
- 	var select_manufacturer_purity = document.getElementById('select-manufacturer-purity');
- 	var select_polisher_purity = document.getElementById('select-polisher-purity');
- 	var unpolish_weight = document.getElementById('unpolish_weight');
- 	var polish_weight = document.getElementById('polish_weight');
- 	var p_rate = document.getElementById('p_rate');
- 	var received_weight = document.getElementById("received_weight");
- 	var r_total_weight = document.getElementById("r_total_weight");
-	var r_total_quantity= document.getElementById("r_total_quantity");
-	var r_rate=document.getElementById("r_rate");
-	var r_wastage=document.getElementById("r_wastage");
-
-	r_rate.addEventListener("change",CalculateReturnedWastage);
-	r_total_weight.addEventListener("change",TotalWeight);
-	r_wastage.addEventListener("change",TotalWeight);
-	r_total_quantity.addEventListener("change",CalculateReturnedWastage);
- 	received_weight.addEventListener("change", ReturnTotalWeight);
- 	r_total_weight.addEventListener("change", ReturnTotalWeight);
- 	zircon_total.addEventListener('change', GrandTotal);
- 	stone_total.addEventListener('change', GrandTotal);
- 	unpolish_weight.addEventListener('change', CalculateWastage);
- 	unpolish_weight.addEventListener('change', CalculateDifference);
- 	polish_weight.addEventListener('change', CalculateDifference);
- 	p_rate.addEventListener('change', function() {
- 		CalculateNewPayable($(this).val());
- 	});
  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
- <script type="text/javascript">
- 	var i = 0;
-
- 	$("#add").click(function() {
-
- 		++i;
-
- 		$("#dynamicTable").append('<tr><td><select required=""name="addmore[' + i + '][name]" class="form-control form-select"><option value="">Select Stone</option><option value="wr">Rubi</option></select></td><td><input type="text" name="addmore[' + i + '][stone_weight]" placeholder="Stone Weight" class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
- 	});
-
- 	$(document).on('click', '.remove-tr', function() {
- 		$(this).parents('tr').remove();
- 	});
- </script>
-
- <script type="text/javascript">
- 	var i = 0;
-
- 	$("#return").click(function() {
-
- 		++i;
-
- 		$("#returnTable").append('<tr><td><select required=""name="addmore[' + i + '][type]" class="form-control form-select"><option value="">Select Type</option><option value="wr">Rubi</option></select></td><td><input type="text" name="addmore[' + i + '][weight]" placeholder="Weight" class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
- 	});
-
- 	$(document).on('click', '.remove-tr', function() {
- 		$(this).parents('tr').remove();
- 	});
- </script>
-
-
-
-
-
-
- <script type="text/javascript">
- 	var i = 0;
-
- 	$("#additional").click(function() {
-
- 		++i;
-
- 		$("#additionalTable").append('<tr><td><input type="text" name="addmore[' + i + '][date]" placeholder="Date" class="form-control" /></td><td><input type="text" name="addmore[' + i + '][name]" placeholder="Name" class="form-control" /></td><td><input type="text" name="addmore[' + i + '][name]" placeholder="Type" class="form-control" /></td><td><input type="text" name="addmore[' + i + '][amount]" placeholder="Amount" class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
- 	});
-
- 	$(document).on('click', '.remove-tr', function() {
- 		$(this).parents('tr').remove();
- 	});
- </script>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  <!-- apexcharts -->

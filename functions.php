@@ -38,8 +38,26 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetPolisherRate();
 } elseif ($_POST['function'] == 'GetStoneSetterRate') {
     GetStoneSetterRate();
+} elseif ($_POST['function'] == 'GetFilteredProducts') {
+    GetFilteredProducts();
 }
 
+function GetFilteredProducts(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT ms.id, ms.vendor_id, ms.product_id, ms.date, ms.image, ms.details, ms.type, ms.quantity, ms.purity, ms.unpolish_weight, ms.polish_weight, ms.rate, ms.wastage, ms.unpure_weight, ms.pure_weight, ms.status, ms.tValues, ms.barcode, v.type AS vendor_type, v.name AS vendor_name, v.18k, v.21k, v.22k, v.status AS vendor_status, v.date AS vendor_date
+    FROM manufacturing_step AS ms
+    INNER JOIN vendor AS v ON ms.vendor_id = v.id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
 
 function GetAllVendorData()
 {
@@ -244,12 +262,6 @@ function StepOne()
         $qry = "INSERT INTO manufacturing_step(`vendor_id`, `image`, `product_id`, `type`, `quantity`, `purity`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `tValues`, `date`, `details`,`barcode`)
     VALUES (:vendor_id, :imageName, :code, :fType, :quantity, :pValue, :unpolish_weight, :polish_weight, :rate, :wastage, :tValues, :fDate, :details, :barcode);";
     }
-
-
-
-
-
-
 
     $qryStatement = $pdo->prepare($qry);
 
@@ -490,6 +502,29 @@ function StepThree()
         array_push($array, 'success');
     }
     echo json_encode($array, true);
+}
+
+function StepFour(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $array = array();
+    $date= $_POST['date'];
+    $vendor_id= $_POST['vendor_id'];
+    $product_id= $_POST['product_id'];
+    $amount= $_POST['amount'];
+
+    $qry="INSERT INTO `additional_step`( `product_id`, `vendor_id`, `type`, `amount`, `status`) VALUES (:product_id,:vendor_id,'1',:amount,'Active')";
+    $statement = $pdo->prepare($qry);
+    $statement->bindParam(':product_id', $product_id);
+    $statement->bindParam(':vendor_id', $vendor_id);
+    $statement->bindParam(':amount', $amount);
+    if($statement->execute()){
+        array_push($array,'success');
+    }
+
 }
 
 function GetManufacturerData()

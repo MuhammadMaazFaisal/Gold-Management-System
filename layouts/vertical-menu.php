@@ -408,6 +408,7 @@
 
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="purchasing.php" data-key="t-register">Purchasing</a></li>
+                            <li><a href="add_stock.php" data-key="t-register">Add Stock</a></li>
                             <!-- <li><a href="purchase_order.php" data-key="t-register">Purchase Order</a></li>
 							<li><a href="#" data-key="t-register">Receiving</a></li>
 							<li><a href="#" data-key="t-register">Back Order</a></li>
