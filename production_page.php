@@ -165,7 +165,7 @@
  					<div class="row mb-2">
  						<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Product:</label>
  						<div class="col-sm-2">
- 							<input type="text" class="form-control" id="product" name="product" placeholder="Product ID" value="" >
+ 							<input type="text" class="form-control" id="product" name="product" placeholder="Product ID" value="">
 
  						</div>
  						<div class="col d-flex justify-content-end me-4">
@@ -692,6 +692,8 @@
  																		</div>
  																	</div>
  																</div>
+ 															</form>
+ 															<form id="r_stepthree" method="POST" enctype="multipart/form-data">
 
  																<div class="row">
  																	<label for="received_weight">Recieved Weight:</label>
@@ -730,18 +732,18 @@
  																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Weight:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" name="r_total_weight" value="" id="r_total_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+ 																		<input type="number" step="any" name="r_stone_weight" value="" id="r_stone_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  																	</div>
  																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Quantity:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" name="r_total_quantity" value="" id="r_total_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+ 																		<input type="number" step="any" name="r_stone_quantity" value="" id="r_stone_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  																	</div>
  																</div>
  																<div class="row mb-4">
  																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
  																	<div class="col-sm-3">
- 																		<input type="number" step="any" name="r_grand_total_weight" value="" id="r_grand_total_weight" class="form-control" placeholder="Total">
+ 																		<input type="number" step="any" name="r_total_weight" value="" id="r_total_weight" class="form-control" placeholder="Total">
  																	</div>
  																	<label for="horizontal-firstname-input" for="r_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
  																	<div class="col-sm-3">
@@ -827,7 +829,7 @@
  												<div class="mt-4 mt-lg-0">
 
 
- 													<form id="stepthree" method="POST">
+ 													<form id="stepfour" method="POST" enctype="multipart/form-data">
  														<?php
 
 															$randomadditional = random_int(0000000000, 819900000000);
@@ -954,7 +956,7 @@
  				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
  			</div>
  			<div class="modal-body">
- 				<form id="filter_data" method="POST" enctype="multipart/form-data">
+ 				<form id="filter-data" method="POST" enctype="multipart/form-data">
  					<div class="card">
  						<div class="row my-4">
  							<label for="from-date" class="col-sm-1 col-form-label d-flex justify-content-end">From:</label>
@@ -967,11 +969,11 @@
  							</div>
  							<label for="product_id" class="col-sm-1 col-form-label d-flex justify-content-end">Product ID:</label>
  							<div class="col-sm-2">
- 								<input type="number" name="product_id" id="product_id" class="form-control" placeholder="Product ID" readonly>
+ 								<input type="text" name="product_id" id="product_id" class="form-control" placeholder="Product ID">
  							</div>
  							<label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor ID:</label>
  							<div class="col-sm-2">
- 								<input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID" readonly>
+ 								<input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID">
  							</div>
  							<div class="col-sm-2">
  								<button type="submit" name="submit" class="btn btn-primary">Save</button>
@@ -1015,27 +1017,27 @@
  		$('#product-modal').modal('hide');
  		var product = document.getElementById("product");
  		product.value = id;
-		 $("#product").trigger('input');
+ 		$("#product").trigger('input');
  	}
 
  	function ReturnedPayable() {
  		var payable = document.getElementById("r_payable");
- 		var r_grand_total_weight = document.getElementById("r_grand_total_weight");
+ 		var r_total_weight = document.getElementById("r_total_weight");
  		var stepIssueweight = document.getElementById("stepIssueweight");
- 		payable.value = parseInt(r_grand_total_weight.value) - parseInt(stepIssueweight.value);
+ 		payable.value = parseInt(r_total_weight.value) - parseInt(stepIssueweight.value);
 
  	}
 
  	function ReturnTotalWeight() {
- 		let total = document.getElementById("r_grand_total_weight");
+ 		let total = document.getElementById("r_total_weight");
  		let received_weight = document.getElementById("received_weight");
- 		let r_total_weight = document.getElementById("r_total_weight");
- 		total.value = parseInt(received_weight.value) + parseInt(r_total_weight.value);
+ 		let r_stone_weight = document.getElementById("r_stone_weight");
+ 		total.value = parseInt(received_weight.value) + parseInt(r_stone_weight.value);
 
  	}
 
  	function CalculateReturnedWastage() {
- 		var quantity = document.getElementById("r_total_quantity");
+ 		var quantity = document.getElementById("r_stone_quantity");
  		var rate = document.getElementById("r_rate");
  		var wastage = document.getElementById("r_wastage");
  		wastage.value = (quantity.value * (rate.value / 100)).toFixed(3);
@@ -1043,8 +1045,8 @@
  	}
 
  	function TotalWeight() {
- 		var total_weight = document.getElementById("r_grand_total_weight");
- 		var stone_weight = document.getElementById("r_total_weight");
+ 		var total_weight = document.getElementById("r_total_weight");
+ 		var stone_weight = document.getElementById("r_stone_weight");
  		var received_weight = document.getElementById("received_weight");
  		total_weight.value = parseInt(stone_weight.value) + parseInt(received_weight.value);
  		GrandWeight();
@@ -1052,7 +1054,7 @@
  	}
 
  	function GrandWeight() {
- 		var total_weight = document.getElementById("r_grand_total_weight");
+ 		var total_weight = document.getElementById("r_total_weight");
  		var wastage = document.getElementById("r_wastage");
  		var grand_total_weight = document.getElementById("r_grand_weight");
  		grand_total_weight.value = parseInt(total_weight.value) + parseInt(wastage.value);
@@ -1174,7 +1176,9 @@
  						}
 
  						select_manufacturer_purity.setValue(data[0].purity);
- 						CalculateDifference()
+ 						CalculateDifference();
+ 						GetPolisherData(id);
+ 						GetStoneSetterData(id);
  					}
  				});
  				var select_manufacturer = $('#select-manufacturer')[0].selectize;
@@ -1194,22 +1198,19 @@
  				const selectElement = document.getElementById('type');
  				const selectValue = data[0].type;
  				selectElement.selectize.setValue(selectValue);
-
  				var qunatity = document.getElementById('quantity').value = data[0].quantity;
  				var unpolish_weight = document.getElementById('unpolish_weight').value = data[0].unpolish_weight;
  				var polish_weight = document.getElementById('polish_weight').value = data[0].polish_weight;
  				var manufacturer_rate = document.getElementById('manufacturer-rate').value = data[0].rate;
  				var wastage = document.getElementById('wastage').value = data[0].wastage;
  				var tValues = document.getElementById('tValues').value = data[0].tValues;
- 				GetPolisherData(id);
- 				GetStoneSetterData(id);
+
 
  			}
  		});
  	}
 
  	function GetPolisherData(id) {
-
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
@@ -1247,7 +1248,21 @@
  	}
 
  	function GetStoneSetterData(id) {
+		 var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
+ 		var selectedValues = selectElement.getValue();
+ 		var selectedText;
+ 		var code=id;
+ 		var hasData = false; // set flag to false
 
+ 		for (var i = 0; i < selectedValues.length; i++) {
+ 			var selectedValue = selectedValues[i];
+ 			var selectedOption = selectElement.options[selectedValue];
+ 			if (selectedOption) {
+ 				selectedText = selectedOption.text;
+ 			} else {
+ 				selectedText = '18k';
+ 			}
+ 		}
 
  		$.ajax({
  			url: "functions.php",
@@ -1277,42 +1292,83 @@
  					var stone_total_weight = document.getElementById('stone_total_weight').value = data[0].s_total_weight;
  					var stone_total_quantity = document.getElementById('stone_total_quantity').value = data[0].s_total_quantity;
  					var grand_total = document.getElementById('grand_total').value = data[0].grand_total;
- 					var received_weight = document.getElementById('received_weight').value = data[0].Received_weight;
- 					var stone_received = document.getElementById('stone_received').value = data[0].Stone_received;
- 					var Qty = document.getElementById('Qty').value = data[0].Qty;
- 					var wastage1 = document.getElementById('wastage1').value = data[0].Wastage;
- 					var Total = document.getElementById('Total').value = data[0].Total_valu;
- 					var Payable = document.getElementById('Payable').value = data[0].Payable;
  					var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
  					var selectedValues = selectElement.getValue();
+ 					var unpolish_weight = document.getElementById('unpolish_weight').value;
 
  					for (var i = 0; i < selectedValues.length; i++) {
  						var selectedValue = selectedValues[i];
  						var selectedOption = selectElement.options[selectedValue];
- 						var selectedText = selectedOption.text;
- 					}
-
- 					$.ajax({
- 						url: "functions.php",
- 						method: "POST",
- 						data: {
- 							function: "GetStoneSetterRate",
- 							column: selectedText,
- 							id: code
- 						},
- 						success: function(response) {
- 							var data = JSON.parse(response);
- 							var s_rate = document.getElementById('s_rate').value = data[0]['18k'];
- 						},
- 						error: function(response) {
- 							console.log(response);
+ 						if (selectedOption) {
+ 							var selectedText = selectedOption.text;
+ 						} else {
+ 							var selectedText = '18k';
  						}
- 					});
+ 					}
  				}
  				var polish_weight = document.getElementById('polish_weight');
  				var stepIssueweight = document.getElementById('stepIssueweight').value = polish_weight.value;
  			}
  		});
+
+ 		// $.ajax({
+ 		// 		url: "functions.php",
+ 		// 		type: "POST",
+ 		// 		data: {
+ 		// 			function: "GetStoneSetterData",
+ 		// 			id: id
+ 		// 		},
+ 		// 	})
+ 		// 	.then(function(data) {
+ 		// 		if (data !== "[]") {
+ 		// 			data = JSON.parse(data);
+ 		// 			var select_manufacturer = $('#select-stone_setter')[0].selectize;
+ 		// 			select_manufacturer.setValue(data[0].vendor_id);
+ 		// 			var dateString = data[0].date;
+ 		// 			var date = new Date(dateString);
+ 		// 			var year = date.getFullYear();
+ 		// 			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+ 		// 			var day = ("0" + date.getDate()).slice(-2);
+ 		// 			var formattedDate = year + "-" + month + "-" + day;
+ 		// 			document.getElementById("s_date").value = formattedDate;
+ 		// 			var details = document.getElementById('s_details').value = data[0].detail;
+ 		// 			var stepIssueweight = document.getElementById('stepIssueweight').value = data[0].Issued_weight;
+ 		// 			var zircon_total = document.getElementById('zircon_total').value = data[0].z_total_price;
+ 		// 			var zircon_total_weight = document.getElementById('zircon_total_weight').value = data[0].z_total_weight;
+ 		// 			var zircon_total_quantity = document.getElementById('zircon_total_quantity').value = data[0].z_total_quantity;
+ 		// 			var stone_total = document.getElementById('stone_total').value = data[0].s_total_price;
+ 		// 			var stone_total_weight = document.getElementById('stone_total_weight').value = data[0].s_total_weight;
+ 		// 			var stone_total_quantity = document.getElementById('stone_total_quantity').value = data[0].s_total_quantity;
+ 		// 			var grand_total = document.getElementById('grand_total').value = data[0].grand_total;
+ 		// 			hasData = true; // set flag to true
+ 		// 		}
+ 		// 	})
+ 		// 	.then(function() {
+ 		// 		if (hasData) { // check flag
+ 		// 			return $.ajax({
+ 		// 				url: "functions.php",
+ 		// 				type: "POST",
+ 		// 				data: {
+ 		// 					function: "GetStoneSetterRate",
+		// 					id: code,
+ 		// 					column: selectedText
+ 							
+ 		// 				},
+ 		// 			});
+ 		// 		}
+ 		// 	})
+ 		// 	.then(function(response) {
+ 		// 		if (hasData) { // check flag
+		// 			console.log("1", response);
+ 		// 			var data = JSON.parse(response);
+ 		// 			var r_rate = document.getElementById('r_rate').value = data[0]['18k'];
+ 		// 		}
+ 		// 	})
+ 		// 	.catch(function(error) {
+ 		// 		console.log(error);
+ 		// 	});
+
+
 
  		let input = document.getElementById('code');
  		var value = input.value;
@@ -1413,6 +1469,10 @@
 
  	}
 
+	function GetAdditionalVendorData(id){
+		
+	}
+
  	function CalculateWastage() {
  		var manufacturer_rate = parseFloat(document.getElementById('manufacturer-rate').value);
  		var unpolish_weight = parseFloat(document.getElementById('unpolish_weight').value);
@@ -1427,7 +1487,11 @@
  		for (var i = 0; i < selectedValues.length; i++) {
  			var selectedValue = selectedValues[i];
  			var selectedOption = selectElement.options[selectedValue];
- 			var selectedText = selectedOption.text;
+ 			if (selectedOption) {
+ 				var selectedText = selectedOption.text;
+ 			} else {
+ 				var selectedText = '18k';
+ 			}
  		}
  		if (selectedText == '18k') {
  			var tValues = document.getElementById('tValues');
@@ -1536,7 +1600,7 @@
  			if (input.value) {
  				total += parseFloat(input.value);
  			}
- 			document.getElementById('r_total_quantity').value = total;
+ 			document.getElementById('r_stone_quantity').value = total;
 
  		});
  	}
@@ -1548,7 +1612,7 @@
  			if (input.value) {
  				total += parseFloat(input.value);
  			}
- 			document.getElementById('r_total_weight').value = total;
+ 			document.getElementById('r_stone_weight').value = total;
  		});
 
  	}
@@ -1677,14 +1741,21 @@
  		var code = $('#select-polisher').selectize()[0].selectize
  		var code = code.getValue();
  		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
+		console.log(code)
+		console.log(selectElement);
  		var selectedValues = selectElement.getValue();
  		var unpolish_weight = document.getElementById('unpolish_weight').value;
 
  		for (var i = 0; i < selectedValues.length; i++) {
  			var selectedValue = selectedValues[i];
  			var selectedOption = selectElement.options[selectedValue];
- 			var selectedText = selectedOption.text;
+ 			if (selectedOption) {
+ 				var selectedText = selectedOption.text;
+ 			} else {
+ 				var selectedText = '18k';
+ 			}
  		}
+		console.log(selectedText);
 
  		$.ajax({
  			url: "functions.php",
@@ -1711,7 +1782,7 @@
  				} else {
  					poWas.value = ((unpolish_weight / 96) * p_rate).toFixed(3);
  				}
- 				payable.value = (poWas.value - difference).toFixed(3);
+ 				payable.value = (difference- poWas.value ).toFixed(3);
  			}
  		});
  	}
@@ -1733,8 +1804,42 @@
  		var date = new Date().toISOString().slice(0, 10);
  		var dataInputs = document.querySelectorAll('input[type="date"]');
  		for (let i = 0; i < dataInputs.length; i++) {
- 			dataInputs[i].value = date;
+ 			if (dataInputs[i].id !== 'from-date' && dataInputs[i].id !== 'to-date') {
+ 				dataInputs[i].value = date;
+ 			}
  		}
+ 	}
+
+ 	function GetStoneSetterRate() {
+ 		var select_stone_setter = $('#select-stone_setter')[0].selectize;
+ 		var vendor_id = select_stone_setter.getValue();
+ 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
+ 		var selectedValues = selectElement.getValue();
+ 		var unpolish_weight = document.getElementById('unpolish_weight').value;
+
+ 		for (var i = 0; i < selectedValues.length; i++) {
+ 			var selectedValue = selectedValues[i];
+ 			var selectedOption = selectElement.options[selectedValue];
+ 			if (selectedOption) {
+ 				var selectedText = selectedOption.text;
+ 			} else {
+ 				var selectedText = '18k';
+ 			}
+ 		}
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetStoneSetterRate",
+ 				column: selectedText,
+ 				id: vendor_id
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var stone_setter_rate = document.getElementById('r_rate').value = data[0][selectedText];
+ 			}
+ 		});
  	}
 
  	image.onchange = evt => {
@@ -1756,7 +1861,7 @@
  			url: "functions.php",
  			method: "POST",
  			data: {
- 				function: "GetFilteredProducts"
+ 				function: "GetModalProducts"
  			},
  			success: function(response) {
  				var data = JSON.parse(response);
@@ -1772,7 +1877,7 @@
  					var btn = document.createElement("button");
  					btn.innerHTML = "Select";
  					btn.className = "btn btn-primary";
- 					btn.addEventListener("click",function(){
+ 					btn.addEventListener("click", function() {
  						GetProductId(this);
  					});
  					tr.id = data[i].product_id;
@@ -1885,10 +1990,10 @@
  		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
  		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
- 		var grand_total_weight = document.getElementById("r_grand_total_weight");
+ 		var grand_total_weight = document.getElementById("r_total_weight");
  		var received_weight = document.getElementById("received_weight");
  		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
- 		var r_total_weight = document.getElementById("r_total_weight");
+ 		var r_stone_weight = document.getElementById("r_stone_weight");
  		var zircon_total = document.getElementById('zircon_total');
  		var stone_total = document.getElementById('stone_total');
  		var select_manufacturer_purity = document.getElementById('select-manufacturer-purity');
@@ -1896,25 +2001,25 @@
  		var unpolish_weight = document.getElementById('unpolish_weight');
  		var polish_weight = document.getElementById('polish_weight');
  		var p_rate = document.getElementById('p_rate');
- 		var r_total_quantity = document.getElementById("r_total_quantity");
+ 		var r_stone_quantity = document.getElementById("r_stone_quantity");
  		var r_rate = document.getElementById("r_rate");
  		var r_wastage = document.getElementById("r_wastage");
 
- 		r_rate.addEventListener("change", CalculateReturnedWastage);
- 		r_total_weight.addEventListener("change", TotalWeight);
- 		r_wastage.addEventListener("change", TotalWeight);
- 		r_total_quantity.addEventListener("change", CalculateReturnedWastage);
- 		received_weight.addEventListener("change", ReturnTotalWeight);
- 		r_total_weight.addEventListener("change", ReturnTotalWeight);
- 		zircon_total.addEventListener('change', GrandTotal);
- 		stone_total.addEventListener('change', GrandTotal);
- 		unpolish_weight.addEventListener('change', CalculateWastage);
- 		unpolish_weight.addEventListener('change', CalculateDifference);
- 		polish_weight.addEventListener('change', CalculateDifference);
- 		p_rate.addEventListener('change', function() {
+ 		r_rate.addEventListener("input", CalculateReturnedWastage);
+ 		r_stone_weight.addEventListener("input", TotalWeight);
+ 		r_wastage.addEventListener("input", TotalWeight);
+ 		r_stone_quantity.addEventListener("input", CalculateReturnedWastage);
+ 		received_weight.addEventListener("input", ReturnTotalWeight);
+ 		r_stone_weight.addEventListener("input", ReturnTotalWeight);
+ 		zircon_total.addEventListener('input', GrandTotal);
+ 		stone_total.addEventListener('input', GrandTotal);
+ 		unpolish_weight.addEventListener('input', CalculateWastage);
+ 		unpolish_weight.addEventListener('input', CalculateDifference);
+ 		polish_weight.addEventListener('input', CalculateDifference);
+ 		p_rate.addEventListener('input', function() {
  			CalculateNewPayable($(this).val());
  		});
- 		r_total_weight.addEventListener("input", function() {
+ 		r_stone_weight.addEventListener("input", function() {
 
  		});
  		received_weight.addEventListener("input", function() {
@@ -1963,25 +2068,21 @@
  			processData: false,
  			success: function(data) {
  				data = JSON.parse(data);
- 				// if (data[0] == "success" && data[1] == "success") {
- 				// 	Swal.fire({
- 				// 		title: 'Success!',
- 				// 		text: 'Stone Setter Deleted Successfully',
- 				// 		icon: 'success',
- 				// 		confirmButtonText: 'Ok'
- 				// 	}).then((result) => {
- 				// 		if (result.isConfirmed) {
- 				// 			window.location.href = "stone-setter.php";
- 				// 		}
- 				// 	})
- 				// } else {
- 				// 	Swal.fire({
- 				// 		title: 'Error!',
- 				// 		text: 'Something went wrong.',
- 				// 		icon: 'error',
- 				// 		confirmButtonText: 'Ok'
- 				// 	})
- 				// }
+ 				if (data[0] == "success" && data[1] == "success") {
+ 					Swal.fire({
+ 						title: 'Success!',
+ 						text: 'Manufacturer Added Successfully',
+ 						icon: 'success',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				} else {
+ 					Swal.fire({
+ 						title: 'Error!',
+ 						text: 'Something went wrong.',
+ 						icon: 'error',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				}
  			}
  		});
 
@@ -2051,6 +2152,43 @@
 
  	})
 
+ 	$(document).on('submit', '#r_stepthree', function(e) {
+ 		e.preventDefault();
+ 		var product_id = document.getElementsByClassName('code').value;
+ 		product_id = product_id[0].value;
+ 		var select_stone_setter = $('#select-stone_setter')[0].selectize;
+ 		var vendor_id = select_stone_setter.getValue();
+ 		var form = new FormData(this);
+ 		form.append('function', 'ReturnedStepThree');
+ 		form.append('product_id', product_id);
+ 		form.append('vendor_id', vendor_id);
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: form,
+ 			contentType: false,
+ 			processData: false,
+ 			success: function(data) {
+ 				data = JSON.parse(data);
+ 				if (data[0] == "success" && data[1] == "success") {
+ 					Swal.fire({
+ 						title: 'Success!',
+ 						text: 'Stone Setter Record Saved Successfully',
+ 						icon: 'success',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				} else {
+ 					Swal.fire({
+ 						title: 'Error!',
+ 						text: 'Something went wrong.',
+ 						icon: 'error',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				}
+ 			}
+ 		});
+ 	});
+
  	$(document).on('submit', '#stepfour', function(e) {
  		e.preventDefault();
  		var product = document.getElementById('product').value;
@@ -2085,6 +2223,66 @@
 
  	})
 
+ 	$(document).on('submit', '#filter-data', function(e) {
+ 		e.preventDefault();
+ 		var form = new FormData(this);
+ 		var tbody = document.getElementById('product-table-body');
+ 		form.append('function', 'GetFilteredProducts');
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: form,
+ 			contentType: false,
+ 			processData: false,
+ 			success: function(data) {
+ 				data = JSON.parse(data);
+ 				if (data[0] == "error") {
+ 					Swal.fire({
+ 						title: 'Error!',
+ 						text: 'Something went wrong.',
+ 						icon: 'error',
+ 						confirmButtonText: 'Ok'
+ 					})
+ 				} else if (data.length == 0) {
+ 					alert("No Data Found");
+
+ 				} else {
+ 					tbody.innerHTML = "";
+ 					for (var i = 0; i < data.length; i++) {
+ 						var tr = document.createElement('tr');
+ 						var td1 = document.createElement('td');
+ 						var td2 = document.createElement('td');
+ 						var td3 = document.createElement('td');
+ 						var td4 = document.createElement('td');
+ 						var td5 = document.createElement('td');
+ 						var td6 = document.createElement('td');
+ 						var btn = document.createElement("button");
+ 						btn.innerHTML = "Select";
+ 						btn.className = "btn btn-primary";
+ 						btn.addEventListener("click", function() {
+ 							GetProductId(this);
+ 						});
+ 						td1.innerHTML = i + 1;
+ 						td2.innerHTML = data[i].product_id;
+ 						td3.innerHTML = data[i].vendor_id;
+ 						td4.innerHTML = data[i].vendor_name;
+ 						td5.innerHTML = data[i].date;
+ 						tr.id = data[i].product_id;
+ 						td6.appendChild(btn);
+ 						tr.appendChild(td1);
+ 						tr.appendChild(td2);
+ 						tr.appendChild(td3);
+ 						tr.appendChild(td4);
+ 						tr.appendChild(td5);
+ 						tr.appendChild(td6);
+ 						tbody.appendChild(tr);
+
+ 					}
+ 				}
+ 			}
+ 		});
+ 	});
+
  	$(document).on('click', '.delete-stone', function() {
  		$(this).parent().parent().remove();
  		StoneQuantity();
@@ -2102,25 +2300,6 @@
  		ReturnedQuantity();
  		ReturnedWeight();
  	});
-	
- 	$(document).on('input', '#product', function(e) {
- 		e.preventDefault();
- 		const inputs = document.querySelectorAll('input');
- 		const selects = document.querySelectorAll('select');
- 		const textareas = document.querySelectorAll('textarea');
-
- 		inputs.forEach(input => {
- 			if (input.id !== 'product') {
- 				input.value = '';
- 			}
- 		});
- 		textareas.forEach(textarea => textarea.value = '');
- 		selects.forEach(select => select.selectize.clear());
-
- 		GetDate();
- 		GetManufacturerData($(this).val());
-
- 	})
 
  	$(document).on('change', '#select-manufacturer', function(e) {
  		e.preventDefault();
@@ -2189,6 +2368,11 @@
  		CalculateWastage();
  	});
 
+ 	$(document).on('change', '#select-stone_setter', function(e) {
+ 		e.preventDefault();
+ 		GetStoneSetterRate();
+ 	});
+
  	$(document).on('change', '#select-polisher-purity', function(e) {
  		e.preventDefault();
  		var polisher_rate = document.getElementById('polisher-rate');
@@ -2244,46 +2428,6 @@
 
  	});
 
- 	$(document).on('input', '#rate', function(e) {
- 		e.preventDefault();
- 		var constantValue = 96;
- 		var rFlowValue = parseInt($(this).val());
- 		var upEmail = parseFloat($(document).find('#unpolish_weight').val());
- 		var pValues = [];
- 		$.each($("#pValue option:selected"), function() {
- 			pValues.push($(this).val());
- 		});
- 		var sPValue = pValues[0];
-
- 		if (isNaN(upEmail)) {
- 			alert('Please Insert The unpolish_weight Value');
- 			$(document).find('#rate').val('');
- 			return false;
- 		} else {
-
-
- 			var wtgValue = (upEmail * rFlowValue / constantValue).toFixed(3);
-
- 			$(document).find('#wastage').val(wtgValue);
-
- 			var wtgValue1 = wtgValue = (upEmail * rFlowValue / constantValue);
-
- 			var rr = parseFloat(upEmail + wtgValue1).toFixed(3);
-
- 			var rr2 = parseFloat(sPValue).toFixed(3);
-
- 			//var rr3=parseFloat(wtgValue).toFixed(3);
- 			//var rr3 = parseFloat(sPValue).toFixed(3);
-
-
- 			var tValues = (rr * sPValue).toFixed(3);
-
- 			$(document).find('#tValues').val(tValues);
-
-
- 		}
- 	});
-
  	$(document).on('change', '#stepTwoCode', function(e) {
  		e.preventDefault();
  		$.ajax({
@@ -2324,6 +2468,65 @@
  		})
  	});
 
+ 	$(document).on('input', '#product', function(e) {
+ 		e.preventDefault();
+ 		const inputs = document.querySelectorAll('input');
+ 		const selects = document.querySelectorAll('select');
+ 		const textareas = document.querySelectorAll('textarea');
+
+ 		inputs.forEach(input => {
+ 			if (input.id !== 'product') {
+ 				input.value = '';
+ 			}
+ 		});
+ 		textareas.forEach(textarea => textarea.value = '');
+ 		selects.forEach(select => select.selectize.clear());
+
+ 		GetDate();
+ 		GetManufacturerData($(this).val());
+
+ 	})
+
+ 	$(document).on('input', '#rate', function(e) {
+ 		e.preventDefault();
+ 		var constantValue = 96;
+ 		var rFlowValue = parseInt($(this).val());
+ 		var upEmail = parseFloat($(document).find('#unpolish_weight').val());
+ 		var pValues = [];
+ 		$.each($("#pValue option:selected"), function() {
+ 			pValues.push($(this).val());
+ 		});
+ 		var sPValue = pValues[0];
+
+ 		if (isNaN(upEmail)) {
+ 			alert('Please Insert The unpolish_weight Value');
+ 			$(document).find('#rate').val('');
+ 			return false;
+ 		} else {
+
+
+ 			var wtgValue = (upEmail * rFlowValue / constantValue).toFixed(3);
+
+ 			$(document).find('#wastage').val(wtgValue);
+
+ 			var wtgValue1 = wtgValue = (upEmail * rFlowValue / constantValue);
+
+ 			var rr = parseFloat(upEmail + wtgValue1).toFixed(3);
+
+ 			var rr2 = parseFloat(sPValue).toFixed(3);
+
+ 			//var rr3=parseFloat(wtgValue).toFixed(3);
+ 			//var rr3 = parseFloat(sPValue).toFixed(3);
+
+
+ 			var tValues = (rr * sPValue).toFixed(3);
+
+ 			$(document).find('#tValues').val(tValues);
+
+
+ 		}
+ 	});
+
  	$(document).on('input', '#Zircon', function(e) {
  		e.preventDefault();
  		CalculateTotal();
@@ -2337,6 +2540,7 @@
  	$(document).on('input', '#received_weight', function(e) {
  		e.preventDefault();
  		CalculatePayable();
+ 		GetStoneSetterRate();
  	});
 
  	$(document).on('input', '#stone_received', function(e) {
