@@ -46,6 +46,12 @@ if ($_POST['function'] == 'GetAllVendorData') {
     ReturnedStepThree();
 } elseif ($_POST['function'] == 'StepFour') {
     StepFour();
+} elseif ($_POST['function'] == 'GetReturnedStoneData') {
+    GetReturnedStoneData();
+} elseif ($_POST['function'] == 'GetReturnedData') {
+    GetReturnedData();
+} elseif ($_POST['function'] == 'GetAdditionalData') {
+    GetAdditionalData();
 }
 
 function GetModalProducts()
@@ -57,7 +63,7 @@ function GetModalProducts()
     $array = array();
     $getRecordQuery = "SELECT ms.id, ms.vendor_id, ms.product_id, ms.date, ms.image, ms.details, ms.type, ms.quantity, ms.purity, ms.unpolish_weight, ms.polish_weight, ms.rate, ms.wastage, ms.unpure_weight, ms.pure_weight, ms.status, ms.tValues, ms.barcode, v.type AS vendor_type, v.name AS vendor_name, v.18k, v.21k, v.22k, v.status AS vendor_status, v.date AS vendor_date
     FROM manufacturing_step AS ms
-    INNER JOIN vendor AS v ON ms.vendor_id = v.id";
+    INNER JOIN vendor AS v ON ms.vendor_id = v.id WHERE ms.status='Active'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -308,6 +314,7 @@ function StepOne()
     $qry3Statement->execute();
     $row = $qry3Statement->fetch(PDO::FETCH_ASSOC);
     if ($row && $row['id'] == $code) {
+        array_push($array, 'success');
         $qry = "UPDATE `manufacturing_step` SET `vendor_id`=:vendor_id,`image`=:imageName,`product_id`=:code,`type`=:fType,`quantity`=:quantity,`purity`=:pValue,`unpolish_weight`=:unpolish_weight,`polish_weight`=:polish_weight,`rate`=:rate,`wastage`=:wastage,`tValues`=:tValues,`date`=:fDate,`details`=:details,`barcode`=:barcode WHERE `product_id` = '$code'";
     } else {
         $qry1 = "INSERT INTO `product`(`id`, `status`) VALUES (:code, 'Active')";
@@ -488,33 +495,37 @@ function StepThree()
         $qry4 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_price,'Active')";
     }
 
-    for ($i = 0; $i < count($z_code); $i++) {
-        $z_weight = $z_weight[$i];
-        $z_quantity = $z_quantity[$i];
+    for ($i = 0; $i < @count($z_code); $i++) {
+        $z_weight1 = $z_weight[$i];
+        $z_quantity1 = $z_quantity[$i];
+        $z_code1 = $z_code[$i];
 
-        $qry = "INSERT INTO `zircon`( `product_id`, `weight`, `price`, `quantity`) VALUES (:product_id,:z_weight,0,:z_quantity)";
+        $qry = "INSERT INTO `zircon`(`code`, `product_id`, `weight`, `price`, `quantity`) VALUES (:z_code,:product_id,:z_weight,0,:z_quantity)";
 
         $statement = $pdo->prepare($qry);
 
+        $statement->bindParam(':z_code', $z_code1);
         $statement->bindParam(':product_id', $product_id);
-        $statement->bindParam(':z_weight', $z_weight);
-        $statement->bindParam(':z_quantity', $z_quantity);
+        $statement->bindParam(':z_weight', $z_weight1);
+        $statement->bindParam(':z_quantity', $z_quantity1);
 
         if ($statement->execute()) {
             array_push($array, 'success');
         }
     }
 
-    for ($i = 0; $i < count($s_code); $i++) {
-        $s_weight = $s_weight[$i];
-        $s_quantity = $s_quantity[$i];
-        $qry1 = "INSERT INTO `stone`( `product_id`, `weight`, `price`, `quantity`) VALUES (:product_id,:s_weight,0,:s_quantity)";
+    for ($i = 0; $i < @count($s_code); $i++) {
+        $s_weight1 = $s_weight[$i];
+        $s_quantity1 = $s_quantity[$i];
+        $s_code1 = $s_code[$i];
+        $qry1 = "INSERT INTO `stone`(`code`, `product_id`, `price`, `weight`, `quantity`) VALUES (:s_code,:product_id,0,:s_weight,:s_quantity)";
 
         $statement1 = $pdo->prepare($qry1);
 
+        $statement1->bindParam(':s_code', $s_code1);
         $statement1->bindParam(':product_id', $product_id);
-        $statement1->bindParam(':s_weight', $s_weight);
-        $statement1->bindParam(':s_quantity', $s_quantity);
+        $statement1->bindParam(':s_weight', $s_weight1);
+        $statement1->bindParam(':s_quantity', $s_quantity1);
 
         if ($statement1->execute()) {
             array_push($array, 'success');
@@ -544,6 +555,8 @@ function StepThree()
     if ($statement1->execute()) {
         array_push($array, 'success');
     }
+    array_push($array, $z_code);
+    array_push($array, $s_code);
     echo json_encode($array, true);
 }
 
@@ -575,14 +588,12 @@ function ReturnedStepThree()
     $row = $qryStatement2->fetch(PDO::FETCH_ASSOC);
 
     if ($row > 0) {
-        echo"upadte";
-        $qry = "UPDATE `returned_stone_step` SET `received_weight`=:received_weight,`stone_weight`=:r_stone_weight,`stone_quantity`=:r_stone_quantity,`total_weight`=:r_total_weight,`rate`=:r_rate,`wastage`=:r_wastage,`grand_weight`=:r_grand_weight,`payable`=:r_payable WHERE `product_id` = :product_id";
+        $qry = "UPDATE `returned_stone_step` SET `received_weight`=:received_weight,`stone_weight`=:r_stone_weight,`stone_quantity`=:r_stone_quantity,`total_weight`=:r_total_weight,`rate`=:r_rate,`wastage`=:r_wastage,`grand_weight`=:r_grand_weight,`payable`=:r_payable, `vendor_id`=:vendor_id WHERE `product_id` = :product_id";
 
-        $qry3="DELETE FROM `returned_stone` WHERE `product_id` = :product_id";
+        $qry3 = "DELETE FROM `returned_item` WHERE `product_id` = :product_id";
         $statement3 = $pdo->prepare($qry3);
         $statement3->bindParam(':product_id', $product_id);
         $statement3->execute();
-
     } else {
         $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:r_wastage,:r_grand_weight,:r_payable)";
     }
@@ -605,23 +616,26 @@ function ReturnedStepThree()
         array_push($array, 'error');
     }
 
-    $qry1 = "INSERT INTO `returned_item`(`product_id`, `price`, `weight`, `quantity`) VALUES (:product_id,:r_code,:r_weight,:r_quantity)";
+    $qry1 = "INSERT INTO `returned_item`(`code`, `product_id`, `price`, `weight`, `quantity`) VALUES (:r_code,:product_id,0,:r_weight,:r_quantity)";
 
-    for ($i = 0; $i < count($r_code); $i++) {
-        $r_code = $r_code[$i];
-        $r_weight = $r_weight[$i];
-        $r_quantity = $r_quantity[$i];
-        $statement1 = $pdo->prepare($qry1);
-        $statement1->bindParam(':product_id', $product_id);
-        $statement1->bindParam(':r_code', $r_code);
-        $statement1->bindParam(':r_weight', $r_weight);
-        $statement1->bindParam(':r_quantity', $r_quantity);
-        if ($statement1->execute()) {
-            array_push($array, 'success');
-        } else {
-            array_push($array, 'error');
+    if (is_array($r_code)) {
+        for ($i = 0; $i < @count($r_code); $i++) {
+            $r_code1 = $r_code[$i];
+            $r_weight1 = $r_weight[$i];
+            $r_quantity1 = $r_quantity[$i];
+            $statement1 = $pdo->prepare($qry1);
+            $statement1->bindParam(':product_id', $product_id);
+            $statement1->bindParam(':r_code', $r_code1);
+            $statement1->bindParam(':r_weight', $r_weight1);
+            $statement1->bindParam(':r_quantity', $r_quantity1);
+            if ($statement1->execute()) {
+                array_push($array, 'success');
+            } else {
+                array_push($array, 'error');
+            }
         }
     }
+    array_push($array, $r_code);
     echo json_encode($array, true);
 }
 
@@ -637,9 +651,24 @@ function StepFour()
     $vendor_id = $_POST['vendor_id'];
     $product_id = $_POST['product_id'];
     $amount = $_POST['amount'];
+    $type= $_POST['type'];
 
-    $qry = "INSERT INTO `additional_step`( `product_id`, `vendor_id`, `type`, `amount`, `status`) VALUES (:product_id,:vendor_id,'1',:amount,'Active')";
+    $qry1= "SELECT * FROM `additional_step` WHERE `product_id` = :product_id";
+    $qryStatement1 = $pdo->prepare($qry1);
+    $qryStatement1->bindParam(':product_id', $product_id);
+    $qryStatement1->execute();
+    $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
+
+    if ($row > 0) {
+        $qry = "UPDATE `additional_step` SET `amount`=:amount,`date`=:date,`type`=:type, `vendor_id`=:vendor_id WHERE `product_id` = :product_id";
+    } else {
+        $qry = "INSERT INTO `additional_step`( `product_id`, `vendor_id`, `type`, `amount`, `date`, `status`) VALUES (:product_id,:vendor_id,:type,:amount,:date,'Active')";
+    }
+
     $statement = $pdo->prepare($qry);
+
+    $statement->bindParam(':date', $date);
+    $statement->bindParam(':type', $type);
     $statement->bindParam(':product_id', $product_id);
     $statement->bindParam(':vendor_id', $vendor_id);
     $statement->bindParam(':amount', $amount);
@@ -737,6 +766,65 @@ function GetStones()
     echo json_encode($result, true);
 }
 
+function GetReturnedData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "SELECT * FROM `returned_stone_step` WHERE product_id = :id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':id', $id);
+    $array = array();
+    if ($qryStatement->execute()) {
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($qryStatement->errorInfo(), true);
+    }
+}
+
+function GetReturnedStoneData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "SELECT * FROM returned_item WHERE product_id = :id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':id', $id);
+    $array = array();
+    if ($qryStatement->execute()) {
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($qryStatement->errorInfo(), true);
+    }
+}
+
+function GetAdditionalData(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "SELECT * FROM additional_step WHERE product_id = :id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':id', $id);
+    $array = array();
+    if ($qryStatement->execute()) {
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($qryStatement->errorInfo(), true);
+    }
+}
+
 function DeleteProduct()
 {
     include 'layouts/session.php';
@@ -755,6 +843,10 @@ function DeleteProduct()
     } else {
         $result = array('status' => 'error');
     }
+    $qry1 = "UPDATE manufacturing_step SET status='Inactive' WHERE product_id=:id";
+    $qryStatement1 = $pdo->prepare($qry1);
+    $qryStatement1->bindParam(':id', $id);
+    $qryStatement1->execute();
 
     echo json_encode($result, true);
 }
@@ -800,5 +892,3 @@ function GetStoneSetterRate()
     }
     echo json_encode($result, true);
 }
-
-
