@@ -882,7 +882,7 @@
 
 
 
- 																	<td><button type="submit" id="a-save" class="btn btn-primary">Save</button>
+ 																	<td><button type="submit" id="a_save" class="btn btn-primary">Save</button>
 
 
  																	</td>
@@ -1015,8 +1015,8 @@
  	function GetProductId(btn) {
  		var id = btn.parentNode.parentNode.id;
  		$('#product-modal').modal('hide');
-		var delete_btn=document.getElementById("delete-product");
-		delete_btn.disabled=false;
+ 		var delete_btn = document.getElementById("delete-product");
+ 		delete_btn.disabled = false;
  		var product = document.getElementById("product");
  		product.value = id;
  		$("#product").trigger('input');
@@ -1452,9 +1452,9 @@
 						</div>
 						<div class="col-sm-2">
 
-							<i class="fa fa-minus-circle p-2""></i>
+							<i class="delete-returned fa fa-minus-circle p-2""></i>
 						</div>`
-						returned_area.appendChild(div);
+ 						returned_area.appendChild(div);
 
 
  					}
@@ -1747,6 +1747,40 @@
  			input.addEventListener('input', ZirconWeight);
  		})
 
+ 	}
+
+ 	function AddReturned() {
+ 		var returned_area = document.getElementById('returned-area');
+
+ 		var div2 = document.createElement('div');
+ 		div2.setAttribute('class', 'row mb-4');
+ 		div2.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+									<div class="col-sm-2">
+										<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code" required>
+									</div>
+									<div class="col-sm-1 p-0">
+										<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+									<div class="col-sm-2">
+										<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight" required>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+									<div class="col-sm-2">
+										<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity" required>
+									</div>
+									<div class="col-sm-2">
+										<i class="delete-returned fa fa-minus-circle p-2"></i>
+									</div>`;
+ 		returned_area.appendChild(div2);
+ 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
+ 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 		r_quantity.forEach(function(input) {
+ 			input.addEventListener('input', ReturnedQuantity);
+ 		})
+ 		r_weight.forEach(function(input) {
+ 			input.addEventListener('input', ReturnedWeight);
+ 		})
  	}
 
  	function CalculateDifference() {
@@ -2092,8 +2126,8 @@
 
  	$(document).on('submit', '#stepone', function(e) {
  		e.preventDefault();
-		var save=document.getElementById("m_save");
-		save.disabled=true;
+ 		var save = document.getElementById("m_save");
+ 		save.disabled = true;
  		var form = new FormData(this);
  		form.append('function', 'StepOne');
  		$.ajax({
@@ -2107,7 +2141,7 @@
  				if (data[0] == "success" && data[1] == "success") {
  					Swal.fire({
  						title: 'Success!',
- 						text: 'Manufacturer Added Successfully',
+ 						text: 'Manufacturer Record Saved Successfully',
  						icon: 'success',
  						confirmButtonText: 'Ok'
  					})
@@ -2126,8 +2160,8 @@
 
  	$(document).on('submit', '#steptwo', function(e) {
  		e.preventDefault();
-		 var save=document.getElementById("polisher_save_btn");
-		save.disabled=true;
+ 		var save = document.getElementById("polisher_save_btn");
+ 		save.disabled = true;
  		var form = new FormData(this);
  		form.append('function', 'StepTwo');
  		$.ajax({
@@ -2160,8 +2194,8 @@
 
  	$(document).on('submit', '#stepthree', function(e) {
  		e.preventDefault();
-		 var save=document.getElementById("s_save");
-		save.disabled=true;
+ 		var save = document.getElementById("s_save");
+ 		save.disabled = true;
  		var form = new FormData(this);
  		form.append('function', 'StepThree');
  		$.ajax({
@@ -2194,8 +2228,8 @@
 
  	$(document).on('submit', '#r_stepthree', function(e) {
  		e.preventDefault();
-		 var save=document.getElementById("r_save");
-		save.disabled=true;
+ 		var save = document.getElementById("r_save");
+ 		save.disabled = true;
  		var product_id = document.getElementsByClassName('code');
  		product_id = product_id[0].value;
  		var select_stone_setter = $('#select-stone_setter')[0].selectize;
@@ -2233,8 +2267,8 @@
 
  	$(document).on('submit', '#stepfour', function(e) {
  		e.preventDefault();
-		 var save=document.getElementById("a_save");
-		save.disabled=true;
+ 		var save = document.getElementById("a_save");
+ 		save.disabled = true;
  		var product = document.getElementById('product').value;
  		var form = new FormData(this);
  		form.append('function', 'StepFour');
