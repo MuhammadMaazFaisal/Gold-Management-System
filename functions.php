@@ -52,8 +52,14 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetReturnedData();
 } elseif ($_POST['function'] == 'GetAdditionalData') {
     GetAdditionalData();
+} elseif ($_POST['function'] == 'GetMetalVendors') {
+    GetMetalVendors();
+} elseif ($_POST['function'] == 'MetalRecord') {
+    MetalRecord();
 }
 
+
+// -------------------------Production Page-------------------------//
 function GetModalProducts()
 {
     include 'layouts/session.php';
@@ -459,7 +465,7 @@ function StepThree()
     $total_s_price = $_POST['stone_total'];
     $total_s_weight = $_POST['stone_total_weight'];
     $total_s_quantity = $_POST['stone_total_quantity'];
-    $grand_weight=$_POST['grand_total_weight'];
+    $grand_weight =$_POST['grand_total_weight'];
     $grand_price = $_POST['grand_total'];
 
     $fileWithNamepo = $dirpro . $imageNamepo;
@@ -557,8 +563,7 @@ function StepThree()
     if ($statement1->execute()) {
         array_push($array, 'success');
     }
-    array_push($array, $z_code);
-    array_push($array, $s_code);
+    array_push($array, $grand_weight);
     echo json_encode($array, true);
 }
 
@@ -653,9 +658,9 @@ function StepFour()
     $vendor_id = $_POST['vendor_id'];
     $product_id = $_POST['product_id'];
     $amount = $_POST['amount'];
-    $type= $_POST['type'];
+    $type = $_POST['type'];
 
-    $qry1= "SELECT * FROM `additional_step` WHERE `product_id` = :product_id";
+    $qry1 = "SELECT * FROM `additional_step` WHERE `product_id` = :product_id";
     $qryStatement1 = $pdo->prepare($qry1);
     $qryStatement1->bindParam(':product_id', $product_id);
     $qryStatement1->execute();
@@ -808,7 +813,8 @@ function GetReturnedStoneData()
     }
 }
 
-function GetAdditionalData(){
+function GetAdditionalData()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -893,4 +899,47 @@ function GetStoneSetterRate()
         array_push($array, "error");
     }
     echo json_encode($result, true);
+}
+
+// -------------------Issue/Recieve Metal Page---------------------- //
+
+function GetMetalVendors()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT * FROM `vendor` WHERE `status` = 'Active' AND (`type` = 'manufacturer' OR `type` = 'stone setter' OR `type` = 'polisher')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function MetalRecord()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "INSERT INTO `metal`(`date`, `vendor_id`, `type`, `details`, `issued_weight`, `purity`, `pure_weight`) VALUES (:date, :vendor_id, :type, :details, :issued_weight, :purity, :pure_weight)";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':date', $_POST['date']);
+    $getRecordStatement->bindParam(':vendor_id', $_POST['vendor']);
+    $getRecordStatement->bindParam(':type', $_POST['type']);
+    $getRecordStatement->bindParam(':details', $_POST['detail']);
+    $getRecordStatement->bindParam(':issued_weight', $_POST['issued_weight']);
+    $getRecordStatement->bindParam(':purity', $_POST['purity']);
+    $getRecordStatement->bindParam(':pure_weight', $_POST['pure_weight']);
+    if ($getRecordStatement->execute()) {
+        array_push($array, "success");
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
 }
