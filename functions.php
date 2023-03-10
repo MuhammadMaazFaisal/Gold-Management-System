@@ -459,6 +459,7 @@ function StepThree()
     $total_s_price = $_POST['stone_total'];
     $total_s_weight = $_POST['stone_total_weight'];
     $total_s_quantity = $_POST['stone_total_quantity'];
+    $grand_weight=$_POST['grand_total_weight'];
     $grand_price = $_POST['grand_total'];
 
     $fileWithNamepo = $dirpro . $imageNamepo;
@@ -489,10 +490,10 @@ function StepThree()
         $qryStatement2 = $pdo->prepare($qry2);
         $qryStatement2->bindParam(':product_id', $product_id);
         $qryStatement2->execute();
-        $qry4 = "UPDATE `stone_setter_step` SET `date`=:date,`vendor_id`=:vendor_id,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_total`=:grand_price,`status`='Active' WHERE `product_id` = :product_id";
+        $qry4 = "UPDATE `stone_setter_step` SET `date`=:date,`vendor_id`=:vendor_id,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity ,`grand_weight`=:grand_weight ,`grand_total`=:grand_price,`status`='Active' WHERE `product_id` = :product_id";
     } else {
 
-        $qry4 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_price,'Active')";
+        $qry4 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
     }
 
     for ($i = 0; $i < @count($z_code); $i++) {
@@ -546,6 +547,7 @@ function StepThree()
     $statement1->bindParam(':total_s_price', $total_s_price);
     $statement1->bindParam(':total_s_weight', $total_s_weight);
     $statement1->bindParam(':total_s_quantity', $total_s_quantity);
+    $statement1->bindParam(':grand_weight', $grand_weight);
     $statement1->bindParam(':grand_price', $grand_price);
 
     move_uploaded_file($imageTmpName, $pName);

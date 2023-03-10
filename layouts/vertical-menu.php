@@ -297,7 +297,7 @@
 				<?php if (isset($_SESSION['Super Admin'])) { ?>
 
                    
-				    <li>
+				    <!-- <li>
                         <a href="UM_users.php" class=" ">
                             <i data-feather="users"></i>
                             <span data-key="t-users">User</span>
@@ -320,7 +320,7 @@
                         </a>
                        
 
-                    </li>
+                    </li> -->
 					  
                         
                 <?php } // Super Admin 

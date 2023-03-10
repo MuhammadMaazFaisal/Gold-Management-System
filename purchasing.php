@@ -63,66 +63,15 @@ error_reporting(E_ALL);
 
                                                 <form id="form" method="POST" enctype="multipart/form-data">
                                                     <div class="row mb-4">
-                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Invoice:</label>
                                                         <div class="col-sm-2">
 
                                                             <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
                                                         </div>
 
                                                     </div>
-                                                    <div class="row mb-4">
 
-                                                        <label for="type" class="col-sm-1 col-form-label d-flex justify-content-end">Product:</label>
-                                                        <div class="col-sm-1">
-
-                                                            <select id="type[]" name="type[]" placeholder="Type">
-                                                                <option value="">Type:</option>
-
-                                                            </select>
-                                                        </div>
-                                                        <label for="weight" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
-                                                        <div class="col-sm-1">
-
-                                                            <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required>
-                                                        </div>
-                                                        <label for="rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
-                                                        <div class="col-sm-1">
-
-                                                            <input type="number" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required>
-                                                        </div>
-                                                        <label for="total" class="col-sm-1 col-form-label d-flex justify-content-end">Total:</label>
-                                                        <div class="col-sm-1">
-
-                                                            <input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required>
-                                                        </div>
-
-                                                        <label for="barcode" class="col-sm-1 col-form-label d-flex justify-content-end">Barcode:</label>
-                                                        <div class="col-sm-2">
-
-                                                            <div class="input-group mb-3">
-                                                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button>
-                                                                <input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-1 m-0 p-0">
-
-                                                            <i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i>
-
-                                                        </div>
-                                                        <div class="row mb-4">
-                                                            <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
-                                                            <div class="col-sm-10">
-
-                                                                <textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 60px;" placeholder="Details"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div id="area"></div>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                                                    </div>
                                                     <div class="table-responsive">
-                                                        <table class="table">
+                                                        <table class="table text-center">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">#</th>
@@ -133,7 +82,7 @@ error_reporting(E_ALL);
                                                                     <th scope="col">Weight</th>
                                                                     <th scope="col">Rate</th>
                                                                     <th scope="col">Total Amount</th>
-                                                                    <th scope="col">B/C</th>
+                                                                    <th scope="col">Barcode</th>
                                                                     <th scope="col"></th>
                                                                 </tr>
                                                             </thead>
@@ -149,16 +98,28 @@ error_reporting(E_ALL);
                                                                             <option value="">Type:</option>
 
                                                                         </select></td>
-                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Quantity" required></td>
                                                                     <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
                                                                     <td><input type="number" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"></td>
-                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button></td>
+                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">B/C</button></td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                        <div class="row mb-4 d-flex justify-content-end">
+                                                            <div class="d-flex justify-content-end col-sm-2 ">
+
+                                                                <input type="text" name="invoice" id="invoice" class="form-control " placeholder="Grand Total" readonly required>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-success me-2">Print</button>
+                                                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -235,7 +196,7 @@ error_reporting(E_ALL);
                             <td><input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"></td>
                             <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button></td>
-                            <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>`;
+                            <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
         $('select').selectize({
             sortField: 'text'
