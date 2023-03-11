@@ -1858,7 +1858,6 @@
  				var selectedText = '18k';
  			}
  		}
- 		console.log('pw', selectedText);
  		$.ajax({
  			url: "functions.php",
  			method: "POST",
@@ -1928,7 +1927,6 @@
  				var selectedText = '18k';
  			}
  		}
- 		console.log('ss', selectedText);
 
  		$.ajax({
  			url: "functions.php",
@@ -2251,7 +2249,6 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success" && data[1] == "success" && data[2] == "success") {
  					Swal.fire({
@@ -2484,7 +2481,6 @@
  	$(document).on('change', '#select-polisher', function(e) {
  		e.preventDefault();
  		CalculatePolisherWastage();
-		console.log("pw polisher");
  	});
 
  	$(document).on('change', '#select-manufacturer-purity', function(e) {
@@ -2497,7 +2493,6 @@
  	$(document).on('change', '#select-stone_setter', function(e) {
  		e.preventDefault();
  		GetStoneSetterRate();
-		console.log("ssr stone setter");
  	});
 
  	$(document).on('change', '#select-polisher-purity', function(e) {
@@ -2579,7 +2574,6 @@
  		e.preventDefault();
  		CalculatePayable();
  		GetStoneSetterRate();
-		console.log('ssr received_weight');
  	
  	});
 
