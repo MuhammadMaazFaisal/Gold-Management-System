@@ -58,10 +58,15 @@ if ($_POST['function'] == 'GetAllVendorData') {
     MetalRecord();
 } elseif ($_POST['function'] == 'GetPurchasingCount') {
     GetPurchasingCount();
+} elseif ($_POST['function'] == 'AddPurchasing') {
+    AddPurchasing();
+} elseif ($_POST['function'] == 'GetPurchasingVendors') {
+    GetPurchasingVendors();
+} elseif ($_POST['function'] == 'GetInvoices') {
+    GetInvoices();
+} elseif ($_POST['function'] == 'GetProductDetails') {
+    GetProductDetails();
 }
-
-
-
 
 
 // -------------------------Production Page-------------------------//
@@ -470,7 +475,7 @@ function StepThree()
     $total_s_price = $_POST['stone_total'];
     $total_s_weight = $_POST['stone_total_weight'];
     $total_s_quantity = $_POST['stone_total_quantity'];
-    $grand_weight =$_POST['grand_total_weight'];
+    $grand_weight = $_POST['grand_total_weight'];
     $grand_price = $_POST['grand_total'];
 
     $fileWithNamepo = $dirpro . $imageNamepo;
@@ -951,14 +956,114 @@ function MetalRecord()
 
 // -------------------Purchasing Page---------------------- //
 
-function GetPurchasingCount(){
+function GetPurchasingCount()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT COUNT(*) FROM `purchasing` WHERE `status` = 'Active'";
+    $getRecordQuery = "SELECT lpad(count(*)+1, 4, '0') FROM `purchasing`";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchColumn();
+        $array = "P-" . $array;
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function AddPurchasing()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "INSERT INTO `purchasing`(`id`,`vendor_id`, `total`, `status`) VALUES (:id, :vendor_id, :grand_total, 'Active')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['invoice']);
+    $getRecordStatement->bindParam(':vendor_id', $_POST['vendor_id']);
+    $getRecordStatement->bindParam(':grand_total', $_POST['grand_total']);
+    if ($getRecordStatement->execute()) {
+        array_push($array, "success");
+    } else {
+        array_push($array, "error");
+    }
+    for ($i = 0; $i < count($_POST['total']); $i++) {
+        $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+        $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
+        $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
+        $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
+        $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
+        $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
+        $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
+        $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
+        $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
+        $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
+        $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
+        if ($getRecordStatement2->execute()) {
+            array_push($array, "success");
+        } else {
+            array_push($array, "error");
+        }
+    }
+    echo json_encode($array, true);
+}
+
+function GetPurchasingVendors()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT * FROM `vendor` WHERE `status` = 'Active' AND (`type` = 'manufacturer' OR `type` = 'stone setter' OR `type` = 'polisher' OR `type` = 'vendor')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+// -------------------Add Stock Page---------------------- //
+
+function GetInvoices()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT purchasing.id, purchasing.vendor_id, vendor.name, purchasing.total, purchasing.date, purchasing.status
+    FROM purchasing
+    JOIN vendor ON purchasing.vendor_id = vendor.id where purchasing.status = 'Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetProductDetails()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT pd.id, pd.p_id, pd.type, pd.detail, pd.price_per, pd.quantity, pd.weight, pd.rate, pd.total_amount, pd.barcode, p.vendor_id, p.date, p.total, p.status
+    FROM purchasing_details pd
+    JOIN purchasing p
+    ON pd.p_id = p.id
+    WHERE pd.p_id = :id AND p.status = 'Active'";    
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['id']);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);

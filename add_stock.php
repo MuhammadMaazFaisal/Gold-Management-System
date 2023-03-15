@@ -75,7 +75,7 @@ error_reporting(E_ALL);
                                                         <div class="col-sm-2">
 
 
-                                                            <input type="number" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly>
+                                                            <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly>
                                                         </div>
                                                         <label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor Id:</label>
                                                         <div class="col-sm-2">
@@ -83,7 +83,7 @@ error_reporting(E_ALL);
                                                             <input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor Id" readonly>
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoice-modal">
+                                                            <button id="select-invoice" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoice-modal">
                                                                 Select Invoice
                                                             </button>
                                                         </div>
@@ -94,7 +94,7 @@ error_reporting(E_ALL);
                                     </div>
                                 </div>
                             </div>
-                            <div class="card ">
+                            <div id="existing_stock" class="card d-none">
                                 <div class="card-header card border">
                                     <h4 class="card-title">
                                         Existing Stock
@@ -113,7 +113,7 @@ error_reporting(E_ALL);
                                                     <div class="row mb-4">
                                                         <div class="col-sm-2">
 
-                                                            <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
+                                                            <input type="text" name="invoice" id="e-invoice" class="form-control" placeholder="Invoice" readonly required>
                                                         </div>
 
                                                     </div>
@@ -124,8 +124,8 @@ error_reporting(E_ALL);
                                                                 <tr>
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Detail</th>
-                                                                    <th scope="col">Type</th>
-                                                                    <th scope="col">Price Per</th>
+                                                                    <th colspan="2">Type</th>
+                                                                    <th colspan="2">Price Per</th>
                                                                     <th scope="col">Quantity</th>
                                                                     <th scope="col">Weight</th>
                                                                     <th scope="col">Rate</th>
@@ -134,35 +134,10 @@ error_reporting(E_ALL);
                                                                     <th scope="col"></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="tbody">
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td><select id="type[]" name="type[]" placeholder="Type">
-                                                                            <option value="">Type:</option>
+                                                            <tbody id="e-tbody">
 
-                                                                        </select></td>
-                                                                    <td><select id="type[]" name="type[]" placeholder="Type">
-                                                                            <option value="">Type:</option>
-
-                                                                        </select></td>
-                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Quantity" required></td>
-                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
-                                                                    <td><input type="number" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                                                                    <td><input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
-                                                                    <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"></td>
-                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">B/C</button></td>
-                                                                    <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
-                                                                </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="row mb-4 d-flex justify-content-end">
-                                                            <div class="d-flex justify-content-end col-sm-2 ">
-
-                                                                <input type="text" name="invoice" id="invoice" class="form-control " placeholder="Grand Total" readonly required>
-                                                            </div>
-
-                                                        </div>
 
                                                         <div class="d-flex justify-content-end">
                                                             <button type="button" class="btn btn-success me-2">Print</button>
@@ -217,7 +192,7 @@ error_reporting(E_ALL);
                         </div>
                         <label for="select-type" class="col-sm-1 col-form-label d-flex justify-content-end">Invoice:</label>
                         <div class="col-sm-2">
-                            <input type="number" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly>
+                            <input type="text" name="invoice" id="m-invoice" value="" class="form-control" placeholder="Invoice" readonly>
                         </div>
                         <label for="vendor_name" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor:</label>
                         <div class="col-sm-2">
@@ -236,59 +211,16 @@ error_reporting(E_ALL);
                             <th scope="col">Vendor ID</th>
                             <th scope="col">Vendor Name</th>
                             <th scope="col">Total</th>
+                            <th scope="col">Date</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="clickable-row" onclick="fn(this)">
-                            <th scope="row">1</th>
-                            <td>I-0001</td>
-                            <td>RF001</td>
-                            <td>Raees Fancy</td>
-                            <td>Rs 45000</td>
-                            <td>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="hidden-row">
-                            <td colspan="4">
-                                <table class="table table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Invoice</th>
-                                            <th scope="col">Vendor ID</th>
-                                            <th scope="col">Vendor Name</th>
-                                            <th scope="col">Total</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="clickable-row" onclick="fn(this)">
-                                            <th scope="row">1</th>
-                                            <td>I-0001</td>
-                                            <td>RF001</td>
-                                            <td>Raees Fancy</td>
-                                            <td>Rs 45000</td>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
-                        </tr>
+                    <tbody id="modal-tbody">
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Extract</button>
             </div>
         </div>
     </div>
@@ -352,6 +284,83 @@ error_reporting(E_ALL);
         });
     }
 
+    function GetInvoices() {
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetInvoices"
+            },
+            success: function(response) {
+                data = JSON.parse(response);
+                console.log(data);
+                tbody = document.getElementById("modal-tbody");
+                for (i = 0; i < data.length; i++) {
+                    value = `<tr id="${data[i].id}">
+                            <th scope="row">${i+1}</th>
+                            <td>${data[i].id}</td>
+                            <td>${data[i].vendor_id}</td>
+                            <td>${data[i].name}</td>
+                            <td>Rs ${data[i].total}</td>
+                            <td>${data[i].date}</td>
+                            <td>
+                                <button type="button" onclick="SelectInvoice(this)" class="btn btn-primary" >
+                                    Select
+                            </td>
+                        </tr>`
+                    tbody.innerHTML += value;
+                }
+
+            }
+        });
+    }
+
+    function SelectInvoice(btn) {
+        console.log(btn.parentNode.parentNode.id);
+        invoice = btn.parentNode.parentNode.id;
+        vendor_id = btn.parentNode.parentNode.children[2].innerHTML;
+        $("#invoice-modal").modal("hide");
+        document.getElementById("invoice").value = invoice;
+        document.getElementById("vendor_id").value = vendor_id;
+        document.getElementById("existing_stock").classList.remove("d-none");
+        GetProductDetails(invoice);
+
+    }
+
+    function GetProductDetails(invoice) {
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetProductDetails",
+                id: invoice
+            },
+            success: function(response) {
+                data = JSON.parse(response);
+                console.log(data);
+                tbody = document.getElementById("e-tbody");
+                for (i = 0; i < data.length; i++) {
+                    value = `<tr>
+                                <td scope="row">1</td>
+                                <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
+                                <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="${data[i].type}" placeholder="Type"></td>
+                                <td colspan="2"><input type="text" class="form-control" id="price_per[]" name="price_per[]" value="${data[i].price_per}" placeholder="Price per"></td>
+                                <td> <input type="number" value="${data[i].quantity}" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
+                                <td> <input type="number" step="any" value="${data[i].weight}" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                                <td><input type="number" step="any" value="${data[i].rate}" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                                <td><input type="number" step="any" value="${data[i].total_amount}" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                                <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" readonly></td>
+                                <td><div class="pt-2 form-check">
+                                    <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
+                                </div></td>
+                            </tr>`
+                    tbody.innerHTML += value;
+                }
+
+            }
+        });
+    }
+
     $(document).ready(function() {
         GetDate();
 
@@ -365,7 +374,7 @@ error_reporting(E_ALL);
         });
     });
 
-    $(documnet).on("submit", "#filter-form", function(e) {
+    $(document).on("submit", "#filter-form", function(e) {
         e.preventDefault();
         getFilteredData(this);
     });
@@ -375,11 +384,7 @@ error_reporting(E_ALL);
             console.log("clicked");
             $(this).next(".hidden-row").toggle();
         });
-    });
 
-    function fn(e) {
-        console.log("clicked");
-        console.log(e);
-        e.nextElementSibling.style.display = "contents";
-    }
+        $("#select-invoice").click(GetInvoices());
+    });
 </script>

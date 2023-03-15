@@ -24,6 +24,12 @@ error_reporting(E_ALL);
 
     <?php include 'layouts/head-style.php'; ?>
 </head>
+<style>
+
+.selectize-input:not(:has(> :not(.vendor) ~ *)) {
+  width: 150px;
+}
+</style>
 
 <?php include 'layouts/body.php'; ?>
 
@@ -62,11 +68,19 @@ error_reporting(E_ALL);
 
 
                                                 <form id="form" method="POST" enctype="multipart/form-data">
-                                                    <div class="row mb-4">
+                                                    <div class="row mb-4 justify-content-between">
+                                                        <div class="col-sm-2">
+
+                                                            <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
+                                                                <option value="">Select a vendor...</option>
+
+                                                            </select>
+                                                        </div>
                                                         <div class="col-sm-2">
 
                                                             <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
                                                         </div>
+
 
                                                     </div>
 
@@ -76,34 +90,42 @@ error_reporting(E_ALL);
                                                                 <tr>
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Detail</th>
-                                                                    <th scope="col">Type</th>
-                                                                    <th scope="col">Price Per</th>
+                                                                    <th colspan="2">Type</th>
+                                                                    <th colspan="2">Price Per</th>
                                                                     <th scope="col">Quantity</th>
                                                                     <th scope="col">Weight</th>
                                                                     <th scope="col">Rate</th>
                                                                     <th scope="col">Total Amount</th>
                                                                     <th scope="col">Barcode</th>
+                                                                    <th scope="col">Action</th>
                                                                     <th scope="col"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="tbody">
                                                                 <tr>
-                                                                    <th scope="row">1</th>
+                                                                    <td scope="row">1</td>
                                                                     <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td><select id="type[]" name="type[]" placeholder="Type">
-                                                                            <option value="">Type:</option>
+                                                                    <td colspan="2"><select class="form-control" id="type[]" name="type[]" placeholder="Type">
+                                                                            <option value="">Select Type</option>
+                                                                            <option value="18k">18k</option>
+                                                                            <option value="21k">21k</option>
+                                                                            <option value="22k">22k</option>
+
 
                                                                         </select></td>
-                                                                    <td><select id="type[]" name="type[]" placeholder="Type">
-                                                                            <option value="">Type:</option>
+                                                                    <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                            <option value="">Select price per</option>
+                                                                            <option value="Qty">Qty</option>
+                                                                            <option value="Tola">Tola</option>
+                                                                            <option value="Kg">Kg</option>
 
                                                                         </select></td>
-                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Quantity" required></td>
-                                                                    <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
-                                                                    <td><input type="number" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                                                                    <td><input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
-                                                                    <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"></td>
-                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">B/C</button></td>
+                                                                    <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
+                                                                    <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                                                                    <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                                                                    <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                                                                    <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
+                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
                                                                 </tr>
                                                             </tbody>
@@ -111,7 +133,7 @@ error_reporting(E_ALL);
                                                         <div class="row mb-4 d-flex justify-content-end">
                                                             <div class="d-flex justify-content-end col-sm-2 ">
 
-                                                                <input type="text" name="invoice" id="invoice" class="form-control " placeholder="Grand Total" readonly required>
+                                                                <input type="text" name="grand_total" id="grand_total" class="form-control " placeholder="Grand Total" readonly required>
                                                             </div>
 
                                                         </div>
@@ -182,21 +204,28 @@ error_reporting(E_ALL);
         let tr = document.createElement('tr');
         tr.innerHTML = `<th scope="row">1</th>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                            <td><select id="type[]" name="type[]" placeholder="Type">
-                                    <option value="">Type:</option>
+                            <td colspan="2"><select class="form-control" id="type[]" name="type[]" placeholder="Type">
+                                    <option value="">Select Type</option>
+                                    <option value="18k">18k</option>
+                                    <option value="21k">21k</option>
+                                    <option value="22k">22k</option>
+
 
                                 </select></td>
-                            <td><select id="type[]" name="type[]" placeholder="Type">
-                                    <option value="">Type:</option>
+                            <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                    <option value="">Select price per</option>
+                                    <option value="Qty">Qty</option>
+                                    <option value="Tola">Tola</option>
+                                    <option value="Kg">Kg</option>
 
                                 </select></td>
-                            <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
-                            <td> <input type="number" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
-                            <td><input type="number" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                            <td><input type="number" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
-                            <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"></td>
-                            <td><button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button></td>
-                            <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
+                            <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
+                            <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                            <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                            <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                            <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
+                            <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
+                        <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
         $('select').selectize({
             sortField: 'text'
@@ -207,6 +236,20 @@ error_reporting(E_ALL);
         e.parentNode.parentNode.remove();
     }
 
+    function GrandTotal() {
+        total = document.querySelectorAll('#total\\[\\]');
+        let grand_total = 0;
+        for (let i = 0; i < total.length; i++) {
+            grand_total += parseInt(total[i].value);
+        }
+        document.getElementById('grand_total').value = grand_total;
+    }
+
+    function GenerateBarcode(btn) {
+        unique = Math.floor(new Date().getTime() + Math.random());
+        btn.parentNode.previousElementSibling.children[0].value = unique;
+
+    }
     $(document).ready(function() {
         $('select').selectize({
             sortField: 'text'
@@ -219,7 +262,63 @@ error_reporting(E_ALL);
                 function: "GetPurchasingCount"
             },
             success: function(data) {
+                data = JSON.parse(data);
+                document.getElementById('invoice').value = data;
+            }
+        });
+
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetPurchasingVendors"
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                var select = $('#select-manufacturer')[0].selectize;
+                for (var i = 0; i < data.length; i++) {
+                    var newOption = {
+                        value: data[i].id,
+                        text: data[i].id + " | " + data[i].name
+                    };
+                    select.addOption(newOption);
+                }
+
+            }
+        });
+    });
+
+    $("#form").submit(function(e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+        formData.append('function', 'AddPurchasing');
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
                 console.log(data);
+                data = JSON.parse(data);
+                console.log(data);
+                if (data[0] == "success" && data[1] == "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Purchasing Added Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
             }
         });
     });
