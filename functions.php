@@ -56,7 +56,12 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetMetalVendors();
 } elseif ($_POST['function'] == 'MetalRecord') {
     MetalRecord();
+} elseif ($_POST['function'] == 'GetPurchasingCount') {
+    GetPurchasingCount();
 }
+
+
+
 
 
 // -------------------------Production Page-------------------------//
@@ -938,6 +943,24 @@ function MetalRecord()
     $getRecordStatement->bindParam(':pure_weight', $_POST['pure_weight']);
     if ($getRecordStatement->execute()) {
         array_push($array, "success");
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+// -------------------Purchasing Page---------------------- //
+
+function GetPurchasingCount(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT COUNT(*) FROM `purchasing` WHERE `status` = 'Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
     } else {
         echo json_encode($getRecordStatement->errorInfo(), true);

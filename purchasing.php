@@ -211,5 +211,16 @@ error_reporting(E_ALL);
         $('select').selectize({
             sortField: 'text'
         });
+
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "GetPurchasingCount"
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
     });
 </script>
