@@ -25,10 +25,9 @@ error_reporting(E_ALL);
     <?php include 'layouts/head-style.php'; ?>
 </head>
 <style>
-
-.selectize-input:not(:has(> :not(.vendor) ~ *)) {
-  width: 150px;
-}
+    .selectize-input:not(:has(> :not(.vendor) ~ *)) {
+        width: 150px;
+    }
 </style>
 
 <?php include 'layouts/body.php'; ?>
@@ -105,19 +104,12 @@ error_reporting(E_ALL);
                                                                 <tr>
                                                                     <td scope="row">1</td>
                                                                     <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td colspan="2"><select class="form-control" id="type[]" name="type[]" placeholder="Type">
-                                                                            <option value="">Select Type</option>
-                                                                            <option value="18k">18k</option>
-                                                                            <option value="21k">21k</option>
-                                                                            <option value="22k">22k</option>
-
-
-                                                                        </select></td>
+                                                                    <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
                                                                     <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
                                                                             <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
-                                                                            <option value="Kg">Kg</option>
+                                                                            <option value="K">K</option>
 
                                                                         </select></td>
                                                                     <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>

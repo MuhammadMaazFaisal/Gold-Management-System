@@ -63,60 +63,35 @@ error_reporting(E_ALL);
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0">
-
-
-                                                <form id="form" method="POST" enctype="multipart/form-data">
-                                                    <div class="row mb-4">
-                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
-                                                        <div class="col-sm-2">
-                                                            <input type="date" name="date" id="date" class="form-control">
-                                                        </div>
-                                                        <label for="select-type" class="col-sm-1 col-form-label d-flex justify-content-end">Invoice:</label>
-                                                        <div class="col-sm-2">
-
-
-                                                            <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly>
-                                                        </div>
-                                                        <label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor Id:</label>
-                                                        <div class="col-sm-2">
-
-                                                            <input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor Id" readonly>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <button id="select-invoice" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoice-modal">
-                                                                Select Invoice
-                                                            </button>
-                                                        </div>
+                                                <div class="row mb-4">
+                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">S-Invoice:</label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" name="s-invoice" id="s-invoice" class="form-control" placeholder="S-Invoice" readonly>
                                                     </div>
-                                                </form>
+                                                    <label for="select-type" class="col-sm-1 col-form-label d-flex justify-content-end">P-Invoice:</label>
+                                                    <div class="col-sm-2">
+
+
+                                                        <input type="text" name="invoice" id="invoice" class="form-control" placeholder="P-Invoice" readonly>
+                                                    </div>
+                                                    <label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor Id:</label>
+                                                    <div class="col-sm-2">
+
+                                                        <input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor Id" readonly>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button id="select-invoice" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoice-modal">
+                                                            Select Invoice
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="existing_stock" class="card d-none">
-                                <div class="card-header card border">
-                                    <h4 class="card-title">
-                                        Existing Stock
-                                    </h4>
-
-                                </div>
-                                <div class="card-body px-4 ">
-
-                                    <div class="row">
-
-                                        <div class="col-lg-12 ms-lg-auto ">
+                                        <div id="existing_stock" class="d-none col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0">
 
 
-                                                <form id="form" method="POST" enctype="multipart/form-data">
-                                                    <div class="row mb-4">
-                                                        <div class="col-sm-2">
-
-                                                            <input type="text" name="invoice" id="e-invoice" class="form-control" placeholder="Invoice" readonly required>
-                                                        </div>
-
-                                                    </div>
+                                                <form id="stock-form" method="POST" enctype="multipart/form-data">
 
                                                     <div class="table-responsive">
                                                         <table class="table text-center">
@@ -180,7 +155,7 @@ error_reporting(E_ALL);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="filter_data" method="POST" enctype="multipart/form-data">
+                <form id="filter-form" method="POST" enctype="multipart/form-data">
                     <div class="row mb-4">
                         <label for="from-date" class="col-sm-1 col-form-label d-flex justify-content-end">From:</label>
                         <div class="col-sm-1">
@@ -279,7 +254,6 @@ error_reporting(E_ALL);
             data: formData,
             dataType: "json",
             success: function(response) {
-                console.log(response);
             }
         });
     }
@@ -293,7 +267,6 @@ error_reporting(E_ALL);
             },
             success: function(response) {
                 data = JSON.parse(response);
-                console.log(data);
                 tbody = document.getElementById("modal-tbody");
                 for (i = 0; i < data.length; i++) {
                     value = `<tr id="${data[i].id}">
@@ -316,7 +289,6 @@ error_reporting(E_ALL);
     }
 
     function SelectInvoice(btn) {
-        console.log(btn.parentNode.parentNode.id);
         invoice = btn.parentNode.parentNode.id;
         vendor_id = btn.parentNode.parentNode.children[2].innerHTML;
         $("#invoice-modal").modal("hide");
@@ -332,6 +304,18 @@ error_reporting(E_ALL);
             url: "functions.php",
             method: "POST",
             data: {
+                function: "GetStockCount"
+            },
+            success: function(response) {
+                response = JSON.parse(response);
+                document.getElementById("s-invoice").value = response;
+            }
+        });
+
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
                 function: "GetProductDetails",
                 id: invoice
             },
@@ -339,26 +323,45 @@ error_reporting(E_ALL);
                 data = JSON.parse(response);
                 console.log(data);
                 tbody = document.getElementById("e-tbody");
+                tbody.innerHTML = "";
                 for (i = 0; i < data.length; i++) {
                     value = `<tr>
                                 <td scope="row">1</td>
                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
-                                <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="${data[i].type}" placeholder="Type"></td>
-                                <td colspan="2"><input type="text" class="form-control" id="price_per[]" name="price_per[]" value="${data[i].price_per}" placeholder="Price per"></td>
-                                <td> <input type="number" value="${data[i].quantity}" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
-                                <td> <input type="number" step="any" value="${data[i].weight}" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
-                                <td><input type="number" step="any" value="${data[i].rate}" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                                <td><input type="number" step="any" value="${data[i].total_amount}" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
-                                <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" readonly></td>
+                                <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="${data[i].type}" placeholder="Type" readonly></td>
+                                <td colspan="2"><input type="text" class="form-control" id="price_per[]" name="price_per[]" value="${data[i].price_per}" readonly></td>
+                                <td> <input type="number" placeholder="${data[i].remaining_quantity}" id="quantity[]" name="quantity[]" class="form-control"></td>
+                                <td> <input type="number" step="any" placeholder="${data[i].remaining_weight}" id="weight[]" name="weight[]" class="form-control"></td>
+                                <td><input type="number" step="any" value="${data[i].rate}" id="rate[]" name="rate[]" class="form-control" readonly></td>
+                                <td><input type="number" step="any" placeholder="${data[i].remaining_total_amount}" id="total[]" name="total[]" class="form-control"></td>
+                                <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control" readonly></td>
                                 <td><div class="pt-2 form-check">
                                     <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
                                 </div></td>
+                                
+                                <td class="d-none"><input type="number" class="form-control" id="pd_id[]" name="pd_id[]" value="${data[i].id}" readonly></td>
                             </tr>`
                     tbody.innerHTML += value;
+                }
+                const checkbox = document.querySelectorAll('input[id="checkbox[]"]');
+                for (let i = 0; i < checkbox.length; i++) {
+                    checkbox[i].addEventListener("change", function() {
+                        if (this.checked) {
+                            GenerateBarcode(this);
+                        } else {
+                            this.parentNode.parentNode.previousElementSibling.children[0].value = "";
+                        }
+                    });
                 }
 
             }
         });
+    }
+
+    function GenerateBarcode(btn) {
+        unique = Math.floor(new Date().getTime() + Math.random());
+        btn.parentNode.parentNode.previousElementSibling.children[0].value = unique;
+
     }
 
     $(document).ready(function() {
@@ -374,14 +377,59 @@ error_reporting(E_ALL);
         });
     });
 
-    $(document).on("submit", "#filter-form", function(e) {
+    // $(document).on("submit", "#filter-form", function(e) {
+    //     e.preventDefault();
+    //     getFilteredData(this);
+    // });
+
+    $(document).on("submit", "#stock-form", function(e) {
         e.preventDefault();
-        getFilteredData(this);
+        checkbox = document.querySelectorAll('input[id="checkbox[]"]');
+        checkbox_values = [];
+        for (let i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                checkbox_values.push(i);
+            }
+        }
+        s_invoice = document.getElementById("s-invoice").value;
+        p_id = document.getElementById("invoice").value;
+        var formData = new FormData(this);
+        formData.append("function", "AddStock");
+        formData.append("checkbox_values", JSON.stringify(checkbox_values));
+        formData.append("s_invoice", s_invoice);
+        formData.append("p_id", p_id);
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response);
+                data = JSON.parse(response);
+                if (data[0] == "success" && data[0] == "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Stock Added Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+
+                }
+
+            }
+        });
     });
 
     $(document).ready(function() {
         $(".clickable-row").click(function() {
-            console.log("clicked");
             $(this).next(".hidden-row").toggle();
         });
 

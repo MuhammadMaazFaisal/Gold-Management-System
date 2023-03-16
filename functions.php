@@ -66,6 +66,10 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetInvoices();
 } elseif ($_POST['function'] == 'GetProductDetails') {
     GetProductDetails();
+} elseif ($_POST['function'] == 'AddStock') {
+    AddStock();
+} elseif ($_POST['function'] == 'GetStockCount') {
+    GetStockCount();
 }
 
 
@@ -967,7 +971,7 @@ function GetPurchasingCount()
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchColumn();
-        $array = "P-" . $array;
+        $array = "PI-" . $array;
         echo json_encode($array, true);
     } else {
         echo json_encode($getRecordStatement->errorInfo(), true);
@@ -992,7 +996,7 @@ function AddPurchasing()
         array_push($array, "error");
     }
     for ($i = 0; $i < count($_POST['total']); $i++) {
-        $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+        $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
         $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
         $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
         $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
@@ -1057,11 +1061,11 @@ function GetProductDetails()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT pd.id, pd.p_id, pd.type, pd.detail, pd.price_per, pd.quantity, pd.weight, pd.rate, pd.total_amount, pd.barcode, p.vendor_id, p.date, p.total, p.status
+    $getRecordQuery = "SELECT pd.id, pd.p_id, pd.type, pd.detail, pd.price_per, pd.quantity, pd.weight, pd.remaining_quantity, pd.remaining_weight, pd.remaining_total_amount, pd.rate, pd.total_amount, pd.barcode, p.vendor_id, p.date, p.total, p.status
     FROM purchasing_details pd
     JOIN purchasing p
     ON pd.p_id = p.id
-    WHERE pd.p_id = :id AND p.status = 'Active'";    
+    WHERE pd.p_id = :id AND p.status = 'Active'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id']);
     if ($getRecordStatement->execute()) {
@@ -1070,4 +1074,80 @@ function GetProductDetails()
     } else {
         echo json_encode($getRecordStatement->errorInfo(), true);
     }
+}
+
+function GetStockCount()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT lpad(count(*)+1, 4, '0') FROM `stock`";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchColumn();
+        $array = "SI-" . $array;
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function AddStock()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, :p_id, :total, 'Active')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['s_invoice']);
+    $getRecordStatement->bindParam(':p_id', $_POST['p_id']);
+    $getRecordStatement->bindParam(':total', $_POST['total'][0]);
+    if ($getRecordStatement->execute()) {
+        array_push($array, "success");
+    } else {
+        array_push($array, "error");
+    }
+    $count = count($_POST['checkbox']);
+    $values = json_decode($_POST['checkbox_values'], true);
+    for ($i = 0; $i < $count; $i++) {
+        if (in_array($i, $values)) {
+            $getRecordQuery1 = "UPDATE purchasing_details 
+            SET 
+                remaining_quantity = quantity - :quantity,
+                remaining_weight = weight - :weight,
+                remaining_total_amount = total_amount - :total WHERE `id` = :id";
+            $getRecordStatement1 = $pdo->prepare($getRecordQuery1);
+            $getRecordStatement1->bindParam(':quantity', $_POST['quantity'][$i]);
+            $getRecordStatement1->bindParam(':weight', $_POST['weight'][$i]);
+            $getRecordStatement1->bindParam(':total', $_POST['total'][$i]);
+            $getRecordStatement1->bindParam(':id', $_POST['pd_id'][$i]);
+            if ($getRecordStatement1->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+            $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+            $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
+            $getRecordStatement2->bindParam(':s_id', $_POST['s_invoice']);
+            $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
+            $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
+            $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
+            $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
+            $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
+            $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
+            $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
+            $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
+            if ($getRecordStatement2->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+        }
+    }
+
+    echo json_encode($array, true);
 }
