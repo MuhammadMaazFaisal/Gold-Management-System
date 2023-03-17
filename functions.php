@@ -70,8 +70,11 @@ if ($_POST['function'] == 'GetAllVendorData') {
     AddStock();
 } elseif ($_POST['function'] == 'GetStockCount') {
     GetStockCount();
+} elseif ($_POST['function'] == 'GetStockData') {
+    GetStockData();
+} elseif ($_POST['function'] == 'GetManufacturerReportData') {
+    GetManufacturerReportData();
 }
-
 
 // -------------------------Production Page-------------------------//
 function GetModalProducts()
@@ -102,10 +105,10 @@ function GetFilteredProducts()
 
     $from_date = $_POST['from-date'];
     $to_date = $_POST['to-date'];
-    $product_id =  $_POST['product_id'];
+    $product_id = $_POST['product_id'];
     $vendor_id = $_POST['vendor_id'];
 
-    $sql = "SELECT id, vendor_id, product_id, date, image, details, type, quantity, purity, unpolish_weight, polish_weight, rate, wastage, unpure_weight, pure_weight, status, tValues, barcode 
+    $sql = "SELECT id, vendor_id, product_id, date, image, details, type, quantity, purity, unpolish_weight, polish_weight, rate, wastage, unpure_weight, pure_weight, status, tValues, barcode
         FROM manufacturing_step  WHERE 1=0";
 
     if (!empty($from_date)) {
@@ -351,7 +354,6 @@ function StepOne()
 
     $qryStatement = $pdo->prepare($qry);
 
-
     $qryStatement->bindParam(':vendor_id', $vendor_id);
     $qryStatement->bindParam(':imageName', $pName);
     $qryStatement->bindParam(':code', $code);
@@ -366,7 +368,6 @@ function StepOne()
     $qryStatement->bindParam(':fDate', $date);
     $qryStatement->bindParam(':details', $details);
     $qryStatement->bindParam(':barcode', $barcode);
-
 
     move_uploaded_file($imageTmpName, $pName);
 
@@ -402,7 +403,7 @@ function StepTwo()
     if (!file_exists($dirpro)) {
         mkdir($dirpro, 0777, true);
         chmod($dirpro, 0777);
-        // copy('article-archive/published-articles/CMC/CMC-29-42-6335/XML-compilation/CMC-29-42-6335-compilation.xml', $dir.'/test.xml');                        
+        // copy('article-archive/published-articles/CMC/CMC-29-42-6335/XML-compilation/CMC-29-42-6335-compilation.xml', $dir.'/test.xml');
     }
 
     $time = time();
@@ -421,10 +422,6 @@ function StepTwo()
         VALUES (:stepTwoCode,:imageNamepo, :stepTwoName, :stepTwoDifference, :poWas, :payable, :stepTwoDate, :details, :polisherbarcode);";
     }
 
-
-
-
-
     $stepTwoStatement = $pdo->prepare($stepTwoQry);
 
     $stepTwoStatement->bindParam(':stepTwoCode', $stepTwoCode);
@@ -436,9 +433,6 @@ function StepTwo()
     $stepTwoStatement->bindParam(':details', $details);
     $stepTwoStatement->bindParam(':imageNamepo', $poliName);
     $stepTwoStatement->bindParam(':polisherbarcode', $polisherbarcode);
-
-
-
 
     move_uploaded_file($imageTmpName, $poliName);
 
@@ -494,7 +488,6 @@ function StepThree()
     $time = time();
 
     $pName = $dirpro . '/' . $time . '-' . $imageNamepo;
-
 
     $qry3 = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id";
     $qryStatement3 = $pdo->prepare($qry3);
@@ -572,8 +565,6 @@ function StepThree()
 
     move_uploaded_file($imageTmpName, $pName);
 
-
-
     if ($statement1->execute()) {
         array_push($array, 'success');
     }
@@ -618,7 +609,6 @@ function ReturnedStepThree()
     } else {
         $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:r_wastage,:r_grand_weight,:r_payable)";
     }
-
 
     $statement = $pdo->prepare($qry);
     $statement->bindParam(':product_id', $product_id);
@@ -1013,6 +1003,7 @@ function AddPurchasing()
             array_push($array, "error");
         }
     }
+    array_push($array, $_POST['grand_total']);
     echo json_encode($array, true);
 }
 
@@ -1115,15 +1106,15 @@ function AddStock()
     $values = json_decode($_POST['checkbox_values'], true);
     for ($i = 0; $i < $count; $i++) {
         if (in_array($i, $values)) {
-            $getRecordQuery1 = "UPDATE purchasing_details 
-            SET 
-                remaining_quantity = quantity - :quantity,
-                remaining_weight = weight - :weight,
-                remaining_total_amount = total_amount - :total WHERE `id` = :id";
+            $getRecordQuery1 = "UPDATE purchasing_details
+            SET
+                `remaining_quantity` = `remaining_quantity` - :new_quantity,
+                `remaining_weight` = `remaining_weight` - :new_weight,
+                `remaining_total_amount` = `remaining_total_amount` - :new_total WHERE `id` = :id";
             $getRecordStatement1 = $pdo->prepare($getRecordQuery1);
-            $getRecordStatement1->bindParam(':quantity', $_POST['quantity'][$i]);
-            $getRecordStatement1->bindParam(':weight', $_POST['weight'][$i]);
-            $getRecordStatement1->bindParam(':total', $_POST['total'][$i]);
+            $getRecordStatement1->bindParam(':new_quantity', $_POST['quantity'][$i]);
+            $getRecordStatement1->bindParam(':new_weight', $_POST['weight'][$i]);
+            $getRecordStatement1->bindParam(':new_total', $_POST['total'][$i]);
             $getRecordStatement1->bindParam(':id', $_POST['pd_id'][$i]);
             if ($getRecordStatement1->execute()) {
                 array_push($array, "success");
@@ -1150,4 +1141,53 @@ function AddStock()
     }
 
     echo json_encode($array, true);
+}
+
+// -------------------Stock Page---------------------- //
+
+function GetStockData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT s.date AS stock_date, sd.barcode, s.p_id, v.name, sd.detail, sd.type, sd.price_per, sd.quantity, sd.weight, sd.rate, sd.total_amount
+                        FROM
+                            stock s
+                            JOIN stock_details sd ON s.id = sd.s_id
+                            JOIN purchasing p ON s.p_id = p.id
+                            JOIN vendor v ON p.vendor_id = v.id
+                        ORDER BY
+                            stock_date DESC ";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+// -------------------Manufacturer Report Page---------------------- //
+
+function GetManufacturerReportData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT v.`id`, v.`type`, v.`name`, m.`vendor_id`, m.`product_id`, m.`date`, m.`image`, m.`details`, m.`type`, m.`quantity`, m.`purity`, m.`unpolish_weight`, m.`polish_weight`, m.`rate`,
+                        m.`wastage`, m.`unpure_weight`, m.`pure_weight`, m.`status`, m.`tValues`, m.`barcode` FROM `vendor` v
+                        JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`
+                        WHERE v.id=:id ";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['id']);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
 }

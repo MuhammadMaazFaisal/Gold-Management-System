@@ -57,21 +57,21 @@
 
             <!-- <div class="dropdown d-none d-sm-inline-block">
                 <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php if ($lang == 'en') { ?>
+                    <?php if ($lang == 'en') {?>
                         <img class="me-2" src="assets/images/flags/us.jpg" alt="Header Language" height="16">
-                    <?php } ?>
-                    <?php if ($lang == 'es') { ?>
+                    <?php }?>
+                    <?php if ($lang == 'es') {?>
                         <img class="me-2" src="assets/images/flags/spain.jpg" alt="Header Language" height="16">
-                    <?php } ?>
-                    <?php if ($lang == 'de') { ?>
+                    <?php }?>
+                    <?php if ($lang == 'de') {?>
                         <img class="me-2" src="assets/images/flags/germany.jpg" alt="Header Language" height="16">
-                    <?php } ?>
-                    <?php if ($lang == 'it') { ?>
+                    <?php }?>
+                    <?php if ($lang == 'it') {?>
                         <img class="me-2" src="assets/images/flags/italy.jpg" alt="Header Language" height="16">
-                    <?php } ?>
-                    <?php if ($lang == 'ru') { ?>
+                    <?php }?>
+                    <?php if ($lang == 'ru') {?>
                         <img class="me-2" src="assets/images/flags/russia.jpg" alt="Header Language" height="16">
-                    <?php } ?>
+                    <?php }?>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end"> -->
 
@@ -289,20 +289,20 @@
 
                         </a>
 
-                       
+
 
                     </li>
-			
-				
-				<?php if (isset($_SESSION['Super Admin'])) { ?>
 
-                   
+
+				<?php if (isset($_SESSION['Super Admin'])) {?>
+
+
 				    <!-- <li>
                         <a href="UM_users.php" class=" ">
                             <i data-feather="users"></i>
                             <span data-key="t-users">User</span>
                         </a>
-                       
+
 
                     </li>
 				    <li>
@@ -310,7 +310,7 @@
                             <i data-feather="share-2"></i>
                             <span data-key="t-login">Roles</span>
                         </a>
-                       
+
 
                     </li>
                         <li>
@@ -318,17 +318,17 @@
                             <i data-feather="settings"></i>
                             <span data-key="t-login">System Activities</span>
                         </a>
-                       
+
 
                     </li> -->
-					  
-                        
-                <?php } // Super Admin 
-                ?>
 
-                
-				
-				<?php if (isset($_SESSION['prodp']) || isset($_SESSION['Super Admin'])) { ?>
+
+                <?php } // Super Admin
+?>
+
+
+
+				<?php if (isset($_SESSION['prodp']) || isset($_SESSION['Super Admin'])) {?>
 
                    	 <li>
                         <a href="javascript: void(0);" class=" ">
@@ -372,11 +372,11 @@
 
                     </li>
 
-					
-                <?php } // Super Admin 
-                ?>
-				
-				<?php if (isset($_SESSION['prodp']) || isset($_SESSION['Super Admin'])) { ?>
+
+                <?php } // Super Admin
+?>
+
+				<?php if (isset($_SESSION['prodp']) || isset($_SESSION['Super Admin'])) {?>
 
                    	 <li>
                         <a href="javascript: void(0);" class=" ">
@@ -392,12 +392,12 @@
                         </ul>
 
                     </li>
-					
-					
-                <?php } // Super Admin 
-                ?>
-					
-				<?php if (isset($_SESSION['Super Admin'])) { ?>
+
+
+                <?php } // Super Admin
+?>
+
+				<?php if (isset($_SESSION['Super Admin'])) {?>
 
                    <li>
                         <a href="javascript: void(0);" class=" ">
@@ -407,6 +407,7 @@
                         </a>
 
                         <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="stock.php" data-key="t-register">Stock</a></li>
                             <li><a href="purchasing.php" data-key="t-register">Purchasing</a></li>
                             <li><a href="add_stock.php" data-key="t-register">Add Stock</a></li>
                             <!-- <li><a href="purchase_order.php" data-key="t-register">Purchase Order</a></li>
@@ -419,11 +420,11 @@
                         </ul>
 
                     </li>
-					    
-                <?php } // Super Admin 
-                ?>
-				
-				<?php if (isset($_SESSION['Super Admin']) || isset($_SESSION['Assignor'])) { ?>
+
+                <?php } // Super Admin
+?>
+
+				<?php if (isset($_SESSION['Super Admin']) || isset($_SESSION['Assignor'])) {?>
 
                     <li>
                         <a href="javascript: void(0);" class=" ">
@@ -433,20 +434,20 @@
                         </a>
 
                         <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="#" data-key="t-register">Manufecturing Report</a></li>
-							<li><a href="#" data-key="t-register">Stone Setting Report</a></li>
-                            <li><a href="#" data-key="t-register">Polishing Report</a></li>
+                            <li><a href="manufacturing_report.php" data-key="t-register">Manufecturing Report</a></li>
+							<li><a href="polishing_report.php" data-key="t-register">Polishing Report</a></li>
+                            <li><a href="stonesetting_report.php" data-key="t-register">Stone Setting Report</a></li>
                             <li><a href="#" data-key="t-register">Addintional Accounts Report</a></li>
 						</ul>
 
                     </li>
-                    
-                <?php } // Super Admin 
-                ?>
-				
-				
-				
-                <?php if (isset($_SESSION['Super Admin']) || isset($_SESSION['Assignor'])) { ?>
+
+                <?php } // Super Admin
+?>
+
+
+
+                <?php if (isset($_SESSION['Super Admin']) || isset($_SESSION['Assignor'])) {?>
 
                     <li>
                         <a href="javascript: void(0);" class=" ">
@@ -455,29 +456,29 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="setting_view.php" data-key="t-register">System Settings</a></li>
-                            
+
 
                         </ul>
 
                     </li>
 
-                <?php } // Super Admin 
-                ?>
+                <?php } // Super Admin
+?>
 
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                <!-- <li class="menu-title" data-key="t-menu"><?php echo $language["Menu"]; ?></li>
 
@@ -499,13 +500,13 @@
                                 <span data-key="t-calendar"><?php echo $language["Calendar"]; ?></span>
                             </a>
                         </li>
-        
+
                         <li>
                             <a href="apps-chat.php">
                                 <span data-key="t-chat"><?php echo $language["Chat"]; ?></span>
                             </a>
                         </li>
-        
+
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">
                                 <span data-key="t-email"><?php echo $language["Email"]; ?></span>

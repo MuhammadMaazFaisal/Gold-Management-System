@@ -25,8 +25,8 @@ error_reporting(E_ALL);
     <?php include 'layouts/head-style.php'; ?>
 </head>
 <style>
-    .selectize-input:not(:has(> :not(.vendor) ~ *)) {
-        width: 150px;
+    .price_per.selectize-control {
+        width: 100px;
     }
 </style>
 
@@ -68,7 +68,7 @@ error_reporting(E_ALL);
 
                                                 <form id="form" method="POST" enctype="multipart/form-data">
                                                     <div class="row mb-4 justify-content-between">
-                                                        <div class="col-sm-2">
+                                                        <div class="col-sm-3">
 
                                                             <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
                                                                 <option value="">Select a vendor...</option>
@@ -89,7 +89,7 @@ error_reporting(E_ALL);
                                                                 <tr>
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Detail</th>
-                                                                    <th colspan="2">Type</th>
+                                                                    <th>Type</th>
                                                                     <th colspan="2">Price Per</th>
                                                                     <th scope="col">Quantity</th>
                                                                     <th scope="col">Weight</th>
@@ -105,7 +105,7 @@ error_reporting(E_ALL);
                                                                     <td scope="row">1</td>
                                                                     <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
                                                                     <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
-                                                                    <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
                                                                             <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
@@ -125,7 +125,7 @@ error_reporting(E_ALL);
                                                         <div class="row mb-4 d-flex justify-content-end">
                                                             <div class="d-flex justify-content-end col-sm-2 ">
 
-                                                                <input type="text" name="grand_total" id="grand_total" class="form-control " placeholder="Grand Total" readonly required>
+                                                                <input type="text" id="grand_total" name="grand_total" class="form-control " placeholder="Grand Total" readonly required>
                                                             </div>
 
                                                         </div>
@@ -196,32 +196,22 @@ error_reporting(E_ALL);
         let tr = document.createElement('tr');
         tr.innerHTML = `<th scope="row">1</th>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                            <td colspan="2"><select class="form-control" id="type[]" name="type[]" placeholder="Type">
-                                    <option value="">Select Type</option>
-                                    <option value="18k">18k</option>
-                                    <option value="21k">21k</option>
-                                    <option value="22k">22k</option>
-
-
-                                </select></td>
+                            <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
                             <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
                                     <option value="">Select price per</option>
                                     <option value="Qty">Qty</option>
                                     <option value="Tola">Tola</option>
                                     <option value="Kg">Kg</option>
-
                                 </select></td>
                             <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
                             <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                            <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                            <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                             <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
-        $('select').selectize({
-            sortField: 'text'
-        });
+        AddEventListeners();
     }
 
     function DeleteProduct(e) {
@@ -242,10 +232,54 @@ error_reporting(E_ALL);
         btn.parentNode.previousElementSibling.children[0].value = unique;
 
     }
-    $(document).ready(function() {
+
+    function CalculateTotal(i) {
+        price_per = document.querySelectorAll('#price_per\\[\\]')[i];
+        qty = document.querySelectorAll('#quantity\\[\\]')[i];
+        weight = document.querySelectorAll('#weight\\[\\]')[i];
+        rate = document.querySelectorAll('#rate\\[\\]')[i];
+        total = document.querySelectorAll('#total\\[\\]')[i];
+        if (price_per.value == "K") {
+            total.value = qty.value * rate.value * 5;
+            GrandTotal();
+        } else if (price_per.value == "Tola") {
+            total.value = (weight.value / 11.664) * rate.value;
+            GrandTotal();
+        } else if (price_per.value == "Qty") {
+            total.value = qty.value * rate.value;
+            GrandTotal();
+        }
+    }
+
+    function AddEventListeners() {
+        price_per = document.querySelectorAll('#price_per\\[\\]');
+        weight = document.querySelectorAll('#weight\\[\\]');
+        qty = document.querySelectorAll('#quantity\\[\\]');
+        rate = document.querySelectorAll('#rate\\[\\]');
+        price_per.forEach((e, i) => {
+            selectize = $(e).selectize()[0].selectize;
+            selectize.on('change', function() {
+                CalculateTotal(i);
+            });
+        });
+        for (let i = 0; i < price_per.length; i++) {
+            weight[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+            qty[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+            rate[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+        }
         $('select').selectize({
             sortField: 'text'
         });
+    }
+
+    $(document).ready(function() {
+        AddEventListeners();
 
         $.ajax({
             url: "functions.php",
@@ -278,6 +312,7 @@ error_reporting(E_ALL);
 
             }
         });
+
     });
 
     $("#form").submit(function(e) {
@@ -291,9 +326,7 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(data) {
-                console.log(data);
                 data = JSON.parse(data);
-                console.log(data);
                 if (data[0] == "success" && data[1] == "success") {
                     Swal.fire({
                         icon: 'success',

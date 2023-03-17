@@ -321,7 +321,6 @@ error_reporting(E_ALL);
             },
             success: function(response) {
                 data = JSON.parse(response);
-                console.log(data);
                 tbody = document.getElementById("e-tbody");
                 tbody.innerHTML = "";
                 for (i = 0; i < data.length; i++) {
@@ -353,6 +352,7 @@ error_reporting(E_ALL);
                         }
                     });
                 }
+                AddEventListeners();
 
             }
         });
@@ -364,8 +364,48 @@ error_reporting(E_ALL);
 
     }
 
+    function CalculateTotal(i) {
+        price_per = document.querySelectorAll('#price_per\\[\\]')[i];
+        qty = document.querySelectorAll('#quantity\\[\\]')[i];
+        weight = document.querySelectorAll('#weight\\[\\]')[i];
+        rate = document.querySelectorAll('#rate\\[\\]')[i];
+        total = document.querySelectorAll('#total\\[\\]')[i];
+        if (price_per.value == "K") {
+            total.value = qty.value * rate.value * 5;
+        } else if (price_per.value == "Tola") {
+            total.value = (weight.value / 11.664) * rate.value;
+        } else if (price_per.value == "Qty") {
+            total.value = qty.value * rate.value;
+        }
+    }
+
+    function AddEventListeners(){
+        price_per = document.querySelectorAll('#price_per\\[\\]');
+        weight = document.querySelectorAll('#weight\\[\\]');
+        qty = document.querySelectorAll('#quantity\\[\\]');
+        rate = document.querySelectorAll('#rate\\[\\]');
+        for (let i = 0; i < price_per.length; i++) {
+            price_per[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+            weight[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+            qty[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+            rate[i].addEventListener('change', function() {
+                CalculateTotal(i);
+            });
+        }
+        $('select').selectize({
+            sortField: 'text'
+        });
+    }
+
     $(document).ready(function() {
         GetDate();
+        AddEventListeners();
 
         $('select').selectize({
             sortField: 'text'
@@ -414,7 +454,9 @@ error_reporting(E_ALL);
                         text: 'Stock Added Successfully',
                         showConfirmButton: false,
                         timer: 1500
-                    })
+                    }).then(function() {
+                        location.reload();
+                    });
                 } else {
                     Swal.fire({
                         icon: 'error',
