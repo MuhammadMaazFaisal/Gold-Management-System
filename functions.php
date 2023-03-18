@@ -1178,10 +1178,69 @@ function GetManufacturerReportData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT v.`id`, v.`type`, v.`name`, m.`vendor_id`, m.`product_id`, m.`date`, m.`image`, m.`details`, m.`type`, m.`quantity`, m.`purity`, m.`unpolish_weight`, m.`polish_weight`, m.`rate`,
-                        m.`wastage`, m.`unpure_weight`, m.`pure_weight`, m.`status`, m.`tValues`, m.`barcode` FROM `vendor` v
-                        JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`
-                        WHERE v.id=:id ";
+    $getRecordQuery = "SELECT 
+    v.`id`, 
+    v.`type`, 
+    v.`name`, 
+    m.`vendor_id`, 
+    m.`product_id`, 
+    m.`date`, 
+    m.`image`, 
+    m.`details`, 
+    m.`type`, 
+    m.`quantity`, 
+    m.`purity`, 
+    m.`unpolish_weight`, 
+    m.`polish_weight`, 
+    m.`rate`,
+    m.`wastage`, 
+    m.`unpure_weight`, 
+    m.`pure_weight`, 
+    m.`status`, 
+    m.`tValues`, 
+    m.`barcode`,
+    NULL as `issued_weight`, 
+    NULL as `metal_date`, 
+    NULL as `metal_vendor_id`, 
+    NULL as `metal_type`, 
+    NULL as `metal_details`, 
+    NULL as `metal_purity`, 
+    NULL as `metal_pure_weight`
+FROM `vendor` v 
+JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`
+WHERE v.id=:id
+UNION ALL
+SELECT 
+    NULL as `id`, 
+    NULL as `type`, 
+    `v`.`name` `name`, 
+    `v`.`id` as `vendor_id`, 
+    NULL as `product_id`, 
+    `metal`.`date`, 
+    NULL as `image`, 
+    `metal`.`details`, 
+    `metal`.`type`, 
+    NULL as `quantity`, 
+    `metal`.`purity`, 
+    NULL as `unpolish_weight`, 
+    NULL as `polish_weight`, 
+    NULL as `rate`,
+    NULL as `wastage`, 
+    NULL as `unpure_weight`, 
+    NULL as `pure_weight`, 
+    NULL as `status`, 
+    NULL as `tValues`, 
+    NULL as `barcode`,
+    `metal`.`issued_weight`, 
+    `metal`.`date` as `metal_date`, 
+    `metal`.`vendor_id` as `metal_vendor_id`, 
+    `metal`.`type` as `metal_type`, 
+    NULL as `metal_details`, 
+    `metal`.`purity` as `metal_purity`, 
+    `metal`.`pure_weight` as `metal_pure_weight`
+FROM `metal`
+JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
+ORDER BY `date` DESC";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id']);
     if ($getRecordStatement->execute()) {

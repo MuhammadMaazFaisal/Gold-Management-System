@@ -201,7 +201,7 @@ error_reporting(E_ALL);
                                     <option value="">Select price per</option>
                                     <option value="Qty">Qty</option>
                                     <option value="Tola">Tola</option>
-                                    <option value="Kg">Kg</option>
+                                    <option value="K">K</option>
                                 </select></td>
                             <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
                             <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>

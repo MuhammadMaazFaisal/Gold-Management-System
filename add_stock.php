@@ -116,7 +116,7 @@ error_reporting(E_ALL);
 
                                                         <div class="d-flex justify-content-end">
                                                             <button type="button" class="btn btn-success me-2">Print</button>
-                                                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                            <button id="submit" type="submit" name="submit" class="btn btn-primary disabled">Save</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -321,6 +321,7 @@ error_reporting(E_ALL);
             },
             success: function(response) {
                 data = JSON.parse(response);
+                console.log(data);
                 tbody = document.getElementById("e-tbody");
                 tbody.innerHTML = "";
                 for (i = 0; i < data.length; i++) {
@@ -333,7 +334,7 @@ error_reporting(E_ALL);
                                 <td> <input type="number" step="any" placeholder="${data[i].remaining_weight}" id="weight[]" name="weight[]" class="form-control"></td>
                                 <td><input type="number" step="any" value="${data[i].rate}" id="rate[]" name="rate[]" class="form-control" readonly></td>
                                 <td><input type="number" step="any" placeholder="${data[i].remaining_total_amount}" id="total[]" name="total[]" class="form-control"></td>
-                                <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control" readonly></td>
+                                <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" readonly></td>
                                 <td><div class="pt-2 form-check">
                                     <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
                                 </div></td>
@@ -360,7 +361,10 @@ error_reporting(E_ALL);
 
     function GenerateBarcode(btn) {
         unique = Math.floor(new Date().getTime() + Math.random());
-        btn.parentNode.parentNode.previousElementSibling.children[0].value = unique;
+        if (btn.parentNode.parentNode.previousElementSibling.children[0].value == ""){
+            btn.parentNode.parentNode.previousElementSibling.children[0].value = unique;
+        }
+        document.getElementById("submit").classList.remove("disabled");
 
     }
 
