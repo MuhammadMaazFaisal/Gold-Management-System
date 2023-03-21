@@ -24,7 +24,11 @@ error_reporting(E_ALL);
 
     <?php include 'layouts/head-style.php'; ?>
 </head>
-
+<style>
+    .price_per.selectize-control {
+        width: 100px;
+    }
+</style>
 <?php include 'layouts/body.php'; ?>
 
 <!-- Begin page -->
@@ -87,7 +91,7 @@ error_reporting(E_ALL);
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="existing_stock" class="d-none col-lg-12 ms-lg-auto ">
+                                        <div id="stock" class="d-none col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0">
 
 
@@ -127,21 +131,91 @@ error_reporting(E_ALL);
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card ">
+                                <div class="card-header card border border-danger">
+                                    <h4 class="card-title">
+                                        Add Existing Stock
+                                    </h4>
+
+                                </div>
+                                <div class="card-body p-4 ">
+                                    <div id="existing_stock" class="col-lg-12 ms-lg-auto ">
+                                        <div class="mt-4 mt-lg-0">
+
+
+                                            <form id="existing-stock-form" method="POST" enctype="multipart/form-data">
+
+                                                <div class="table-responsive">
+                                                    <table class="table text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Detail</th>
+                                                                <th colspan="2">Type</th>
+                                                                <th colspan="2">Price Per</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">Weight</th>
+                                                                <th scope="col">Rate</th>
+                                                                <th scope="col">Total Amount</th>
+                                                                <th scope="col">Barcode</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="existing-tbody">
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
+                                                                <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="" placeholder="Type"></td>
+                                                                <td colspan="2"><select class="form-control price_per" id="e_price_per[]" name="price_per[]" placeholder="Price per">
+                                                                        <option value="">Select price per</option>
+                                                                        <option value="Qty">Qty</option>
+                                                                        <option value="Tola">Tola</option>
+                                                                        <option value="K">K</option>
+                                                                    </select></td>
+                                                                <td> <input type="number" placeholder="" id="quantity[]" name="quantity[]" class="form-control"></td>
+                                                                <td> <input type="number" step="any" placeholder="" id="weight[]" name="weight[]" class="form-control"></td>
+                                                                <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control"></td>
+                                                                <td><input type="number" step="any" placeholder="" id="total[]" name="total[]" class="form-control"></td>
+                                                                <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control"></td>
+                                                                <td><i onclick="AddStock()" class="fa fa-plus-circle fa-1x p-3"></i></td>
+
+                                                                <td class="d-none"><input type="text " class="form-control" id="pd_id[]" name="pd_id[]" value="existing"></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-success me-2">Print</button>
+                                                        <button id="e-submit" type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- End Page-content -->
-
-
-        <?php } // Super Admin 
-        ?>
-
-
-
-
-
-        <?php include 'layouts/footer.php'; ?>
     </div>
-    <!-- end main content-->
+    <!-- End Page-content -->
+
+
+<?php } // Super Admin 
+?>
+
+
+
+
+
+<?php include 'layouts/footer.php'; ?>
+</div>
+<!-- end main content-->
 
 </div>
 <!-- END layout-wrapper -->
@@ -253,8 +327,7 @@ error_reporting(E_ALL);
             method: "POST",
             data: formData,
             dataType: "json",
-            success: function(response) {
-            }
+            success: function(response) {}
         });
     }
 
@@ -294,7 +367,7 @@ error_reporting(E_ALL);
         $("#invoice-modal").modal("hide");
         document.getElementById("invoice").value = invoice;
         document.getElementById("vendor_id").value = vendor_id;
-        document.getElementById("existing_stock").classList.remove("d-none");
+        document.getElementById("stock").classList.remove("d-none");
         GetProductDetails(invoice);
 
     }
@@ -361,7 +434,7 @@ error_reporting(E_ALL);
 
     function GenerateBarcode(btn) {
         unique = Math.floor(new Date().getTime() + Math.random());
-        if (btn.parentNode.parentNode.previousElementSibling.children[0].value == ""){
+        if (btn.parentNode.parentNode.previousElementSibling.children[0].value == "") {
             btn.parentNode.parentNode.previousElementSibling.children[0].value = unique;
         }
         document.getElementById("submit").classList.remove("disabled");
@@ -370,21 +443,40 @@ error_reporting(E_ALL);
 
     function CalculateTotal(i) {
         price_per = document.querySelectorAll('#price_per\\[\\]')[i];
+        e_price_per = document.querySelectorAll('#e_price_per\\[\\]')[i];
+        console.log(e_price_per[i].value);
         qty = document.querySelectorAll('#quantity\\[\\]')[i];
         weight = document.querySelectorAll('#weight\\[\\]')[i];
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
-        if (price_per.value == "K") {
+        unique = Math.floor(new Date().getTime() + Math.random());
+        total.parentNode.nextElementSibling.children[0].value = unique;
+        if (e_price_per.value == "K") {
+            total.value = qty.value * rate.value * 5;
+        } else if (e_price_per.value == "Tola") {
+            total.value = (weight.value / 11.664) * rate.value;
+        } else if (e_price_per.value == "Qty") {
+            total.value = qty.value * rate.value;
+        }
+        s_invoice=document.getElementById("s-invoice").value;
+        if (s_invoice == "") {
+            if (price_per.value == "K") {
             total.value = qty.value * rate.value * 5;
         } else if (price_per.value == "Tola") {
             total.value = (weight.value / 11.664) * rate.value;
         } else if (price_per.value == "Qty") {
             total.value = qty.value * rate.value;
         }
+        }
+
     }
 
-    function AddEventListeners(){
+    function AddEventListeners() {
+        $('select').selectize({
+            sortField: 'text'
+        });
         price_per = document.querySelectorAll('#price_per\\[\\]');
+        e_price_per = document.querySelectorAll('#e_price_per\\[\\]');
         weight = document.querySelectorAll('#weight\\[\\]');
         qty = document.querySelectorAll('#quantity\\[\\]');
         rate = document.querySelectorAll('#rate\\[\\]');
@@ -402,9 +494,41 @@ error_reporting(E_ALL);
                 CalculateTotal(i);
             });
         }
-        $('select').selectize({
-            sortField: 'text'
-        });
+        for (let i = 0; i < e_price_per.length; i++) {
+            $(document).on('change', e_price_per[i], function() {
+                CalculateTotal(i);
+            });
+        }
+    }
+
+    function AddStock() {
+        let area = document.getElementById('existing-tbody');
+        let tr = document.createElement('tr');
+        tr.innerHTML = `<tr>
+                            <td scope="row">1</td>
+                            <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
+                            <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="" placeholder="Type"></td>
+                            <td colspan="2"><select class="form-control price_per" id="e_price_per[]" name="price_per[]" placeholder="Price per">
+                                    <option value="">Select price per</option>
+                                    <option value="Qty">Qty</option>
+                                    <option value="Tola">Tola</option>
+                                    <option value="K">K</option>
+                                </select></td>
+                            <td> <input type="number" placeholder="" id="quantity[]" name="quantity[]" class="form-control"></td>
+                            <td> <input type="number" step="any" placeholder="" id="weight[]" name="weight[]" class="form-control"></td>
+                            <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control"></td>
+                            <td><input type="number" step="any" placeholder="" id="total[]" name="total[]" class="form-control"></td>
+                            <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control"></td>
+                            <td><i onclick="DeleteStock(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>
+
+                            <td class="d-none"><input type="text" class="form-control" id="pd_id[]" name="pd_id[]" value="existing"></td>
+                        </tr>`;
+        area.appendChild(tr);
+        AddEventListeners();
+    }
+
+    function DeleteStock(btn) {
+        btn.parentNode.parentNode.remove();
     }
 
     $(document).ready(function() {
@@ -419,6 +543,13 @@ error_reporting(E_ALL);
             const fromDate = $(this).val();
             $("#to-date").attr("min", fromDate);
         });
+
+        $(".clickable-row").click(function() {
+            $(this).next(".hidden-row").toggle();
+        });
+
+        $("#select-invoice").click(GetInvoices());
+
     });
 
     // $(document).on("submit", "#filter-form", function(e) {
@@ -474,11 +605,40 @@ error_reporting(E_ALL);
         });
     });
 
-    $(document).ready(function() {
-        $(".clickable-row").click(function() {
-            $(this).next(".hidden-row").toggle();
-        });
+    $(document).on("submit", "#existing-stock-form", function(e) {
+        e.preventDefault();
+        form = new FormData(this);
+        form.append("function", "AddExistingStock");
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: form,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response);
+                data = JSON.parse(response);
+                if (data[0] == "success" && data[0] == "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Stock Added Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
 
-        $("#select-invoice").click(GetInvoices());
+                }
+
+            }
+        });
     });
+
 </script>

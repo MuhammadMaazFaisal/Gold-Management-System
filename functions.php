@@ -74,7 +74,10 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStockData();
 } elseif ($_POST['function'] == 'GetManufacturerReportData') {
     GetManufacturerReportData();
+} elseif ($_POST['function'] == 'AddExistingStock') {
+    AddExistingStock();
 }
+
 
 // -------------------------Production Page-------------------------//
 function GetModalProducts()
@@ -1143,6 +1146,49 @@ function AddStock()
     echo json_encode($array, true);
 }
 
+function AddExistingStock(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array= array();
+    $s_invoice = '';
+    $getRecordQuery0 = "SELECT lpad(count(*)+1, 4, '0') FROM `stock`";
+    $getRecordStatement0 = $pdo->prepare($getRecordQuery0);
+    if ($getRecordStatement0->execute()) {
+        $record = $getRecordStatement0->fetchColumn();
+        $s_invoice = "SI-" . $record;
+    }
+    $getRecordQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, 'existing', :total, 'Active')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $s_invoice);
+    $getRecordStatement->bindParam(':total', $_POST['total'][0]);
+    if ($getRecordStatement->execute()) {
+        array_push($array, "success");
+    } else {
+        array_push($array, "error");
+    }
+    for ($i = 0; $i < count($_POST['rate']); $i++){
+        $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+            $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
+            $getRecordStatement2->bindParam(':s_id', $_POST['s_invoice']);
+            $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
+            $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
+            $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
+            $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
+            $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
+            $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
+            $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
+            $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
+            if ($getRecordStatement2->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+    }
+
+}
+
 // -------------------Stock Page---------------------- //
 
 function GetStockData()
@@ -1206,11 +1252,11 @@ function GetManufacturerReportData()
     NULL as `metal_details`, 
     NULL as `metal_purity`, 
     NULL as `metal_pure_weight`
-FROM `vendor` v 
-JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`
-WHERE v.id=:id
-UNION ALL
-SELECT 
+    FROM `vendor` v 
+    JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`
+    WHERE v.id=:id
+    UNION ALL
+    SELECT 
     NULL as `id`, 
     NULL as `type`, 
     `v`.`name` `name`, 
@@ -1238,9 +1284,9 @@ SELECT
     NULL as `metal_details`, 
     `metal`.`purity` as `metal_purity`, 
     `metal`.`pure_weight` as `metal_pure_weight`
-FROM `metal`
-JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
-ORDER BY `date` DESC";
+    FROM `metal`
+    JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
+    ORDER BY `date` DESC";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id']);
     if ($getRecordStatement->execute()) {
