@@ -76,6 +76,8 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetManufacturerReportData();
 } elseif ($_POST['function'] == 'AddExistingStock') {
     AddExistingStock();
+} elseif ($_POST['function'] == 'GetPolisherReportData') {
+    GetPolisherReportData();
 }
 
 
@@ -394,6 +396,7 @@ function StepTwo()
     $stepTwoCode = trim($_POST['product_id']);
     $stepTwoName = trim($_POST['vendor_id']);
     $stepTwoDifference = $_POST['difference'];
+    $rate= $_POST['p_rate'];
     $poWas = $_POST['poWas'];
     $payable = $_POST['payable'];
     $stepTwoDate = $_POST['date'];
@@ -419,10 +422,10 @@ function StepTwo()
     $qryStatement->execute();
     $array = array();
     if ($qryStatement->rowCount() > 0) {
-        $stepTwoQry = "UPDATE `polisher_step` SET `image`=:imageNamepo,`vendor_id`=:stepTwoName,`difference`=:stepTwoDifference,`Wastage`=:poWas,`Payable`=:payable,`date`=:stepTwoDate,`details`=:details,`polisherbarcode`=:polisherbarcode WHERE `product_id` = :stepTwoCode";
+        $stepTwoQry = "UPDATE `polisher_step` SET `image`=:imageNamepo,`vendor_id`=:stepTwoName,`rate`=:rate,`difference`=:stepTwoDifference,`Wastage`=:poWas,`Payable`=:payable,`date`=:stepTwoDate,`details`=:details,`polisherbarcode`=:polisherbarcode WHERE `product_id` = :stepTwoCode";
     } else {
-        $stepTwoQry = "INSERT INTO polisher_step(`product_id`, `image`, `vendor_id`, `difference`, `Wastage`, `Payable`, `date`,`details`,`polisherbarcode`)
-        VALUES (:stepTwoCode,:imageNamepo, :stepTwoName, :stepTwoDifference, :poWas, :payable, :stepTwoDate, :details, :polisherbarcode);";
+        $stepTwoQry = "INSERT INTO polisher_step(`product_id`, `image`, `vendor_id`, `difference`, `Wastage`, `Payable`, `date`,`details`,`polisherbarcode`,`rate`)
+        VALUES (:stepTwoCode,:imageNamepo, :stepTwoName, :stepTwoDifference, :poWas, :payable, :stepTwoDate, :details, :polisherbarcode,:rate);";
     }
 
     $stepTwoStatement = $pdo->prepare($stepTwoQry);
@@ -436,6 +439,7 @@ function StepTwo()
     $stepTwoStatement->bindParam(':details', $details);
     $stepTwoStatement->bindParam(':imageNamepo', $poliName);
     $stepTwoStatement->bindParam(':polisherbarcode', $polisherbarcode);
+    $stepTwoStatement->bindParam(':rate', $rate);
 
     move_uploaded_file($imageTmpName, $poliName);
 
@@ -1029,7 +1033,7 @@ function GetPurchasingVendors()
 
 // -------------------Add Stock Page---------------------- //
 
-function GetInvoices()
+function  GetInvoices()
 {
     include 'layouts/session.php';
     error_reporting(E_ALL);
@@ -1171,7 +1175,7 @@ function AddExistingStock(){
     for ($i = 0; $i < count($_POST['rate']); $i++){
         $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
             $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
-            $getRecordStatement2->bindParam(':s_id', $_POST['s_invoice']);
+            $getRecordStatement2->bindParam(':s_id', $s_invoice);
             $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
             $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
             $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
@@ -1186,6 +1190,7 @@ function AddExistingStock(){
                 array_push($array, "error");
             }
     }
+    echo json_encode($array, true);
 
 }
 
@@ -1287,6 +1292,76 @@ function GetManufacturerReportData()
     FROM `metal`
     JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
     ORDER BY `date` DESC";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['id']);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetPolisherReportData(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    v.`id`, 
+    v.`type`, 
+    v.`name`, 
+    p.`vendor_id`, 
+    p.`product_id`, 
+    p.`date`, 
+    p.`image`, 
+    p.`details`,
+    p.`type`,
+    p.`purity`,   
+    p.`rate`,
+    p.`Wastage`, 
+    p.`difference`, 
+    p.`Payable`, 
+    p.`status`,  
+    p.`polisherbarcode`,
+    NULL as `issued_weight`, 
+    NULL as `metal_date`, 
+    NULL as `metal_vendor_id`, 
+    NULL as `metal_type`, 
+    NULL as `metal_details`, 
+    NULL as `metal_purity`, 
+    NULL as `metal_pure_weight`
+    FROM `vendor` v 
+    JOIN `polisher_step` p ON v.`id` = p.`vendor_id`
+    WHERE v.id=:id
+    UNION ALL
+    SELECT 
+    NULL as `id`, 
+    NULL as `type`, 
+    `v`.`name` `name`, 
+    `v`.`id` as `vendor_id`, 
+    NULL as `product_id`, 
+    `metal`.`date`, 
+    NULL as `image`, 
+    `metal`.`details`,
+    NULL as `rate`,
+    NULL as `Wastage`, 
+    NULL as `difference`, 
+    NULL as `Payable`, 
+    NULL as `status`,  
+    NULL as `polisherbarcode`,
+    `metal`.`issued_weight`, 
+    `metal`.`date` as `metal_date`, 
+    `metal`.`vendor_id` as `metal_vendor_id`, 
+    `metal`.`type` as `metal_type`, 
+    NULL as `metal_details`, 
+    `metal`.`purity` as `metal_purity`, 
+    `metal`.`pure_weight` as `metal_pure_weight`
+    FROM `metal`
+    JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
+    ORDER BY `date` DESC";
+
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id']);
     if ($getRecordStatement->execute()) {

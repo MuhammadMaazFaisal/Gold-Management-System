@@ -459,7 +459,7 @@ error_reporting(E_ALL);
             total.value = qty.value * rate.value;
         }
         s_invoice=document.getElementById("s-invoice").value;
-        if (s_invoice == "") {
+        if (s_invoice != "") {
             if (price_per.value == "K") {
             total.value = qty.value * rate.value * 5;
         } else if (price_per.value == "Tola") {

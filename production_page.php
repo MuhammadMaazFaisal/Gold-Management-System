@@ -758,13 +758,18 @@
  																		<input type="number" step="any" value="" id="r_rate" name="r_rate" class="form-control" placeholder="Rate" required>
  																	</div>
 
+ 																	<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
+ 																	<div class="col-sm-3">
+
+ 																		<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity" >
+ 																	</div>
+ 																</div>
+ 																<div class="row mb-4">
  																	<label for="horizontal-firstname-input" for="r_wastage" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
  																	<div class="col-sm-3">
 
  																		<input type="number" step="any" value="" id="r_wastage" name="r_wastage" class="form-control" placeholder="Wastage" readonly>
  																	</div>
- 																</div>
- 																<div class="row mb-4">
  																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Grand Weight:</label>
  																	<div class="col-sm-3">
  																		<input type="number" step="any" name="r_grand_weight" value="" id="r_grand_weight" class="form-control card bg-dark border-dark text-light" placeholder="Total">
@@ -1199,14 +1204,14 @@
  						}
 
  						select_manufacturer_purity.setValue(data[0].purity);
-						GetReturnedStoneData(id);
-						GetAdditionalVendorData(id);
-						GetZirconData(id);
+ 						GetReturnedStoneData(id);
+ 						GetAdditionalVendorData(id);
+ 						GetZirconData(id);
  						GetStoneData(id);
- 						CalculateDifference();	
+ 						CalculateDifference();
  						GetPolisherData(id);
- 						
- 						
+
+
  					}
  				});
 
@@ -1866,7 +1871,7 @@
  				column: selectedText,
  				id: code
  			},
- 			success: function(response) { 
+ 			success: function(response) {
  				var data = JSON.parse(response);
  				var difference = document.getElementById('difference').value;
  				if (selectedText == '18k') {
@@ -2574,7 +2579,7 @@
  		e.preventDefault();
  		CalculatePayable();
  		GetStoneSetterRate();
- 	
+
  	});
 
  	$(document).on('input', '#stone_received', function(e) {

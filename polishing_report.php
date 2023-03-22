@@ -56,7 +56,7 @@ error_reporting(E_ALL);
                             <div class="card ">
                                 <div class="card-header card border border-danger">
                                     <h4 class="card-title">
-                                        Manufacturer Report
+                                        Polisher Report
                                     </h4>
 
                                 </div>
@@ -67,14 +67,14 @@ error_reporting(E_ALL);
                                         <div class="col-sm-5">
 
                                             <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
-                                                <option value="">Select a manufacturer...</option>
+                                                <option value="">Select a polisher...</option>
 
                                             </select>
                                         </div>
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">
 
-                                                <table id="manufacturer-table" class="table table-hover">
+                                                <table id="polisher-table" class="table table-hover">
                                                     <thead class="table-dark">
                                                     </thead>
                                                     <tbody id="tbody">
@@ -183,13 +183,13 @@ error_reporting(E_ALL);
             url: "functions.php",
             type: "POST",
             data: {
-                function: "GetManufacturerReportData",
+                function: "GetPolisherReportData",
                 id: vendor_id
             },
             success: function(data) {
-                data = JSON.parse(data);
                 console.log(data);
-                var table = $('#manufacturer-table').DataTable({
+                data = JSON.parse(data);
+                var table = $('#polisher-table').DataTable({
                     data: data,
                     columns: [{
                             data: 'date',
@@ -264,7 +264,7 @@ error_reporting(E_ALL);
             method: "POST",
             data: {
                 function: "GetAllVendorData",
-                type: "manufacturer"
+                type: "polisher"
             },
             success: function(response) {
                 var data = JSON.parse(response);
