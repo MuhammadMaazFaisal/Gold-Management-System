@@ -150,35 +150,39 @@ error_reporting(E_ALL);
 </html>
 
 <script>
-    function CalculateTotal(){
-        jewellery=document.getElementsByClassName('jewellery');
-        metal=document.getElementsByClassName('metal');
-        var total_jewellery=0;
-        var total_metal=0;
-        for(var i=1;i<jewellery.length;i++){
-            if (jewellery[i].innerHTML!="") {
-                total_jewellery+=parseFloat(jewellery[i].innerHTML);
+    function CalculateTotal() {
+        jewellery = document.getElementsByClassName('jewellery');
+        metal = document.getElementsByClassName('metal');
+        var total_jewellery = 0;
+        var total_metal = 0;
+        for (var i = 1; i < jewellery.length; i++) {
+            if (jewellery[i].innerHTML != "") {
+                total_jewellery += parseFloat(jewellery[i].innerHTML);
             }
-            
+
         }
-        for(var i=1;i<metal.length;i++){
-            if(metal[i].innerHTML!=""){
-                total_metal+=parseFloat(metal[i].innerHTML);
+        for (var i = 1; i < metal.length; i++) {
+            if (metal[i].innerHTML != "") {
+                total_metal += parseFloat(metal[i].innerHTML);
             }
         }
-        total_metal1= document.getElementById('total_metal_issued');
-        total_metal1.value=total_metal;
-        total_jewellery1= document.getElementById('total_metal_recieved');
-        total_jewellery1.value=total_jewellery;
-        payable=document.getElementById('payable');
-        payable.value=total_jewellery-total_metal;
+        total_metal1 = document.getElementById('total_metal_issued');
+        total_metal1.value = total_metal;
+        total_jewellery1 = document.getElementById('total_metal_recieved');
+        total_jewellery1.value = total_jewellery;
+        payable = document.getElementById('payable');
+        payable.value = total_jewellery - total_metal;
         total_metal1.classList.remove('d-none');
         total_jewellery1.classList.remove('d-none');
         payable.classList.remove('d-none');
 
 
     }
+
     function GetData(vendor_id) {
+        if ($.fn.DataTable.isDataTable('#polisher-table')) {
+            $('#polisher-table').DataTable().destroy();
+        }
         $.ajax({
             url: "functions.php",
             type: "POST",
@@ -187,8 +191,8 @@ error_reporting(E_ALL);
                 id: vendor_id
             },
             success: function(data) {
-                console.log(data);
                 data = JSON.parse(data);
+                console.log(data);
                 var table = $('#polisher-table').DataTable({
                     data: data,
                     columns: [{
@@ -203,7 +207,7 @@ error_reporting(E_ALL);
                             }
                         },
                         {
-                            data: 'barcode',
+                            data: 'polisherbarcode',
                             title: 'Barcode'
                         },
                         {
@@ -211,19 +215,23 @@ error_reporting(E_ALL);
                             title: 'Vendor Name'
                         },
                         {
-                            data: 'details',
+                            data: 'm_details',
                             title: 'Detail'
                         },
                         {
-                            data: 'type',
-                            title: 'Type'
+                            data: 'm_type',
+                            title: 'type'
                         },
                         {
-                            data: 'quantity',
-                            title: 'Quantity'
+                            data: 'm_quantity',
+                            title: 'quantity'
                         },
                         {
-                            data: 'purity',
+                            data: 'difference',
+                            title: 'Difference'
+                        },
+                        {
+                            data: 'm_purity',
                             title: 'purity'
                         },
                         {
@@ -231,7 +239,7 @@ error_reporting(E_ALL);
                             title: 'Rate'
                         },
                         {
-                            data: 'tValues',
+                            data: 'Payable',
                             title: '24k',
                             className: 'metal',
                         },

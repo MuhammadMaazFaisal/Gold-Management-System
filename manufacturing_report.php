@@ -150,35 +150,39 @@ error_reporting(E_ALL);
 </html>
 
 <script>
-    function CalculateTotal(){
-        jewellery=document.getElementsByClassName('jewellery');
-        metal=document.getElementsByClassName('metal');
-        var total_jewellery=0;
-        var total_metal=0;
-        for(var i=1;i<jewellery.length;i++){
-            if (jewellery[i].innerHTML!="") {
-                total_jewellery+=parseFloat(jewellery[i].innerHTML);
+    function CalculateTotal() {
+        jewellery = document.getElementsByClassName('jewellery');
+        metal = document.getElementsByClassName('metal');
+        var total_jewellery = 0;
+        var total_metal = 0;
+        for (var i = 1; i < jewellery.length; i++) {
+            if (jewellery[i].innerHTML != "") {
+                total_jewellery += parseFloat(jewellery[i].innerHTML);
             }
-            
+
         }
-        for(var i=1;i<metal.length;i++){
-            if(metal[i].innerHTML!=""){
-                total_metal+=parseFloat(metal[i].innerHTML);
+        for (var i = 1; i < metal.length; i++) {
+            if (metal[i].innerHTML != "") {
+                total_metal += parseFloat(metal[i].innerHTML);
             }
         }
-        total_metal1= document.getElementById('total_metal_issued');
-        total_metal1.value=total_metal;
-        total_jewellery1= document.getElementById('total_metal_recieved');
-        total_jewellery1.value=total_jewellery;
-        payable=document.getElementById('payable');
-        payable.value=total_jewellery-total_metal;
+        total_metal1 = document.getElementById('total_metal_issued');
+        total_metal1.value = total_metal;
+        total_jewellery1 = document.getElementById('total_metal_recieved');
+        total_jewellery1.value = total_jewellery;
+        payable = document.getElementById('payable');
+        payable.value = total_jewellery - total_metal;
         total_metal1.classList.remove('d-none');
         total_jewellery1.classList.remove('d-none');
         payable.classList.remove('d-none');
 
 
     }
+
     function GetData(vendor_id) {
+        if ($.fn.DataTable.isDataTable('#manufacturer-table')) {
+            $('#manufacturer-table').DataTable().destroy();
+        }
         $.ajax({
             url: "functions.php",
             type: "POST",
@@ -188,7 +192,6 @@ error_reporting(E_ALL);
             },
             success: function(data) {
                 data = JSON.parse(data);
-                console.log(data);
                 var table = $('#manufacturer-table').DataTable({
                     data: data,
                     columns: [{

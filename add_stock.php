@@ -394,7 +394,6 @@ error_reporting(E_ALL);
             },
             success: function(response) {
                 data = JSON.parse(response);
-                console.log(data);
                 tbody = document.getElementById("e-tbody");
                 tbody.innerHTML = "";
                 for (i = 0; i < data.length; i++) {
@@ -421,8 +420,6 @@ error_reporting(E_ALL);
                     checkbox[i].addEventListener("change", function() {
                         if (this.checked) {
                             GenerateBarcode(this);
-                        } else {
-                            this.parentNode.parentNode.previousElementSibling.children[0].value = "";
                         }
                     });
                 }
@@ -434,7 +431,7 @@ error_reporting(E_ALL);
 
     function GenerateBarcode(btn) {
         unique = Math.floor(new Date().getTime() + Math.random());
-        if (btn.parentNode.parentNode.previousElementSibling.children[0].value == "") {
+        if (btn.parentNode.parentNode.previousElementSibling.children[0].value === "") {
             btn.parentNode.parentNode.previousElementSibling.children[0].value = unique;
         }
         document.getElementById("submit").classList.remove("disabled");
@@ -444,13 +441,10 @@ error_reporting(E_ALL);
     function CalculateTotal(i) {
         price_per = document.querySelectorAll('#price_per\\[\\]')[i];
         e_price_per = document.querySelectorAll('#e_price_per\\[\\]')[i];
-        console.log(e_price_per[i].value);
         qty = document.querySelectorAll('#quantity\\[\\]')[i];
         weight = document.querySelectorAll('#weight\\[\\]')[i];
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
-        unique = Math.floor(new Date().getTime() + Math.random());
-        total.parentNode.nextElementSibling.children[0].value = unique;
         if (e_price_per.value == "K") {
             total.value = qty.value * rate.value * 5;
         } else if (e_price_per.value == "Tola") {
@@ -550,12 +544,7 @@ error_reporting(E_ALL);
 
         $("#select-invoice").click(GetInvoices());
 
-    });
-
-    // $(document).on("submit", "#filter-form", function(e) {
-    //     e.preventDefault();
-    //     getFilteredData(this);
-    // });
+    }); 
 
     $(document).on("submit", "#stock-form", function(e) {
         e.preventDefault();
@@ -580,7 +569,6 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(response) {
-                console.log(response);
                 data = JSON.parse(response);
                 if (data[0] == "success" && data[0] == "success") {
                     Swal.fire({
@@ -616,7 +604,6 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(response) {
-                console.log(response);
                 data = JSON.parse(response);
                 if (data[0] == "success" && data[0] == "success") {
                     Swal.fire({

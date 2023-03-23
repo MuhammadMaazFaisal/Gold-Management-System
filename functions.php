@@ -60,8 +60,6 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetPurchasingCount();
 } elseif ($_POST['function'] == 'AddPurchasing') {
     AddPurchasing();
-} elseif ($_POST['function'] == 'GetPurchasingVendors') {
-    GetPurchasingVendors();
 } elseif ($_POST['function'] == 'GetInvoices') {
     GetInvoices();
 } elseif ($_POST['function'] == 'GetProductDetails') {
@@ -1014,23 +1012,6 @@ function AddPurchasing()
     echo json_encode($array, true);
 }
 
-function GetPurchasingVendors()
-{
-    include 'layouts/session.php';
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    require_once "layouts/config.php";
-    $array = array();
-    $getRecordQuery = "SELECT * FROM `vendor` WHERE `status` = 'Active' AND (`type` = 'manufacturer' OR `type` = 'stone setter' OR `type` = 'polisher' OR `type` = 'vendor')";
-    $getRecordStatement = $pdo->prepare($getRecordQuery);
-    if ($getRecordStatement->execute()) {
-        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($array, true);
-    } else {
-        echo json_encode($getRecordStatement->errorInfo(), true);
-    }
-}
-
 // -------------------Add Stock Page---------------------- //
 
 function  GetInvoices()
@@ -1291,6 +1272,7 @@ function GetManufacturerReportData()
     `metal`.`pure_weight` as `metal_pure_weight`
     FROM `metal`
     JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
+    WHERE v.id=:id
     ORDER BY `date` DESC";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id']);
@@ -1315,28 +1297,28 @@ function GetPolisherReportData(){
     p.`vendor_id`, 
     p.`product_id`, 
     p.`date`, 
-    p.`image`, 
-    p.`details`,
-    p.`type`,
-    p.`purity`,   
+    p.`image`,  
     p.`rate`,
     p.`Wastage`, 
     p.`difference`, 
     p.`Payable`, 
     p.`status`,  
     p.`polisherbarcode`,
+    m.`details` as `m_details`, 
+    m.`type` as `m_type`, 
+    m.`purity` as `m_purity`, 
+    m.`quantity` as `m_quantity`, 
     NULL as `issued_weight`, 
     NULL as `metal_date`, 
-    NULL as `metal_vendor_id`, 
     NULL as `metal_type`, 
-    NULL as `metal_details`, 
-    NULL as `metal_purity`, 
+    NULL as `metal_vendor_id`, 
     NULL as `metal_pure_weight`
-    FROM `vendor` v 
-    JOIN `polisher_step` p ON v.`id` = p.`vendor_id`
-    WHERE v.id=:id
-    UNION ALL
-    SELECT 
+FROM `vendor` v 
+JOIN `polisher_step` p ON v.`id` = p.`vendor_id`
+JOIN `manufacturing_step` m ON p.`product_id` = m.`product_id`
+WHERE v.id=:id
+UNION ALL
+SELECT 
     NULL as `id`, 
     NULL as `type`, 
     `v`.`name` `name`, 
@@ -1344,22 +1326,24 @@ function GetPolisherReportData(){
     NULL as `product_id`, 
     `metal`.`date`, 
     NULL as `image`, 
-    `metal`.`details`,
     NULL as `rate`,
     NULL as `Wastage`, 
     NULL as `difference`, 
     NULL as `Payable`, 
     NULL as `status`,  
     NULL as `polisherbarcode`,
+    `metal`.`details` as `m_details`, 
+    NULL as `m_type`, 
+    `metal`.`purity` as `m_purity`, 
+    NULL as `m_quantity`, 
     `metal`.`issued_weight`, 
     `metal`.`date` as `metal_date`, 
-    `metal`.`vendor_id` as `metal_vendor_id`, 
-    `metal`.`type` as `metal_type`, 
-    NULL as `metal_details`, 
-    `metal`.`purity` as `metal_purity`, 
+    `metal`.`type` as `metal_type`,
+    `metal`.`vendor_id` as `metal_vendor_id`,  
     `metal`.`pure_weight` as `metal_pure_weight`
     FROM `metal`
     JOIN `vendor` v ON `metal`.`vendor_id` = `v`.`id`
+    WHERE v.id=:id
     ORDER BY `date` DESC";
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);

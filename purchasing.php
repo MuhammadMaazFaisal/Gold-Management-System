@@ -229,7 +229,11 @@ error_reporting(E_ALL);
 
     function GenerateBarcode(btn) {
         unique = Math.floor(new Date().getTime() + Math.random());
-        btn.parentNode.previousElementSibling.children[0].value = unique;
+        if (btn.parentNode.previousElementSibling.children[0].value == "") {
+            btn.parentNode.previousElementSibling.children[0].value = unique;
+        }else{
+            btn.parentNode.previousElementSibling.children[0].value = "";
+        }
 
     }
 
@@ -297,7 +301,8 @@ error_reporting(E_ALL);
             url: "functions.php",
             method: "POST",
             data: {
-                function: "GetPurchasingVendors"
+                function: "GetAllVendorData",
+                type: "vendor"
             },
             success: function(response) {
                 var data = JSON.parse(response);
