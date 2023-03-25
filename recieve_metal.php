@@ -97,22 +97,16 @@ error_reporting(E_ALL);
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Issued Weight:</label>
 																<div class="col-sm-2">
 
-																	<input type="number" step="any" name="issued_weight" class="form-control" placeholder="Gold Issued Weight">
+																	<input type="number" step="any" id="issued_weight" name="issued_weight" class="form-control" placeholder="Gold Issued Weight">
 																</div>
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Purity:</label>
 																<div class="col-sm-3">
-
-																	<select id="purity" required="" name="purity" required class="form-control form-select">
-																		<option value="18k">18k</option>
-																		<option value="21k">21k</option>
-																		<option value="22k">22k</option>
-
-																	</select>
+																		<input type="number" step="any" id="purity" name="purity" class="form-control" placeholder="Purity">
 																</div>
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Pure Weight Issued:</label>
 																<div class="col-sm-3">
 
-																	<input type="number" step="any" name="pure_weight" class="form-control" placeholder="Pure Weight Issued">
+																	<input type="number" step="any" id="pure_weight" name="pure_weight" class="form-control" placeholder="Pure Weight Issued">
 																</div>
 
 
@@ -180,7 +174,18 @@ error_reporting(E_ALL);
 			}
 		}
 
+		function CalculatePureWeight(){
+			var issued_weight = document.getElementById('issued_weight').value;
+			var purity = document.getElementById('purity').value;
+			var pure_weight = issued_weight * purity;
+			document.getElementById('pure_weight').value = pure_weight;
+		}
+
 		$(document).ready(function() {
+			var issued_weight = document.getElementById('issued_weight');
+			var purity = document.getElementById('purity');
+			purity.addEventListener('change', CalculatePureWeight);
+			issued_weight.addEventListener('change', CalculatePureWeight);
 			GetDate();
 
 			$('select').selectize({

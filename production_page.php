@@ -1077,10 +1077,10 @@
  	}
 
  	function CalculateReturnedWastage() {
- 		var quantity = document.getElementById("r_stone_quantity");
+ 		var quantity = document.getElementById("sh_qty");
  		var rate = document.getElementById("r_rate");
  		var wastage = document.getElementById("r_wastage");
- 		wastage.value = (quantity.value * (rate.value / 100)).toFixed(2) + '0';
+ 		wastage.value = ((quantity.value/ 100) * rate.value).toFixed(2) + '0';
  		GrandWeight();
  	}
 
