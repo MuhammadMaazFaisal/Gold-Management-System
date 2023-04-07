@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2023 at 05:59 PM
+-- Generation Time: Apr 07, 2023 at 07:30 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -706,6 +706,7 @@ CREATE TABLE `returned_stone_step` (
   `stone_quantity` int(255) NOT NULL,
   `total_weight` float NOT NULL,
   `rate` int(255) NOT NULL,
+  `shruded_weight` float NOT NULL,
   `wastage` float NOT NULL,
   `grand_weight` float NOT NULL,
   `payable` float NOT NULL
@@ -715,10 +716,10 @@ CREATE TABLE `returned_stone_step` (
 -- Dumping data for table `returned_stone_step`
 --
 
-INSERT INTO `returned_stone_step` (`id`, `product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `wastage`, `grand_weight`, `payable`) VALUES
-(10, 'RF0010004', 'MK010', 35, 12, 6, 41, 0, 0, 41, 9),
-(11, 'RF0010005', 'MK010', 43, 10, 5, 53, 0, 0, 53, 21),
-(12, 'WM0020010', 'MK010', 123, 0, 12, 123, 0, 0, 123, -57);
+INSERT INTO `returned_stone_step` (`id`, `product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded_weight`, `wastage`, `grand_weight`, `payable`) VALUES
+(10, 'RF0010004', 'MK010', 35, 12, 6, 41, 0, 0, 0, 41, 9),
+(11, 'RF0010005', 'MK010', 43, 10, 5, 53, 0, 0, 0, 53, 21),
+(12, 'WM0020010', 'MK010', 123, 0, 12, 123, 0, 0, 0, 123, -57);
 
 -- --------------------------------------------------------
 

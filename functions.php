@@ -605,14 +605,14 @@ function ReturnedStepThree()
     $row = $qryStatement2->fetch(PDO::FETCH_ASSOC);
 
     if ($row > 0) {
-        $qry = "UPDATE `returned_stone_step` SET `received_weight`=:received_weight,`stone_weight`=:r_stone_weight,`stone_quantity`=:r_stone_quantity,`total_weight`=:r_total_weight,`rate`=:r_rate,`wastage`=:r_wastage,`grand_weight`=:r_grand_weight,`payable`=:r_payable, `vendor_id`=:vendor_id WHERE `product_id` = :product_id";
+        $qry = "UPDATE `returned_stone_step` SET `received_weight`=:received_weight,`stone_weight`=:r_stone_weight,`stone_quantity`=:r_stone_quantity,`total_weight`=:r_total_weight,`rate`=:r_rate ,`shruded_quantity`=:sh_qty,`wastage`=:r_wastage,`grand_weight`=:r_grand_weight,`payable`=:r_payable, `vendor_id`=:vendor_id WHERE `product_id` = :product_id";
 
         $qry3 = "DELETE FROM `returned_item` WHERE `product_id` = :product_id";
         $statement3 = $pdo->prepare($qry3);
         $statement3->bindParam(':product_id', $product_id);
         $statement3->execute();
     } else {
-        $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:r_wastage,:r_grand_weight,:r_payable)";
+        $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded-quantity`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:sh_qty,:r_wastage,:r_grand_weight,:r_payable)";
     }
 
     $statement = $pdo->prepare($qry);
@@ -621,6 +621,7 @@ function ReturnedStepThree()
     $statement->bindParam(':r_stone_quantity', $r_stone_quantity);
     $statement->bindParam(':r_total_weight', $r_total_weight);
     $statement->bindParam(':r_rate', $r_rate);
+    $statement->bindParam(':sh_qty', $sh_qty);
     $statement->bindParam(':r_wastage', $r_wastage);
     $statement->bindParam(':r_grand_weight', $r_grand_weight);
     $statement->bindParam(':r_payable', $r_payable);
@@ -1022,8 +1023,14 @@ function  GetInvoices()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "SELECT purchasing.id, purchasing.vendor_id, vendor.name, purchasing.total, purchasing.date, purchasing.status
-    FROM purchasing
-    JOIN vendor ON purchasing.vendor_id = vendor.id where purchasing.status = 'Active'";
+FROM purchasing
+JOIN vendor ON purchasing.vendor_id = vendor.id 
+JOIN purchasing_details ON purchasing.id = purchasing_details.p_id
+WHERE purchasing.status = 'Active' 
+AND purchasing_details.remaining_quantity <> 0 
+AND purchasing_details.remaining_weight <> 0 
+AND purchasing_details.remaining_total_amount <> 0;
+ ";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
