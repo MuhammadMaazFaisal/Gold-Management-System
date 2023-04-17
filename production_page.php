@@ -512,12 +512,19 @@
  													STONE SETTER
  												</h4>
 
+
  											</div>
  											<div class="card-body p-4 ">
 
  												<div class="row">
 
  													<div class="col-lg-12 ms-lg-auto ">
+
+ 														<div class="mb-2 d-flex justify-content-end" style="margin-top: -30px;">	
+ 															<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+ 																Add Stone Setter
+ 															</button>
+ 														</div>
  														<div class="mt-4 mt-lg-0">
 
 
@@ -571,7 +578,17 @@
  																	</div>
  																</div>
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Issued Weight:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+ 																	<div class="col-sm-3">
+
+ 																		<input type="number" step="any" name="s_total_weight" id="s_total_weight" class="form-control" placeholder="Total Weight" readonly>
+ 																	</div>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">- Retained Weight:</label>
+ 																	<div class="col-sm-3">
+
+ 																		<input type="number" step="any" name="retained_weight" id="retained_weight" class="form-control" placeholder="Retained Weight" readonly>
+ 																	</div>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">= Issued Weight:</label>
  																	<div class="col-sm-3">
 
  																		<input type="number" step="any" name="Issued_weight" id="stepIssueweight" class="form-control" placeholder="Issued Weight" readonly>
@@ -761,7 +778,7 @@
  																	<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity" >
+ 																		<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity">
  																	</div>
  																</div>
  																<div class="row mb-4">
@@ -1080,7 +1097,7 @@
  		var quantity = document.getElementById("sh_qty");
  		var rate = document.getElementById("r_rate");
  		var wastage = document.getElementById("r_wastage");
- 		wastage.value = ((quantity.value/ 100) * rate.value).toFixed(2) + '0';
+ 		wastage.value = (quantity.value * (rate.value) / 100).toFixed(2) + '0';
  		GrandWeight();
  	}
 
@@ -1099,8 +1116,9 @@
  	function GrandWeight() {
  		var total_weight = document.getElementById("r_total_weight");
  		var wastage = document.getElementById("r_wastage");
+ 		var received_weight = document.getElementById("received_weight");
  		var grand_total_weight = document.getElementById("r_grand_weight");
- 		grand_total_weight.value = parseFloat(total_weight.value) + parseFloat(wastage.value);
+ 		grand_total_weight.value = parseFloat(total_weight.value) + parseFloat(wastage.value) + parseFloat(received_weight.value);
  		ReturnedPayable()
  	}
 
