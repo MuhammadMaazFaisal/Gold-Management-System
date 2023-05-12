@@ -523,7 +523,7 @@
  															Add Stone Setter
  														</button>
  													</div>
- 													<div class="mt-4 mt-lg-0">
+ 													<div id="stone-setter-area" class="mt-4 mt-lg-0">
 
 
  														<form id="stepthree" method="POST" enctype="multipart/form-data">
@@ -709,8 +709,6 @@
  																	<input type="number" step="any" name="grand_total[]" value="" id="grand_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  																</div>
  															</div>
- 															<div id="stone-setter-area" class="row">
- 															</div>
 
  															<hr />
  															<div class="row justify-content-end mb-3">
@@ -756,7 +754,7 @@
  																		</div>
  																		<div class="col-sm-2">
 
- 																			<i class="fa fa-plus-circle p-2" onclick="AddReturned()"></i>
+ 																			<i class="fa fa-plus-circle p-2" onclick="AddReturned(this)"></i>
  																		</div>
  																	</div>
  																</div>
@@ -805,23 +803,28 @@
  																	<input type="number" step="any" name="r_payable" value="" id="r_payable" class="form-control" placeholder="Total">
  																</div>
  															</div>
+
+
+
+
+
+
+ 															<div class="row justify-content-end">
+ 																<div class="col-sm-9">
+
+ 																	<div>
+ 																		<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+ 																		<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+ 																	</div>
+ 																</div>
+ 															</div>
+ 														</form>
  													</div>
 
+
+
+
  												</div>
-
-
-
- 												<div class="row justify-content-end">
- 													<div class="col-sm-9">
-
- 														<div>
- 															<button type="" class="btn btn-success waves-effect waves-light">Print</button>
- 															<button type="submit" class="btn btn-primary" id="r_save">Save</button>
- 														</div>
- 													</div>
- 												</div>
- 												</form>
-
  											</div>
  										</div>
 
@@ -1060,20 +1063,37 @@
  			success: function(data) {
  				data = JSON.parse(data);
  				let zircon = document.querySelectorAll('select[id="zircon_code[]"]');
- 				for (let i = 0; i < zircon.length; i++) {
- 					if (!$(zircon[i]).hasClass('selectized')) {
- 						$(zircon[i]).selectize({
- 							create: true,
- 							sortField: 'text'
- 						});
+ 				let delete_area = zircon[0].parentElement;
+ 				var selectizeControls = delete_area.querySelectorAll('.selectize-control');
+ 				if (selectizeControls[0] != undefined) {
+ 					if (zircon.length > 1) {
+ 						// Get the first selectize control (index 0)
+ 						selectizeControls[0].remove();
  					}
- 					let selectize1 = $(zircon[i])[0].selectize;
- 					for (let j = 0; j < data.length; j++) {
- 						var newOption = {
- 							value: data[j].detail,
- 							text: data[j].detail
- 						};
- 						selectize1.addOption(newOption);
+ 				}
+ 				// Start the loop from the second element (index 1)
+ 				for (var i = 1; i < selectizeControls.length; i++) {
+ 					var selectizeControl = selectizeControls[i];
+ 					console.log(selectizeControl)
+ 				}
+ 				for (let i = 0; i < zircon.length; i++) {
+ 					var selectElement = zircon[i];
+ 					var selectizeInstance = $(selectElement).selectize()[0].selectize;
+
+ 					var options = selectizeInstance.options;
+
+ 					if (Object.keys(options).length === 0) {
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].detail,
+ 								text: data[j].detail
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+
+ 						selectizeInstance.refreshOptions();
  					}
  				}
  			}
@@ -1090,20 +1110,37 @@
  			success: function(data) {
  				data = JSON.parse(data);
  				let stone = document.querySelectorAll('select[id="stone_code[]"]');
- 				for (let i = 0; i < stone.length; i++) {
- 					if (!$(stone[i]).hasClass('selectized')) {
- 						$(stone[i]).selectize({
- 							create: true,
- 							sortField: 'text'
- 						});
+ 				let delete_area = stone[0].parentElement;
+ 				var selectizeControls = delete_area.querySelectorAll('.selectize-control');
+ 				if (selectizeControls[0] != undefined) {
+ 					// Get the first selectize control (index 0)
+ 					if (stone.length > 1) {
+ 						selectizeControls[0].remove();
  					}
- 					let selectize1 = $(stone[i])[0].selectize;
- 					for (let j = 0; j < data.length; j++) {
- 						var newOption = {
- 							value: data[j].detail,
- 							text: data[j].detail
- 						};
- 						selectize1.addOption(newOption);
+ 				}
+ 				// Start the loop from the second element (index 1)
+ 				for (var i = 1; i < selectizeControls.length; i++) {
+ 					var selectizeControl = selectizeControls[i];
+ 					console.log(selectizeControl)
+ 				}
+ 				for (let i = 0; i < stone.length; i++) {
+ 					var selectElement = stone[i];
+ 					var selectizeInstance = $(selectElement).selectize()[0].selectize;
+
+ 					var options = selectizeInstance.options;
+
+ 					if (Object.keys(options).length === 0) {
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].detail,
+ 								text: data[j].detail
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+
+ 						selectizeInstance.refreshOptions();
  					}
  				}
  			}
@@ -1111,189 +1148,311 @@
  	}
 
  	function AddStoneSetter() {
+ 		var product_id = document.getElementsByClassName('code')[0].value;
+ 		console.log(product_id);
  		let area = document.getElementById("stone-setter-area");
  		const retainedWeightInputs = document.querySelectorAll('input[id="retained_weight[]"]');
  		const lastRetainedWeightInput = retainedWeightInputs[retainedWeightInputs.length - 1];
  		const lastRetainedWeightValue = lastRetainedWeightInput.value;
+ 		console.log(retainedWeightInputs);
+ 		console.log(lastRetainedWeightValue);
 
  		var date = new Date().toISOString().slice(0, 10);
- 		area.innerHTML += `<hr><div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
- 																<div class="col-sm-5">
+ 		area.innerHTML += `<hr>	<div class="mt-4 mt-lg-0">
+									<form id="stepthree" method="POST" enctype="multipart/form-data">
+										<?php
 
- 																	<select id="select-stone_setter[]" name="vendor[]" placeholder="Pick a stone setter..." required>
- 																		<option value="">Select a stone setter...</option>
+										$randomstone = random_int(0000000000, 779900000000);
+										echo "<input type='hidden' name='stonebarcode' value='$randomstone' class='form-control'>";
+										?>
 
- 																	</select>
- 																</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+											<div class="col-sm-5">
 
+												<select id="select-stone_setter[]" name="vendor[]" placeholder="Pick a stone setter..." required>
+													<option value="">Select a stone setter...</option>
 
- 																<label for="horizontal-firstname-input" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar Code:</label>
-
- 																<div class="col-sm-5">
-
-
- 																	<input type="text" name="code[]" value="" class="form-control code" placeholder="code" readonly>
-
- 																</div>
-
- 															</div>
- 															<div class="row mb-4">
-
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
- 																<div class="col-sm-5">
-
- 																	<input type="date" name="date[]" id="s_date" class="form-control" value="${date}" placeholder="Date">
- 																</div>
-
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image Upload:</label>
- 																<div class="col-sm-5">
-
- 																	<input type="file" id="image[]" name="image[]" value="" class="form-control" accept="image/*">
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
- 																<div class="col-sm-11">
-
- 																	<textarea type="text" name="detail[]" id="s_details[]" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
- 																<div class="col-sm-3">
-
- 																	<input type="number" step="any" name="s_total_weight[]" id="s_total_weight[]" value="${lastRetainedWeightValue}" class="form-control" placeholder="Total Weight" readonly>
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">- Retained Weight:</label>
- 																<div class="col-sm-3">
-
- 																	<input type="number" step="any" name="retained_weight[]" id="retained_weight[]" value="" class="form-control" placeholder="Retained Weight">
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">= Issued Weight:</label>
- 																<div class="col-sm-3">
-
- 																	<input type="number" step="any" name="Issued_weight[]" id="stepIssueweight[]	" class="form-control" placeholder="Issued Weight" readonly>
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<h5>Zircon:</h6>
- 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
- 																	<div class="col-sm-2">
-
-																	 <select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
- 																			<option value="">Select a zircon...</option>
-
- 																		</select>
+												</select>
+											</div>
 
 
- 																	</div>
- 																	<div class="col-sm-1 p-0">
- 																		<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
- 																	</div>
- 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
- 																	<div class="col-sm-2">
+											<label for="horizontal-firstname-input" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar Code:</label>
 
- 																		<input type="number" step="any" name="zircon_weight[]" id="zircon_weight[]" value="" class="form-control" placeholder="Zircon">
- 																	</div>
- 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
- 																	<div class="col-sm-2">
-
- 																		<input type="number" name="zircon_quantity[]" id="zircon_quantity[]" value="" class="form-control" placeholder="Zircon">
- 																	</div>
- 																	<div class="col-sm-2">
-
- 																		<i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
- 																	</div>
- 															</div>
- 															<div id="area">
-
- 															</div>
- 															<div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
- 																<div class="col-sm-2">
-
- 																	<input type="number" step="any" name="zircon_total_weight[]" value="" id="zircon_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 																<div class="col-sm-1"></div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
- 																<div class="col-sm-2">
-
- 																	<input type="number" name="zircon_total_quantity[]" value="" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
- 																<div class="col-sm-3">
-
- 																	<input type="number" step="any" name="zircon_total[]" value="" id="zircon_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<h5>Stone:</h5>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
- 																<div class="col-sm-2">
-
-																 <select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
- 																			<option value="">Select a stone...</option>
-
- 																		</select>
-
- 																</div>
- 																<div class="col-sm-1 p-0">
- 																	<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
- 																<div class="col-sm-2">
-
- 																	<input type="number" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Stone Weight">
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
- 																<div class="col-sm-2">
-
- 																	<input type="number" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Stone Quantity">
- 																</div>
- 																<div class="col-sm-2">
-
- 																	<i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
- 																</div>
+											<div class="col-sm-5">
 
 
- 															</div>
- 															<div id="area2">
+												<input type="text" name="code[]" value="${product_id}"" class="form-control code" placeholder="code" readonly>
 
- 															</div>
- 															<div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
- 																<div class="col-sm-2">
+											</div>
 
- 																	<input type="number" step="any" name="stone_total_weight[]" value="" id="stone_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 																<div class="col-sm-1"></div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
- 																<div class="col-sm-2">
+										</div>
+										<div class="row mb-4">
 
- 																	<input type="number" name="stone_total_quantity[]" value="" id="stone_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
- 																<div class="col-sm-3">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
+											<div class="col-sm-5">
 
- 																	<input type="number" step="any" name="stone_total[]" value="" id="stone_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label ">Grand Total Weight:</label>
- 																<div class="col-sm-3">
+												<input type="date" name="date[]" id="s_date" value="${date}" class="form-control" placeholder="Date">
+											</div>
 
- 																	<input type="number" step="any" name="grand_total_weight[]" value="" id="grand_total_weight[]" class=" form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 															</div>
- 															<div class="row mb-4">
- 																<h5 class="d-none">Grand Total:</h5>
- 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
- 																<div class="col-sm-3">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image Upload:</label>
+											<div class="col-sm-5">
 
- 																	<input type="number" step="any" name="grand_total[]" value="" id="grand_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
- 																</div>
- 															</div>`;
+												<input type="file" id="image[]" name="image[]" value="" class="form-control" accept="image/*">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
+											<div class="col-sm-11">
+
+												<textarea type="text" name="detail[]" id="s_details[]" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
+											</div>
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="s_total_weight[]" id="s_total_weight[]" value="${lastRetainedWeightValue}" class="form-control" placeholder="Total Weight" readonly>
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">- Retained Weight:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="retained_weight[]" id="retained_weight[]" class="form-control" placeholder="Retained Weight">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">= Issued Weight:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="Issued_weight[]" id="stepIssueweight[]" class="form-control" placeholder="Issued Weight" readonly>
+											</div>
+										</div>
+										<div class="row mb-4">
+											<h5>Zircon:</h6>
+												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+												<div class="col-sm-2">
+													<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+														<option value="">Select a zircon...</option>
+
+													</select>
+
+												</div>
+												<div class="col-sm-1 p-0">
+													<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+												</div>
+												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
+												<div class="col-sm-2">
+
+													<input type="number" step="any" name="zircon_weight[]" id="zircon_weight[]" value="" class="form-control" placeholder="Zircon">
+												</div>
+												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+												<div class="col-sm-2">
+
+													<input type="number" name="zircon_quantity[]" id="zircon_quantity[]" value="" class="form-control" placeholder="Zircon">
+												</div>
+												<div class="col-sm-2">
+
+													<i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
+												</div>
+										</div>
+										<div id="area">
+
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+											<div class="col-sm-2">
+
+												<input type="number" step="any" name="zircon_total_weight[]" value="" id="zircon_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<div class="col-sm-1"></div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
+											<div class="col-sm-2">
+
+												<input type="number" name="zircon_total_quantity[]" value="" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="zircon_total[]" value="" id="zircon_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<h5>Stone:</h5>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+											<div class="col-sm-2">
+
+
+												<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+													<option value="">Select a stone...</option>
+
+												</select>
+
+											</div>
+											<div class="col-sm-1 p-0">
+												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+											<div class="col-sm-2">
+
+												<input type="number" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Stone Weight">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+											<div class="col-sm-2">
+
+												<input type="number" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Stone Quantity">
+											</div>
+											<div class="col-sm-2">
+
+												<i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
+											</div>
+
+
+										</div>
+										<div id="area2">
+
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+											<div class="col-sm-2">
+
+												<input type="number" step="any" name="stone_total_weight[]" value="" id="stone_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<div class="col-sm-1"></div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
+											<div class="col-sm-2">
+
+												<input type="number" name="stone_total_quantity[]" value="" id="stone_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="stone_total[]" value="" id="stone_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label ">Grand Total Weight:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="grand_total_weight[]" value="" id="grand_total_weight[]" class=" form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<h5 class="d-none">Grand Total:</h5>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="grand_total[]" value="" id="grand_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+										</div>
+
+										<hr />
+										<div class="row justify-content-end mb-3">
+											<div class="col-sm-9">
+
+												<div>
+													<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+													<button type="submit" class="btn btn-primary" id="s_save">Save</button>
+												</div>
+											</div>
+										</div>
+									</form>
+
+
+
+									<form id="r_stepthree" method="POST" enctype="multipart/form-data">
+
+										<div class="row">
+											<label for="received_weight">Recieved Weight:</label>
+											<div class="col-sm-4 mb-4">
+												<input type="number" step="any" name="received_weight" value="" id="received_weight" class="form-control" placeholder="Received weight">
+											</div>
+											<div id="returned-area" class="row">
+												<h5>Zircon/Stone Return:</h5>
+												<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+													<div class="col-sm-2">
+
+														<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+
+													</div>
+													<div class="col-sm-1 p-0">
+														<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+													</div>
+													<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+													<div class="col-sm-2">
+
+														<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight">
+													</div>
+													<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+													<div class="col-sm-2">
+
+														<input type="number" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity">
+													</div>
+													<div class="col-sm-2">
+
+														<i class="fa fa-plus-circle p-2" onclick="AddReturned(this)"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Weight:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" name="r_stone_weight" value="" id="r_stone_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Quantity:</label>
+											<div class="col-sm-3">
+
+												<input type="number" name="r_stone_quantity" value="" id="r_stone_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight Return:</label>
+											<div class="col-sm-3">
+												<input type="number" step="any" name="r_total_weight" value="" id="r_total_weight" class="form-control" placeholder="Total">
+											</div>
+											<label for="horizontal-firstname-input" for="r_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" value="" id="r_rate" name="r_rate" class="form-control" placeholder="Rate" required>
+											</div>
+
+											<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity">
+											</div>
+										</div>
+										<div class="row mb-4">
+											<label for="horizontal-firstname-input" for="r_wastage" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+											<div class="col-sm-3">
+
+												<input type="number" step="any" value="" id="r_wastage" name="r_wastage" class="form-control" placeholder="Wastage" readonly>
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Grand Weight:</label>
+											<div class="col-sm-3">
+												<input type="number" step="any" name="r_grand_weight" value="" id="r_grand_weight" class="form-control card bg-dark border-dark text-light" placeholder="Total">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Payable:</label>
+											<div class="col-sm-3">
+												<input type="number" step="any" name="r_payable" value="" id="r_payable" class="form-control" placeholder="Total">
+											</div>
+										</div>
+
+
+
+
+
+
+										<div class="row justify-content-end">
+											<div class="col-sm-9">
+
+												<div>
+													<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+													<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>`;
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
 
  		for (var i = 0; i < retained_weight.length; i++) {
@@ -1302,8 +1461,10 @@
  			});
  		};
  		GetAllZircons();
+ 		GetStoneSetterNames();
  		GetAllStones();
- 		GetStoneSetterNames()
+ 		ReturnedStoneListeners();
+ 		StoneSetterListeners()
  	}
 
  	function GetProductId(btn) {
@@ -1320,17 +1481,20 @@
  		$("#product").trigger('input');
  	}
 
- 	function ReturnedPayable() {
- 		var payable = document.getElementById("r_payable");
- 		var r_grand_weight = document.getElementById("r_grand_weight");
- 		var grand_total_weight = document.getElementById("grand_total_weight");
-		console.log(grand_total_weight);
-		console.log(r_grand_weight);
-		payable.value = (parseFloat(grand_total_weight.value) - parseFloat(r_grand_weight.value)).toFixed(2) + "0";
+ 	function ReturnedPayable(element) {
+ 		console.log("element", element);
+ 		var payable = element.querySelector("input[id='r_payable']");
+ 		var r_grand_weight = element.querySelector("input[id='r_grand_weight']");
+ 		var grand_total_weight = element.previousElementSibling.querySelector("input[id='grand_total_weight[]']");
+ 		console.log("payable", payable);
+ 		console.log("r_grand_weight", r_grand_weight);
+ 		console.log("grand_total_weight", grand_total_weight);
+ 		payable.value = (parseFloat(grand_total_weight.value) - parseFloat(r_grand_weight.value)).toFixed(2) + "0";
 
  	}
 
  	function SGrandWeight(current) {
+ 		console.log("element", current);
  		var total = current.querySelector("input[id='grand_total_weight[]']");
  		var stone_total_weight = current.querySelector("input[id='stone_total_weight[]']");
  		var zircon_total_weight = current.querySelector("input[id='zircon_total_weight[]']");
@@ -1349,10 +1513,11 @@
 
  	}
 
- 	function ReturnTotalWeight() {
- 		let total = document.getElementById("r_total_weight");
- 		let received_weight = document.getElementById("received_weight");
- 		let r_stone_weight = document.getElementById("r_stone_weight");
+ 	function ReturnTotalWeight(element) {
+ 		console.log("element", element);
+ 		let total = element.querySelector("input[id='r_total_weight']");
+ 		let received_weight = element.querySelector("input[id='received_weight']");
+ 		let r_stone_weight = element.querySelector("input[id='r_stone_weight']");
  		if (r_stone_weight.value == "") {
  			r_stone_weight.value = 0;
  		}
@@ -1360,33 +1525,36 @@
 
  	}
 
- 	function CalculateReturnedWastage() {
- 		var quantity = document.getElementById("sh_qty");
- 		var rate = document.getElementById("r_rate");
- 		var wastage = document.getElementById("r_wastage");
+ 	function CalculateReturnedWastage(element) {
+ 		console.log("element", element);
+ 		var quantity = element.querySelector("input[id='sh_qty']");
+ 		var rate = element.querySelector("input[id='r_rate']");
+ 		var wastage = element.querySelector("input[id='r_wastage']");
  		wastage.value = (quantity.value * (rate.value) / 100).toFixed(2) + '0';
- 		GrandWeight();
+ 		GrandWeight(element);
  	}
 
- 	function TotalWeight() {
- 		var total_weight = document.getElementById("r_total_weight");
- 		var stone_weight = document.getElementById("r_stone_weight");
+ 	function TotalWeight(element) {
+ 		console.log("element", element);
+ 		var total_weight = element.querySelector("input[id='r_total_weight']");
+ 		var stone_weight = element.querySelector("input[id='r_stone_weight']");
  		if (stone_weight.value == "") {
  			stone_weight.value = 0;
  		}
- 		var received_weight = document.getElementById("received_weight");
+ 		var received_weight = element.querySelector("input[id='received_weight']");
  		total_weight.value = parseFloat(stone_weight.value) + parseFloat(received_weight.value);
- 		GrandWeight();
- 		ReturnedPayable();
+ 		GrandWeight(element);
+ 		ReturnedPayable(element);
  	}
 
- 	function GrandWeight() {
- 		var total_weight = document.getElementById("r_total_weight");
- 		var wastage = document.getElementById("r_wastage");
- 		var received_weight = document.getElementById("received_weight");
- 		var grand_total_weight = document.getElementById("r_grand_weight");
+ 	function GrandWeight(element) {
+ 		console.log("element", element);
+ 		var total_weight = element.querySelector("input[id='r_total_weight']");
+ 		var wastage = element.querySelector("input[id='r_wastage']");
+ 		var received_weight = element.querySelector("input[id='received_weight']");
+ 		var grand_total_weight = element.querySelector("input[id='r_grand_weight']");
  		grand_total_weight.value = parseFloat(total_weight.value) + parseFloat(wastage.value);
- 		ReturnedPayable()
+ 		ReturnedPayable(element);
  	}
 
  	function printDiv(id) {
@@ -1489,10 +1657,7 @@
  						}
 
  						select_manufacturer_purity.setValue(data[0].purity);
- 						GetReturnedStoneData(id);
  						GetAdditionalVendorData(id);
- 						GetZirconData(id);
- 						GetStoneData(id);
  						CalculateDifference();
  						GetPolisherData(id);
 
@@ -1554,75 +1719,329 @@
  			}
  		}
 
- 		// $.ajax({
- 		// 	url: "functions.php",
- 		// 	type: "POST",
- 		// 	data: {
- 		// 		function: "GetStoneSetterData",
- 		// 		id: id
- 		// 	},
- 		// 	success: function(data) {
- 		// 		if (data !== "[]") {
- 		// 			data = JSON.parse(data);
- 		// 			console.log(data);
- 		// 			var select_manufacturer = $('#select-stone_setter')[0].selectize;
- 		// 			select_manufacturer.setValue(data[0].vendor_id);
- 		// 			var dateString = data[0].date;
- 		// 			var date = new Date(dateString);
- 		// 			var year = date.getFullYear();
- 		// 			var month = ("0" + (date.getMonth() + 1)).slice(-2);
- 		// 			var day = ("0" + date.getDate()).slice(-2);
- 		// 			var formattedDate = year + "-" + month + "-" + day;
- 		// 			document.getElementById("s_date").value = formattedDate;
- 		// 			var details = document.getElementById('s_details').value = data[0].detail;
- 		// 			var stepIssueweight = document.getElementById('stepIssueweight').value = data[0].Issued_weight;
- 		// 			var zircon_total = document.getElementById('zircon_total').value = data[0].z_total_price;
- 		// 			var zircon_total_weight = document.getElementById('zircon_total_weight').value = data[0].z_total_weight;
- 		// 			var zircon_total_quantity = document.getElementById('zircon_total_quantity').value = data[0].z_total_quantity;
- 		// 			var stone_total = document.getElementById('stone_total').value = data[0].s_total_price;
- 		// 			var stone_total_weight = document.getElementById('stone_total_weight').value = data[0].s_total_weight;
- 		// 			var stone_total_quantity = document.getElementById('stone_total_quantity').value = data[0].s_total_quantity;
- 		// 			var grand_total_weight = document.getElementById('grand_total_weight').value = data[0].grand_weight;
- 		// 			var grand_total = document.getElementById('grand_total').value = data[0].grand_total;
- 		// 			var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		// 			var selectedValues = selectElement.getValue();
- 		// 			var unpolish_weight = document.getElementById('unpolish_weight').value;
-
- 		// 			for (var i = 0; i < selectedValues.length; i++) {
- 		// 				var selectedValue = selectedValues[i];
- 		// 				var selectedOption = selectElement.options[selectedValue];
- 		// 				if (selectedOption) {
- 		// 					var selectedText = selectedOption.text;
- 		// 				} else {
- 		// 					var selectedText = '18k';
- 		// 				}
- 		// 			}
- 		// 		}
- 		// 		var polish_weight = document.getElementById('polish_weight');
- 		// 		var stepIssueweight = document.getElementById('stepIssueweight').value = polish_weight.value;
- 		// 		GetReturnedData(id)
- 		// 	}
- 		// });
-
-
- 	}
-
- 	function GetZirconData(id) {
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
  			data: {
- 				function: "GetZircons",
+ 				function: "GetStoneSetterData",
  				id: id
  			},
  			success: function(data) {
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					var zircon_code = document.querySelector('input[name="zircon_code[]"]:first-of-type').value = data[0].code;
- 					var zircon_weight = document.querySelector('input[name="zircon_weight[]"]:first-of-type').value = data[0].weight;
- 					var zircon_quantity = document.querySelector('input[name="zircon_quantity[]"]:first-of-type').value = data[0].quantity;
+ 					console.log("data", data);
+ 					let form = document.querySelectorAll("#stepthree")[0];
+ 					let form2 = document.querySelectorAll("#r_stepthree")[0];
+ 					form.remove();
+ 					form2.remove();
+ 					for (var i = 0; i < data.length; i++) {
+ 						console.log("loop number", i);
+
+
+
+ 						let content = `<div>
+								<form id="stepthree" method="POST" enctype="multipart/form-data">
+									<?php
+
+									$randomstone = random_int(0000000000, 779900000000);
+									echo "<input type='hidden' name='stonebarcode' value='$randomstone' class='form-control'>";
+									?>
+
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+										<div class="col-sm-5">
+
+											<select id="select-stone_setter[]" name="vendor[]" placeholder="Pick a stone setter..." required>
+												<option value="${data[i].vendor_id}">${data[i].vendor_id}</option>
+
+											</select>
+										</div>
+
+
+										<label for="horizontal-firstname-input" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar Code:</label>
+
+										<div class="col-sm-5">
+
+
+											<input type="text" name="code[]" value="${id}" class="form-control code" placeholder="code" readonly>
+
+										</div>
+
+									</div>
+									<div class="row mb-4">
+
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
+										<div class="col-sm-5">
+
+											<input type="date" name="date[]" id="s_date" class="form-control" placeholder="Date">
+										</div>
+
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image Upload:</label>
+										<div class="col-sm-5">
+
+											<input type="file" id="image[]" name="image[]" value="" class="form-control" accept="image/*">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
+										<div class="col-sm-11">
+
+											<textarea type="text" name="detail[]" id="s_details[]" value="${data[i].detail}" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="s_total_weight[]" value="${data[i].total_weight}" id="s_total_weight[]" class="form-control" placeholder="Total Weight" readonly>
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">- Retained Weight:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="retained_weight[]" value="${data[i].retained_weight}" id="retained_weight[]" class="form-control" placeholder="Retained Weight">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">= Issued Weight:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="Issued_weight[]" value="${data[i].Issued_weight}" id="stepIssueweight[]" class="form-control" placeholder="Issued Weight" readonly>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<h5>Zircon:</h6>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+											<div class="col-sm-2">
+												<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+													<option value="">Select a zircon...</option>
+
+												</select>
+
+											</div>
+											<div class="col-sm-1 p-0">
+												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
+											<div class="col-sm-2">
+
+												<input type="number" step="any" name="zircon_weight[]" id="zircon_weight[]" value="" class="form-control" placeholder="Zircon">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+											<div class="col-sm-2">
+
+												<input type="number" name="zircon_quantity[]" id="zircon_quantity[]" value="" class="form-control" placeholder="Zircon">
+											</div>
+											<div class="col-sm-2">
+
+												<i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
+											</div>
+									</div>
+									<div id="area">
+
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+										<div class="col-sm-2">
+
+											<input type="number" step="any" name="zircon_total_weight[]" value="${data[i].z_total_weight}" id="zircon_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<div class="col-sm-1"></div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
+										<div class="col-sm-2">
+
+											<input type="number" name="zircon_total_quantity[]" value="${data[i].z_total_quantity}" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="zircon_total[]" value="${data[i].z_total_price}" id="zircon_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<h5>Stone:</h5>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+										<div class="col-sm-2">
+
+
+											<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+												<option value="">Select a stone...</option>
+
+											</select>
+
+										</div>
+										<div class="col-sm-1 p-0">
+											<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+										<div class="col-sm-2">
+
+											<input type="number" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Stone Weight">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+										<div class="col-sm-2">
+
+											<input type="number" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Stone Quantity">
+										</div>
+										<div class="col-sm-2">
+
+											<i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
+										</div>
+
+
+									</div>
+									<div id="area2">
+
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight:</label>
+										<div class="col-sm-2">
+
+											<input type="number" step="any" name="stone_total_weight[]" value="${data[i].s_total_weight}" id="stone_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<div class="col-sm-1"></div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
+										<div class="col-sm-2">
+
+											<input type="number" name="stone_total_quantity[]" value="${data[i].s_total_quantity}" id="stone_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="stone_total[]" value="${data[i].s_total_price}" id="stone_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label ">Grand Total Weight:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="grand_total_weight[]" value="${data[i].grand_weight}" id="grand_total_weight[]" class=" form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<h5 class="d-none">Grand Total:</h5>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="grand_total[]" value="${data[i].grand_total}" id="grand_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+									</div>
+
+									<hr />
+									<div class="row justify-content-end mb-3">
+										<div class="col-sm-9">
+
+											<div>
+												<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+												<button type="submit" class="btn btn-primary" id="s_save">Save</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+					`;
+
+ 						document.getElementById("stone-setter-area").innerHTML += content;
+
+ 						// GetStoneSetterNames();
+ 						GetReturnedData(id, data[0].vendor_id, i);
+ 						GetReturnedStoneData(id, data[0].vendor_id, i);
+ 						GetZirconData(id, data[0].vendor_id, i);
+ 						GetStoneData(id, data[0].vendor_id, i);
+ 					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 					// 	var select_manufacturer = $('#select-stone_setter')[0].selectize;
+ 					// 	select_manufacturer.setValue(data[0].vendor_id);
+ 					// 	var dateString = data[0].date;
+ 					// 	var date = new Date(dateString);
+ 					// 	var year = date.getFullYear();
+ 					// 	var month = ("0" + (date.getMonth() + 1)).slice(-2);
+ 					// 	var day = ("0" + date.getDate()).slice(-2);
+ 					// 	var formattedDate = year + "-" + month + "-" + day;
+ 					// 	document.getElementById("s_date").value = formattedDate;
+ 					// 	var details = document.getElementById('s_details').value = data[0].detail;
+ 					// 	var stepIssueweight = document.getElementById('stepIssueweight').value = data[0].Issued_weight;
+ 					// 	var zircon_total = document.getElementById('zircon_total').value = data[0].z_total_price;
+ 					// 	var zircon_total_weight = document.getElementById('zircon_total_weight').value = data[0].z_total_weight;
+ 					// 	var zircon_total_quantity = document.getElementById('zircon_total_quantity').value = data[0].z_total_quantity;
+ 					// 	var stone_total = document.getElementById('stone_total').value = data[0].s_total_price;
+ 					// 	var stone_total_weight = document.getElementById('stone_total_weight').value = data[0].s_total_weight;
+ 					// 	var stone_total_quantity = document.getElementById('stone_total_quantity').value = data[0].s_total_quantity;
+ 					// 	var grand_total_weight = document.getElementById('grand_total_weight').value = data[0].grand_weight;
+ 					// 	var grand_total = document.getElementById('grand_total').value = data[0].grand_total;
+ 					// 	var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
+ 					// 	var selectedValues = selectElement.getValue();
+ 					// 	var unpolish_weight = document.getElementById('unpolish_weight').value;
+
+ 					// 	for (var i = 0; i < selectedValues.length; i++) {
+ 					// 		var selectedValue = selectedValues[i];
+ 					// 		var selectedOption = selectElement.options[selectedValue];
+ 					// 		if (selectedOption) {
+ 					// 			var selectedText = selectedOption.text;
+ 					// 		} else {
+ 					// 			var selectedText = '18k';
+ 					// 		}
+ 					// 	}
+ 					// }
+
+
+
+
+
+
+
+
+ 					// var polish_weight = document.getElementById('polish_weight');
+ 					// var stepIssueweight = document.getElementById('stepIssueweight').value = polish_weight.value;
+ 					// GetReturnedData(id)
+ 				}
+ 			}
+ 		});
+
+
+ 	}
+
+ 	function GetZirconData(id, vendor_id, si) {
+ 		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		let element = stonesetter[si];
+ 		element = element.parentNode.parentNode.parentNode.parentNode;
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "GetZircons",
+ 				id: id,
+ 				vendor_id: vendor_id
+ 			},
+ 			success: function(data) {
+ 				console.log(data);
+ 				if (data !== "[]") {
+ 					data = JSON.parse(data);
+ 					// var zircon_code = element.querySelector('input[name="zircon_code[]"]:first-of-type').value = data[0].code;
+ 					var zircon_weight = element.querySelector('input[name="zircon_weight[]"]:first-of-type').value = data[0].weight;
+ 					var zircon_quantity = element.querySelector('input[name="zircon_quantity[]"]:first-of-type').value = data[0].quantity;
  					for (var i = 1; i < data.length; i++) {
- 						var area = document.getElementById('area');
+ 						var area = element.querySelector('#area');
  						var div = document.createElement('div');
  						div.setAttribute('class', 'row mb-4 remove');
  						div.innerHTML = `
@@ -1657,23 +2076,26 @@
  		});
  	}
 
- 	function GetStoneData(id) {
+ 	function GetStoneData(id, vendor_id, si) {
+ 		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		let element = stonesetter[si];
+ 		element = element.parentNode.parentNode.parentNode.parentNode;
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
  			data: {
  				function: "GetStones",
- 				id: id
-
+ 				id: id,
+ 				vendor_id: vendor_id
  			},
  			success: function(data) {
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					var stone_code = document.querySelector('input[name="stone_code[]"]:first-of-type').value = data[0].code;
- 					var stone_weight = document.querySelector('input[name="stone_weight[]"]:first-of-type').value = data[0].weight;
- 					var stone_quantity = document.querySelector('input[name="stone_quantity[]"]:first-of-type').value = data[0].quantity;
+ 					// var stone_code = element.querySelector('input[name="stone_code[]"]:first-of-type').value = data[0].code;
+ 					var stone_weight = element.querySelector('input[name="stone_weight[]"]:first-of-type').value = data[0].weight;
+ 					var stone_quantity = element.querySelector('input[name="stone_quantity[]"]:first-of-type').value = data[0].quantity;
  					for (var i = 1; i < data.length; i++) {
- 						var area2 = document.getElementById('area2');
+ 						var area2 = element.querySelector('#area2');
  						var div2 = document.createElement('div');
  						div2.setAttribute('class', 'row mb-4 remove');
  						div2.innerHTML = `
@@ -1701,8 +2123,8 @@
 									<i class="delete-stone fa fa-minus-circle p-2"></i>
 									</div>`;
  						area2.appendChild(div2);
- 						var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
- 						var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
+ 						var stone_weight = element.querySelectorAll('input[id="stone_weight[]"]');
+ 						var stone_quantity = element.querySelectorAll('input[id="stone_quantity[]"]');
  						stone_quantity.forEach(function(input) {
  							input.addEventListener('input', function() {
  								let current = this.parentNode.parentNode.parentNode;
@@ -1721,78 +2143,304 @@
  		});
  	}
 
- 	function GetReturnedData(id) {
+ 	function GetReturnedData(id, vendor_id, si) {
+ 		console.log(vendor_id)
+ 		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		console.log(stonesetter[si].parentNode.parentNode.parentNode);
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
  			data: {
  				function: "GetReturnedData",
- 				id: id
+ 				id: id,
+ 				vendor_id: vendor_id
  			},
  			success: function(data) {
- 				if (data !== "[]") {
- 					data = JSON.parse(data);
- 					var received_weight = document.getElementById('received_weight').value = data[0].received_weight;
- 					var r_stone_weight = document.getElementById('r_stone_weight').value = data[0].stone_weight;
- 					var r_stone_quantity = document.getElementById('r_stone_quantity').value = data[0].stone_quantity;
- 					var r_total_weight = document.getElementById('r_total_weight').value = data[0].total_weight;
- 					var r_rate = document.getElementById('r_rate').value = data[0].rate;
- 					var r_wastage = document.getElementById('r_wastage').value = data[0].wastage;
- 					var r_grand_weight = document.getElementById('r_grand_weight').value = data[0].grand_weight;
- 					var r_payable = document.getElementById('r_payable').value = data[0].payable;
+ 				console.log(data);
+ 				data = JSON.parse(data);
+ 				let element = stonesetter[si];
+ 				element = element.parentNode.parentNode.parentNode.parentNode;
+ 				if (data.length > 0) {
+ 					for (var i = 0; i < data.length; i++) {
+ 						var content = `
+								<form id="r_stepthree" method="POST" enctype="multipart/form-data">
+
+									<div class="row">
+										<label for="received_weight">Recieved Weight:</label>
+										<div class="col-sm-4 mb-4">
+											<input type="number" step="any" name="received_weight" value="${data[i].received_weight}" id="received_weight" class="form-control" placeholder="Received weight">
+										</div>
+										<div id="returned-area" class="row">
+											<h5>Zircon/Stone Return:</h5>
+											<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+												<div class="col-sm-2">
+
+													<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+
+												</div>
+												<div class="col-sm-1 p-0">
+													<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+												</div>
+												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+												<div class="col-sm-2">
+
+													<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight">
+												</div>
+												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+												<div class="col-sm-2">
+
+													<input type="number" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity">
+												</div>
+												<div class="col-sm-2">
+
+													<i class="fa fa-plus-circle p-2" onclick="AddReturned(this)"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Weight:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" name="r_stone_weight" value="${data[i].stone_weight}" id="r_stone_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Quantity:</label>
+										<div class="col-sm-3">
+
+											<input type="number" name="r_stone_quantity" value="${data[i].stone_quantity}" id="r_stone_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight Return:</label>
+										<div class="col-sm-3">
+											<input type="number" step="any" name="r_total_weight" value="${data[i].total_weight}" id="r_total_weight" class="form-control" placeholder="Total">
+										</div>
+										<label for="horizontal-firstname-input" for="r_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" value="${data[i].rate}" id="r_rate" name="r_rate" class="form-control" placeholder="Rate" required>
+										</div>
+
+										<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" value="${data[i].shruded_quantity}" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="horizontal-firstname-input" for="r_wastage" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+										<div class="col-sm-3">
+
+											<input type="number" step="any" value="${data[i].wastage}" id="r_wastage" name="r_wastage" class="form-control" placeholder="Wastage" readonly>
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Grand Weight:</label>
+										<div class="col-sm-3">
+											<input type="number" step="any" name="r_grand_weight" value="${data[i].grand_weight}" id="r_grand_weight" class="form-control card bg-dark border-dark text-light" placeholder="Total">
+										</div>
+										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Payable:</label>
+										<div class="col-sm-3">
+											<input type="number" step="any" name="r_payable" value="${data[i].payable}" id="r_payable" class="form-control" placeholder="Total">
+										</div>
+									</div>
+
+
+
+
+
+
+									<div class="row justify-content-end">
+										<div class="col-sm-9">
+
+											<div>
+												<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+												<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+											</div>
+										</div>
+									</div>
+									</form>`;
+
+ 						// if (data !== "[]") {
+ 						// 	data = JSON.parse(data);
+ 						// 	console.log(data);
+
+
+ 						// 	// var received_weight = document.getElementById('received_weight').value = data[0].received_weight;
+ 						// 	// var r_stone_weight = document.getElementById('r_stone_weight').value = data[0].stone_weight;
+ 						// 	// var r_stone_quantity = document.getElementById('r_stone_quantity').value = data[0].stone_quantity;
+ 						// 	// var r_total_weight = document.getElementById('r_total_weight').value = data[0].total_weight;
+ 						// 	// var r_rate = document.getElementById('r_rate').value = data[0].rate;
+ 						// 	// var r_wastage = document.getElementById('r_wastage').value = data[0].wastage;
+ 						// 	// var r_grand_weight = document.getElementById('r_grand_weight').value = data[0].grand_weight;
+ 						// 	// var r_payable = document.getElementById('r_payable').value = data[0].payable;
+
+ 						// }
+ 					}
+ 				} else {
+ 					var content = `
+							<form id="r_stepthree" method="POST" enctype="multipart/form-data">
+
+								<div class="row">
+									<label for="received_weight">Recieved Weight:</label>
+									<div class="col-sm-4 mb-4">
+										<input type="number" step="any" name="received_weight" value="" id="received_weight" class="form-control" placeholder="Received weight">
+									</div>
+									<div id="returned-area" class="row">
+										<h5>Zircon/Stone Return:</h5>
+										<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+											<div class="col-sm-2">
+
+												<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+
+											</div>
+											<div class="col-sm-1 p-0">
+												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+											<div class="col-sm-2">
+
+												<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight">
+											</div>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+											<div class="col-sm-2">
+
+												<input type="number" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity">
+											</div>
+											<div class="col-sm-2">
+
+												<i class="fa fa-plus-circle p-2" onclick="AddReturned(this)"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Weight:</label>
+									<div class="col-sm-3">
+
+										<input type="number" step="any" name="r_stone_weight" value="" id="r_stone_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone Quantity:</label>
+									<div class="col-sm-3">
+
+										<input type="number" name="r_stone_quantity" value="" id="r_stone_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+									</div>
+								</div>
+								<div class="row mb-4">
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Weight Return:</label>
+									<div class="col-sm-3">
+										<input type="number" step="any" name="r_total_weight" value="" id="r_total_weight" class="form-control" placeholder="Total">
+									</div>
+									<label for="horizontal-firstname-input" for="r_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+									<div class="col-sm-3">
+
+										<input type="number" step="any" value="" id="r_rate" name="r_rate" class="form-control" placeholder="Rate" required>
+									</div>
+
+									<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
+									<div class="col-sm-3">
+
+										<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity">
+									</div>
+								</div>
+								<div class="row mb-4">
+									<label for="horizontal-firstname-input" for="r_wastage" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+									<div class="col-sm-3">
+
+										<input type="number" step="any" value="" id="r_wastage" name="r_wastage" class="form-control" placeholder="Wastage" readonly>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Grand Weight:</label>
+									<div class="col-sm-3">
+										<input type="number" step="any" name="r_grand_weight" value="" id="r_grand_weight" class="form-control card bg-dark border-dark text-light" placeholder="Total">
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Payable:</label>
+									<div class="col-sm-3">
+										<input type="number" step="any" name="r_payable" value="" id="r_payable" class="form-control" placeholder="Total">
+									</div>
+								</div>
+
+
+
+
+
+
+								<div class="row justify-content-end">
+									<div class="col-sm-9">
+
+										<div>
+											<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+											<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+										</div>
+									</div>
+								</div>
+								</form>
+					`;
  				}
+ 				console.log(element)
+ 				element.innerHTML += content;
+ 				ReturnedStoneListeners();
  			}
  		});
  	}
 
- 	function GetReturnedStoneData(id) {
- 		$.ajax({
- 			url: "functions.php",
- 			type: "POST",
- 			data: {
- 				function: "GetReturnedStoneData",
- 				id: id
- 			},
- 			success: function(data) {
- 				if (data !== "[]") {
- 					data = JSON.parse(data);
- 					var returned_area = document.getElementById('returned-area');
- 					var r_code = document.querySelector('input[name="r_code[]"]:first-of-type').value = data[0].code;
- 					var r_weight = document.querySelector('input[name="r_weight[]"]:first-of-type').value = data[0].weight;
- 					var r_quantity = document.querySelector('input[name="r_quantity[]"]:first-of-type').value = data[0].quantity;
- 					for (i = 1; i < data.length; i++) {
- 						var div = document.createElement('div');
- 						div.setAttribute('class', 'row mb-4 remove');
- 						div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-						<div class="col-sm-2">
+ 	function GetReturnedStoneData(id, vendor_id, si) {
+ 		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		let element = stonesetter[si].parentNode.parentNode.parentElement.parentElement.children[1];
+ 		// element = element.parentNode.parentNode.parentNode.parentNode;
+ 		// element_child = element.children;
+ 		// console.log("element_child", element_child);
+ 		// let secondForm = element_child.item(1);
+ 		// console.log("Second form:", secondForm);
+ 		// let secondForm1 = element_child[1];
+ 		// console.log("Second form:", secondForm1);
 
-							<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Code" required>
+ 		console.log("returned element", element);
+ 		// $.ajax({
+ 		// 	url: "functions.php",
+ 		// 	type: "POST",
+ 		// 	data: {
+ 		// 		function: "GetReturnedStoneData",
+ 		// 		id: id,
+ 		// 		vendor_id: vendor_id
+ 		// 	},
+ 		// 	success: function(data) {
+ 		// 		if (data !== "[]") {
+ 		// 			data = JSON.parse(data);
+ 		// 			var returned_area = document.getElementById('returned-area');
+ 		// 			var r_code = document.querySelector('input[name="r_code[]"]:first-of-type').value = data[0].code;
+ 		// 			var r_weight = document.querySelector('input[name="r_weight[]"]:first-of-type').value = data[0].weight;
+ 		// 			var r_quantity = document.querySelector('input[name="r_quantity[]"]:first-of-type').value = data[0].quantity;
+ 		// 			for (i = 1; i < data.length; i++) {
+ 		// 				var div = document.createElement('div');
+ 		// 				div.setAttribute('class', 'row mb-4 remove');
+ 		// 				div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+ 		// 				<div class="col-sm-2">
 
-						</div>
-						<div class="col-sm-1 p-0">
-							<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
-						</div>
-						<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
-						<div class="col-sm-2">
+ 		// 					<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Code" required>
 
-							<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required>
-						</div>
-						<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
-						<div class="col-sm-2">
+ 		// 				</div>
+ 		// 				<div class="col-sm-1 p-0">
+ 		// 					<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+ 		// 				</div>
+ 		// 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+ 		// 				<div class="col-sm-2">
 
-							<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required>
-						</div>
-						<div class="col-sm-2">
+ 		// 					<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required>
+ 		// 				</div>
+ 		// 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 		// 				<div class="col-sm-2">
 
-							<i class="delete-returned fa fa-minus-circle p-2""></i>
-						</div>`
- 						returned_area.appendChild(div);
+ 		// 					<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required>
+ 		// 				</div>
+ 		// 				<div class="col-sm-2">
+
+ 		// 					<i class="delete-returned fa fa-minus-circle p-2""></i>
+ 		// 				</div>`
+ 		// 				returned_area.appendChild(div);
 
 
- 					}
- 				}
- 			}
- 		});
+ 		// 			}
+ 		// 		}
+ 		// 	}
+ 		// });
 
 
 
@@ -1908,7 +2556,6 @@
  	}
 
  	function ZirconWeight(current) {
- 		console
  		var zircon_weight = current.querySelectorAll('input[id="zircon_weight[]"]');
  		total = 0;
  		for (var i = 0; i < zircon_weight.length; i++) {
@@ -1948,30 +2595,32 @@
 
  	}
 
- 	function ReturnedQuantity() {
- 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 	function ReturnedQuantity(element) {
+ 		console.log("element", element);
+ 		var r_quantity = element.querySelectorAll('input[id="r_quantity[]"]');
  		var total = 0;
  		r_quantity.forEach(function(input) {
  			if (input.value) {
  				total += parseFloat(input.value);
  			}
  		});
- 		var r_rate = document.getElementById("r_rate");
+ 		var r_rate = element.querySelector('input[id="r_rate"]');
  		var event = new Event('change');
  		r_rate.dispatchEvent(event);
- 		ReturnedWeight();
+ 		ReturnedWeight(element);
  	}
 
- 	function ReturnedWeight() {
- 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
- 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 	function ReturnedWeight(element) {
+ 		console.log("element", element);
+ 		var r_weight = element.querySelectorAll('input[id="r_weight[]"]');
+ 		var r_quantity = element.querySelectorAll('input[id="r_quantity[]"]');
  		total = 0;
  		for (var i = 0; i < r_weight.length; i++) {
  			if (r_weight[i].value) {
  				total += parseFloat(r_weight[i].value);
  			}
  		}
- 		document.getElementById('r_stone_weight').value = total;
+ 		element.querySelector('input[id="r_stone_weight"]').value = total;
 
  	}
 
@@ -2101,8 +2750,8 @@
 
  	}
 
- 	function AddReturned() {
- 		var returned_area = document.getElementById('returned-area');
+ 	function AddReturned(element) {
+ 		var returned_area = element.parentNode.parentNode.parentNode;
  		var div2 = document.createElement('div');
  		div2.setAttribute('class', 'row mb-4 remove');
  		div2.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
@@ -2127,10 +2776,16 @@
  		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
  		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
  		r_quantity.forEach(function(input) {
- 			input.addEventListener('input', ReturnedQuantity);
+ 			input.addEventListener('input', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				ReturnedQuantity(current);
+ 			});
  		})
  		r_weight.forEach(function(input) {
- 			input.addEventListener('input', ReturnedWeight);
+ 			input.addEventListener('input', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				ReturnedWeight(current);
+ 			});
  		})
  	}
 
@@ -2166,8 +2821,9 @@
  			retained_weight.value = '';
  		} else {
  			value = total_weight - retained_weight.value;
+ 			retained_weight.parentNode.nextElementSibling.nextElementSibling.children[0].value = value;
  		}
- 		retained_weight.parentNode.nextElementSibling.nextElementSibling.children[0].value = value;
+
 
 
  	}
@@ -2241,9 +2897,18 @@
  		}
  	}
 
- 	function GetStoneSetterRate() {
- 		var select_stone_setter = $('#select-stone_setter')[0].selectize;
- 		var vendor_id = select_stone_setter.getValue();
+ 	function GetStoneSetterRate(element) {
+ 		console.log("element:", element);
+ 		var select_stone_setter = element.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
+ 		if (select_stone_setter == undefined) {
+ 			select_stone_setter = element.querySelectorAll('select[id="select-stone_setter[]"]')[0];
+ 			console.log("select_stone_setter:", select_stone_setter);
+ 			var vendor_id = select_stone_setter.value;
+ 			console.log("vendor_id:", vendor_id);
+ 		} else {
+ 			var vendor_id = select_stone_setter.getValue();
+
+ 		}
  		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
  		var selectedValues = selectElement.getValue();
  		var unpolish_weight = document.getElementById('unpolish_weight').value;
@@ -2267,14 +2932,29 @@
  				id: vendor_id
  			},
  			success: function(response) {
+ 				console.log(response);
  				var data = JSON.parse(response);
- 				var stone_setter_rate = document.getElementById('r_rate').value = data[0][selectedText];
+ 				var stone_setter_rate = element.nextElementSibling.querySelector('input[id="r_rate"]').value = data[0][selectedText];
  			}
  		});
  	}
 
  	function GetStoneSetterNames() {
- 		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		console.log("GetStoneSetterNames");
+ 		let stonesetters = document.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		console.log("stonesetters:", stonesetters);
+ 		let delete_area = stonesetters[0].parentElement;
+ 		var selectizeControls = delete_area.querySelectorAll('.selectize-control');
+ 		if (selectizeControls[0] != undefined) {
+ 			// Get the first selectize control (index 0)
+ 			selectizeControls[0].remove();
+ 		}
+ 		// Start the loop from the second element (index 1)
+ 		for (var i = 1; i < selectizeControls.length; i++) {
+ 			var selectizeControl = selectizeControls[i];
+ 			console.log(selectizeControl)
+ 		}
+
  		$.ajax({
  			url: "functions.php",
  			method: "POST",
@@ -2283,24 +2963,173 @@
  			},
  			success: function(response) {
  				var data = JSON.parse(response);
- 				for (let i = 0; i < stonesetter.length; i++) {
- 					if (!$(stonesetter[i]).hasClass('selectized')) {
- 						$(stonesetter[i]).selectize({
- 							create: true,
- 							sortField: 'text'
- 						});
- 					}
- 					let selectize1 = $(stonesetter[i])[0].selectize;
- 					for (let j = 0; j < data.length; j++) {
- 						var newOption = {
- 							value: data[j].id,
- 							text: data[j].name
- 						};
- 						selectize1.addOption(newOption);
+
+ 				for (let i = 0; i < stonesetters.length; i++) {
+ 					var selectElement = stonesetters[i];
+ 					var selectizeInstance = $(selectElement).selectize()[0].selectize;
+
+ 					var options = selectizeInstance.options;
+
+ 					if (Object.keys(options).length === 0) {
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].id,
+ 								text: data[j].name
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+
+ 						selectizeInstance.refreshOptions();
  					}
  				}
  			}
  		});
+
+ 	}
+
+ 	function ReturnedStoneListeners() {
+ 		console.log("ReturnedStoneListeners");
+ 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
+ 		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
+ 		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
+ 		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
+ 		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
+ 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 		var grand_total_weight = document.querySelectorAll("#r_total_weight");
+ 		var received_weight = document.querySelectorAll("#received_weight");
+ 		var r_stone_weight = document.querySelectorAll("#r_stone_weight");
+ 		var zircon_total = document.querySelectorAll('#zircon_total');
+ 		var stone_total = document.querySelectorAll('#stone_total');
+ 		var select_manufacturer_purity = document.querySelectorAll('#select-manufacturer-purity');
+ 		var select_polisher_purity = document.querySelectorAll('#select-polisher-purity');
+ 		var unpolish_weight = document.querySelectorAll('#unpolish_weight');
+ 		var polish_weight = document.querySelectorAll('#polish_weight');
+ 		var p_rate = document.querySelectorAll('#p_rate');
+ 		var r_stone_quantity = document.querySelectorAll("#r_stone_quantity");
+ 		var r_rate = document.querySelectorAll("#r_rate");
+ 		var r_wastage = document.querySelectorAll("#r_wastage");
+ 		var manufacturer_rate = document.querySelectorAll("#manufacturer-rate");
+ 		var r_grand_weight = document.querySelectorAll("#r_grand_weight");
+ 		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+
+
+
+ 		for (var i = 0; i < retained_weight.length; i++) {
+ 			retained_weight[i].addEventListener("change", function() {
+ 				CalculateIssuedWeight(this);
+ 			});
+ 		};
+
+ 		r_grand_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				ReturnedPayable(current);
+ 			});
+ 		});
+ 		r_rate.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				CalculateReturnedWastage(current);
+ 			});
+ 		});
+ 		r_stone_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode;
+ 				TotalWeight(current);
+ 			});
+ 		});
+ 		r_wastage.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				TotalWeight(current);
+ 			});
+ 		});
+ 		r_stone_quantity.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				CalculateReturnedWastage(current);
+ 			});
+ 		});
+ 		received_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				current = this.parentNode.parentNode.parentNode;
+ 				ReturnTotalWeight(current);
+ 			});
+ 		});
+ 		r_stone_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				current = this.parentNode.parentNode.parentNode;
+ 				ReturnTotalWeight(current);
+ 			});
+ 		});
+ 		received_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				TotalWeight(current);
+ 			});
+ 		});
+ 		grand_total_weight.forEach(function(element) {
+ 			element.addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode.nextSibling;
+ 				ReturnedPayable(current);
+ 			});
+ 		});
+
+ 		for (let i = 0; i < r_quantity.length; i++) {
+ 			r_quantity[i].addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				ReturnedQuantity(current);
+ 			});
+ 			r_quantity[i].addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				TotalWeight(current);
+ 			});
+ 		}
+
+ 		for (let i = 0; i < r_weight.length; i++) {
+ 			r_weight[i].addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				ReturnedWeight(current);
+ 			});
+ 			r_weight[i].addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 				TotalWeight(current);
+ 			});
+ 		}
+ 	}
+
+ 	function StoneSetterListeners() {
+ 		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
+ 		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
+ 		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
+ 		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
+ 		stone_quantity.forEach(function(input) {
+ 			input.addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				StoneQuantity(current);
+ 			});
+ 		})
+ 		stone_weight.forEach(function(input) {
+ 			input.addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				StoneWeight(current);
+ 			});
+ 		})
+ 		zircon_quantity.forEach(function(input) {
+ 			input.addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				ZirconQuantity(current);
+ 			});
+ 		})
+ 		zircon_weight.forEach(function(input) {
+ 			input.addEventListener('change', function() {
+ 				let current = this.parentNode.parentNode.parentNode;
+ 				ZirconWeight(current);
+ 			});
+ 		})
  	}
 
  	image.onchange = evt => {
@@ -2434,47 +3263,26 @@
  		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
  		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
- 		var grand_total_weight = document.getElementById("r_total_weight");
- 		var received_weight = document.getElementById("received_weight");
- 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
- 		var r_stone_weight = document.getElementById("r_stone_weight");
- 		var zircon_total = document.getElementById('zircon_total');
- 		var stone_total = document.getElementById('stone_total');
- 		var select_manufacturer_purity = document.getElementById('select-manufacturer-purity');
- 		var select_polisher_purity = document.getElementById('select-polisher-purity');
- 		var unpolish_weight = document.getElementById('unpolish_weight');
- 		var polish_weight = document.getElementById('polish_weight');
- 		var p_rate = document.getElementById('p_rate');
- 		var r_stone_quantity = document.getElementById("r_stone_quantity");
- 		var r_rate = document.getElementById("r_rate");
- 		var r_wastage = document.getElementById("r_wastage");
- 		var manufacturer_rate = document.getElementById("manufacturer-rate");
- 		var r_grand_weight = document.getElementById("r_grand_weight");
+ 		var grand_total_weight = document.querySelector("#r_total_weight");
+ 		var received_weight = document.querySelector("#received_weight");
+ 		var r_stone_weight = document.querySelector("#r_stone_weight");
+ 		var zircon_total = document.querySelector('#zircon_total');
+ 		var stone_total = document.querySelector('#stone_total');
+ 		var select_manufacturer_purity = document.querySelector('#select-manufacturer-purity');
+ 		var select_polisher_purity = document.querySelector('#select-polisher-purity');
+ 		var unpolish_weight = document.querySelector('#unpolish_weight');
+ 		var polish_weight = document.querySelector('#polish_weight');
+ 		var p_rate = document.querySelector('#p_rate');
+ 		var r_stone_quantity = document.querySelector("#r_stone_quantity");
+ 		var r_rate = document.querySelector("#r_rate");
+ 		var r_wastage = document.querySelector("#r_wastage");
+ 		var manufacturer_rate = document.querySelector("#manufacturer-rate");
+ 		var r_grand_weight = document.querySelector("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
 
- 		for (var i = 0; i < retained_weight.length; i++) {
- 			retained_weight[i].addEventListener("change", function() {
- 				CalculateIssuedWeight(this);
- 			});
- 		};
-
-
- 		r_grand_weight.addEventListener("change", function() {
- 			ReturnedPayable();
- 		});
  		manufacturer_rate.addEventListener("change", function() {
  			CalculateWastage();
  		});
- 		r_rate.addEventListener("change", function() {
- 			CalculateReturnedWastage();
- 		});
- 		r_stone_weight.addEventListener("change", TotalWeight);
- 		r_wastage.addEventListener("change", TotalWeight);
- 		r_stone_quantity.addEventListener("change", function() {
- 			CalculateReturnedWastage();
- 		});
- 		received_weight.addEventListener("change", ReturnTotalWeight);
- 		r_stone_weight.addEventListener("change", ReturnTotalWeight);
  		// zircon_total.addEventListener('change', GrandTotal);
  		// stone_total.addEventListener('change', GrandTotal);
  		unpolish_weight.addEventListener('change', CalculateWastage);
@@ -2483,52 +3291,13 @@
  		p_rate.addEventListener('change', function() {
  			CalculateNewPayable($(this).val());
  		});
- 		r_stone_weight.addEventListener("change", function() {
-
- 		});
- 		received_weight.addEventListener("change", function() {
- 			TotalWeight();
- 		});
- 		grand_total_weight.addEventListener("change", function() {
- 			ReturnedPayable();
- 		});
  		// var stepIssueweight = document.getElementById("stepIssueweight");
  		// stepIssueweight.addEventListener("change", function() {
  		// 	ReturnedPayable();
  		// });
- 		for (let i = 0; i < r_quantity.length; i++) {
- 			r_quantity[i].addEventListener('change', ReturnedQuantity);
- 			r_quantity[i].addEventListener('change', TotalWeight);
- 		}
+ 		ReturnedStoneListeners();
+ 		StoneSetterListeners();
 
- 		for (let i = 0; i < r_weight.length; i++) {
- 			r_weight[i].addEventListener('change', ReturnedWeight);
- 			r_weight[i].addEventListener('change', TotalWeight);
- 		}
- 		stone_quantity.forEach(function(input) {
- 			input.addEventListener('change', function() {
- 				let current = this.parentNode.parentNode.parentNode;
- 				StoneQuantity(current);
- 			});
- 		})
- 		stone_weight.forEach(function(input) {
- 			input.addEventListener('change', function() {
- 				let current = this.parentNode.parentNode.parentNode;
- 				StoneWeight(current);
- 			});
- 		})
- 		zircon_quantity.forEach(function(input) {
- 			input.addEventListener('change', function() {
- 				let current = this.parentNode.parentNode.parentNode;
- 				ZirconQuantity(current);
- 			});
- 		})
- 		zircon_weight.forEach(function(input) {
- 			input.addEventListener('change', function() {
- 				let current = this.parentNode.parentNode.parentNode;
- 				ZirconWeight(current);
- 			});
- 		})
 
  	});
 
@@ -2604,6 +3373,9 @@
  		e.preventDefault();
  		var save = document.getElementById("s_save");
  		var form = new FormData(this);
+ 		for (var pair of form.entries()) {
+ 			console.log(pair[0] + ': ' + pair[1]);
+ 		}
  		form.append('function', 'StepThree');
  		$.ajax({
  			url: "functions.php",
@@ -2612,8 +3384,9 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
+ 				console.log(data);
  				data = JSON.parse(data);
- 				if (data == "success") {
+ 				if (data[0] == "success" && data[1] == "success") {
  					Swal.fire({
  						title: 'Success!',
  						text: 'Stone Setter Record Saved Successfully',
@@ -2628,22 +3401,6 @@
  						confirmButtonText: 'Ok'
  					})
  				}
- 				// data = JSON.parse(data);
- 				// if (data[0] == "success" && data[1] == "success" && data[2] == "success") {
- 				// 	Swal.fire({
- 				// 		title: 'Success!',
- 				// 		text: 'Stone Setter Record Saved Successfully',
- 				// 		icon: 'success',
- 				// 		confirmButtonText: 'Ok'
- 				// 	})
- 				// } else {
- 				// 	Swal.fire({
- 				// 		title: 'Error!',
- 				// 		text: 'Something went wrong.',
- 				// 		icon: 'error',
- 				// 		confirmButtonText: 'Ok'
- 				// 	})
- 				// }
  			}
  		});
 
@@ -2655,8 +3412,9 @@
  		save.disabled = true;
  		var product_id = document.getElementsByClassName('code');
  		product_id = product_id[0].value;
- 		var select_stone_setter = $('#select-stone_setter')[0].selectize;
- 		var vendor_id = select_stone_setter.getValue();
+ 		let stonesetter = document.querySelector('select[id="select-stone_setter[]"]');
+ 		console.log(stonesetter);
+ 		let vendor_id = stonesetter.value;
  		var form = new FormData(this);
  		form.append('function', 'ReturnedStepThree');
  		form.append('product_id', product_id);
@@ -2668,6 +3426,7 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
+ 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success" && data[1] == "success") {
  					Swal.fire({
@@ -2799,9 +3558,10 @@
  	});
 
  	$(document).on('click', '.delete-returned', function() {
+ 		let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  		$(this).parent().parent().remove();
- 		ReturnedQuantity();
- 		ReturnedWeight();
+ 		ReturnedQuantity(current);
+ 		ReturnedWeight(current);
  	});
 
  	$(document).on('change', '#select-manufacturer', function(e) {
@@ -2873,7 +3633,8 @@
 
  	$(document).on('change', '#select-stone_setter', function(e) {
  		e.preventDefault();
- 		GetStoneSetterRate();
+ 		let current = this.parentNode.parentNode.parentNode.parentNode;
+ 		GetStoneSetterRate(current);
  	});
 
  	$(document).on('change', '#select-polisher-purity', function(e) {
@@ -2954,7 +3715,8 @@
  	$(document).on('input', '#received_weight', function(e) {
  		e.preventDefault();
  		CalculatePayable();
- 		GetStoneSetterRate();
+ 		let current = this.parentNode.parentNode.parentNode.previousElementSibling;
+ 		GetStoneSetterRate(current);
 
  	});
 

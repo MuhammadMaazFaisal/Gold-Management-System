@@ -517,9 +517,12 @@ function StepThree()
     $imageNamepo = $_FILES['image']['name'];
     $imageTmpName = $_FILES['image']['tmp_name'];
     $vendor_id = $_POST['vendor'];
+    array_push($array, $vendor_id);
     $product_id = $_POST['code'];
     $date = $_POST['date'];
     $details = $_POST['detail'];
+    $total_weight=$_POST['s_total_weight'];
+    $retained_weight=$_POST['retained_weight'];
     $issued_weight = $_POST['Issued_weight'];
     $z_code = $_POST['zircon_code'];
     $z_weight = $_POST['zircon_weight'];
@@ -537,124 +540,126 @@ function StepThree()
     $grand_price = $_POST['grand_total'];
 
 
+
     $time = time();
 
 
-    for ($i = 0; $i < count($vendor_id); $i++) {
         $qry = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
         $qryStatement = $pdo->prepare($qry);
         $qryStatement->bindParam(':product_id', $product_id[0]);
-        $qryStatement->bindParam(':vendor_id', $vendor_id[$i]);
+        $qryStatement->bindParam(':vendor_id', $vendor_id[0]);
         $qryStatement->execute();
         $array = array();
         if ($qryStatement->rowCount() > 0) {
-            $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight,`grand_total`=:grand_price WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
+            $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight,`grand_total`=:grand_price, `total_weight`=:total_weight, `retained_weight`=:retained_weight WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
         } else {
-            $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
+            $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `total_weight`, `retained_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:total_weight,:retained_weight,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
         }
         $qryStatement2 = $pdo->prepare($qry2);
         $qryStatement2->bindParam(':product_id', $product_id[0]);
-        $qryStatement2->bindParam(':date', $date[$i]);
-        $qryStatement2->bindParam(':vendor_id', $vendor_id[$i]);
-        $qryStatement2->bindParam(':imageNamepo', $imageNamepo[$i]);
-        $qryStatement2->bindParam(':details', $details[$i]);
-        $qryStatement2->bindParam(':issued_weight', $issued_weight[$i]);
-        $qryStatement2->bindParam(':total_z_price', $total_z_price[$i]);
-        $qryStatement2->bindParam(':total_z_weight', $total_z_weight[$i]);
-        $qryStatement2->bindParam(':total_z_quantity', $total_z_quantity[$i]);
-        $qryStatement2->bindParam(':total_s_price', $total_s_price[$i]);
-        $qryStatement2->bindParam(':total_s_weight', $total_s_weight[$i]);
-        $qryStatement2->bindParam(':total_s_quantity', $total_s_quantity[$i]);
-        $qryStatement2->bindParam(':grand_weight', $grand_weight[$i]);
-        $qryStatement2->bindParam(':grand_price', $grand_price[$i]);
+        $qryStatement2->bindParam(':date', $date[0]);
+        $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
+        $qryStatement2->bindParam(':imageNamepo', $imageNamepo[0]);
+        $qryStatement2->bindParam(':details', $details[0]);
+        $qryStatement2->bindParam(':issued_weight', $issued_weight[0]);
+        $qryStatement2->bindParam(':total_z_price', $total_z_price[0]);
+        $qryStatement2->bindParam(':total_z_weight', $total_z_weight[0]);
+        $qryStatement2->bindParam(':total_z_quantity', $total_z_quantity[0]);
+        $qryStatement2->bindParam(':total_s_price', $total_s_price[0]);
+        $qryStatement2->bindParam(':total_s_weight', $total_s_weight[0]);
+        $qryStatement2->bindParam(':total_s_quantity', $total_s_quantity[0]);
+        $qryStatement2->bindParam(':grand_weight', $grand_weight[0]);
+        $qryStatement2->bindParam(':grand_price', $grand_price[0]);
+        $qryStatement2->bindParam(':total_weight', $total_weight[0]);
+        $qryStatement2->bindParam(':retained_weight', $retained_weight[0]);
         if ($qryStatement2->execute()) {
+            array_push($array, 'success');
+        }
+    
+
+    // echo json_encode($array, true);
+
+    $qry3 = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
+    $qryStatement3 = $pdo->prepare($qry3);
+    $qryStatement3->bindParam(':product_id', $product_id[0]);
+    $qryStatement3->bindParam(':vendor_id', $vendor_id[0]);
+    $qryStatement3->execute();
+    $array = array();
+    if ($qryStatement3->rowCount() > 0) {
+        $qry2 = "DELETE FROM `zircon` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
+        $qryStatement2 = $pdo->prepare($qry2);
+        $qryStatement2->bindParam(':product_id', $product_id[0]);
+        $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
+        $qryStatement2->execute();
+        $qry2 = "DELETE FROM `stone` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
+        $qryStatement2 = $pdo->prepare($qry2);
+        $qryStatement2->bindParam(':product_id', $product_id[0]);
+        $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
+        $qryStatement2->execute();
+        }
+
+    for ($i = 0; $i < @count($z_code); $i++) {
+        $z_weight1 = $z_weight[$i];
+        $z_quantity1 = $z_quantity[$i];
+        $z_code1 = $z_code[$i];
+
+        $qry = "INSERT INTO `zircon`(`code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES (:z_code,:vendor_id,:product_id,:z_weight,0,:z_quantity)";
+
+        $statement = $pdo->prepare($qry);
+
+        $statement->bindParam(':z_code', $z_code1);
+        $statement->bindParam(':product_id', $product_id[0]);
+        $statement->bindParam(':z_weight', $z_weight1);
+        $statement->bindParam(':z_quantity', $z_quantity1);
+        $statement->bindParam(':vendor_id', $vendor_id[0]);
+
+        if ($statement->execute()) {
             array_push($array, 'success');
         }
     }
 
-    echo json_encode($array, true);
+    for ($i = 0; $i < @count($s_code); $i++) {
+        $s_weight1 = $s_weight[$i];
+        $s_quantity1 = $s_quantity[$i];
+        $s_code1 = $s_code[$i];
+        $qry1 = "INSERT INTO `stone`(`code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES (:s_code,:vendor_id,:product_id,0,:s_weight,:s_quantity)";
 
-    // $qry3 = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id";
-    // $qryStatement3 = $pdo->prepare($qry3);
-    // $qryStatement3->bindParam(':product_id', $product_id);
-    // $qryStatement3->execute();
-    // $array = array();
-    // if ($qryStatement3->rowCount() > 0) {
-    //     $qry2 = "DELETE FROM `zircon` WHERE `product_id` = :product_id";
-    //     $qryStatement2 = $pdo->prepare($qry2);
-    //     $qryStatement2->bindParam(':product_id', $product_id);
-    //     $qryStatement2->execute();
-    //     $qry2 = "DELETE FROM `stone` WHERE `product_id` = :product_id";
-    //     $qryStatement2 = $pdo->prepare($qry2);
-    //     $qryStatement2->bindParam(':product_id', $product_id);
-    //     $qryStatement2->execute();
-    //     $qry4 = "UPDATE `stone_setter_step` SET `date`=:date,`vendor_id`=:vendor_id,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity ,`grand_weight`=:grand_weight ,`grand_total`=:grand_price,`status`='Active' WHERE `product_id` = :product_id";
-    // } else {
+        $statement1 = $pdo->prepare($qry1);
 
-    //     $qry4 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
-    // }
+        $statement1->bindParam(':s_code', $s_code1);
+        $statement1->bindParam(':product_id', $product_id[0]);
+        $statement1->bindParam(':s_weight', $s_weight1);
+        $statement1->bindParam(':s_quantity', $s_quantity1);
+        $statement1->bindParam(':vendor_id', $vendor_id[0]);
 
-    // for ($i = 0; $i < @count($z_code); $i++) {
-    //     $z_weight1 = $z_weight[$i];
-    //     $z_quantity1 = $z_quantity[$i];
-    //     $z_code1 = $z_code[$i];
-
-    //     $qry = "INSERT INTO `zircon`(`code`, `product_id`, `weight`, `price`, `quantity`) VALUES (:z_code,:product_id,:z_weight,0,:z_quantity)";
-
-    //     $statement = $pdo->prepare($qry);
-
-    //     $statement->bindParam(':z_code', $z_code1);
-    //     $statement->bindParam(':product_id', $product_id);
-    //     $statement->bindParam(':z_weight', $z_weight1);
-    //     $statement->bindParam(':z_quantity', $z_quantity1);
-
-    //     if ($statement->execute()) {
-    //         array_push($array, 'success');
-    //     }
-    // }
-
-    // for ($i = 0; $i < @count($s_code); $i++) {
-    //     $s_weight1 = $s_weight[$i];
-    //     $s_quantity1 = $s_quantity[$i];
-    //     $s_code1 = $s_code[$i];
-    //     $qry1 = "INSERT INTO `stone`(`code`, `product_id`, `price`, `weight`, `quantity`) VALUES (:s_code,:product_id,0,:s_weight,:s_quantity)";
-
-    //     $statement1 = $pdo->prepare($qry1);
-
-    //     $statement1->bindParam(':s_code', $s_code1);
-    //     $statement1->bindParam(':product_id', $product_id);
-    //     $statement1->bindParam(':s_weight', $s_weight1);
-    //     $statement1->bindParam(':s_quantity', $s_quantity1);
-
-    //     if ($statement1->execute()) {
-    //         array_push($array, 'success');
-    //     }
-    // }
+        if ($statement1->execute()) {
+            array_push($array, 'success');
+        }
+    }
 
     // $statement1 = $pdo->prepare($qry4);
 
-    // $statement1->bindParam(':product_id', $product_id);
-    // $statement1->bindParam(':date', $date);
-    // $statement1->bindParam(':vendor_id', $vendor_id);
-    // $statement1->bindParam(':imageNamepo', $pName);
-    // $statement1->bindParam(':details', $details);
-    // $statement1->bindParam(':issued_weight', $issued_weight);
-    // $statement1->bindParam(':total_z_price', $total_z_price);
-    // $statement1->bindParam(':total_z_weight', $total_z_weight);
-    // $statement1->bindParam(':total_z_quantity', $total_z_quantity);
-    // $statement1->bindParam(':total_s_price', $total_s_price);
-    // $statement1->bindParam(':total_s_weight', $total_s_weight);
-    // $statement1->bindParam(':total_s_quantity', $total_s_quantity);
-    // $statement1->bindParam(':grand_weight', $grand_weight);
-    // $statement1->bindParam(':grand_price', $grand_price);
+    // $statement1->bindParam(':product_id', $product_id[0]);
+    // $statement1->bindParam(':date', $date[0]);
+    // $statement1->bindParam(':vendor_id', $vendor_id[0]);
+    // $statement1->bindParam(':imageNamepo', $pName[0]);
+    // $statement1->bindParam(':details', $details[0]);
+    // $statement1->bindParam(':issued_weight', $issued_weight[0]);
+    // $statement1->bindParam(':total_z_price', $total_z_price[0]);
+    // $statement1->bindParam(':total_z_weight', $total_z_weight[0]);
+    // $statement1->bindParam(':total_z_quantity', $total_z_quantity[0]);
+    // $statement1->bindParam(':total_s_price', $total_s_price[0]);
+    // $statement1->bindParam(':total_s_weight', $total_s_weight[0]);
+    // $statement1->bindParam(':total_s_quantity', $total_s_quantity[0]);
+    // $statement1->bindParam(':grand_weight', $grand_weight[0]);
+    // $statement1->bindParam(':grand_price', $grand_price[0]);
 
-    // move_uploaded_file($imageTmpName, $pName);
+    // move_uploaded_file($imageTmpName[0], $pName[0]);
 
     // if ($statement1->execute()) {
     //     array_push($array, 'success');
     // }
-    // array_push($array, $grand_weight);
-    // echo json_encode($array, true);
+    echo json_encode($array, true);
 }
 
 function ReturnedStepThree()
@@ -677,6 +682,7 @@ function ReturnedStepThree()
     $r_code = $_POST['r_code'];
     $r_weight = $_POST['r_weight'];
     $r_quantity = $_POST['r_quantity'];
+    $sh_qty=$_POST['sh_qty'];
 
     $qry2 = "SELECT * FROM `returned_stone_step` WHERE `product_id` = :product_id";
     $qryStatement2 = $pdo->prepare($qry2);
@@ -692,7 +698,7 @@ function ReturnedStepThree()
         $statement3->bindParam(':product_id', $product_id);
         $statement3->execute();
     } else {
-        $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded-quantity`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:sh_qty,:r_wastage,:r_grand_weight,:r_payable)";
+        $qry = "INSERT INTO `returned_stone_step`(`product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded_quantity`, `wastage`, `grand_weight`, `payable`) VALUES (:product_id,:vendor_id,:received_weight,:r_stone_weight,:r_stone_quantity,:r_total_weight,:r_rate,:sh_qty,:r_wastage,:r_grand_weight,:r_payable)";
     }
 
     $statement = $pdo->prepare($qry);
@@ -713,7 +719,7 @@ function ReturnedStepThree()
         array_push($array, 'error');
     }
 
-    $qry1 = "INSERT INTO `returned_item`(`code`, `product_id`, `price`, `weight`, `quantity`) VALUES (:r_code,:product_id,0,:r_weight,:r_quantity)";
+    $qry1 = "INSERT INTO `returned_item`(`code`,`vendor_id` , `product_id`, `price`, `weight`, `quantity`) VALUES (:r_code,:vendor_id,:product_id,0,:r_weight,:r_quantity)";
 
     if (is_array($r_code)) {
         for ($i = 0; $i < @count($r_code); $i++) {
@@ -725,6 +731,7 @@ function ReturnedStepThree()
             $statement1->bindParam(':r_code', $r_code1);
             $statement1->bindParam(':r_weight', $r_weight1);
             $statement1->bindParam(':r_quantity', $r_quantity1);
+            $statement1->bindParam(':vendor_id', $vendor_id);
             if ($statement1->execute()) {
                 array_push($array, 'success');
             } else {
@@ -835,10 +842,12 @@ function GetZircons()
     require_once "layouts/config.php";
 
     $id = $_POST['id'];
-    $qry = "SELECT * FROM zircon WHERE product_id=:id";
+    $vendor_id = $_POST['vendor_id'];
+    $qry = "SELECT * FROM zircon WHERE product_id=:id AND vendor_id = :vendor_id";
     $qryStatement = $pdo->prepare($qry);
 
     $qryStatement->bindParam(':id', $id);
+    $qryStatement->bindParam(':vendor_id', $vendor_id);
     $qryStatement->execute();
 
     $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -853,10 +862,12 @@ function GetStones()
     require_once "layouts/config.php";
 
     $id = $_POST['id'];
-    $qry = "SELECT * FROM stone WHERE product_id=:id";
+    $vendor_id = $_POST['vendor_id'];
+    $qry = "SELECT * FROM stone WHERE product_id=:id AND vendor_id = :vendor_id";
     $qryStatement = $pdo->prepare($qry);
 
     $qryStatement->bindParam(':id', $id);
+    $qryStatement->bindParam(':vendor_id', $vendor_id);
     $qryStatement->execute();
 
     $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -871,9 +882,11 @@ function GetReturnedData()
     require_once "layouts/config.php";
 
     $id = $_POST['id'];
-    $qry = "SELECT * FROM `returned_stone_step` WHERE product_id = :id";
+    $vendor_id = $_POST['vendor_id'];
+    $qry = "SELECT * FROM `returned_stone_step` WHERE product_id = :id AND vendor_id = :vendor_id";
     $qryStatement = $pdo->prepare($qry);
     $qryStatement->bindParam(':id', $id);
+    $qryStatement->bindParam(':vendor_id', $vendor_id);
     $array = array();
     if ($qryStatement->execute()) {
         $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -891,9 +904,11 @@ function GetReturnedStoneData()
     require_once "layouts/config.php";
 
     $id = $_POST['id'];
-    $qry = "SELECT * FROM returned_item WHERE product_id = :id";
+    $vendor_id = $_POST['vendor_id'];
+    $qry = "SELECT * FROM returned_item WHERE product_id = :id AND vendor_id = :vendor_id";
     $qryStatement = $pdo->prepare($qry);
     $qryStatement->bindParam(':id', $id);
+    $qryStatement->bindParam(':vendor_id', $vendor_id);
     $array = array();
     if ($qryStatement->execute()) {
         $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
