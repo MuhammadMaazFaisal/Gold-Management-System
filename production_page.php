@@ -519,7 +519,7 @@
  												<div class="col-lg-12 ms-lg-auto ">
 
  													<div class="mb-2 d-flex justify-content-end" style="margin-top: -30px;">
- 														<button type="button" class="btn btn-primary" onclick="AddStoneSetter()">
+ 														<button type="button" class="btn btn-primary" onclick="newrunLoop()">
  															Add Stone Setter
  														</button>
  													</div>
@@ -1074,7 +1074,7 @@
  				// Start the loop from the second element (index 1)
  				for (var i = 1; i < selectizeControls.length; i++) {
  					var selectizeControl = selectizeControls[i];
- 					console.log(selectizeControl)
+
  				}
  				for (let i = 0; i < zircon.length; i++) {
  					var selectElement = zircon[i];
@@ -1092,6 +1092,24 @@
  								selectizeInstance.addOption(newOption);
  							}
  						}
+
+ 						selectizeInstance.refreshOptions();
+ 					}
+
+ 					if (Object.keys(options).length === 1) {
+ 						option1 = Object.keys(options)[0];
+ 						selectizeInstance.removeOption(option1);
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].detail,
+ 								text: data[j].detail
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+ 						selectizeInstance.setValue(option1);
+
 
  						selectizeInstance.refreshOptions();
  					}
@@ -1121,7 +1139,6 @@
  				// Start the loop from the second element (index 1)
  				for (var i = 1; i < selectizeControls.length; i++) {
  					var selectizeControl = selectizeControls[i];
- 					console.log(selectizeControl)
  				}
  				for (let i = 0; i < stone.length; i++) {
  					var selectElement = stone[i];
@@ -1149,13 +1166,10 @@
 
  	function AddStoneSetter() {
  		var product_id = document.getElementsByClassName('code')[0].value;
- 		console.log(product_id);
  		let area = document.getElementById("stone-setter-area");
  		const retainedWeightInputs = document.querySelectorAll('input[id="retained_weight[]"]');
  		const lastRetainedWeightInput = retainedWeightInputs[retainedWeightInputs.length - 1];
  		const lastRetainedWeightValue = lastRetainedWeightInput.value;
- 		console.log(retainedWeightInputs);
- 		console.log(lastRetainedWeightValue);
 
  		var date = new Date().toISOString().slice(0, 10);
  		area.innerHTML += `<hr>	<div class="mt-4 mt-lg-0">
@@ -1460,12 +1474,19 @@
  				CalculateIssuedWeight(this);
  			});
  		};
- 		GetAllZircons();
- 		GetStoneSetterNames();
- 		GetAllStones();
- 		ReturnedStoneListeners();
- 		StoneSetterListeners()
+
+ 		async function runLoop() {
+ 			await GetStoneSetterNames();
+ 			await GetAllZircons();
+ 			await GetAllStones();
+ 			await ReturnedStoneListeners();
+ 			await StoneSetterListeners();
+
+ 		}
+
+ 		runLoop();
  	}
+
 
  	function GetProductId(btn) {
  		var id = btn.parentNode.parentNode.id;
@@ -1482,19 +1503,14 @@
  	}
 
  	function ReturnedPayable(element) {
- 		console.log("element", element);
  		var payable = element.querySelector("input[id='r_payable']");
  		var r_grand_weight = element.querySelector("input[id='r_grand_weight']");
  		var grand_total_weight = element.previousElementSibling.querySelector("input[id='grand_total_weight[]']");
- 		console.log("payable", payable);
- 		console.log("r_grand_weight", r_grand_weight);
- 		console.log("grand_total_weight", grand_total_weight);
  		payable.value = (parseFloat(grand_total_weight.value) - parseFloat(r_grand_weight.value)).toFixed(2) + "0";
 
  	}
 
  	function SGrandWeight(current) {
- 		console.log("element", current);
  		var total = current.querySelector("input[id='grand_total_weight[]']");
  		var stone_total_weight = current.querySelector("input[id='stone_total_weight[]']");
  		var zircon_total_weight = current.querySelector("input[id='zircon_total_weight[]']");
@@ -1514,7 +1530,6 @@
  	}
 
  	function ReturnTotalWeight(element) {
- 		console.log("element", element);
  		let total = element.querySelector("input[id='r_total_weight']");
  		let received_weight = element.querySelector("input[id='received_weight']");
  		let r_stone_weight = element.querySelector("input[id='r_stone_weight']");
@@ -1526,7 +1541,6 @@
  	}
 
  	function CalculateReturnedWastage(element) {
- 		console.log("element", element);
  		var quantity = element.querySelector("input[id='sh_qty']");
  		var rate = element.querySelector("input[id='r_rate']");
  		var wastage = element.querySelector("input[id='r_wastage']");
@@ -1535,7 +1549,6 @@
  	}
 
  	function TotalWeight(element) {
- 		console.log("element", element);
  		var total_weight = element.querySelector("input[id='r_total_weight']");
  		var stone_weight = element.querySelector("input[id='r_stone_weight']");
  		if (stone_weight.value == "") {
@@ -1548,7 +1561,6 @@
  	}
 
  	function GrandWeight(element) {
- 		console.log("element", element);
  		var total_weight = element.querySelector("input[id='r_total_weight']");
  		var wastage = element.querySelector("input[id='r_wastage']");
  		var received_weight = element.querySelector("input[id='received_weight']");
@@ -1729,18 +1741,22 @@
  			success: function(data) {
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					console.log("data", data);
+ 					console.log(data);
  					let form = document.querySelectorAll("#stepthree")[0];
  					let form2 = document.querySelectorAll("#r_stepthree")[0];
  					form.remove();
  					form2.remove();
- 					for (var i = 0; i < data.length; i++) {
- 						console.log("loop number", i);
-
-
-
- 						let content = `<div>
-								<form id="stepthree" method="POST" enctype="multipart/form-data">
+ 					async function runLoop() {
+ 						for (var i = 0; i < data.length; i++) {
+ 							console.log("runloop", i);
+ 							var dateString = data[i].date;
+ 							var date = new Date(dateString);
+ 							var year = date.getFullYear();
+ 							var month = ("0" + (date.getMonth() + 1)).slice(-2);
+ 							var day = ("0" + date.getDate()).slice(-2);
+ 							var date = year + "-" + month + "-" + day;
+ 							let content = `<div class="stone-setter${i}">
+								<form id="stepthree" class="" method="POST" enctype="multipart/form-data">
 									<?php
 
 									$randomstone = random_int(0000000000, 779900000000);
@@ -1773,7 +1789,7 @@
 										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
 										<div class="col-sm-5">
 
-											<input type="date" name="date[]" id="s_date" class="form-control" placeholder="Date">
+											<input type="date" value="${date}" name="date[]" id="s_date" class="form-control" placeholder="Date">
 										</div>
 
 										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image Upload:</label>
@@ -1935,96 +1951,49 @@
 										</div>
 									</div>
 								</form>
-							</div>
-					`;
+							</div>`;
 
- 						document.getElementById("stone-setter-area").innerHTML += content;
 
- 						// GetStoneSetterNames();
- 						GetReturnedData(id, data[0].vendor_id, i);
- 						GetReturnedStoneData(id, data[0].vendor_id, i);
- 						GetZirconData(id, data[0].vendor_id, i);
- 						GetStoneData(id, data[0].vendor_id, i);
+
+ 							document.getElementById("stone-setter-area").innerHTML += content;
+ 							await GetReturnedData(id, data[i].vendor_id, i);
+ 							await GetStoneSetterNames();
+ 							await GetZirconData(id, data[i].vendor_id, i);
+ 							await GetStoneData(id, data[i].vendor_id, i);
+
+
+ 						}
+
  					}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 					// 	var select_manufacturer = $('#select-stone_setter')[0].selectize;
- 					// 	select_manufacturer.setValue(data[0].vendor_id);
- 					// 	var dateString = data[0].date;
- 					// 	var date = new Date(dateString);
- 					// 	var year = date.getFullYear();
- 					// 	var month = ("0" + (date.getMonth() + 1)).slice(-2);
- 					// 	var day = ("0" + date.getDate()).slice(-2);
- 					// 	var formattedDate = year + "-" + month + "-" + day;
- 					// 	document.getElementById("s_date").value = formattedDate;
- 					// 	var details = document.getElementById('s_details').value = data[0].detail;
- 					// 	var stepIssueweight = document.getElementById('stepIssueweight').value = data[0].Issued_weight;
- 					// 	var zircon_total = document.getElementById('zircon_total').value = data[0].z_total_price;
- 					// 	var zircon_total_weight = document.getElementById('zircon_total_weight').value = data[0].z_total_weight;
- 					// 	var zircon_total_quantity = document.getElementById('zircon_total_quantity').value = data[0].z_total_quantity;
- 					// 	var stone_total = document.getElementById('stone_total').value = data[0].s_total_price;
- 					// 	var stone_total_weight = document.getElementById('stone_total_weight').value = data[0].s_total_weight;
- 					// 	var stone_total_quantity = document.getElementById('stone_total_quantity').value = data[0].s_total_quantity;
- 					// 	var grand_total_weight = document.getElementById('grand_total_weight').value = data[0].grand_weight;
- 					// 	var grand_total = document.getElementById('grand_total').value = data[0].grand_total;
- 					// 	var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 					// 	var selectedValues = selectElement.getValue();
- 					// 	var unpolish_weight = document.getElementById('unpolish_weight').value;
-
- 					// 	for (var i = 0; i < selectedValues.length; i++) {
- 					// 		var selectedValue = selectedValues[i];
- 					// 		var selectedOption = selectElement.options[selectedValue];
- 					// 		if (selectedOption) {
- 					// 			var selectedText = selectedOption.text;
- 					// 		} else {
- 					// 			var selectedText = '18k';
- 					// 		}
- 					// 	}
- 					// }
-
-
-
-
-
-
-
-
- 					// var polish_weight = document.getElementById('polish_weight');
- 					// var stepIssueweight = document.getElementById('stepIssueweight').value = polish_weight.value;
- 					// GetReturnedData(id)
+ 					runLoop();
+ 					setTimeout(function() {
+ 						newrunLoop();
+ 					}, 1000);
  				}
+
+
+
+
  			}
  		});
 
 
  	}
 
+ 	async function newrunLoop() {
+ 		console.log("newrunLoop");
+ 		await GetStoneSetterNames();
+ 		await GetAllZircons();
+ 		await GetAllStones();
+ 		await ReturnedStoneListeners();
+ 		await StoneSetterListeners();
+
+ 	}
+
  	function GetZirconData(id, vendor_id, si) {
  		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 		let element = stonesetter[si];
- 		element = element.parentNode.parentNode.parentNode.parentNode;
+ 		let element = document.getElementsByClassName('stone-setter' + si)[0];
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
@@ -2034,14 +2003,21 @@
  				vendor_id: vendor_id
  			},
  			success: function(data) {
- 				console.log(data);
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					// var zircon_code = element.querySelector('input[name="zircon_code[]"]:first-of-type').value = data[0].code;
- 					var zircon_weight = element.querySelector('input[name="zircon_weight[]"]:first-of-type').value = data[0].weight;
- 					var zircon_quantity = element.querySelector('input[name="zircon_quantity[]"]:first-of-type').value = data[0].quantity;
+ 					var option = document.createElement("option");
+ 					option.text = data[0].code;
+ 					option.value = data[0].code;
+ 					var zircon_code = element.querySelectorAll('select[name="zircon_code[]"]')[0];
+ 					while (zircon_code.options.length > 0) {
+ 						zircon_code.remove(0);
+ 					}
+ 					zircon_code.add(option);
+ 					zircon_code.value = data[0].code;
+ 					var zircon_weight = element.querySelectorAll('input[name="zircon_weight[]"]')[0].value = data[0].weight;
+ 					var zircon_quantity = element.querySelectorAll('input[name="zircon_quantity[]"]')[0].value = data[0].quantity;
  					for (var i = 1; i < data.length; i++) {
- 						var area = element.querySelector('#area');
+ 						var area = element.querySelectorAll('#area')[0];
  						var div = document.createElement('div');
  						div.setAttribute('class', 'row mb-4 remove');
  						div.innerHTML = `
@@ -2072,14 +2048,14 @@
  						area.appendChild(div);
  					}
  				}
+ 				GetAllZircons();
  			}
  		});
  	}
 
  	function GetStoneData(id, vendor_id, si) {
  		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 		let element = stonesetter[si];
- 		element = element.parentNode.parentNode.parentNode.parentNode;
+ 		let element = document.getElementsByClassName('stone-setter' + si)[0];
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
@@ -2091,11 +2067,19 @@
  			success: function(data) {
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					// var stone_code = element.querySelector('input[name="stone_code[]"]:first-of-type').value = data[0].code;
- 					var stone_weight = element.querySelector('input[name="stone_weight[]"]:first-of-type').value = data[0].weight;
- 					var stone_quantity = element.querySelector('input[name="stone_quantity[]"]:first-of-type').value = data[0].quantity;
+ 					var option = document.createElement("option");
+ 					option.text = data[0].code;
+ 					option.value = data[0].code;
+ 					var stone_code = element.querySelectorAll('select[name="stone_code[]"]')[0];
+ 					while (stone_code.options.length > 0) {
+ 						stone_code.remove(0);
+ 					}
+ 					stone_code.add(option);
+ 					stone_code.value = data[0].code;
+ 					var stone_weight = element.querySelectorAll('input[name="stone_weight[]"]')[0].value = data[0].weight;
+ 					var stone_quantity = element.querySelectorAll('input[name="stone_quantity[]"]')[0].value = data[0].quantity;
  					for (var i = 1; i < data.length; i++) {
- 						var area2 = element.querySelector('#area2');
+ 						var area2 = element.querySelectorAll('#area2')[0];
  						var div2 = document.createElement('div');
  						div2.setAttribute('class', 'row mb-4 remove');
  						div2.innerHTML = `
@@ -2139,14 +2123,13 @@
  						})
  					}
  				}
+ 				GetAllStones();
  			}
  		});
  	}
 
  	function GetReturnedData(id, vendor_id, si) {
- 		console.log(vendor_id)
  		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 		console.log(stonesetter[si].parentNode.parentNode.parentNode);
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
@@ -2156,10 +2139,9 @@
  				vendor_id: vendor_id
  			},
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
- 				let element = stonesetter[si];
- 				element = element.parentNode.parentNode.parentNode.parentNode;
+ 				let element = document.getElementsByClassName('stone-setter' + si)[0];
+
  				if (data.length > 0) {
  					for (var i = 0; i < data.length; i++) {
  						var content = `
@@ -2259,21 +2241,7 @@
 									</div>
 									</form>`;
 
- 						// if (data !== "[]") {
- 						// 	data = JSON.parse(data);
- 						// 	console.log(data);
 
-
- 						// 	// var received_weight = document.getElementById('received_weight').value = data[0].received_weight;
- 						// 	// var r_stone_weight = document.getElementById('r_stone_weight').value = data[0].stone_weight;
- 						// 	// var r_stone_quantity = document.getElementById('r_stone_quantity').value = data[0].stone_quantity;
- 						// 	// var r_total_weight = document.getElementById('r_total_weight').value = data[0].total_weight;
- 						// 	// var r_rate = document.getElementById('r_rate').value = data[0].rate;
- 						// 	// var r_wastage = document.getElementById('r_wastage').value = data[0].wastage;
- 						// 	// var r_grand_weight = document.getElementById('r_grand_weight').value = data[0].grand_weight;
- 						// 	// var r_payable = document.getElementById('r_payable').value = data[0].payable;
-
- 						// }
  					}
  				} else {
  					var content = `
@@ -2374,73 +2342,64 @@
 								</form>
 					`;
  				}
- 				console.log(element)
  				element.innerHTML += content;
  				ReturnedStoneListeners();
  			}
  		});
+ 		GetReturnedStoneData(id, vendor_id, si);
  	}
 
  	function GetReturnedStoneData(id, vendor_id, si) {
  		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 		let element = stonesetter[si].parentNode.parentNode.parentElement.parentElement.children[1];
- 		// element = element.parentNode.parentNode.parentNode.parentNode;
- 		// element_child = element.children;
- 		// console.log("element_child", element_child);
- 		// let secondForm = element_child.item(1);
- 		// console.log("Second form:", secondForm);
- 		// let secondForm1 = element_child[1];
- 		// console.log("Second form:", secondForm1);
+ 		let element = document.getElementsByClassName('stone-setter' + si)[0];
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "GetReturnedStoneData",
+ 				id: id,
+ 				vendor_id: vendor_id
+ 			},
+ 			success: function(data) {
+ 				if (data !== "[]") {
+ 					data = JSON.parse(data);
+ 					var returned_area = element.querySelectorAll('#returned-area')[0];
+ 					var r_code = element.querySelectorAll('input[name="r_code[]"]')[0].value = data[0].code;
+ 					var r_weight = element.querySelectorAll('input[name="r_weight[]"]')[0].value = data[0].weight;
+ 					var r_quantity = element.querySelectorAll('input[name="r_quantity[]"]')[0].value = data[0].quantity;
+ 					for (i = 1; i < data.length; i++) {
+ 						var div = document.createElement('div');
+ 						div.setAttribute('class', 'row mb-4 remove');
+ 						div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+									<div class="col-sm-2">
 
- 		console.log("returned element", element);
- 		// $.ajax({
- 		// 	url: "functions.php",
- 		// 	type: "POST",
- 		// 	data: {
- 		// 		function: "GetReturnedStoneData",
- 		// 		id: id,
- 		// 		vendor_id: vendor_id
- 		// 	},
- 		// 	success: function(data) {
- 		// 		if (data !== "[]") {
- 		// 			data = JSON.parse(data);
- 		// 			var returned_area = document.getElementById('returned-area');
- 		// 			var r_code = document.querySelector('input[name="r_code[]"]:first-of-type').value = data[0].code;
- 		// 			var r_weight = document.querySelector('input[name="r_weight[]"]:first-of-type').value = data[0].weight;
- 		// 			var r_quantity = document.querySelector('input[name="r_quantity[]"]:first-of-type').value = data[0].quantity;
- 		// 			for (i = 1; i < data.length; i++) {
- 		// 				var div = document.createElement('div');
- 		// 				div.setAttribute('class', 'row mb-4 remove');
- 		// 				div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
- 		// 				<div class="col-sm-2">
+										<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Code" required>
 
- 		// 					<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Code" required>
+									</div>
+									<div class="col-sm-1 p-0">
+										<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+									<div class="col-sm-2">
 
- 		// 				</div>
- 		// 				<div class="col-sm-1 p-0">
- 		// 					<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
- 		// 				</div>
- 		// 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
- 		// 				<div class="col-sm-2">
+										<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+									<div class="col-sm-2">
 
- 		// 					<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required>
- 		// 				</div>
- 		// 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
- 		// 				<div class="col-sm-2">
+										<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required>
+									</div>
+									<div class="col-sm-2">
 
- 		// 					<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required>
- 		// 				</div>
- 		// 				<div class="col-sm-2">
-
- 		// 					<i class="delete-returned fa fa-minus-circle p-2""></i>
- 		// 				</div>`
- 		// 				returned_area.appendChild(div);
+										<i class="delete-returned fa fa-minus-circle p-2""></i>
+									</div>`;
+ 						returned_area.appendChild(div);
 
 
- 		// 			}
- 		// 		}
- 		// 	}
- 		// });
+ 					}
+ 				}
+ 			}
+ 		});
 
 
 
@@ -2596,7 +2555,6 @@
  	}
 
  	function ReturnedQuantity(element) {
- 		console.log("element", element);
  		var r_quantity = element.querySelectorAll('input[id="r_quantity[]"]');
  		var total = 0;
  		r_quantity.forEach(function(input) {
@@ -2611,7 +2569,6 @@
  	}
 
  	function ReturnedWeight(element) {
- 		console.log("element", element);
  		var r_weight = element.querySelectorAll('input[id="r_weight[]"]');
  		var r_quantity = element.querySelectorAll('input[id="r_quantity[]"]');
  		total = 0;
@@ -2898,13 +2855,10 @@
  	}
 
  	function GetStoneSetterRate(element) {
- 		console.log("element:", element);
  		var select_stone_setter = element.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
  		if (select_stone_setter == undefined) {
  			select_stone_setter = element.querySelectorAll('select[id="select-stone_setter[]"]')[0];
- 			console.log("select_stone_setter:", select_stone_setter);
  			var vendor_id = select_stone_setter.value;
- 			console.log("vendor_id:", vendor_id);
  		} else {
  			var vendor_id = select_stone_setter.getValue();
 
@@ -2932,7 +2886,6 @@
  				id: vendor_id
  			},
  			success: function(response) {
- 				console.log(response);
  				var data = JSON.parse(response);
  				var stone_setter_rate = element.nextElementSibling.querySelector('input[id="r_rate"]').value = data[0][selectedText];
  			}
@@ -2940,9 +2893,8 @@
  	}
 
  	function GetStoneSetterNames() {
- 		console.log("GetStoneSetterNames");
+ 		console.log("🚀 ~ file: production_page.php:2889 ~ GetStoneSetterNames ~ GetStoneSetterNames:", GetStoneSetterNames)
  		let stonesetters = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 		console.log("stonesetters:", stonesetters);
  		let delete_area = stonesetters[0].parentElement;
  		var selectizeControls = delete_area.querySelectorAll('.selectize-control');
  		if (selectizeControls[0] != undefined) {
@@ -2952,7 +2904,6 @@
  		// Start the loop from the second element (index 1)
  		for (var i = 1; i < selectizeControls.length; i++) {
  			var selectizeControl = selectizeControls[i];
- 			console.log(selectizeControl)
  		}
 
  		$.ajax({
@@ -2983,6 +2934,23 @@
 
  						selectizeInstance.refreshOptions();
  					}
+ 					if (Object.keys(options).length === 1) {
+ 						option1 = Object.keys(options)[0];
+ 						selectizeInstance.removeOption(option1);
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].id,
+ 								text: data[j].name
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+ 						selectizeInstance.setValue(option1);
+
+
+ 						selectizeInstance.refreshOptions();
+ 					}
  				}
  			}
  		});
@@ -2990,7 +2958,6 @@
  	}
 
  	function ReturnedStoneListeners() {
- 		console.log("ReturnedStoneListeners");
  		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
  		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
  		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
@@ -3141,10 +3108,15 @@
  	}
 
  	$(document).ready(function() {
- 		GetDate();
- 		GetAllZircons();
- 		GetAllStones();
- 		GetStoneSetterNames();
+ 		async function runLoop() {
+ 			await GetDate();
+ 			await GetAllZircons();
+ 			await GetAllStones();
+ 			await GetStoneSetterNames();
+
+ 		}
+
+ 		runLoop();
 
  		$('select').selectize({
  			sortField: 'text'
@@ -3373,9 +3345,7 @@
  		e.preventDefault();
  		var save = document.getElementById("s_save");
  		var form = new FormData(this);
- 		for (var pair of form.entries()) {
- 			console.log(pair[0] + ': ' + pair[1]);
- 		}
+ 		for (var pair of form.entries()) {}
  		form.append('function', 'StepThree');
  		$.ajax({
  			url: "functions.php",
@@ -3384,7 +3354,6 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success" && data[1] == "success") {
  					Swal.fire({
@@ -3413,7 +3382,6 @@
  		var product_id = document.getElementsByClassName('code');
  		product_id = product_id[0].value;
  		let stonesetter = document.querySelector('select[id="select-stone_setter[]"]');
- 		console.log(stonesetter);
  		let vendor_id = stonesetter.value;
  		var form = new FormData(this);
  		form.append('function', 'ReturnedStepThree');
@@ -3426,7 +3394,6 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success" && data[1] == "success") {
  					Swal.fire({
