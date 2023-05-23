@@ -684,9 +684,10 @@ function ReturnedStepThree()
     $r_quantity = $_POST['r_quantity'];
     $sh_qty=$_POST['sh_qty'];
 
-    $qry2 = "SELECT * FROM `returned_stone_step` WHERE `product_id` = :product_id";
+    $qry2 = "SELECT * FROM `returned_stone_step` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
     $qryStatement2 = $pdo->prepare($qry2);
     $qryStatement2->bindParam(':product_id', $product_id);
+    $qryStatement2->bindParam(':vendor_id', $vendor_id);
     $qryStatement2->execute();
     $row = $qryStatement2->fetch(PDO::FETCH_ASSOC);
 
@@ -828,6 +829,32 @@ function GetStoneSetterData()
     $array = array();
     if ($qryStatement->execute()) {
         $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as &$row) {
+            // Get the zircon data for each stone setter
+            $qry = "SELECT * FROM zircon WHERE product_id=:id AND vendor_id = :vendor_id";
+            $qryStatement = $pdo->prepare($qry);
+
+            $qryStatement->bindParam(':id', $row['product_id']);
+            $qryStatement->bindParam(':vendor_id', $row['vendor_id']);
+            $qryStatement->execute();
+
+            $zirconResult = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+
+            // Add the zircon data to each stone setter data
+            $row['zircons'] = $zirconResult;
+        }
+        foreach ($result as &$row) {
+            $qry = "SELECT * FROM stone WHERE product_id=:id AND vendor_id = :vendor_id";
+            $qryStatement = $pdo->prepare($qry);
+
+            $qryStatement->bindParam(':id', $row['product_id']);
+            $qryStatement->bindParam(':vendor_id', $row['vendor_id']);
+            $qryStatement->execute();
+
+            $stoneResult = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+
+            $row['stones'] = $stoneResult;
+        }
         echo json_encode($result, true);
     } else {
         echo json_encode($qryStatement->errorInfo(), true);
