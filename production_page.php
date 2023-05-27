@@ -1077,7 +1077,6 @@
 
  				}
  				for (let i = 0; i < zircon.length; i++) {
-					console.log(i,zircon[i]);
  					var selectElement = zircon[i];
  					var selectizeInstance = $(selectElement).selectize()[0].selectize;
 
@@ -1593,6 +1592,7 @@
  	}
 
  	function SGrandWeight(current) {
+		console.log("sad",current);
  		var total = current.querySelector("input[id='grand_total_weight[]']");
  		var stone_total_weight = current.querySelector("input[id='stone_total_weight[]']");
  		var zircon_total_weight = current.querySelector("input[id='zircon_total_weight[]']");
@@ -1623,10 +1623,12 @@
  	}
 
  	function CalculateReturnedWastage(element) {
+		console.log("element",element);
  		var quantity = element.querySelector("input[id='sh_qty']");
+		console.log(quantity);
  		var rate = element.querySelector("input[id='r_rate']");
  		var wastage = element.querySelector("input[id='r_wastage']");
- 		wastage.value = (quantity.value * (rate.value) / 100).toFixed(2) + '0';
+ 		wastage.value = ((quantity.value * rate.value) / 100).toFixed(2) + '0';
  		GrandWeight(element);
  	}
 
@@ -2073,7 +2075,6 @@
  	}
 
  	function GetZirconData(id, vendor_id, si) {
- 		console.log("GetZirconData", id, vendor_id, si);
  		return new Promise((resolve, reject) => {
  			let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
  			let element = document.getElementsByClassName('stone-setter' + si)[0];
@@ -2088,7 +2089,6 @@
  				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
- 						console.log("GetZirconData", data);
  						var option = document.createElement("option");
  						option.text = data[0].code;
  						option.value = data[0].code;
@@ -2146,11 +2146,9 @@
  	}
 
  	function GetStoneData(id, vendor_id, si) {
- 		console.log("GetStoneData", id, vendor_id, si);
  		return new Promise((resolve, reject) => {
  			let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
  			let element = document.getElementsByClassName('stone-setter' + si)[0];
- 			console.log("element", element);
  			$.ajax({
  				url: "functions.php",
  				type: "POST",
@@ -2162,7 +2160,6 @@
  				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
- 						console.log("GetStoneData", data);
  						var option = document.createElement("option");
  						option.text = data[0].code;
  						option.value = data[0].code;
@@ -2230,7 +2227,6 @@
  	}
 
  	async function GetReturnedData(id, vendor_id, si) {
- 		console.log("Returneddata", id, vendor_id, si)
  		let stonesetter = document.querySelectorAll('select[id="select-stone_setter[]"]');
  		$.ajax({
  			url: "functions.php",
@@ -2875,7 +2871,8 @@
 
  	function CalculateIssuedWeight(retained_weight) {
  		total_weight = retained_weight.parentNode.previousElementSibling.previousElementSibling.children[0].value;
- 		if (total_weight < retained_weight.value) {
+ 		total_weight = parseInt(total_weight);
+		if (total_weight < retained_weight.value) {
  			alert('Retained weight cannot be greater than total weight');
  			retained_weight.value = '';
  		} else if (total_weight == '' || total_weight == null || total_weight == undefined) {
@@ -3107,6 +3104,14 @@
  		var manufacturer_rate = document.querySelectorAll("#manufacturer-rate");
  		var r_grand_weight = document.querySelectorAll("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+		var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
+		for (var i = 0; i < sh_qty.length; i++) {
+			sh_qty[i].addEventListener("change", function() {
+				let current = this.parentNode.parentNode.parentNode;
+ 				CalculateReturnedWastage(current);
+				ReturnedPayable(current);
+ 			});
+ 		};
 
 
 
@@ -3379,6 +3384,9 @@
  		var manufacturer_rate = document.querySelector("#manufacturer-rate");
  		var r_grand_weight = document.querySelector("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+		
+
+
 
  		manufacturer_rate.addEventListener("change", function() {
  			CalculateWastage();
