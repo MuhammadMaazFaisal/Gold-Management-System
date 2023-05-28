@@ -97,7 +97,7 @@ error_reporting(E_ALL);
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Issued Weight:</label>
 																<div class="col-sm-2">
 
-																	<input type="number" step="any" name="issued_weight" class="form-control" placeholder="Gold Issued Weight">
+																	<input type="number" step="any" name="issued_weight" id="issued_weight" class="form-control" placeholder="Gold Issued Weight">
 																</div>
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Purity:</label>
 																<div class="col-sm-3">
@@ -106,7 +106,7 @@ error_reporting(E_ALL);
 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Pure Weight Issued:</label>
 																<div class="col-sm-3">
 
-																	<input type="number" step="any" name="pure_weight" class="form-control" placeholder="Pure Weight Issued">
+																	<input type="number" step="any" name="pure_weight" id="pure_weight" class="form-control" placeholder="Pure Weight Issued">
 																</div>
 
 
@@ -114,6 +114,7 @@ error_reporting(E_ALL);
 
 
 																	<div class=" d-flex justify-content-end">
+																		<button type="button" class="btn btn-primary mx-1" >Print</button>	
 																		<button type="submit" class="btn btn-primary" value="Save">Save</button>
 																	</div>
 
@@ -177,7 +178,12 @@ error_reporting(E_ALL);
 		function CalculatePureWeight(){
 			var issued_weight = document.getElementById('issued_weight').value;
 			var purity = document.getElementById('purity').value;
-			var pure_weight = issued_weight * purity;
+			if (purity==.999){
+				var pure_weight = issued_weight;
+			}else{
+				var pure_weight = issued_weight * purity;
+			}
+			
 			document.getElementById('pure_weight').value = pure_weight;
 		}
 

@@ -335,7 +335,7 @@
  																		<div>
 
  																			<!-- <button type="submit" class="btn btn-primary">Save</button> -->
- 																			<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+ 																			<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintManufacturer()">Print</button>
  																			<button type="submit" class="btn btn-primary" id="m_save" value="Save">Save</button>
  																		</div>
  																	</div>
@@ -1592,7 +1592,6 @@
  	}
 
  	function SGrandWeight(current) {
-		console.log("sad",current);
  		var total = current.querySelector("input[id='grand_total_weight[]']");
  		var stone_total_weight = current.querySelector("input[id='stone_total_weight[]']");
  		var zircon_total_weight = current.querySelector("input[id='zircon_total_weight[]']");
@@ -1623,9 +1622,43 @@
  	}
 
  	function CalculateReturnedWastage(element) {
-		console.log("element",element);
  		var quantity = element.querySelector("input[id='sh_qty']");
-		console.log(quantity);
+		console.log("wastageelement",element);
+		var select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
+ 		if (select_stone_setter == undefined) {
+ 			select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0];
+ 			var vendor_id = select_stone_setter.value;
+ 		} else {
+ 			var vendor_id = select_stone_setter.getValue();
+
+ 		}
+ 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
+ 		var selectedValues = selectElement.getValue();
+ 		var unpolish_weight = document.getElementById('unpolish_weight').value;
+
+ 		for (var i = 0; i < selectedValues.length; i++) {
+ 			var selectedValue = selectedValues[i];
+ 			var selectedOption = selectElement.options[selectedValue];
+ 			if (selectedOption) {
+ 				var selectedText = selectedOption.text;
+ 			} else {
+ 				var selectedText = '18k';
+ 			}
+ 		}
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetStoneSetterRate",
+ 				column: selectedText,
+ 				id: vendor_id
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				var stone_setter_rate = element.querySelector('input[id="r_rate"]').value = data[0][selectedText];
+ 			}
+ 		});
  		var rate = element.querySelector("input[id='r_rate']");
  		var wastage = element.querySelector("input[id='r_wastage']");
  		wastage.value = ((quantity.value * rate.value) / 100).toFixed(2) + '0';
@@ -1653,27 +1686,22 @@
  		ReturnedPayable(element);
  	}
 
- 	function printDiv(id) {
+ 	function PrintManufacturer() {
+		let id = document.getElementsByClassName("code")[0].value;
+		$.ajax({
+			url: "functions.php",
+			type: "POST",
+			data: {
+				function: "PrintManufacturer",
+				id: id
+			},
+			success: function(data) {
+				data = JSON.parse(data);
+				console.log(data);
+				newContent =``;
 
- 		var printContents = document.getElementById(id);
- 		printContents.innerHTML;
-
- 		var cssFiles = [
- 			"assets/css/preloader.min.css",
- 			"assets/css/bootstrap.min.css",
- 			"assets/css/icons.min.css",
- 			"assets/css/app.min.css",
- 			"assets/libs/sweetalert2/sweetalert2.min.css",
- 			"https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
- 		];
-
- 		// Print the contents of the div
- 		printJS({
- 			printable: printContents,
- 			type: 'html',
- 			css: cssFiles,
- 			onPrintDialogClose: restoreDiv
- 		});
+			}
+		});
  	}
 
  	function restoreDiv() {
@@ -3818,9 +3846,10 @@
 
  	$(document).on('input', '#received_weight', function(e) {
  		e.preventDefault();
- 		CalculatePayable();
- 		let current = this.parentNode.parentNode.parentNode.previousElementSibling;
+		let current = this.parentNode.parentNode.parentNode.previousElementSibling;
  		GetStoneSetterRate(current);
+ 		CalculatePayable();
+ 		
 
  	});
 

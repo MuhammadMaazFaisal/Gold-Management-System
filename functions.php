@@ -82,11 +82,33 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetAllStones();
 } elseif ($_POST['function'] == 'GetStoneSetterNames') {
     GetStoneSetterNames();
+} elseif ($_POST['function'] == 'PrintManufacturer') {
+    PrintManufacturer();
 }
 
 
 
 // -------------------------Production Page-------------------------//
+function PrintManufacturer(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $id = $_POST['id'];
+    $getRecordQuery = "SELECT ms.id, ms.vendor_id, ms.product_id, ms.date, ms.image, ms.details, ms.type, ms.quantity, ms.purity, ms.unpolish_weight, ms.polish_weight, ms.rate, ms.wastage, ms.unpure_weight, ms.pure_weight, ms.status, ms.tValues, ms.barcode, v.type AS vendor_type, v.name AS vendor_name, v.18k, v.21k, v.22k, v.status AS vendor_status, v.date AS vendor_date
+    FROM manufacturing_step AS ms
+    INNER JOIN vendor AS v ON ms.vendor_id = v.id WHERE ms.product_id = :id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $id);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+
 function GetModalProducts()
 {
     include 'layouts/session.php';

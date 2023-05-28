@@ -114,6 +114,7 @@ error_reporting(E_ALL);
 
 
 																	<div class=" d-flex justify-content-end">
+																		<button type="button" class="btn btn-primary mx-1" >Print</button>
 																		<button type="submit" class="btn btn-primary" value="Save">Save</button>
 																	</div>
 
@@ -177,7 +178,11 @@ error_reporting(E_ALL);
 		function CalculatePureWeight(){
 			var issued_weight = document.getElementById('issued_weight').value;
 			var purity = document.getElementById('purity').value;
-			var pure_weight = issued_weight * purity;
+			if (purity==.999){
+				var pure_weight = issued_weight;
+			}else{
+				var pure_weight = issued_weight * purity;
+			}
 			document.getElementById('pure_weight').value = pure_weight;
 		}
 
