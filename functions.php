@@ -84,6 +84,12 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStoneSetterNames();
 } elseif ($_POST['function'] == 'PrintManufacturer') {
     PrintManufacturer();
+} elseif ($_POST['function'] == 'PrintPolisher') {
+    PrintPolisher();
+} elseif ($_POST['function'] == 'PrintSetter') {
+    PrintSetter();
+} elseif ($_POST['function'] == 'PrintReturned') {
+    PrintReturned();
 }
 
 
@@ -101,6 +107,83 @@ function PrintManufacturer(){
     INNER JOIN vendor AS v ON ms.vendor_id = v.id WHERE ms.product_id = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $id);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function PrintPolisher(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $id = $_POST['id'];
+    $getRecordQuery = "SELECT ms.id, ms.vendor_id, ms.product_id, ms.date, ms.image, ms.details, ms.type, ms.quantity, ms.purity, ms.unpolish_weight, ms.polish_weight, ms.rate, ms.wastage, ms.unpure_weight, ms.pure_weight, ms.status, ms.tValues, ms.barcode, mv.type AS manufacturer_type, mv.name AS manufacturer_name, mv.18k AS manufacturer_18k, mv.21k AS manufacturer_21k, mv.22k AS manufacturer_22k, mv.status AS manufacturer_status, mv.date AS manufacturer_date, ps.id AS polisher_step_id, ps.date AS polisher_step_date, ps.difference, ps.rate AS polisher_rate, ps.wastage AS polisher_wastage, ps.payable, ps.status AS polisher_status, ps.polisherbarcode, pv.type AS polisher_type, pv.name AS polisher_name, pv.18k AS polisher_18k, pv.21k AS polisher_21k, pv.22k AS polisher_22k, pv.status AS polisher_status, pv.date AS polisher_date
+    FROM manufacturing_step AS ms
+    LEFT JOIN vendor AS mv ON ms.vendor_id = mv.id
+    LEFT JOIN polisher_step AS ps ON ms.product_id = ps.product_id
+    LEFT JOIN vendor AS pv ON ps.vendor_id = pv.id
+    WHERE ms.product_id = :id";
+
+
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $id);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function PrintSetter(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $id = $_POST['id'];
+    $vendor_id = $_POST['vendor_id'];
+    $getRecordQuery = "SELECT ss.`Ssid`, ss.`product_id`, ss.`date`, ss.`vendor_id`, ss.`image`, ss.`detail`, ss.`retained_weight`, ss.`total_weight`, ss.`Issued_weight`, ss.`z_total_price`, ss.`z_total_weight`, ss.`z_total_quantity`, ss.`s_total_price`, ss.`s_total_weight`, ss.`s_total_quantity`, ss.`grand_weight`, ss.`grand_total`, ss.`status`, v.`type` AS vendor_type, v.`name` AS vendor_name, v.`18k`, v.`21k`, v.`22k`, v.`status` AS vendor_status, v.`date` AS vendor_date
+    FROM `stone_setter_step` AS ss
+    LEFT JOIN `vendor` AS v ON ss.`vendor_id` = v.`id`
+    WHERE ss.`product_id` = :id AND ss.`vendor_id` = :v_id";
+
+
+
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $id);
+    $getRecordStatement->bindParam(':v_id', $vendor_id);
+
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function PrintReturned(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $id = $_POST['id'];
+    $vendor_id = $_POST['vendor_id'];
+    $getRecordQuery = "SELECT rs.`id` AS returned_stone_id, rs.`product_id`, rs.`vendor_id`, rs.`received_weight`, rs.`stone_weight`, rs.`stone_quantity`, rs.`total_weight`, rs.`rate`, rs.`shruded_quantity`, rs.`wastage`, rs.`grand_weight`, rs.`payable`, rs.`date`, v.`type` AS vendor_type, v.`name` AS vendor_name, v.`18k`, v.`21k`, v.`22k`, v.`status` AS vendor_status, v.`date` AS vendor_date
+    FROM `returned_stone_step` AS rs
+    LEFT JOIN `vendor` AS v ON rs.`vendor_id` = v.`id`
+    WHERE rs.`product_id` = :id AND rs.`vendor_id` = :v_id";
+
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $id);
+    $getRecordStatement->bindParam(':v_id', $vendor_id);
+
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);

@@ -114,7 +114,7 @@ error_reporting(E_ALL);
 
 
 																	<div class=" d-flex justify-content-end">
-																		<button type="button" class="btn btn-primary mx-1" >Print</button>	
+																		<button type="button" class="btn btn-primary mx-1" onclick="Print()">Print</button>
 																		<button type="submit" class="btn btn-primary" value="Save">Save</button>
 																	</div>
 
@@ -123,12 +123,6 @@ error_reporting(E_ALL);
 													</div>
 												</div>
 											</div>
-
-
-
-
-
-
 
 										</div>
 									</div>
@@ -165,6 +159,87 @@ error_reporting(E_ALL);
 	<?php include 'layouts/vendor-scripts.php'; ?>
 
 	<script>
+		function Print() {
+
+			let id = document.getElementsByClassName("code")[0].value;
+			let area = element.parentNode.parentNode.parentNode.parentNode.previousElementSibling;
+			console.log(area);
+			let vendor_id = area.querySelectorAll('select[id="select-stone_setter[]"]');
+			vendor_id = vendor_id[0].value;
+			$.ajax({
+				url: "functions.php",
+				type: "POST",
+				data: {
+					function: "PrintReturned",
+					id: id,
+					vendor_id: vendor_id
+				},
+				success: function(data) {
+					console.log(data);
+					data = JSON.parse(data);
+					console.log(data);
+
+
+					// Generate slip content
+					let slipContent = `
+	   <!DOCTYPE html>
+	   <html>
+	   <head>
+	   <style>
+		   @media print {
+			   @page {
+				   size: 80mm 200mm;
+				   margin: 0;
+			   }
+
+			   body {
+				   font-family: Arial, sans-serif;
+				   font-size: 12px;
+				   padding: 10px;
+			   }
+
+			   h1 {
+				   font-size: 16px;
+				   text-align: center;
+				   margin: 10px 0;
+				   color: #333;
+			   }
+
+			   p {
+				   margin-bottom: 5px;
+			   }
+
+			   .label {
+				   font-weight: bold;
+			   }
+		   }
+	   </style>
+	   </head>
+	   <body>
+	   <p><span class="label"  style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">Barcode:</span><span></span></p>
+	   <p><span class="label"  style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">Received Weight:</span><span>${data[0].received_weight}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">Stone Weight:</span><span>${data[0].stone_weight}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">S-Quantity:</span><span>${data[0].shruded_quantity}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
+	   <p><span class="label"  style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
+	   </body>
+	   </html>
+   `;
+					let printWindow = window.open("", "_blank");
+
+					// Write slip content to the new tab
+					printWindow.document.open();
+					printWindow.document.write(slipContent);
+					printWindow.print();
+					printWindow.document.close();
+
+
+				}
+			});
+		}
+
 		function GetDate() {
 			var date = new Date().toISOString().slice(0, 10);
 			var dataInputs = document.querySelectorAll('input[type="date"]');
@@ -175,15 +250,15 @@ error_reporting(E_ALL);
 			}
 		}
 
-		function CalculatePureWeight(){
+		function CalculatePureWeight() {
 			var issued_weight = document.getElementById('issued_weight').value;
 			var purity = document.getElementById('purity').value;
-			if (purity==.999){
+			if (purity == .999) {
 				var pure_weight = issued_weight;
-			}else{
+			} else {
 				var pure_weight = issued_weight * purity;
 			}
-			
+
 			document.getElementById('pure_weight').value = pure_weight;
 		}
 

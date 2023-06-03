@@ -468,7 +468,7 @@
  																	<div class="col-sm-9">
 
  																		<div>
- 																			<button type="button" id="polisher_print_btn" class="btn btn-success waves-effect waves-light">Print</button>
+ 																			<button type="button" id="polisher_print_btn" class="btn btn-success waves-effect waves-light" onclick="PrintPolisher()">Print</button>
  																			<button type="submit" id="polisher_save_btn" class="btn btn-primary" value="Save">Save</button>
  																		</div>
  																	</div>
@@ -715,7 +715,7 @@
  																<div class="col-sm-9">
 
  																	<div>
- 																		<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+ 																		<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
  																		<button type="submit" class="btn btn-primary" id="s_save">Save</button>
  																	</div>
  																</div>
@@ -813,7 +813,7 @@
  																<div class="col-sm-9">
 
  																	<div>
- 																		<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+ 																		<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)">Print</button>
  																		<button type="submit" class="btn btn-primary" id="r_save">Save</button>
  																	</div>
  																</div>
@@ -1094,7 +1094,7 @@
  						}
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length === 1) {
+ 					} else if (Object.keys(options).length === 1) {
  						option1 = Object.keys(options)[0];
  						selectizeInstance.removeOption(option1);
  						for (let j = 0; j < data.length; j++) {
@@ -1110,14 +1110,14 @@
 
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length > 1) {
-						if (selectizeInstance.getValue() != ""){
-							var selctedValue = selectizeInstance.getValue();
-						}
-						selectizeInstance.clearOptions();
-						selectizeInstance.destroy();
-						selectizeInstance = $(selectElement).selectize()[0].selectize;
-						for (let j = 0; j < data.length; j++) {
+ 					} else if (Object.keys(options).length > 1) {
+ 						if (selectizeInstance.getValue() != "") {
+ 							var selctedValue = selectizeInstance.getValue();
+ 						}
+ 						selectizeInstance.clearOptions();
+ 						selectizeInstance.destroy();
+ 						selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						for (let j = 0; j < data.length; j++) {
  							var newOption = {
  								value: data[j].detail,
  								text: data[j].detail
@@ -1126,15 +1126,15 @@
  								selectizeInstance.addOption(newOption);
  							}
  						}
-						if (selctedValue != undefined && selctedValue != "" && selctedValue != null){
-							selectizeInstance.setValue(selctedValue);
-							selctedValue = "";
-						}
+ 						if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
+ 							selectizeInstance.setValue(selctedValue);
+ 							selctedValue = "";
+ 						}
  						selectizeInstance.refreshOptions();
-						
- 					
- 					
-					}
+
+
+
+ 					}
 
  				}
  				const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
@@ -1190,7 +1190,7 @@
  						}
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length === 1) {
+ 					} else if (Object.keys(options).length === 1) {
  						option1 = Object.keys(options)[0];
  						selectizeInstance.removeOption(option1);
  						for (let j = 0; j < data.length; j++) {
@@ -1206,14 +1206,14 @@
 
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length > 1) {
-						if (selectizeInstance.getValue() != ""){
-							var selctedValue = selectizeInstance.getValue();
-						}
-						selectizeInstance.clearOptions();
-						selectizeInstance.destroy();
-						selectizeInstance = $(selectElement).selectize()[0].selectize;
-						for (let j = 0; j < data.length; j++) {
+ 					} else if (Object.keys(options).length > 1) {
+ 						if (selectizeInstance.getValue() != "") {
+ 							var selctedValue = selectizeInstance.getValue();
+ 						}
+ 						selectizeInstance.clearOptions();
+ 						selectizeInstance.destroy();
+ 						selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						for (let j = 0; j < data.length; j++) {
  							var newOption = {
  								value: data[j].detail,
  								text: data[j].detail
@@ -1222,13 +1222,13 @@
  								selectizeInstance.addOption(newOption);
  							}
  						}
-						if (selctedValue != undefined && selctedValue != "" && selctedValue != null){
-							selectizeInstance.setValue(selctedValue);
-							selctedValue = "";
-						}
+ 						if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
+ 							selectizeInstance.setValue(selctedValue);
+ 							selctedValue = "";
+ 						}
  						selectizeInstance.refreshOptions();
- 					
-					}
+
+ 					}
 
 
  				}
@@ -1442,7 +1442,7 @@
 											<div class="col-sm-9">
 
 												<div>
-													<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+													<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
 													<button type="submit" class="btn btn-primary" id="s_save">Save</button>
 												</div>
 											</div>
@@ -1540,7 +1540,7 @@
 											<div class="col-sm-9">
 
 												<div>
-													<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+													<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)>Print</button>
 													<button type="submit" class="btn btn-primary" id="r_save">Save</button>
 												</div>
 											</div>
@@ -1607,6 +1607,8 @@
  		}
  		value = parseFloat(stone_total_weight.value) + parseFloat(zircon_total_weight.value) + parseFloat(stepIssueweight.value);
  		total.value = value.toFixed(2) + '0';
+		const event = new Event("change", { bubbles: true });
+		total.dispatchEvent(event);
 
  	}
 
@@ -1623,8 +1625,8 @@
 
  	function CalculateReturnedWastage(element) {
  		var quantity = element.querySelector("input[id='sh_qty']");
-		console.log("wastageelement",element);
-		var select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
+ 		console.log("wastageelement", element);
+ 		var select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
  		if (select_stone_setter == undefined) {
  			select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0];
  			var vendor_id = select_stone_setter.value;
@@ -1687,21 +1689,329 @@
  	}
 
  	function PrintManufacturer() {
-		let id = document.getElementsByClassName("code")[0].value;
-		$.ajax({
-			url: "functions.php",
-			type: "POST",
-			data: {
-				function: "PrintManufacturer",
-				id: id
-			},
-			success: function(data) {
-				data = JSON.parse(data);
-				console.log(data);
-				newContent =``;
+ 		let id = document.getElementsByClassName("code")[0].value;
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "PrintManufacturer",
+ 				id: id
+ 			},
+ 			success: function(data) {
+ 				data = JSON.parse(data);
+ 				console.log(data);
+ 				let printWindow = window.open("", "_blank");
+ 				if (data[0].purity == data[0]['18k']) {
+ 					var purity = '18k';
+ 				} else if (data[0].purity == data[0]['21k']) {
+ 					var purity = '21k';
+ 				} else if (data[0].purity == data[0]['22k']) {
+ 					var purity = '22k';
+ 				}
 
-			}
-		});
+ 				// Generate slip content
+ 				let slipContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    @media print {
+                        @page {
+                            size: 80mm 200mm;
+                            margin: 0;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            padding: 10px;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #333;
+                        }
+
+                        p {
+                            margin-bottom: 5px;
+                        }
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                </style>
+                </head>
+                <body>
+                <p><span class="label" style="margin-right:6px;>Date:</span><span>${data[0].date}</span></p>
+                <p><span class="label" style="margin-right:6px;>Barcode</span><span>:${data[0].barcode}</span></p>
+                <p><span class="label" style="margin-right:6px;>Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label" style="margin-right:6px;>Detail:</span><span>${data[0].details}</span></p>
+                <p><span class="label" style="margin-right:6px;>Type:</span><span>${data[0].type}</span></p>
+                <p><span class="label" style="margin-right:6px;>Quantity:</span><span>${data[0].quantity}</span></p>
+                <p><span class="label" style="margin-right:6px;>Purity:</span><span>${purity}</span></p>
+                <p><span class="label" style="margin-right:6px;>Unpolished:</span><span>${data[0].unpolish_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;>Polished:</span><span>${data[0].polish_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;>Wastage:</span><span>${data[0].wastage}</span></p>
+                <p><span class="label" style="margin-right:6px;>Payable:</span><span>${data[0].tValues}</span></p>
+                </body>
+                </html>
+            `;
+
+ 				// Write slip content to the new tab
+ 				printWindow.document.open();
+ 				printWindow.document.write(slipContent);
+ 				printWindow.print();
+ 				printWindow.document.close();
+
+
+ 			}
+ 		});
+ 	}
+
+ 	function PrintPolisher() {
+ 		let id = document.getElementsByClassName("code")[0].value;
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "PrintPolisher",
+ 				id: id
+ 			},
+ 			success: function(data) {
+ 				data = JSON.parse(data);
+ 				console.log(data);
+ 				let printWindow = window.open("", "_blank");
+ 				if (data[0].purity == data[0]['manufacturer_18k']) {
+ 					var purity = '18k';
+ 				} else if (data[0].purity == data[0]['manufacturer_21k']) {
+ 					var purity = '21k';
+ 				} else if (data[0].purity == data[0]['manufacturer_22k']) {
+ 					var purity = '22k';
+ 				}
+
+ 				// Generate slip content
+ 				let slipContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    @media print {
+                        @page {
+                            size: 80mm 200mm;
+                            margin: 0;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            padding: 10px;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #333;
+                        }
+
+                        p {
+                            margin-bottom: 5px;
+                        }
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                </style>
+                </head>
+                <body>
+				<p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].polisher_step_date}</span></p>
+                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].polisherbarcode}</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].polisher_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Type:</span><span>${data[0].type}</span></p>
+                <p><span class="label" style="margin-right:6px;">Quantity:</span><span>${data[0].quantity}</span></p>
+                <p><span class="label" style="margin-right:6px;">Purity:</span><span>${purity}</span></p>
+                <p><span class="label" style="margin-right:6px;">Unpolished:</span><span>${data[0].unpolish_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">Polished:</span><span>${data[0].polish_weight}</span></p>
+				<p><span class="label" style="margin-right:6px;">Rate:</span><span>${data[0].polisher_rate}</span></p>
+                <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].polisher_wastage}</span></p>
+                <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
+                </body>
+                </html>
+            `;
+
+ 				// Write slip content to the new tab
+ 				printWindow.document.open();
+ 				printWindow.document.write(slipContent);
+ 				printWindow.print();
+ 				printWindow.document.close();
+
+
+ 			}
+ 		});
+ 	}
+
+ 	function PrintSetter(element) {
+ 		console.log(element);
+ 		let id = document.getElementsByClassName("code")[0].value;
+ 		let area = element.parentNode.parentNode.parentNode.parentNode;
+ 		let vendor_id = area.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		vendor_id = vendor_id[0].value;
+
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "PrintSetter",
+ 				id: id,
+ 				vendor_id: vendor_id
+ 			},
+ 			success: function(data) {
+ 				console.log(data);
+ 				data = JSON.parse(data);
+ 				console.log(data);
+ 				let printWindow = window.open("", "_blank");
+ 				// Generate slip content
+ 				let slipContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    @media print {
+                        @page {
+                            size: 80mm 200mm;
+                            margin: 0;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            padding: 10px;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #333;
+                        }
+
+                        p {
+                            margin-bottom: 5px;
+                        }
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                </style>
+                </head>
+                <body>
+                <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
+                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Issued Weight:</span><span>${data[0].Issued_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">Zircon Weight:</span><span>${data[0].z_total_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">Stone Weight:</span><span>${data[0].s_total_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">grand Weight:</span><span>${data[0].grand_weight}</span></p>
+                </body>
+                </html>
+            `;
+
+ 				// Write slip content to the new tab
+ 				printWindow.document.open();
+ 				printWindow.document.write(slipContent);
+ 				printWindow.print();
+ 				printWindow.document.close();
+
+
+ 			}
+ 		});
+ 	}
+
+ 	function PrintReturned(element) {
+
+ 		let id = document.getElementsByClassName("code")[0].value;
+ 		let area = element.parentNode.parentNode.parentNode.parentNode.previousElementSibling;
+ 		console.log(area);
+ 		let vendor_id = area.querySelectorAll('select[id="select-stone_setter[]"]');
+ 		vendor_id = vendor_id[0].value;
+ 		$.ajax({
+ 			url: "functions.php",
+ 			type: "POST",
+ 			data: {
+ 				function: "PrintReturned",
+ 				id: id,
+ 				vendor_id: vendor_id
+ 			},
+ 			success: function(data) {
+ 				console.log(data);
+ 				data = JSON.parse(data);
+ 				console.log(data);
+
+
+ 				// Generate slip content
+ 				let slipContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    @media print {
+                        @page {
+                            size: 80mm 200mm;
+                            margin: 0;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            padding: 10px;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #333;
+                        }
+
+                        p {
+                            margin-bottom: 5px;
+                        }
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                </style>
+                </head>
+                <body>
+                <p><span class="label"  style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Barcode:</span><span></span></p>
+                <p><span class="label"  style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Received Weight:</span><span>${data[0].received_weight}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Stone Weight:</span><span>${data[0].stone_weight}</span></p>
+                <p><span class="label"  style="margin-right:6px;">S-Quantity:</span><span>${data[0].shruded_quantity}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
+                </body>
+                </html>
+            `;
+ 				let printWindow = window.open("", "_blank");
+
+ 				// Write slip content to the new tab
+ 				printWindow.document.open();
+ 				printWindow.document.write(slipContent);
+ 				printWindow.print();
+ 				printWindow.document.close();
+
+
+ 			}
+ 		});
  	}
 
  	function restoreDiv() {
@@ -2055,7 +2365,7 @@
 										<div class="col-sm-9">
 
 											<div>
-												<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+												<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
 												<button type="submit" class="btn btn-primary" id="s_save">Save</button>
 											</div>
 										</div>
@@ -2360,7 +2670,7 @@
 										<div class="col-sm-9">
 
 											<div>
-												<button type="" class="btn btn-success waves-effect waves-light">Print</button>
+												<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)">Print</button>
 												<button type="submit" class="btn btn-primary" id="r_save">Save</button>
 											</div>
 										</div>
@@ -2900,7 +3210,7 @@
  	function CalculateIssuedWeight(retained_weight) {
  		total_weight = retained_weight.parentNode.previousElementSibling.previousElementSibling.children[0].value;
  		total_weight = parseInt(total_weight);
-		if (total_weight < retained_weight.value) {
+ 		if (total_weight < retained_weight.value) {
  			alert('Retained weight cannot be greater than total weight');
  			retained_weight.value = '';
  		} else if (total_weight == '' || total_weight == null || total_weight == undefined) {
@@ -2910,6 +3220,8 @@
  			value = total_weight - retained_weight.value;
  			retained_weight.parentNode.nextElementSibling.nextElementSibling.children[0].value = value;
  		}
+		current = retained_weight.parentNode.parentNode.parentNode;
+		SGrandWeight(current);
 
 
 
@@ -3062,7 +3374,7 @@
  						}
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length === 1) {
+ 					} else if (Object.keys(options).length === 1) {
  						option1 = Object.keys(options)[0];
  						selectizeInstance.removeOption(option1);
  						for (let j = 0; j < data.length; j++) {
@@ -3078,10 +3390,10 @@
 
 
  						selectizeInstance.refreshOptions();
- 					}else if (Object.keys(options).length > 1) {
-						selectizeInstance.clearOptions();
-						selectizeInstance.destroy();
-						selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 					} else if (Object.keys(options).length > 1) {
+ 						selectizeInstance.clearOptions();
+ 						selectizeInstance.destroy();
+ 						selectizeInstance = $(selectElement).selectize()[0].selectize;
  						for (let j = 0; j < data.length; j++) {
  							var newOption = {
  								value: data[j].id,
@@ -3092,7 +3404,7 @@
  							}
  						}
  						selectizeInstance.refreshOptions();
-					}
+ 					}
  				}
  			}
  		});
@@ -3132,12 +3444,12 @@
  		var manufacturer_rate = document.querySelectorAll("#manufacturer-rate");
  		var r_grand_weight = document.querySelectorAll("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
-		var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
-		for (var i = 0; i < sh_qty.length; i++) {
-			sh_qty[i].addEventListener("change", function() {
-				let current = this.parentNode.parentNode.parentNode;
+ 		var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
+ 		for (var i = 0; i < sh_qty.length; i++) {
+ 			sh_qty[i].addEventListener("change", function() {
+ 				let current = this.parentNode.parentNode.parentNode;
  				CalculateReturnedWastage(current);
-				ReturnedPayable(current);
+ 				ReturnedPayable(current);
  			});
  		};
 
@@ -3232,6 +3544,15 @@
  		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
  		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
+		var grand_total_weight=document.querySelectorAll('input[id="grand_total_weight[]"]');
+		console.log("grand_total_weight",grand_total_weight);
+		grand_total_weight.forEach(function(input) {
+ 			input.addEventListener('change', function() {
+				console.log("grand_total_weight function");
+ 				let current = this.parentNode.parentNode.parentNode.nextElementSibling;
+ 				ReturnedPayable(current);
+ 			});
+ 		})
  		stone_quantity.forEach(function(input) {
  			input.addEventListener('change', function() {
  				let current = this.parentNode.parentNode.parentNode;
@@ -3412,7 +3733,7 @@
  		var manufacturer_rate = document.querySelector("#manufacturer-rate");
  		var r_grand_weight = document.querySelector("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
-		
+
 
 
 
@@ -3846,10 +4167,10 @@
 
  	$(document).on('input', '#received_weight', function(e) {
  		e.preventDefault();
-		let current = this.parentNode.parentNode.parentNode.previousElementSibling;
+ 		let current = this.parentNode.parentNode.parentNode.previousElementSibling;
  		GetStoneSetterRate(current);
  		CalculatePayable();
- 		
+
 
  	});
 
