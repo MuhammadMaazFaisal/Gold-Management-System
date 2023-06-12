@@ -1746,7 +1746,7 @@
                 </head>
                 <body>
                 <p><span class="label" style="margin-right:6px;>Date:</span><span>${data[0].date}</span></p>
-                <p><span class="label" style="margin-right:6px;>Barcode</span><span>:${data[0].barcode}</span></p>
+                <p><span class="label" style="margin-right:6px;>Barcode</span><span>:${data[0].product_id}</span></p>
                 <p><span class="label" style="margin-right:6px;>Name:</span><span>${data[0].vendor_name}</span></p>
                 <p><span class="label" style="margin-right:6px;>Detail:</span><span>${data[0].details}</span></p>
                 <p><span class="label" style="margin-right:6px;>Type:</span><span>${data[0].type}</span></p>
@@ -1829,7 +1829,7 @@
                 </head>
                 <body>
 				<p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].polisher_step_date}</span></p>
-                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].polisherbarcode}</span></p>
+                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
                 <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].polisher_name}</span></p>
                 <p><span class="label" style="margin-right:6px;">Type:</span><span>${data[0].type}</span></p>
                 <p><span class="label" style="margin-right:6px;">Quantity:</span><span>${data[0].quantity}</span></p>
@@ -1912,7 +1912,7 @@
                 </head>
                 <body>
                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
-                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:</span></p>
+                <p><span class="label" style="margin-right:6px;">Barcode:</span><span>${data[0].product_id}</span></p>
                 <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
                 <p><span class="label" style="margin-right:6px;">Issued Weight:</span><span>${data[0].Issued_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Zircon Weight:</span><span>${data[0].z_total_weight}</span></p>
@@ -3219,6 +3219,7 @@
  		} else {
  			value = total_weight - retained_weight.value;
  			retained_weight.parentNode.nextElementSibling.nextElementSibling.children[0].value = value;
+			 NextTotalWeight(retained_weight);	
  		}
 		current = retained_weight.parentNode.parentNode.parentNode;
 		SGrandWeight(current);
@@ -3226,6 +3227,19 @@
 
 
  	}
+
+	function NextTotalWeight(retained_weight){
+		let all_retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+		for (let i = 0; i < all_retained_weight.length; i++) {
+			let current = all_retained_weight[i];
+			if (current == retained_weight && i < all_retained_weight.length - 1) {
+				let total_weight = all_retained_weight[i+1].parentNode.previousElementSibling.previousElementSibling.children[0];
+				total_weight.value = retained_weight.value;
+				CalculateIssuedWeight(all_retained_weight[i+1]);
+
+			}
+		}
+	}
 
  	function CalculatePolisherWastage() {
  		var code = $('#select-polisher').selectize()[0].selectize
