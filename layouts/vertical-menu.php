@@ -367,7 +367,7 @@
 
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="issue_metal.php" data-key="t-register">Issue Metal</a></li>
-							<li><a href="recieve_metal.php" data-key="t-register">Recieve Metal</a></li>
+							<li><a href="recieve_metal.php" data-key="t-register">Receive Metal</a></li>
 						</ul>
 
                     </li>
@@ -381,15 +381,14 @@
                    	 <li>
                         <a href="javascript: void(0);" class=" ">
                             <i data-feather="file-text"></i>
-                            <span data-key="t-bank">Manage Accounts</span>
+                            <span data-key="t-bank">Cash</span>
 
                         </a>
 
                         <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="gold_account.php" data-key="t-register">Gold Account</a></li>
-							<li><a href="stone_account.php" data-key="t-register">Stone Setter Account</a></li>
-							<li><a href="cash_account.php" data-key="t-register">Cash Account</a></li>
-                        </ul>
+                            <li><a href="issue_cash.php" data-key="t-register">Issue Cash</a></li>
+							<li><a href="recieve_cash.php" data-key="t-register">Receive Cash</a></li>
+						</ul>
 
                     </li>
 

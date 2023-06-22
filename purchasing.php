@@ -58,6 +58,12 @@ error_reporting(E_ALL);
                                     </h4>
 
                                 </div>
+                                <div class="col d-flex justify-content-end me-4">
+                                    <button type="button" onclick="DeleteProduct()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Product</button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
+                                        Select Product
+                                    </button>
+                                </div>
                                 <div class="card-body px-4 ">
 
                                     <div class="row">
@@ -160,6 +166,38 @@ error_reporting(E_ALL);
     <!-- end main content-->
 
 </div>
+
+<div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ 	<div class="modal-dialog modal-dialog-scrollable modal-xl">
+ 		<div class="modal-content">
+ 			<div class="modal-header">
+ 				<h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
+ 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 			</div>
+ 			<div class="modal-body">
+ 				<table id="product-table" class="table table-hover ">
+ 					<thead>
+ 						<tr>
+ 							<th scope="col">#</th>
+ 							<th scope="col">Invoice ID</th>
+ 							<th scope="col">Vendor ID</th>
+ 							<th scope="col">Vendor Name</th>
+                            <th scope="col">Total</th>
+ 							<th scope="col">Date</th>
+ 							<th scope="col">Action</th>
+ 						</tr>
+ 					</thead>
+ 					<tbody id="product-table-body">
+
+ 					</tbody>
+ 				</table>
+ 			</div>
+ 			<div class="modal-footer">
+ 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
 <!-- END layout-wrapper -->
 
 <!-- Right Sidebar -->
@@ -231,7 +269,7 @@ error_reporting(E_ALL);
         unique = Math.floor(new Date().getTime() + Math.random());
         if (btn.parentNode.previousElementSibling.children[0].value == "") {
             btn.parentNode.previousElementSibling.children[0].value = unique;
-        }else{
+        } else {
             btn.parentNode.previousElementSibling.children[0].value = "";
         }
 
@@ -244,7 +282,7 @@ error_reporting(E_ALL);
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
         if (price_per.value == "K") {
-            total.value = qty.value * rate.value * 5;
+            total.value = weight.value * rate.value * 5;
             GrandTotal();
         } else if (price_per.value == "Tola") {
             total.value = (weight.value / 11.664) * rate.value;
@@ -283,6 +321,53 @@ error_reporting(E_ALL);
     }
 
     $(document).ready(function() {
+        $.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetModalInvoices"
+ 			},
+ 			success: function(response) {
+                console.log(data);
+ 				var data = JSON.parse(response);
+                console.log(data);
+ 				var tbody = document.getElementById("product-table-body");
+ 				for (var i = 0; i < data.length; i++) {
+ 					var tr = document.createElement("tr");
+ 					var td1 = document.createElement("td");
+ 					var td2 = document.createElement("td");
+ 					var td3 = document.createElement("td");
+ 					var td4 = document.createElement("td");
+                    var td4_1 = document.createElement("td");
+ 					var td5 = document.createElement("td");
+ 					var td6 = document.createElement("td");
+ 					var btn = document.createElement("button");
+ 					btn.innerHTML = "Select";
+ 					btn.className = "btn btn-primary";
+ 					btn.addEventListener("click", function() {
+ 						GetProductId(this);
+ 					});
+ 					tr.id = data[i].product_id;
+ 					td1.innerHTML = i + 1;
+ 					td2.innerHTML = data[i].product_id;
+ 					td3.innerHTML = data[i].vendor_id;
+ 					td4.innerHTML = data[i].vendor_name;
+                    td4_1.innerHTML = data[i].total;
+ 					date = data[i].date;
+ 					td5.innerHTML = date.slice(0, 10);
+ 					td6.classList.add("p-1");
+ 					td6.appendChild(btn);
+ 					tr.appendChild(td1);
+ 					tr.appendChild(td2);
+ 					tr.appendChild(td3);
+ 					tr.appendChild(td4);
+ 					tr.appendChild(td5);
+ 					tr.appendChild(td6);
+ 					tbody.appendChild(tr);
+ 				};
+ 			}
+ 		});
+
         AddEventListeners();
 
         $.ajax({

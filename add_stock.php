@@ -446,9 +446,9 @@ error_reporting(E_ALL);
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
         if (e_price_per.value == "K") {
-            total.value = qty.value * rate.value * 5;
+            total.value = weight.value * rate.value * 5;
         } else if (e_price_per.value == "Tola") {
-            total.value = (weight.value / 11.664) * rate.value;
+            total.value = ((weight.value / 11.664) * rate.value).toFixed(3);
         } else if (e_price_per.value == "Qty") {
             total.value = qty.value * rate.value;
         }
@@ -512,7 +512,7 @@ error_reporting(E_ALL);
                             <td> <input type="number" step="any" placeholder="" id="weight[]" name="weight[]" class="form-control"></td>
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control"></td>
                             <td><input type="number" step="any" placeholder="" id="total[]" name="total[]" class="form-control"></td>
-                            <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control"></td>
+                            <td><input id="barcode[]" name="barcode[]" value="${Math.floor(new Date().getTime() + Math.random())}" type="text" class="form-control"></td>
                             <td><i onclick="DeleteStock(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>
 
                             <td class="d-none"><input type="text" class="form-control" id="pd_id[]" name="pd_id[]" value="existing"></td>
@@ -528,6 +528,8 @@ error_reporting(E_ALL);
     $(document).ready(function() {
         GetDate();
         AddEventListeners();
+
+        document.getElementById("barcode[]").value = Math.floor(new Date().getTime() + Math.random());
 
         $('select').selectize({
             sortField: 'text'

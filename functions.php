@@ -40,6 +40,8 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStoneSetterRate();
 } elseif ($_POST['function'] == 'GetModalProducts') {
     GetModalProducts();
+} elseif ($_POST['function'] == 'GetModalInvoices') {
+    GetModalInvoices();
 } elseif ($_POST['function'] == 'GetFilteredProducts') {
     GetFilteredProducts();
 } elseif ($_POST['function'] == 'ReturnedStepThree') {
@@ -90,12 +92,28 @@ if ($_POST['function'] == 'GetAllVendorData') {
     PrintSetter();
 } elseif ($_POST['function'] == 'PrintReturned') {
     PrintReturned();
+} elseif ($_POST['function'] == 'SelectMetal') {
+    SelectMetal();
+} elseif ($_POST['function'] == 'SelectMetalVendor') {
+    SelectMetalVendor();
+} elseif ($_POST['function'] == 'SelectMetal2') {
+    SelectMetal2();
+} elseif ($_POST['function'] == 'DeleteMetal') {
+    DeleteMetal();
+} elseif ($_POST['function'] == 'CashRecord') {
+    CashRecord();
+} elseif ($_POST['function'] == 'GetCashVendors') {
+    GetCashVendors();
+} elseif ($_POST['function'] == 'DeleteCash') {
+    DeleteCash();
+} elseif ($_POST['function'] == 'SelectCash') {
+    SelectCash();
 }
 
 
-
 // -------------------------Production Page-------------------------//
-function PrintManufacturer(){
+function PrintManufacturer()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -114,7 +132,8 @@ function PrintManufacturer(){
     }
 }
 
-function PrintPolisher(){
+function PrintPolisher()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -139,7 +158,8 @@ function PrintPolisher(){
     }
 }
 
-function PrintSetter(){
+function PrintSetter()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -166,7 +186,8 @@ function PrintSetter(){
     }
 }
 
-function PrintReturned(){
+function PrintReturned()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -472,6 +493,7 @@ function StepOne()
     $type = $_POST['type'];
     $quantity = $_POST['quantity'];
     $purity = trim($_POST['purity']);
+    $purity_text = trim($_POST['purity_text']);
     $unpolish_weight = trim($_POST['unpolish_weight']);
     $polish_weight = trim($_POST['polish_weight']);
     $rate = trim($_POST['rate']);
@@ -501,7 +523,7 @@ function StepOne()
     $row = $qry3Statement->fetch(PDO::FETCH_ASSOC);
     if ($row && $row['id'] == $code) {
         array_push($array, 'success');
-        $qry = "UPDATE `manufacturing_step` SET `vendor_id`=:vendor_id,`image`=:imageName,`product_id`=:code,`type`=:fType,`quantity`=:quantity,`purity`=:pValue,`unpolish_weight`=:unpolish_weight,`polish_weight`=:polish_weight,`rate`=:rate,`wastage`=:wastage,`tValues`=:tValues,`date`=:fDate,`details`=:details,`barcode`=:barcode WHERE `product_id` = '$code'";
+        $qry = "UPDATE `manufacturing_step` SET `vendor_id`=:vendor_id,`image`=:imageName,`product_id`=:code,`type`=:fType,`quantity`=:quantity,`purity`=:pValue`,purity_text`=:purity_text,`unpolish_weight`=:unpolish_weight,`polish_weight`=:polish_weight,`rate`=:rate,`wastage`=:wastage,`tValues`=:tValues,`date`=:fDate,`details`=:details,`barcode`=:barcode WHERE `product_id` = '$code'";
     } else {
         $qry1 = "INSERT INTO `product`(`id`, `status`) VALUES (:code, 'Active')";
         $qry1Statement = $pdo->prepare($qry1);
@@ -511,8 +533,8 @@ function StepOne()
         if ($qry1Statement->execute()) {
             array_push($array, 'success');
         }
-        $qry = "INSERT INTO manufacturing_step(`vendor_id`, `image`, `product_id`, `type`, `quantity`, `purity`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `tValues`, `date`, `details`,`barcode`)
-    VALUES (:vendor_id, :imageName, :code, :fType, :quantity, :pValue, :unpolish_weight, :polish_weight, :rate, :wastage, :tValues, :fDate, :details, :barcode);";
+        $qry = "INSERT INTO manufacturing_step(`vendor_id`, `image`, `product_id`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `tValues`, `date`, `details`,`barcode`)
+    VALUES (:vendor_id, :imageName, :code, :fType, :quantity, :pValue,:purity_text, :unpolish_weight, :polish_weight, :rate, :wastage, :tValues, :fDate, :details, :barcode);";
     }
 
     $qryStatement = $pdo->prepare($qry);
@@ -523,6 +545,7 @@ function StepOne()
     $qryStatement->bindParam(':fType', $type);
     $qryStatement->bindParam(':quantity', $quantity);
     $qryStatement->bindParam(':pValue', $purity);
+    $qryStatement->bindParam(':purity_text', $purity_text);
     $qryStatement->bindParam(':unpolish_weight', $unpolish_weight);
     $qryStatement->bindParam(':polish_weight', $polish_weight);
     $qryStatement->bindParam(':rate', $rate);
@@ -626,8 +649,8 @@ function StepThree()
     $product_id = $_POST['code'];
     $date = $_POST['date'];
     $details = $_POST['detail'];
-    $total_weight=$_POST['s_total_weight'];
-    $retained_weight=$_POST['retained_weight'];
+    $total_weight = $_POST['s_total_weight'];
+    $retained_weight = $_POST['retained_weight'];
     $issued_weight = $_POST['Issued_weight'];
     $z_code = $_POST['zircon_code'];
     $z_weight = $_POST['zircon_weight'];
@@ -649,38 +672,38 @@ function StepThree()
     $time = time();
 
 
-        $qry = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
-        $qryStatement = $pdo->prepare($qry);
-        $qryStatement->bindParam(':product_id', $product_id[0]);
-        $qryStatement->bindParam(':vendor_id', $vendor_id[0]);
-        $qryStatement->execute();
-        $array = array();
-        if ($qryStatement->rowCount() > 0) {
-            $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight,`grand_total`=:grand_price, `total_weight`=:total_weight, `retained_weight`=:retained_weight WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
-        } else {
-            $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `total_weight`, `retained_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:total_weight,:retained_weight,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
-        }
-        $qryStatement2 = $pdo->prepare($qry2);
-        $qryStatement2->bindParam(':product_id', $product_id[0]);
-        $qryStatement2->bindParam(':date', $date[0]);
-        $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
-        $qryStatement2->bindParam(':imageNamepo', $imageNamepo[0]);
-        $qryStatement2->bindParam(':details', $details[0]);
-        $qryStatement2->bindParam(':issued_weight', $issued_weight[0]);
-        $qryStatement2->bindParam(':total_z_price', $total_z_price[0]);
-        $qryStatement2->bindParam(':total_z_weight', $total_z_weight[0]);
-        $qryStatement2->bindParam(':total_z_quantity', $total_z_quantity[0]);
-        $qryStatement2->bindParam(':total_s_price', $total_s_price[0]);
-        $qryStatement2->bindParam(':total_s_weight', $total_s_weight[0]);
-        $qryStatement2->bindParam(':total_s_quantity', $total_s_quantity[0]);
-        $qryStatement2->bindParam(':grand_weight', $grand_weight[0]);
-        $qryStatement2->bindParam(':grand_price', $grand_price[0]);
-        $qryStatement2->bindParam(':total_weight', $total_weight[0]);
-        $qryStatement2->bindParam(':retained_weight', $retained_weight[0]);
-        if ($qryStatement2->execute()) {
-            array_push($array, 'success');
-        }
-    
+    $qry = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':product_id', $product_id[0]);
+    $qryStatement->bindParam(':vendor_id', $vendor_id[0]);
+    $qryStatement->execute();
+    $array = array();
+    if ($qryStatement->rowCount() > 0) {
+        $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight,`grand_total`=:grand_price, `total_weight`=:total_weight, `retained_weight`=:retained_weight WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
+    } else {
+        $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `total_weight`, `retained_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:total_weight,:retained_weight,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
+    }
+    $qryStatement2 = $pdo->prepare($qry2);
+    $qryStatement2->bindParam(':product_id', $product_id[0]);
+    $qryStatement2->bindParam(':date', $date[0]);
+    $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
+    $qryStatement2->bindParam(':imageNamepo', $imageNamepo[0]);
+    $qryStatement2->bindParam(':details', $details[0]);
+    $qryStatement2->bindParam(':issued_weight', $issued_weight[0]);
+    $qryStatement2->bindParam(':total_z_price', $total_z_price[0]);
+    $qryStatement2->bindParam(':total_z_weight', $total_z_weight[0]);
+    $qryStatement2->bindParam(':total_z_quantity', $total_z_quantity[0]);
+    $qryStatement2->bindParam(':total_s_price', $total_s_price[0]);
+    $qryStatement2->bindParam(':total_s_weight', $total_s_weight[0]);
+    $qryStatement2->bindParam(':total_s_quantity', $total_s_quantity[0]);
+    $qryStatement2->bindParam(':grand_weight', $grand_weight[0]);
+    $qryStatement2->bindParam(':grand_price', $grand_price[0]);
+    $qryStatement2->bindParam(':total_weight', $total_weight[0]);
+    $qryStatement2->bindParam(':retained_weight', $retained_weight[0]);
+    if ($qryStatement2->execute()) {
+        array_push($array, 'success');
+    }
+
 
     // echo json_encode($array, true);
 
@@ -701,7 +724,7 @@ function StepThree()
         $qryStatement2->bindParam(':product_id', $product_id[0]);
         $qryStatement2->bindParam(':vendor_id', $vendor_id[0]);
         $qryStatement2->execute();
-        }
+    }
 
     for ($i = 0; $i < @count($z_code); $i++) {
         $z_weight1 = $z_weight[$i];
@@ -787,7 +810,7 @@ function ReturnedStepThree()
     $r_code = $_POST['r_code'];
     $r_weight = $_POST['r_weight'];
     $r_quantity = $_POST['r_quantity'];
-    $sh_qty=$_POST['sh_qty'];
+    $sh_qty = $_POST['sh_qty'];
 
     $qry2 = "SELECT * FROM `returned_stone_step` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
     $qryStatement2 = $pdo->prepare($qry2);
@@ -863,28 +886,33 @@ function StepFour()
     $amount = $_POST['amount'];
     $type = $_POST['type'];
 
-    $qry1 = "SELECT * FROM `additional_step` WHERE `product_id` = :product_id";
+    $qry1 = "Delete from `additional_step` WHERE `product_id` = :product_id";
+    
     $qryStatement1 = $pdo->prepare($qry1);
     $qryStatement1->bindParam(':product_id', $product_id);
     $qryStatement1->execute();
     $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
 
-    if ($row > 0) {
-        $qry = "UPDATE `additional_step` SET `amount`=:amount,`date`=:date,`type`=:type, `vendor_id`=:vendor_id WHERE `product_id` = :product_id";
-    } else {
-        $qry = "INSERT INTO `additional_step`( `product_id`, `vendor_id`, `type`, `amount`, `date`, `status`) VALUES (:product_id,:vendor_id,:type,:amount,:date,'Active')";
+    $qry="Insert into `additional_step`(`product_id`,`vendor_id`,`type`,`amount`,`date`,`status`) VALUES (:product_id,:vendor_id,:type,:amount,:date,'Active')";
+
+    for ($i = 0; $i < @count($type); $i++) {
+        $type1 = $type[$i];
+        $amount1 = $amount[$i];
+        $vendor_id1 = $vendor_id[$i];
+        $date1 = $date[$i];
+        $statement = $pdo->prepare($qry);
+        $statement->bindParam(':product_id', $product_id);
+        $statement->bindParam(':vendor_id', $vendor_id1);
+        $statement->bindParam(':type', $type1);
+        $statement->bindParam(':amount', $amount1);
+        $statement->bindParam(':date', $date1);
+        if ($statement->execute()) {
+            array_push($array, 'success');
+        } else {
+            array_push($array, 'error');
+        }
     }
 
-    $statement = $pdo->prepare($qry);
-
-    $statement->bindParam(':date', $date);
-    $statement->bindParam(':type', $type);
-    $statement->bindParam(':product_id', $product_id);
-    $statement->bindParam(':vendor_id', $vendor_id);
-    $statement->bindParam(':amount', $amount);
-    if ($statement->execute()) {
-        array_push($array, 'success');
-    }
     echo json_encode($array, true);
 }
 
@@ -1140,6 +1168,141 @@ function GetStoneSetterRate()
 
 // -------------------Issue/Recieve Metal Page---------------------- //
 
+function DeleteMetal()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "Update metal SET status='Inactive' WHERE id=:id";
+    $qryStatement = $pdo->prepare($qry);
+
+    $qryStatement->bindParam(':id', $id);
+
+    if ($qryStatement->execute()) {
+        $result = array('status' => 'success');
+    } else {
+        $result = array('status' => 'error');
+    }
+    echo json_encode($result, true);
+}
+
+function SelectMetal()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT metal.id, metal.date, metal.vendor_id, vendor.name, metal.type, metal.details, metal.issued_weight, metal.purity, metal.pure_weight
+        FROM metal
+        JOIN vendor ON metal.vendor_id = vendor.id
+        WHERE metal.type = 'recieved' AND metal.status='Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        $totalPureWeight = 0;
+        foreach ($array as $row) {
+            $totalPureWeight += $row['pure_weight'];
+        }
+        $result = array(
+            'records' => $array,
+            'total_pure_weight' => $totalPureWeight
+        );
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function SelectMetalVendor()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT metal.id, metal.date, metal.vendor_id, vendor.name, metal.type, metal.details, metal.issued_weight, metal.purity, metal.pure_weight
+        FROM metal
+        JOIN vendor ON metal.vendor_id = vendor.id
+        WHERE metal.type = 'recieved' AND metal.status='Active' AND metal.vendor_id=:vendor_id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':vendor_id', $_POST['id']);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        $totalPureWeight = 0;
+        foreach ($array as $row) {
+            $totalPureWeight += $row['pure_weight'];
+        }
+        $result = array(
+            'records' => $array,
+            'total_pure_weight' => $totalPureWeight
+        );
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function SelectMetal2()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT metal.id, metal.date, metal.vendor_id, vendor.name, metal.type, metal.details, metal.issued_weight, metal.purity, metal.pure_weight
+        FROM metal
+        JOIN vendor ON metal.vendor_id = vendor.id
+        WHERE metal.type = 'issued' AND metal.status='Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        $totalPureWeight = 0;
+        foreach ($array as $row) {
+            $totalPureWeight += $row['pure_weight'];
+        }
+        $result = array(
+            'records' => $array,
+            'total_pure_weight' => $totalPureWeight
+        );
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function SelectMetalVendor2()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT metal.id, metal.date, metal.vendor_id, vendor.name, metal.type, metal.details, metal.issued_weight, metal.purity, metal.pure_weight
+        FROM metal
+        JOIN vendor ON metal.vendor_id = vendor.id
+        WHERE metal.type = 'issued' AND metal.status='Active' AND metal.vendor_id=:vendor_id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':vendor_id', $_POST['id']);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        $totalPureWeight = 0;
+        foreach ($array as $row) {
+            $totalPureWeight += $row['pure_weight'];
+        }
+        $result = array(
+            'records' => $array,
+            'total_pure_weight' => $totalPureWeight
+        );
+        echo json_encode($result, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
 function GetMetalVendors()
 {
     include 'layouts/session.php';
@@ -1164,7 +1327,12 @@ function MetalRecord()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "INSERT INTO `metal`(`date`, `vendor_id`, `type`, `details`, `issued_weight`, `purity`, `pure_weight`) VALUES (:date, :vendor_id, :type, :details, :issued_weight, :purity, :pure_weight)";
+    if ($_POST['product_id'] == null) {
+        $getRecordQuery = "INSERT INTO `metal`(`date`, `vendor_id`, `type`, `details`, `issued_weight`, `purity`, `pure_weight`,`status`) VALUES (:date, :vendor_id, :type, :details, :issued_weight, :purity, :pure_weight,'Active')";
+    } else {
+        $getRecordQuery = "UPDATE `metal` SET `date`=:date,`vendor_id`=:vendor_id,`type`=:type,`details`=:details,`issued_weight`=:issued_weight,`purity`=:purity,`pure_weight`=:pure_weight WHERE `id` = :id";
+    }
+
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':date', $_POST['date']);
     $getRecordStatement->bindParam(':vendor_id', $_POST['vendor']);
@@ -1173,6 +1341,9 @@ function MetalRecord()
     $getRecordStatement->bindParam(':issued_weight', $_POST['issued_weight']);
     $getRecordStatement->bindParam(':purity', $_POST['purity']);
     $getRecordStatement->bindParam(':pure_weight', $_POST['pure_weight']);
+    if ($_POST['product_id'] != null) {
+        $getRecordStatement->bindParam(':id', $_POST['product_id']);
+    }
     if ($getRecordStatement->execute()) {
         array_push($array, "success");
         echo json_encode($array, true);
@@ -1182,6 +1353,22 @@ function MetalRecord()
 }
 
 // -------------------Purchasing Page---------------------- //
+
+function GetModalInvoices(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT `p.id`, `p.vendor_id`, `p.total`, `p.date`, `p.status` FROM `purchasing` as p
+    INNER JOIN vendor AS v ON p.vendor_id = v.id WHERE p.status='Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        
+    }
+}
 
 function GetPurchasingCount()
 {
@@ -1586,6 +1773,105 @@ SELECT
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+// -------------------Cash Page---------------------- //
+
+function CashRecord()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    if ($_POST['product_id'] == null) {
+        $getRecordQuery = "INSERT INTO `cash`(`date`, `vendor_id`, `type`, `amount`,`details`, `status`) VALUES (:date,:vendor_id,:type,:amount,:details,'Active')";
+    } else {
+        $getRecordQuery = "UPDATE `cash` SET `date`=:date,`vendor_id`=:vendor_id,`type`=:type,`amount`=:amount,`details`=:details WHERE `id`=:id";
+    }
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':date', $_POST['date']);
+    $getRecordStatement->bindParam(':vendor_id', $_POST['vendor']);
+    $getRecordStatement->bindParam(':type', $_POST['type']);
+    $getRecordStatement->bindParam(':details', $_POST['detail']);
+    $getRecordStatement->bindParam(':amount', $_POST['amount']);
+    if ($_POST['product_id'] != null) {
+        $getRecordStatement->bindParam(':id', $_POST['product_id']);
+    }
+    if ($getRecordStatement->execute()) {
+        array_push($array, "success");
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetCashVendors()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT * FROM `vendor` WHERE `status` = 'Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function DeleteCash()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "Update cash SET status='Inactive' WHERE id=:id";
+    $qryStatement = $pdo->prepare($qry);
+
+    $qryStatement->bindParam(':id', $id);
+
+    if ($qryStatement->execute()) {
+        $result = array('status' => 'success');
+    } else {
+        $result = array('status' => 'error');
+    }
+    echo json_encode($result, true);
+}
+
+function SelectCash()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT cash.id, cash.date, cash.vendor_id, vendor.name, cash.type, cash.details, cash.amount
+        FROM cash
+        JOIN vendor ON cash.vendor_id = vendor.id
+        WHERE cash.type =:type AND cash.status='Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':type', $_POST['type']);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        $totalPureWeight = 0;
+        foreach ($array as $row) {
+            $totalPureWeight += $row['amount'];
+        }
+        $result = array(
+            'records' => $array,
+            'total_pure_weight' => $totalPureWeight
+        );
+        echo json_encode($result, true);
     } else {
         echo json_encode($getRecordStatement->errorInfo(), true);
     }

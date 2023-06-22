@@ -887,17 +887,17 @@
  																</tr>
  																<tr>
  																	<td>
- 																		<input type="date" id="a_date" name="date" class="form-control" placeholder="Date">
+ 																		<input type="date" id="a_date[]" name="date[]" class="form-control" placeholder="Date">
  																	</td>
  																	<td>
 
- 																		<select id="select-vendor" name="vendor_id" placeholder="Pick a vendor...">
+ 																		<select id="select-vendor[]" name="vendor_id[]" placeholder="Pick a vendor...">
  																			<option value="">Select a vendor...</option>
 
  																		</select>
  																	</td>
  																	<td>
- 																		<select required="" id="a_type" name="type" class="form-control form-select">
+ 																		<select required="" id="a_type[]" name="type[]" class="form-control form-select">
  																			<option value="">Select Type</option>
  																			<option value="Stone ">Stone</option>
  																			<option value="Dull">Dull</option>
@@ -918,26 +918,27 @@
  																		</select>
  																	</td>
  																	<td>
- 																		<input type="number" step="any" id="amount" name="amount" class="form-control" placeholder="Amount">
+ 																		<input type="number" step="any" id="amount[]" name="amount[]" class="form-control" placeholder="Amount">
  																	</td>
 
 
 
- 																	<td><button type="submit" id="a_save" class="btn btn-primary">Save</button>
+ 																	<td><i class="fa fa-plus-circle p-2" onclick="AddAdditional(this)"></i>
 
 
  																	</td>
  																</tr>
  															</table>
+
  														</div>
 
 
 
  														<div class="row justify-content-end">
- 															<div class="col-sm-9">
+ 															<div class="col-sm-3">
 
  																<div>
-
+ 																	<button type="submit" id="a_save" class="btn btn-primary">Save</button>
  																</div>
  															</div>
  														</div>
@@ -1053,6 +1054,99 @@
  <?php include 'layouts/vendor-scripts.php'; ?>
 
  <script>
+ 	function GetAllAdditionals() {
+ 		let type = document.querySelectorAll('select[id="a_type[]"]:not(.selectized)');
+ 		for (var i = 0; i < type.length; i++) {
+ 			var selectElement = type[i];
+ 			var selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 		}
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetAllVendorData",
+ 				type: "vendor"
+ 			},
+ 			success: function(response) {
+ 				var data = JSON.parse(response);
+ 				let zircon = document.querySelectorAll('select[id="select-vendor[]"]');
+ 				let delete_area = zircon[0].parentElement;
+ 				var selectizeControls = delete_area.querySelectorAll('.selectize-control');
+ 				if (selectizeControls[0] != undefined) {
+ 					if (zircon.length > 1) {
+ 						// Get the first selectize control (index 0)
+ 						selectizeControls[0].remove();
+ 					}
+ 				}
+ 				// Start the loop from the second element (index 1)
+ 				for (var i = 1; i < selectizeControls.length; i++) {
+ 					var selectizeControl = selectizeControls[i];
+
+ 				}
+ 				for (let i = 0; i < zircon.length; i++) {
+ 					var selectElement = zircon[i];
+ 					var selectizeInstance = $(selectElement).selectize()[0].selectize;
+
+ 					var options = selectizeInstance.options;
+
+ 					if (Object.keys(options).length === 0) {
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].id,
+ 								text: data[j].id + " | " + data[j].name
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+
+ 						selectizeInstance.refreshOptions();
+ 					} else if (Object.keys(options).length === 1) {
+ 						option1 = Object.keys(options)[0];
+ 						selectizeInstance.removeOption(option1);
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].id,
+ 								text: data[j].id + " | " + data[j].name
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+ 						selectizeInstance.setValue(option1);
+
+
+ 						selectizeInstance.refreshOptions();
+ 					} else if (Object.keys(options).length > 1) {
+ 						if (selectizeInstance.getValue() != "") {
+ 							var selctedValue = selectizeInstance.getValue();
+ 						}
+ 						selectizeInstance.clearOptions();
+ 						selectizeInstance.destroy();
+ 						selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						for (let j = 0; j < data.length; j++) {
+ 							var newOption = {
+ 								value: data[j].id,
+ 								text: data[j].id + " | " + data[j].name
+ 							};
+ 							if (selectizeInstance != undefined) {
+ 								selectizeInstance.addOption(newOption);
+ 							}
+ 						}
+ 						if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
+ 							selectizeInstance.setValue(selctedValue);
+ 							selctedValue = "";
+ 						}
+ 						selectizeInstance.refreshOptions();
+
+
+
+ 					}
+ 				}
+ 			}
+ 		});
+ 	}
+
  	function GetAllZircons() {
  		$.ajax({
  			url: "functions.php",
@@ -1568,7 +1662,6 @@
  		runLoop2();
  	}
 
-
  	function GetProductId(btn) {
  		var id = btn.parentNode.parentNode.id;
  		$('#product-modal').modal('hide');
@@ -1607,8 +1700,10 @@
  		}
  		value = parseFloat(stone_total_weight.value) + parseFloat(zircon_total_weight.value) + parseFloat(stepIssueweight.value);
  		total.value = value.toFixed(2) + '0';
-		const event = new Event("change", { bubbles: true });
-		total.dispatchEvent(event);
+ 		const event = new Event("change", {
+ 			bubbles: true
+ 		});
+ 		total.dispatchEvent(event);
 
  	}
 
@@ -1745,17 +1840,17 @@
                 </style>
                 </head>
                 <body>
-                <p><span class="label" style="margin-right:6px;>Date:</span><span>${data[0].date}</span></p>
-                <p><span class="label" style="margin-right:6px;>Barcode</span><span>:${data[0].product_id}</span></p>
-                <p><span class="label" style="margin-right:6px;>Name:</span><span>${data[0].vendor_name}</span></p>
-                <p><span class="label" style="margin-right:6px;>Detail:</span><span>${data[0].details}</span></p>
-                <p><span class="label" style="margin-right:6px;>Type:</span><span>${data[0].type}</span></p>
-                <p><span class="label" style="margin-right:6px;>Quantity:</span><span>${data[0].quantity}</span></p>
-                <p><span class="label" style="margin-right:6px;>Purity:</span><span>${purity}</span></p>
-                <p><span class="label" style="margin-right:6px;>Unpolished:</span><span>${data[0].unpolish_weight}</span></p>
-                <p><span class="label" style="margin-right:6px;>Polished:</span><span>${data[0].polish_weight}</span></p>
-                <p><span class="label" style="margin-right:6px;>Wastage:</span><span>${data[0].wastage}</span></p>
-                <p><span class="label" style="margin-right:6px;>Payable:</span><span>${data[0].tValues}</span></p>
+                <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
+                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Detail:</span><span>${data[0].details}</span></p>
+                <p><span class="label" style="margin-right:6px;">Type:</span><span>${data[0].type}</span></p>
+                <p><span class="label" style="margin-right:6px;">Quantity:</span><span>${data[0].quantity}</span></p>
+                <p><span class="label" style="margin-right:6px;">Purity:</span><span>${purity}</span></p>
+                <p><span class="label" style="margin-right:6px;">Unpolished:</span><span>${data[0].unpolish_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">Polished:</span><span>${data[0].polish_weight}</span></p>
+                <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
+                <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].tValues}</span></p>
                 </body>
                 </html>
             `;
@@ -2039,6 +2134,7 @@
  			},
  			success: function(data) {
  				data = JSON.parse(data);
+ 				console.log("manufacturer data", data);
  				var select_manufacturer = $('#select-manufacturer')[0].selectize;
  				select_manufacturer.setValue(data[0].vendor_id);
  				var code = document.getElementsByClassName('code');
@@ -2059,7 +2155,7 @@
  				var qunatity = document.getElementById('quantity').value = data[0].quantity;
  				var unpolish_weight = document.getElementById('unpolish_weight').value = data[0].unpolish_weight;
  				var polish_weight = document.getElementById('polish_weight').value = data[0].polish_weight;
- 				var manufacturer_rate = document.getElementById('manufacturer-rate').value = data[0].rate;
+ 				var manufacturer_rate = document.getElementById('manufacturer-rate').value = data[0].purity;
  				var wastage = document.getElementById('wastage').value = data[0].wastage;
  				var tValues = document.getElementById('tValues').value = data[0].tValues;
  				$.ajax({
@@ -2071,26 +2167,36 @@
  					},
  					success: function(response) {
  						var data1 = JSON.parse(response);
+ 						console.log("dasda", data1);
  						var select_manufacturer_purity = $('#select-manufacturer-purity')[0].selectize;
  						for (var i = 0; i < data1.length; i++) {
  							var newOption = {
- 								value: data1[i]['18k'],
- 								text: "18k"
+ 								text: "18k",
+ 								value: "18k"
  							};
  							var newOption1 = {
- 								value: data1[i]['21k'],
- 								text: "21k"
+ 								text: "21k",
+ 								value: "21k"
  							};
  							var newOption2 = {
- 								value: data1[i]['22k'],
- 								text: "22k"
- 							};
+ 								text: "22k",
+ 								value: "22k"
+ 							}
  							select_manufacturer_purity.addOption(newOption);
  							select_manufacturer_purity.addOption(newOption1);
  							select_manufacturer_purity.addOption(newOption2);
  						}
+ 						let option = select_manufacturer_purity.getOption(data[0].purity_text);
 
- 						select_manufacturer_purity.setValue(data[0].purity);
+ 						if (option) {
+ 							console.log("option", option);
+ 							option.text = data[0].purity_text;
+ 							option.value = data[0].purity;
+ 							select_manufacturer_purity.updateOption(data[0].purity_text, option);
+ 							select_manufacturer_purity.setValue(data[0].purity);
+
+ 						}
+
  						GetAdditionalVendorData(id);
  						CalculateDifference();
  						GetPolisherData(id);
@@ -2399,6 +2505,7 @@
 
  			}
  		});
+
 
 
  	}
@@ -2852,14 +2959,68 @@
  				id: id
  			},
  			success: function(data) {
+ 				console.log("additional", data);
  				if (data !== "[]") {
  					data = JSON.parse(data);
- 					var date = document.getElementById('a_date').value = data[0].date;
- 					var vendor = $('#select-vendor')[0].selectize;
- 					vendor.setValue(data[0].vendor_id);
- 					var type = $('#a_type')[0].selectize;
- 					type.setValue(data[0].type);
- 					var amount = document.getElementById('amount').value = data[0].amount;
+ 					let table = document.getElementById('additionalTable');
+ 					table.rows[1].remove();
+
+ 					for (i = 0; i < data.length; i++) {
+ 						let row = `
+								<tr>
+									<td>
+										<input type="date" id="a_date[]" value="${data[i].date}" name="date[]" class="form-control" placeholder="Date">
+									</td>
+									<td>
+
+										<select id="select-vendor[]" name="vendor_id[]" placeholder="Pick a vendor...">
+											<option value="${data[i].vendor_id}">Select a vendor...</option>
+
+										</select>
+									</td>
+									<td>
+										<select required="" id="a_type[]" name="type[]" class="form-control form-select">
+											<option value="">Select Type</option>
+											<option value="Stone ">Stone</option>
+											<option value="Dull">Dull</option>
+											<option value="Meena">Meena</option>
+											<option value="Ruby">Ruby</option>
+											<option value="Green">Green</option>
+											<option value="Sapphire">Sapphire</option>
+											<option value="Topas">Topas</option>
+											<option value="Turmaline">Turmaline</option>
+											<option value="Lekar">Lekar</option>
+											<option value="Cubic Baquets">Cubic Baquets</option>
+											<option value="Korean Baquets">Korean Baquets</option>
+											<option value="Color Stones">Color Stones</option>
+											<option value="Blue">Blue</option>
+											<option value="Pearl">Pearl</option>
+											<option value="Packet">Packet</option>
+
+										</select>
+									</td>
+									<td>
+										<input type="number" step="any" id="amount[]" name="amount[]" value="${data[i].amount}" class="form-control" placeholder="Amount">
+									</td>`;
+ 						if (i == 0) {
+ 							row += `<td><i class="fa fa-plus-circle p-2" onclick="AddAdditional(this)"></i>
+									</td>
+									</tr>`;
+ 						} else {
+ 							row += `<td><i class="fa fa-minus-circle p-2" onclick="DeleteAdditional(this)"></i>
+									</td>
+									</tr>`;
+ 						}
+ 						table.innerHTML += row;
+ 					}
+ 					let selectType = document.querySelectorAll('select[id="a_type[]"]');
+					console.log("selectType", selectType);
+ 					for (i = 0; i < selectType.length; i++) {
+ 						let currentSelectType = selectType[i];
+ 						console.log("good", i, currentSelectType);
+ 						currentSelectType.value = data[i].type;
+ 					}
+ 					GetAllAdditionals();
 
  				}
  			}
@@ -3096,6 +3257,11 @@
 
  	}
 
+ 	function DeleteAdditional(element) {
+ 		var area = element.parentNode.parentNode;
+ 		area.remove();
+ 	}
+
  	function Add(element) {
  		area = element.parentNode.parentNode.nextElementSibling;
  		var div = document.createElement('div');
@@ -3146,49 +3312,116 @@
 
  	}
 
- 	function AddReturned(element) {
+ 	function AddAdditional(element) {
  		var returned_area = element.parentNode.parentNode.parentNode;
- 		var div2 = document.createElement('div');
- 		div2.setAttribute('class', 'row mb-4 remove');
- 		div2.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-									<div class="col-sm-2">
-										<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code" required>
-									</div>
-									<div class="col-sm-1 p-0">
-										<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
-									</div>
-									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
-									<div class="col-sm-2">
-										<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight" required>
-									</div>
-									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
-									<div class="col-sm-2">
-										<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity" required>
-									</div>
-									<div class="col-sm-2">
-										<i class="delete-returned fa fa-minus-circle p-2"></i>
-									</div>`;
+ 		var div2 = document.createElement('tr');
+ 		div2.setAttribute('class', 'remove');
+ 		div2.innerHTML = `<td>
+					<input type="date" id="a_date[]" name="date[]" value="${new Date().toISOString().slice(0, 10)}" class="form-control" placeholder="Date">
+				</td>
+				<td>
+
+					<select id="select-vendor[]" name="vendor_id[]" placeholder="Pick a vendor...">
+						<option value="">Select a vendor...</option>
+
+					</select>
+				</td>
+				<td>
+					<select required="" id="a_type[]" name="type[]" class="form-control form-select">
+						<option value="">Select Type</option>
+						<option value="Stone ">Stone</option>
+						<option value="Dull">Dull</option>
+						<option value="Meena">Meena</option>
+						<option value="Ruby">Ruby</option>
+						<option value="Green">Green</option>
+						<option value="Sapphire">Sapphire</option>
+						<option value="Topas">Topas</option>
+						<option value="Turmaline">Turmaline</option>
+						<option value="Lekar">Lekar</option>
+						<option value="Cubic Baquets">Cubic Baquets</option>
+						<option value="Korean Baquets">Korean Baquets</option>
+						<option value="Color Stones">Color Stones</option>
+						<option value="Blue">Blue</option>
+						<option value="Pearl">Pearl</option>
+						<option value="Packet">Packet</option>
+
+					</select>
+				</td>
+				<td>
+					<input type="number" step="any" id="amount[]" name="amount[]" class="form-control" placeholder="Amount">
+				</td>
+
+
+
+				<td><i class="fa fa-minus-circle p-2" onclick="DeleteAdditional(this)"></i>
+
+
+				</td>`;
  		returned_area.appendChild(div2);
- 		var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
- 		var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
- 		r_quantity.forEach(function(input) {
+ 		GetAllAdditionals();
+ 	}
+
+ 	function Add(element) {
+ 		area = element.parentNode.parentNode.nextElementSibling;
+ 		var div = document.createElement('div');
+ 		div.setAttribute('class', 'row mb-4 remove');
+ 		div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+				<div class="col-sm-2">
+
+				<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon" required>
+ 																			<option value="">Select a zircon...</option>
+
+ 																		</select>
+
+				</div>
+				<div class="col-sm-1 p-0">
+				<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+				</div>
+				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+				<div class="col-sm-2">
+
+					<input type="text" name="zircon_weight[]" id="zircon_weight[]" value="" class="form-control" placeholder="Zircon" >
+				</div>
+				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+				<div class="col-sm-2">
+
+					<input type="text" name="zircon_quantity[]" id="zircon_quantity[]" value="" class="form-control" placeholder="Zircon" >
+				</div>
+				<div class="col-sm-2">
+
+					<i class="delete-zircon fa fa-minus-circle p-2"></i>
+				</div>`;
+ 		area.appendChild(div);
+ 		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
+ 		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
+ 		zircon_quantity.forEach(function(input) {
  			input.addEventListener('input', function() {
- 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
- 				ReturnedQuantity(current);
+ 				let current = this.parentNode.parentNode.parentNode.parentNode;
+ 				ZirconQuantity(current);
  			});
  		})
- 		r_weight.forEach(function(input) {
+ 		zircon_weight.forEach(function(input) {
  			input.addEventListener('input', function() {
- 				let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
- 				ReturnedWeight(current);
+ 				let current = this.parentNode.parentNode.parentNode.parentNode;
+ 				ZirconWeight(current);
  			});
  		})
+ 		GetAllZircons();
+
+
  	}
 
  	function CalculateDifference() {
  		var unpolished_weight = parseFloat($(document).find('#unpolish_weight').val());
  		var polished_weight = parseFloat($(document).find('#polish_weight').val());
  		var stepIssueweight = document.getElementById('s_total_weight[]').value = polished_weight;
+ 		const inputElement = document.getElementById('s_total_weight[]');
+
+ 		// Create a new 'change' event
+ 		const changeEvent = new Event('change');
+
+ 		// Dispatch the 'change' event on the input element
+ 		inputElement.dispatchEvent(changeEvent);
  		if (unpolished_weight != '' && polished_weight != '') {
  			var difference = (unpolished_weight - polished_weight).toFixed(2) + '0';
  			if (difference == 0) {
@@ -3209,7 +3442,7 @@
 
  	function CalculateIssuedWeight(retained_weight) {
  		total_weight = retained_weight.parentNode.previousElementSibling.previousElementSibling.children[0].value;
- 		total_weight = parseInt(total_weight);
+ 		total_weight = parseFloat(total_weight);
  		if (total_weight < retained_weight.value) {
  			alert('Retained weight cannot be greater than total weight');
  			retained_weight.value = '';
@@ -3217,29 +3450,29 @@
  			alert('Please enter total weight');
  			retained_weight.value = '';
  		} else {
- 			value = total_weight - retained_weight.value;
+ 			value = (total_weight - parseFloat(retained_weight.value)).toFixed(3)
  			retained_weight.parentNode.nextElementSibling.nextElementSibling.children[0].value = value;
-			 NextTotalWeight(retained_weight);	
+ 			NextTotalWeight(retained_weight);
  		}
-		current = retained_weight.parentNode.parentNode.parentNode;
-		SGrandWeight(current);
+ 		current = retained_weight.parentNode.parentNode.parentNode;
+ 		SGrandWeight(current);
 
 
 
  	}
 
-	function NextTotalWeight(retained_weight){
-		let all_retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
-		for (let i = 0; i < all_retained_weight.length; i++) {
-			let current = all_retained_weight[i];
-			if (current == retained_weight && i < all_retained_weight.length - 1) {
-				let total_weight = all_retained_weight[i+1].parentNode.previousElementSibling.previousElementSibling.children[0];
-				total_weight.value = retained_weight.value;
-				CalculateIssuedWeight(all_retained_weight[i+1]);
+ 	function NextTotalWeight(retained_weight) {
+ 		let all_retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+ 		for (let i = 0; i < all_retained_weight.length; i++) {
+ 			let current = all_retained_weight[i];
+ 			if (current == retained_weight && i < all_retained_weight.length - 1) {
+ 				let total_weight = all_retained_weight[i + 1].parentNode.previousElementSibling.previousElementSibling.children[0];
+ 				total_weight.value = retained_weight.value;
+ 				CalculateIssuedWeight(all_retained_weight[i + 1]);
 
-			}
-		}
-	}
+ 			}
+ 		}
+ 	}
 
  	function CalculatePolisherWastage() {
  		var code = $('#select-polisher').selectize()[0].selectize
@@ -3458,6 +3691,8 @@
  		var manufacturer_rate = document.querySelectorAll("#manufacturer-rate");
  		var r_grand_weight = document.querySelectorAll("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
+ 		var s_total_weight = document.querySelectorAll('input[id="s_total_weight[]"]');
+ 		console.log("s_total_weight", s_total_weight);
  		var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
  		for (var i = 0; i < sh_qty.length; i++) {
  			sh_qty[i].addEventListener("change", function() {
@@ -3467,7 +3702,11 @@
  			});
  		};
 
-
+ 		for (var i = 0; i < s_total_weight.length; i++) {
+ 			s_total_weight[i].addEventListener("change", function() {
+ 				CalculateIssuedWeight(this.parentElement.nextElementSibling.nextElementSibling.children[0]);
+ 			});
+ 		};
 
  		for (var i = 0; i < retained_weight.length; i++) {
  			retained_weight[i].addEventListener("change", function() {
@@ -3558,11 +3797,11 @@
  		var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
  		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
-		var grand_total_weight=document.querySelectorAll('input[id="grand_total_weight[]"]');
-		console.log("grand_total_weight",grand_total_weight);
-		grand_total_weight.forEach(function(input) {
+ 		var grand_total_weight = document.querySelectorAll('input[id="grand_total_weight[]"]');
+ 		console.log("grand_total_weight", grand_total_weight);
+ 		grand_total_weight.forEach(function(input) {
  			input.addEventListener('change', function() {
-				console.log("grand_total_weight function");
+ 				console.log("grand_total_weight function");
  				let current = this.parentNode.parentNode.parentNode.nextElementSibling;
  				ReturnedPayable(current);
  			});
@@ -3704,26 +3943,7 @@
  		});
 
 
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetAllVendorData",
- 				type: "vendor"
- 			},
- 			success: function(response) {
- 				var data = JSON.parse(response);
- 				var select = $('#select-vendor')[0].selectize;
- 				for (var i = 0; i < data.length; i++) {
- 					var newOption = {
- 						value: data[i].id,
- 						text: data[i].id + " | " + data[i].name
- 					};
- 					select.addOption(newOption);
- 				}
-
- 			}
- 		});
+ 		GetAllAdditionals();
 
 
  		var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
@@ -3777,7 +3997,18 @@
  		var save = document.getElementById("m_save");
  		save.disabled = true;
  		var form = new FormData(this);
+ 		var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
+ 			sortField: 'text',
+ 			searchField: 'item'
+ 		})[0].selectize;
+
+ 		var selectedOptionValue = select_manufacturer_purity.getValue();
+ 		var selectedOption = select_manufacturer_purity.getItem(selectedOptionValue);
+ 		var selectedOptionText = selectedOption.text();
  		form.append('function', 'StepOne');
+ 		form.set('purity', selectedOptionValue);
+
+ 		form.append('purity_text', selectedOptionText);
  		$.ajax({
  			url: "functions.php",
  			type: "POST",
@@ -3929,6 +4160,7 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
+ 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success") {
  					Swal.fire({
@@ -4053,7 +4285,12 @@
  			});
 
 
- 			var select_manufacturer_purity = $('#select-manufacturer-purity')[0].selectize;
+ 			var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
+ 				sortField: 'text',
+ 				searchField: 'item'
+ 			})[0].selectize;
+
+
  			$.ajax({
  				url: "functions.php",
  				method: "POST",
@@ -4063,26 +4300,40 @@
  				},
  				success: function(response) {
  					var data = JSON.parse(response);
- 					for (var i = 0; i < data.length; i++) {
- 						var newOption = {
- 							value: data[i]['18k'],
- 							text: "18k"
- 						};
- 						var newOption1 = {
- 							value: data[i]['21k'],
- 							text: "21k"
- 						};
- 						var newOption2 = {
- 							value: data[i]['22k'],
- 							text: "22k"
- 						};
- 						select_manufacturer_purity.addOption(newOption);
- 						select_manufacturer_purity.addOption(newOption1);
- 						select_manufacturer_purity.addOption(newOption2);
- 					}
+ 					console.log(data);
 
+ 					select_manufacturer_purity.clearOptions();
+
+ 					select_manufacturer_purity.addOptionGroup('purity', {
+ 						label: 'Purity',
+ 					});
+
+ 					// Add options and store values
+ 					select_manufacturer_purity.addOption({
+ 						group: 'purity',
+ 						value: "18k",
+ 						text: "18k"
+ 					});
+
+ 					select_manufacturer_purity.addOption({
+ 						group: 'purity',
+ 						value: "21k",
+ 						text: "21k"
+ 					});
+
+ 					select_manufacturer_purity.addOption({
+ 						group: 'purity',
+ 						value: "22k",
+ 						text: "22k"
+ 					});
+
+ 					select_manufacturer_purity.refreshItems();
+ 					select_manufacturer_purity.refreshOptions();
  				}
  			});
+
+
+
  		}
  	});
 
@@ -4094,7 +4345,44 @@
  	$(document).on('change', '#select-manufacturer-purity', function(e) {
  		e.preventDefault();
  		var manufacturer_rate = document.getElementById('manufacturer-rate');
- 		manufacturer_rate.value = this.value;
+ 		var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
+ 			sortField: 'text',
+ 			searchField: 'item'
+ 		})[0].selectize;
+
+ 		var selectedOptionValue = select_manufacturer_purity.getValue();
+ 		console.log("selectedOptionValue", selectedOptionValue);
+
+ 		var select1 = $('#select-manufacturer').selectize({
+ 			sortField: 'text',
+ 			searchField: 'item'
+ 		})[0].selectize;
+
+ 		var selectedOptionValue1 = select1.getValue();
+
+ 		$.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "GetVendor",
+ 				id: selectedOptionValue1
+ 			},
+ 			success: function(data) {
+ 				var data1 = JSON.parse(data);
+ 				console.log("data12", data1);
+
+ 				if (data1 && data1[0] && data1[0][selectedOptionValue] !== undefined) {
+ 					var updatedOption = {
+ 						value: String(data1[0][selectedOptionValue]), // Convert to string
+ 						text: selectedOptionValue
+ 					};
+
+ 					select_manufacturer_purity.updateOption(selectedOptionValue, updatedOption);
+ 					manufacturer_rate.value = data1[0][selectedOptionValue];
+ 				}
+ 			}
+ 		});
+
  		CalculateWastage();
  	});
 
