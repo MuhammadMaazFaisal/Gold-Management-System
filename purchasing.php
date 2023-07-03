@@ -59,11 +59,11 @@ error_reporting(E_ALL);
 
                                 </div>
                                 <div class="col d-flex justify-content-end me-4">
-                                    <button type="button" onclick="DeleteProduct()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Product</button>
+                                    <button type="button" onclick="DeletePurchasing()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Invoice</button>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
-                                        Select Product
+                                        Select Invoice
                                     </button>
-                                </div>
+                                </div> 
                                 <div class="card-body px-4 ">
 
                                     <div class="row">
@@ -168,36 +168,36 @@ error_reporting(E_ALL);
 </div>
 
 <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- 	<div class="modal-dialog modal-dialog-scrollable modal-xl">
- 		<div class="modal-content">
- 			<div class="modal-header">
- 				<h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
- 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
- 			</div>
- 			<div class="modal-body">
- 				<table id="product-table" class="table table-hover ">
- 					<thead>
- 						<tr>
- 							<th scope="col">#</th>
- 							<th scope="col">Invoice ID</th>
- 							<th scope="col">Vendor ID</th>
- 							<th scope="col">Vendor Name</th>
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="product-table" class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Invoice ID</th>
+                            <th scope="col">Vendor ID</th>
+                            <th scope="col">Vendor Name</th>
                             <th scope="col">Total</th>
- 							<th scope="col">Date</th>
- 							<th scope="col">Action</th>
- 						</tr>
- 					</thead>
- 					<tbody id="product-table-body">
+                            <th scope="col">Date</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body">
 
- 					</tbody>
- 				</table>
- 			</div>
- 			<div class="modal-footer">
- 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
- 			</div>
- 		</div>
- 	</div>
- </div>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- END layout-wrapper -->
 
 <!-- Right Sidebar -->
@@ -229,10 +229,32 @@ error_reporting(E_ALL);
 </html>
 
 <script>
+    function DeletePurchasing(){
+        var product = document.getElementById('invoice');
+ 		if (product.value == '') {
+ 			alert('Please Select Invoice');
+ 		} else {
+ 			$.ajax({
+ 				url: "functions.php",
+ 				method: "POST",
+ 				data: {
+ 					function: "DeletePurchasing",
+ 					id: product.value
+ 				},
+ 				success: function(response) {
+ 					var data = JSON.parse(response);
+ 					if (data.status == 'success') {
+ 						location.reload();
+ 					}
+ 				}
+ 			});
+ 		}
+    }
     function AddProduct() {
         let area = document.getElementById('tbody');
         let tr = document.createElement('tr');
         tr.innerHTML = `<th scope="row">1</th>
+        <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="" placeholder="id" class="form-control d-none"></td>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
                             <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
                             <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
@@ -293,6 +315,75 @@ error_reporting(E_ALL);
         }
     }
 
+    function GetProductId(btn) {
+        var id = btn.parentNode.parentNode.id;
+        var vendor_id = btn.parentNode.parentNode.children[2].innerHTML;
+        var total=btn.parentNode.parentNode.children[4].innerHTML;
+        $('#product-modal').modal('hide');
+        var product = document.getElementById("invoice");
+        product.value = id;
+        GetPurchasingDetails(id,vendor_id,total);
+    }
+
+    function GetPurchasingDetails(id,vendor_id,total) {
+        var delete_btn = document.getElementById("delete-product");
+ 		delete_btn.disabled = false;
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetPurchasingDetails",
+                id: id
+            },
+            success: function(data) {
+                var data = JSON.parse(data);
+                console.log("purchasing", data);
+                var area = document.getElementById('tbody');
+                area.innerHTML = "";
+                let GrandTotal=document.getElementById('grand_total');
+                GrandTotal.value=total;
+                var select_manufacturer = $('#select-manufacturer')[0].selectize;
+ 				select_manufacturer.setValue(vendor_id);
+                for (i = 0; i < data.length; i++) {
+                    let tr = `<tr>
+                                <td scope="row">1</td>
+                                <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="${data[i].id}" placeholder="id" class="form-control d-none"></td>
+                                <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
+                                <td> <input type="text"  id="type[]" name="type[]" value="${data[i].type}" placeholder="Type" class="form-control" required></td>
+                                <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">`;
+                    if (data[0].price_per == "Qty") {
+                        tr += `<option value="Qty" selected>Qty</option>
+                                        <option value="Tola">Tola</option>
+                                        <option value="K">K</option>`;
+                    } else if (data[0].price_per == "Tola") {
+                        tr += `<option value="Qty">Qty</option>
+                                        <option value="Tola" selected>Tola</option>
+                                        <option value="K">K</option>`;
+                    } else if (data[0].price_per == "K") {
+                        tr += `<option value="Qty">Qty</option>
+                                        <option value="Tola">Tola</option>
+                                        <option value="K" selected>K</option>`;
+                    }
+                    tr += `</select></td>
+                                <td> <input type="number"  id="quantity[]" name="quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required></td>
+                                <td> <input type="number" step="any"  id="weight[]" name="weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required></td>
+                                <td><input type="number" step="any"  id="rate[]" name="rate[]" value="${data[i].rate}" class="form-control" placeholder="Rate" required></td>
+                                <td><input type="number" step="any"  id="total[]" name="total[]" value="${data[i].total_amount}" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                                <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
+                                <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>`;
+                    if (i == 0) {
+                        tr += `<td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>`;
+                    } else {
+                        tr += `<td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`
+                    }
+                    tr += `</tr>`;
+                    area.innerHTML += tr;
+                }
+                AddEventListeners();
+            }
+        });
+    }
+
     function AddEventListeners() {
         price_per = document.querySelectorAll('#price_per\\[\\]');
         weight = document.querySelectorAll('#weight\\[\\]');
@@ -322,51 +413,52 @@ error_reporting(E_ALL);
 
     $(document).ready(function() {
         $.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetModalInvoices"
- 			},
- 			success: function(response) {
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetModalInvoices"
+            },
+            success: function(data) {
+                console.log("modal", data);
+                var data = JSON.parse(data);
                 console.log(data);
- 				var data = JSON.parse(response);
-                console.log(data);
- 				var tbody = document.getElementById("product-table-body");
- 				for (var i = 0; i < data.length; i++) {
- 					var tr = document.createElement("tr");
- 					var td1 = document.createElement("td");
- 					var td2 = document.createElement("td");
- 					var td3 = document.createElement("td");
- 					var td4 = document.createElement("td");
+                var tbody = document.getElementById("product-table-body");
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    var td1 = document.createElement("td");
+                    var td2 = document.createElement("td");
+                    var td3 = document.createElement("td");
+                    var td4 = document.createElement("td");
                     var td4_1 = document.createElement("td");
- 					var td5 = document.createElement("td");
- 					var td6 = document.createElement("td");
- 					var btn = document.createElement("button");
- 					btn.innerHTML = "Select";
- 					btn.className = "btn btn-primary";
- 					btn.addEventListener("click", function() {
- 						GetProductId(this);
- 					});
- 					tr.id = data[i].product_id;
- 					td1.innerHTML = i + 1;
- 					td2.innerHTML = data[i].product_id;
- 					td3.innerHTML = data[i].vendor_id;
- 					td4.innerHTML = data[i].vendor_name;
+                    var td5 = document.createElement("td");
+                    var td6 = document.createElement("td");
+                    var btn = document.createElement("button");
+                    btn.innerHTML = "Select";
+                    btn.className = "btn btn-primary";
+                    btn.addEventListener("click", function() {
+                        GetProductId(this);
+                    });
+                    tr.id = data[i].id;
+                    td1.innerHTML = i + 1;
+                    td2.innerHTML = data[i].id;
+                    td3.innerHTML = data[i].vendor_id;
+                    td4.innerHTML = data[i].name;
                     td4_1.innerHTML = data[i].total;
- 					date = data[i].date;
- 					td5.innerHTML = date.slice(0, 10);
- 					td6.classList.add("p-1");
- 					td6.appendChild(btn);
- 					tr.appendChild(td1);
- 					tr.appendChild(td2);
- 					tr.appendChild(td3);
- 					tr.appendChild(td4);
- 					tr.appendChild(td5);
- 					tr.appendChild(td6);
- 					tbody.appendChild(tr);
- 				};
- 			}
- 		});
+                    date = data[i].date;
+                    td5.innerHTML = date.slice(0, 10);
+                    td6.classList.add("p-1");
+                    td6.appendChild(btn);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td4_1);
+                    tr.appendChild(td5);
+                    tr.appendChild(td6);
+                    tbody.appendChild(tr);
+                };
+            }
+        });
 
         AddEventListeners();
 
@@ -416,7 +508,9 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(data) {
+                console.log(data);
                 data = JSON.parse(data);
+                console.log(data);
                 if (data[0] == "success" && data[1] == "success") {
                     Swal.fire({
                         icon: 'success',

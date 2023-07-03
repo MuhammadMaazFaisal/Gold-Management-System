@@ -340,6 +340,7 @@ error_reporting(E_ALL);
             },
             success: function(response) {
                 data = JSON.parse(response);
+                console.log(data);
                 tbody = document.getElementById("modal-tbody");
                 for (i = 0; i < data.length; i++) {
                     value = `<tr id="${data[i].id}">
@@ -571,6 +572,7 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(response) {
+                console.log(response);
                 data = JSON.parse(response);
                 if (data[0] == "success" && data[0] == "success") {
                     Swal.fire({
@@ -606,6 +608,7 @@ error_reporting(E_ALL);
             contentType: false,
             processData: false,
             success: function(response) {
+                console.log(response);
                 data = JSON.parse(response);
                 if (data[0] == "success" && data[0] == "success") {
                     Swal.fire({
