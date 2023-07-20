@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2023 at 08:55 PM
+-- Generation Time: Jul 20, 2023 at 06:29 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -36,6 +36,15 @@ CREATE TABLE `additional_step` (
   `date` varchar(255) NOT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `additional_step`
+--
+
+INSERT INTO `additional_step` (`id`, `product_id`, `vendor_id`, `type`, `amount`, `date`, `status`) VALUES
+(24, 'R0020008', 'H012', 'Color Stones', '250', '2023-06-21', 'Active'),
+(25, 'R0020008', 'NL016', 'Sapphire', '270', '2023-06-21', 'Active'),
+(26, 'R0020008', 'AG015', 'Color Stones', '300', '2023-06-21', 'Active');
 
 -- --------------------------------------------------------
 
@@ -176,6 +185,31 @@ CREATE TABLE `assignmenttypes` (
   `AddedBy` int(11) NOT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cash`
+--
+
+CREATE TABLE `cash` (
+  `id` int(255) NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `vendor_id` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `amount` float NOT NULL,
+  `details` text NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cash`
+--
+
+INSERT INTO `cash` (`id`, `date`, `vendor_id`, `type`, `amount`, `details`, `status`) VALUES
+(1, '2023-06-20', 'I003', 'issued', 120, '123', 'Inactive'),
+(2, '2023-06-20', 'I003', 'recieved', 250, '123', 'Inactive'),
+(3, '2023-06-20', 'H012', 'issued', 223, '3123', 'Active');
 
 -- --------------------------------------------------------
 
@@ -404,6 +438,7 @@ CREATE TABLE `manufacturing_step` (
   `type` varchar(191) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `purity` varchar(255) DEFAULT NULL,
+  `purity_text` varchar(255) NOT NULL,
   `unpolish_weight` float DEFAULT NULL,
   `polish_weight` float DEFAULT NULL,
   `rate` int(11) DEFAULT NULL,
@@ -419,8 +454,13 @@ CREATE TABLE `manufacturing_step` (
 -- Dumping data for table `manufacturing_step`
 --
 
-INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
-(83, 'IM003', 'IM0030001', '2023-05-12', 'external-work-directory/images//1683891271-', '12', 'Repairing', 12, '6', 33, 34, 6, 2.06, NULL, NULL, 'Active', 30.68, '87984795676');
+INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
+(89, 'A004', 'A0040001', '2023-06-12', 'external-work-directory/images//1686590166-', '', 'Select Type', 17, '7.5', '', 15, 15, 8, 1.17, NULL, NULL, 'Inactive', 12.13, '467034126285'),
+(90, 'A004', 'A0040002', '2023-06-12', 'external-work-directory/images//1686590229-', '', 'Ring', 17, '7.5', '', 155.77, 155.77, 8, 12.17, NULL, NULL, 'Active', 125.95, '601005158528'),
+(91, 'R002', 'R0020003', '2023-06-12', 'external-work-directory/images//1686590343-', '', 'Tops', 12, '8.5', '', 219.19, 217.16, 9, 19.41, NULL, NULL, 'Active', 178.95, '584767710233'),
+(92, 'W001', 'W0010004', '2023-06-12', 'external-work-directory/images//1686590430-', '', 'Kara', 1, '6', '', 82.25, 82.25, 6, 5.14, NULL, NULL, 'Active', 76.47, '506594778317'),
+(94, 'W001', 'W0010006', '2023-06-15', 'external-work-directory/images//1686849497-', '', 'Select Type', 2, '6', '22k', 21, 21, 6, 1.31, NULL, NULL, 'Active', 20.44, '571153590262'),
+(96, 'R002', 'R0020008', '2023-06-20', 'external-work-directory/images//1687274158-', '', 'Repairing', 1, '8.5', '22k', 1.2, 1.5, 9, 0.11, NULL, NULL, 'Active', 0.98, '148524478677');
 
 -- --------------------------------------------------------
 
@@ -434,21 +474,19 @@ CREATE TABLE `metal` (
   `vendor_id` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `details` varchar(255) NOT NULL,
-  `issued_weight` int(255) NOT NULL,
-  `purity` varchar(255) NOT NULL,
-  `pure_weight` int(255) NOT NULL
+  `issued_weight` float NOT NULL,
+  `purity` float NOT NULL,
+  `pure_weight` float NOT NULL,
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `metal`
 --
 
-INSERT INTO `metal` (`id`, `date`, `vendor_id`, `type`, `details`, `issued_weight`, `purity`, `pure_weight`) VALUES
-(6, '2023-03-18', 'RF001', 'issued', 'dsadsa', 12, '18k', 25),
-(7, '2023-03-18', 'RF001', 'recieved', '', 12, '18k', 23),
-(8, '2023-03-23', 'RC007', 'issued', '', 12, '21k', 23),
-(9, '2023-03-23', 'RC007', 'recieved', 'asdasdasdasd', 2, '22k', 34),
-(10, '2023-03-25', 'AC017', 'issued', '', 50, '22k', 50);
+INSERT INTO `metal` (`id`, `date`, `vendor_id`, `type`, `details`, `issued_weight`, `purity`, `pure_weight`, `status`) VALUES
+(22, '2023-06-20', 'A019', 'issued', '', 21.333, 0.999, 21.31, 'Active'),
+(23, '2023-06-20', 'H006', 'recieved', '', 21, 0.999, 20.98, 'Active');
 
 -- --------------------------------------------------------
 
@@ -476,7 +514,7 @@ CREATE TABLE `polisher_step` (
 --
 
 INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `details`, `difference`, `rate`, `Wastage`, `Payable`, `status`, `polisherbarcode`) VALUES
-(40, '2023-05-11 19:00:00', 'IM0030001', 'RC007', 'external-work-directory/images/1683891286-', 'dasd', -1, 1, 0.34, -1.34, 'Active', '');
+(43, '2023-06-11 19:00:00', 'R0020003', 'R005', 'external-work-directory/images/1686590366-', '', 2.03, 1, 2.28, -0.25, 'Active', '127671018517');
 
 -- --------------------------------------------------------
 
@@ -526,7 +564,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `status`) VALUES
-('IM0030001', 'Active');
+('A0040001', 'Inactive'),
+('A0040002', 'Active'),
+('R0020003', 'Active'),
+('R0020007', 'Active'),
+('R0020008', 'Active'),
+('W0010004', 'Active'),
+('W0010005', 'Active'),
+('W0010006', 'Active');
 
 -- --------------------------------------------------------
 
@@ -576,12 +621,8 @@ CREATE TABLE `purchasing` (
 --
 
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
-('existing', 'existing', 0, '2023-03-21 16:19:47', 'Inactive'),
-('PI-0001', 'II004', 20, '2023-03-17 16:45:12', 'Active'),
-('PI-0002', 'IM003', 42, '2023-03-17 17:41:49', 'Active'),
-('PI-0003', 'AG013', 15750, '2023-03-18 17:39:17', 'Active'),
-('PI-0004', 'SG014', 317214, '2023-03-18 17:55:22', 'Active'),
-('PI-0005', 'SG015', 77160, '2023-03-18 17:55:57', 'Active');
+('existing', 'existing', 0, '2023-07-20 16:25:24', ''),
+('PI-0001', 'H012', 4, '2023-07-03 15:36:16', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -610,19 +651,7 @@ CREATE TABLE `purchasing_details` (
 --
 
 INSERT INTO `purchasing_details` (`id`, `p_id`, `type`, `detail`, `price_per`, `quantity`, `remaining_quantity`, `weight`, `remaining_weight`, `rate`, `total_amount`, `remaining_total_amount`, `barcode`) VALUES
-(19, 'PI-0001', 'stone', '', 'Qty', 10, 2, 10, 2, 2, 20, 4, '1679071511386'),
-(20, 'PI-0002', 'dsad', 'sadasd', 'Tola', 100, 0, 100, 0, 5, 42.8669, -0.00000147041, '1679074907862'),
-(21, 'PI-0003', 'stone', 'zircon 1.5mm', 'Qty', 1000, 0, 100, 0, 1.5, 1500, 0, ''),
-(22, 'PI-0003', 'stone', 'Zircon 1.75 mm', 'Qty', 1000, 0, 125, 0, 1.75, 1750, 0, ''),
-(23, 'PI-0003', 'stone', 'Zircon 1.9mm', 'Qty', 1000, 0, 150, 0, 2, 2000, 0, ''),
-(24, 'PI-0003', 'stone', 'Zircon 2.0mm', 'Qty', 1000, 0, 175, 0, 2.25, 2250, 0, ''),
-(25, 'PI-0003', 'stone', 'Zircon 2.25mm', 'Qty', 1000, 0, 200, 0, 2.5, 2500, 0, ''),
-(26, 'PI-0003', 'Stone', 'Zircon 2.5mm', 'Qty', 1000, 0, 225, 0, 2.75, 2750, 0, ''),
-(27, 'PI-0003', 'Stone', 'Zircon 2.75mm', 'Qty', 1000, 0, 250, 0, 3, 3000, 0, ''),
-(28, 'PI-0004', 'Pearls', 'Pearls 8mm String', 'Tola', 100, 0, 300, 0, 2500, 64300.4, -0.00136638, ''),
-(29, 'PI-0004', 'Pearls', 'Pearls 10mm String', 'Tola', 100, 0, 400, 0, 3000, 102881, -0.00218621, ''),
-(30, 'PI-0004', 'pearls', 'Pearls 12mm String', 'Tola', 100, 0, 500, 0, 3500, 150034, 0.00332219, ''),
-(31, 'PI-0005', 'Pearls', 'Pearls ', 'Tola', 1100, 0, 450, 0, 2000, 77160.5, -0.00163966, '');
+(38, 'PI-0001', 'Zircon', '12', 'Qty', 2, 2, 2, 2, 2, 4, 4, '');
 
 -- --------------------------------------------------------
 
@@ -639,13 +668,6 @@ CREATE TABLE `returned_item` (
   `weight` float NOT NULL,
   `quantity` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `returned_item`
---
-
-INSERT INTO `returned_item` (`id`, `code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES
-(30, '', 'ZA012', 'IM0030001', 0, 21, 22);
 
 -- --------------------------------------------------------
 
@@ -665,15 +687,9 @@ CREATE TABLE `returned_stone_step` (
   `shruded_quantity` float NOT NULL,
   `wastage` float NOT NULL,
   `grand_weight` float NOT NULL,
-  `payable` float NOT NULL
+  `payable` float NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `returned_stone_step`
---
-
-INSERT INTO `returned_stone_step` (`id`, `product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded_quantity`, `wastage`, `grand_weight`, `payable`) VALUES
-(18, 'IM0030001', 'ZA012', 12, 21, 0, 33, 0, 11, 0, 33, 0);
 
 -- --------------------------------------------------------
 
@@ -797,16 +813,7 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
-('SI-0001', 'PI-0003', 1500, '2023-03-18 17:40:29', 'Active'),
-('SI-0002', 'PI-0004', 64300.4, '2023-03-18 17:57:18', 'Active'),
-('SI-0003', 'PI-0004', 64300.4, '2023-03-18 18:01:34', 'Active'),
-('SI-0004', 'PI-0005', 77160.5, '2023-03-18 18:01:52', 'Active'),
-('SI-0005', 'existing', 8, '2023-03-21 17:25:22', 'Active'),
-('SI-0006', 'existing', 40, '2023-03-22 16:13:24', 'Active'),
-('SI-0007', 'existing', 40, '2023-03-22 16:13:24', 'Active'),
-('SI-0008', 'existing', 8, '2023-03-22 16:14:19', 'Active'),
-('SI-0009', 'existing', 4.1, '2023-03-22 16:14:48', 'Active'),
-('SI-0010', 'existing', 8, '2023-03-22 16:16:00', 'Active');
+('SI-0001', 'existing', 780, '2023-07-20 16:25:51', 'Active');
 
 -- --------------------------------------------------------
 
@@ -832,20 +839,7 @@ CREATE TABLE `stock_details` (
 --
 
 INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES
-(39, 'SI-0001', 'stone', 'zircon 1.5mm', 'Qty', 1000, 100, 1.5, 1500, 2147483647),
-(40, 'SI-0001', 'stone', 'Zircon 1.75 mm', 'Qty', 1000, 125, 1.75, 1750, 2147483647),
-(41, 'SI-0001', 'stone', 'Zircon 1.9mm', 'Qty', 1000, 150, 2, 2000, 2147483647),
-(42, 'SI-0001', 'stone', 'Zircon 2.0mm', 'Qty', 1000, 175, 2.25, 2250, 2147483647),
-(43, 'SI-0001', 'stone', 'Zircon 2.25mm', 'Qty', 1000, 200, 2.5, 2500, 2147483647),
-(44, 'SI-0001', 'Zircon', 'Zircon 2.5mm', 'Qty', 1000, 225, 2.75, 2750, 2147483647),
-(45, 'SI-0001', 'Zircon', 'Zircon 2.75mm', 'Qty', 1000, 250, 3, 3000, 2147483647),
-(46, 'SI-0003', 'Pearls', 'Pearls 8mm String', 'Tola', 100, 300, 2500, 64300.4, 2147483647),
-(47, 'SI-0003', 'Pearls', 'Pearls 10mm String', 'Tola', 100, 400, 3000, 102881, 2147483647),
-(48, 'SI-0003', 'pearls', 'Pearls 12mm String', 'Tola', 100, 500, 3500, 150034, 2147483647),
-(49, 'SI-0004', 'Pearls', 'Pearls ', 'Tola', 1100, 450, 2000, 77160.5, 2147483647),
-(50, 'SI-0008', '', '', 'Qty', 2, 3, 4, 8, 2147483647),
-(51, 'SI-0009', '', '', 'Qty', 2, 1.75, 2.05, 4.1, 2147483647),
-(52, 'SI-0010', 'stone', 'fsdf', 'Qty', 2, 3, 4, 8, 2147483647);
+(60, 'SI-0001', 'Zircon', 'Ruby', 'K', 1, 12, 13, 780, 2147483647);
 
 -- --------------------------------------------------------
 
@@ -885,7 +879,9 @@ CREATE TABLE `stone` (
 --
 
 INSERT INTO `stone` (`id`, `code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES
-(93, '', 'ZA012', 'IM0030001', 0, 0, 0);
+(121, '', 'S008', 'W0010004', 0, 0, 0),
+(122, '', 'S008', 'A0040002', 0, 0, 0),
+(123, '', 'S009', 'A0040002', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -902,15 +898,6 @@ CREATE TABLE `stone_setter_account` (
   `ssabarcode` varchar(255) NOT NULL,
   `AddedBy` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `stone_setter_account`
---
-
-INSERT INTO `stone_setter_account` (`ssaID`, `date`, `name`, `received`, `paid`, `ssabarcode`, `AddedBy`) VALUES
-(2, '2023-02-15 13:13:16', 'rahman', '4.6', '10', '', 'admin'),
-(3, '2023-02-15 08:00:00', 'New test', '100', '1500', '', 'admin'),
-(4, '2023-02-15 08:00:00', 'zz', '100', '1500', '129707644576', 'admin');
 
 -- --------------------------------------------------------
 
@@ -944,7 +931,9 @@ CREATE TABLE `stone_setter_step` (
 --
 
 INSERT INTO `stone_setter_step` (`Ssid`, `product_id`, `date`, `vendor_id`, `image`, `detail`, `retained_weight`, `total_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES
-(49, 'IM0030001', '2023-05-11 19:00:00', 'ZA012', '', '', 22, 34, 12, 0, 0, 0, 0, 0, 0, 0, 0, 'Active');
+(61, 'W0010004', '2023-06-11 19:00:00', 'S008', '', '', 0, 82.25, 82, 0, 6.9, 266, 0, 0, 0, 88.9, 0, 'Active'),
+(62, 'A0040002', '2023-06-11 19:00:00', 'S008', '', '', 105, 155.77, 50, 0, 5.39, 435, 0, 0, 0, 55.39, 0, 'Active'),
+(63, 'A0040002', '2023-06-11 19:00:00', 'S009', '', '', 0, 105, 105, 0, 2, 200, 0, 0, 0, 107, 0, 'Active');
 
 -- --------------------------------------------------------
 
@@ -1160,9 +1149,9 @@ CREATE TABLE `vendor` (
   `id` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `18k` int(255) NOT NULL,
-  `21k` int(255) NOT NULL,
-  `22k` int(255) NOT NULL,
+  `18k` float NOT NULL,
+  `21k` float NOT NULL,
+  `22k` float NOT NULL,
   `status` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1172,24 +1161,26 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `type`, `name`, `18k`, `21k`, `22k`, `status`, `date`) VALUES
-('AC017', 'manufacturer', 'Ayaz Challa', 14, 7, 6, 'Active', '2023-03-25'),
-('AG013', 'vendor', 'AQ Gems', 0, 0, 0, 'Active', '2023-02-24'),
-('AP018', 'manufacturer', 'Amir Plain', 0, 6, 5, 'Active', '2023-03-25'),
-('existing', 'existing', 'existing', 0, 0, 0, 'Active', ''),
-('FM011', 'stone setter', 'Farhan Muqeet', 0, 0, 0, 'Active', '2023-02-24'),
-('II004', 'manufacturer', 'Iqbal Inayat', 14, 6, 5, 'Active', '2023-02-24'),
-('IM003', 'manufacturer', 'Imran Mamu', 14, 6, 5, 'Active', '2023-02-24'),
-('MH005', 'polisher', 'M Hanif', 1, 1, 1, 'Active', '2023-02-24'),
-('MK010', 'stone setter', 'M Kashif', 0, 0, 0, 'Active', '2023-02-24'),
-('MN009', 'stone setter', 'M Nadeem', 0, 0, 0, 'Active', '2023-02-24'),
-('MR006', 'polisher', 'M Rafiq', 1, 1, 1, 'Active', '2023-02-24'),
-('MS008', 'stone setter', 'M Siraj', 0, 0, 0, 'Active', '2023-02-24'),
-('RC007', 'polisher', 'Rafeq Compound', 1, 1, 1, 'Active', '2023-02-24'),
-('RF001', 'manufacturer', 'Raees Fancy', 14, 7, 6, 'Active', '2023-02-24'),
-('SG014', 'vendor', 'Saqib Gems', 0, 0, 0, 'Active', '2023-03-18'),
-('SG015', 'vendor', 'Saleem Gem', 0, 0, 0, 'Active', '2023-03-18'),
-('WM002', 'manufacturer', 'Waqas Mehmood', 14, 6, 5, 'Active', '2023-02-24'),
-('ZA012', 'stone setter', 'Zaki Abbasi', 0, 0, 0, 'Active', '2023-02-24');
+('A004', 'manufacturer', 'AyazChalla', 13, 7.5, 8.5, 'Active', '2023-06-12'),
+('A014', 'vendor', 'Admin', 0, 0, 0, 'Inactive', '2023-06-12'),
+('A019', 'manufacturer', 'AmirKhalil', 12, 6.5, 6.5, 'Active', '2023-06-12'),
+('AG015', 'vendor', 'AQ Gems', 0, 0, 0, 'Active', '2023-06-12'),
+('B013', 'vendor', 'Best', 0, 0, 0, 'Inactive', '2023-06-12'),
+('existing', 'existing', 'existing', 0, 0, 0, '', ''),
+('H006', 'polisher', 'Hanif', 1, 1, 1, 'Active', '2023-06-12'),
+('H011', 'stone setter', 'Hamza', 0.35, 0.35, 0.35, 'Active', '2023-06-12'),
+('H012', 'vendor', 'Sharafat Bhai', 0, 0, 0, 'Active', '2023-06-12'),
+('I003', 'manufacturer', 'ImranMamu', 12, 6, 6, 'Active', '2023-06-12'),
+('IL018', 'vendor', 'Imran Lacquer', 0, 0, 0, 'Active', '2023-06-12'),
+('NL016', 'vendor', 'Naveed Lacquer', 0, 0, 0, 'Active', '2023-06-12'),
+('R002', 'manufacturer', 'RaeesFancy', 12, 8.5, 8.5, 'Active', '2023-06-12'),
+('R005', 'polisher', 'Rafiq', 1, 1, 1, 'Active', '2023-06-12'),
+('R007', 'polisher', 'RafiqCompound', 1, 1, 1, 'Active', '2023-06-12'),
+('S008', 'stone setter', 'Sarfaraz', 0.35, 0.35, 0.35, 'Active', '2023-06-12'),
+('S009', 'stone setter', 'Siraj', 0.35, 0.35, 0.35, 'Active', '2023-06-12'),
+('SG017', 'vendor', 'Shakeeb Gems', 0, 0, 0, 'Active', '2023-06-12'),
+('W001', 'manufacturer', 'Waqas', 12, 6, 6, 'Active', '2023-06-12'),
+('Z010', 'stone setter', 'Zaki', 0.35, 0.35, 0.35, 'Active', '2023-06-12');
 
 -- --------------------------------------------------------
 
@@ -1212,7 +1203,10 @@ CREATE TABLE `zircon` (
 --
 
 INSERT INTO `zircon` (`id`, `code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES
-(110, '', 'ZA012', 'IM0030001', 0, 0, 0);
+(149, 'Round 2mm', 'S008', 'W0010004', 6.9, 0, 266),
+(150, 'Round 1.5mm Packet', 'S008', 'A0040002', 4.5, 0, 400),
+(151, 'Round 2mm', 'S008', 'A0040002', 0.89, 0, 35),
+(152, 'Round 2mm', 'S009', 'A0040002', 2, 0, 200);
 
 --
 -- Indexes for dumped tables
@@ -1290,6 +1284,13 @@ ALTER TABLE `articlesfilesrecord`
 --
 ALTER TABLE `assignmenttypes`
   ADD PRIMARY KEY (`AssignmentTypeID`);
+
+--
+-- Indexes for table `cash`
+--
+ALTER TABLE `cash`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `vendor_id` (`vendor_id`);
 
 --
 -- Indexes for table `cashaccount`
@@ -1601,7 +1602,7 @@ ALTER TABLE `zircon`
 -- AUTO_INCREMENT for table `additional_step`
 --
 ALTER TABLE `additional_step`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `articlecomplexityparameters`
@@ -1656,6 +1657,12 @@ ALTER TABLE `articlesfilesrecord`
 --
 ALTER TABLE `assignmenttypes`
   MODIFY `AssignmentTypeID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cash`
+--
+ALTER TABLE `cash`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cashaccount`
@@ -1721,19 +1728,19 @@ ALTER TABLE `journals`
 -- AUTO_INCREMENT for table `manufacturing_step`
 --
 ALTER TABLE `manufacturing_step`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `metal`
 --
 ALTER TABLE `metal`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `polisher_step`
 --
 ALTER TABLE `polisher_step`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `processingstages`
@@ -1745,19 +1752,19 @@ ALTER TABLE `processingstages`
 -- AUTO_INCREMENT for table `purchasing_details`
 --
 ALTER TABLE `purchasing_details`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `returned_item`
 --
 ALTER TABLE `returned_item`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `returned_stone_step`
 --
 ALTER TABLE `returned_stone_step`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `roleprocessingstages`
@@ -1787,7 +1794,7 @@ ALTER TABLE `sechedule_set`
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `stock_list`
@@ -1799,7 +1806,7 @@ ALTER TABLE `stock_list`
 -- AUTO_INCREMENT for table `stone`
 --
 ALTER TABLE `stone`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `stone_setter_account`
@@ -1811,7 +1818,7 @@ ALTER TABLE `stone_setter_account`
 -- AUTO_INCREMENT for table `stone_setter_step`
 --
 ALTER TABLE `stone_setter_step`
-  MODIFY `Ssid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `Ssid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `supplier_list`
@@ -1871,7 +1878,7 @@ ALTER TABLE `usersystemactivities`
 -- AUTO_INCREMENT for table `zircon`
 --
 ALTER TABLE `zircon`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- Constraints for dumped tables
@@ -1934,6 +1941,12 @@ ALTER TABLE `articles`
 --
 ALTER TABLE `articlesfilesrecord`
   ADD CONSTRAINT `fk_ArticlesFilesRecord_Articles1` FOREIGN KEY (`ArticleID`) REFERENCES `articles` (`ArticleID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cash`
+--
+ALTER TABLE `cash`
+  ADD CONSTRAINT `cash_ibfk_1` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`id`);
 
 --
 -- Constraints for table `issuearticles`
