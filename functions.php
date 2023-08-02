@@ -1358,7 +1358,8 @@ function MetalRecord()
 
 // -------------------Purchasing Page---------------------- //
 
-function  DeletePurchasing(){
+function  DeletePurchasing()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -1446,20 +1447,20 @@ function AddPurchasing()
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['invoice']);
     if ($getRecordStatement->execute()) {
-        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
-        if (count($array) == 0) {
+        $array1 = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        if (count($array1) == 0) {
+            $getRecordQuery = "INSERT INTO `purchasing`(`id`, `vendor_id`, `total`, `date`, `status`) VALUES (:id, :vendor_id, :total, :date, 'Active')";
+            $getRecordStatement = $pdo->prepare($getRecordQuery);
+            $getRecordStatement->bindParam(':id', $_POST['invoice']);
+            $getRecordStatement->bindParam(':vendor_id', $_POST['vendor_id']);
+            $getRecordStatement->bindParam(':total', $_POST['grand_total']);
+            $getRecordStatement->bindParam(':date', $_POST['date']);
+            if ($getRecordStatement->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
             for ($i = 0; $i < count($_POST['total']); $i++) {
-                $getRecordQuery = "INSERT INTO `purchasing`(`id`, `vendor_id`, `total`, `date`, `status`) VALUES (:id, :vendor_id, :total, :date, 'Active')";
-                $getRecordStatement = $pdo->prepare($getRecordQuery);
-                $getRecordStatement->bindParam(':id', $_POST['invoice']);
-                $getRecordStatement->bindParam(':vendor_id', $_POST['vendor_id']);
-                $getRecordStatement->bindParam(':total', $_POST['total'][$i]);
-                $getRecordStatement->bindParam(':date', $_POST['date']);
-                if ($getRecordStatement->execute()) {
-                    array_push($array, "success");
-                } else {
-                    array_push($array, "error");
-                }
                 $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
                 $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                 $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
@@ -1504,7 +1505,7 @@ function AddPurchasing()
                     if ($getRecordStatement2->execute()) {
                         array_push($array, "success");
                     } else {
-                        array_push($array, "error1");
+                        array_push($array, "error");
                     }
                 } else {
                     $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";

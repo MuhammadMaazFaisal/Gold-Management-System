@@ -4382,8 +4382,8 @@
  				}
  			}
  		});
-
- 		CalculateWastage();
+		 CalculateWastage();
+ 		
  	});
 
  	$(document).on('change', '#select-stone_setter', function(e) {

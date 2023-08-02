@@ -499,6 +499,7 @@ error_reporting(E_ALL);
 
     $("#form").submit(function(e) {
         e.preventDefault();
+        console.log("form submitted");
         let formData = new FormData(this);
         formData.append('function', 'AddPurchasing');
         $.ajax({
