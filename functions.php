@@ -1481,10 +1481,11 @@ function AddPurchasing()
         } else {
             for ($i = 0; $i < count($_POST['total']); $i++) {
                 if ($_POST['total'][$i] != null) {
-                    $getRecordQuery = "UPDATE `purchasing` SET `total`=:total WHERE id = :id";
+                    $getRecordQuery = "UPDATE `purchasing` SET `total`=:total,`vendor_id`=:vendor_id WHERE id = :id";
                     $getRecordStatement = $pdo->prepare($getRecordQuery);
                     $getRecordStatement->bindParam(':id', $_POST['invoice']);
                     $getRecordStatement->bindParam(':total', $_POST['grand_total']);
+                    $getRecordStatement->bindParam(':vendor_id', $_POST['vendor_id']);
                     if ($getRecordStatement->execute()) {
                         array_push($array, "success");
                     } else {
@@ -1543,7 +1544,8 @@ function  GetInvoices()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT purchasing.id, purchasing.vendor_id, vendor.name, purchasing.total, purchasing.date, purchasing.status
+    $getRecordQuery = "
+SELECT DISTINCT purchasing.id, purchasing.vendor_id, vendor.name, purchasing.total, purchasing.date, purchasing.status
 FROM purchasing
 JOIN vendor ON purchasing.vendor_id = vendor.id 
 JOIN purchasing_details ON purchasing.id = purchasing_details.p_id
@@ -1551,7 +1553,7 @@ WHERE purchasing.status = 'Active'
 AND purchasing_details.remaining_quantity <> 0 
 AND purchasing_details.remaining_weight <> 0 
 AND purchasing_details.remaining_total_amount <> 0;
- ";
+";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

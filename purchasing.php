@@ -118,8 +118,8 @@ error_reporting(E_ALL);
                                                                             <option value="K">K</option>
 
                                                                         </select></td>
-                                                                    <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
-                                                                    <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                                                                    <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
+                                                                    <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
                                                                     <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
@@ -263,8 +263,8 @@ error_reporting(E_ALL);
                                     <option value="Tola">Tola</option>
                                     <option value="K">K</option>
                                 </select></td>
-                            <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" required></td>
-                            <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" required></td>
+                            <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" ></td>
+                            <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" ></td>
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                             <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
@@ -304,13 +304,13 @@ error_reporting(E_ALL);
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
         if (price_per.value == "K") {
-            total.value = weight.value * rate.value * 5;
+            total.value = (weight.value * rate.value * 5).toFixed(0);
             GrandTotal();
         } else if (price_per.value == "Tola") {
-            total.value = (weight.value / 11.664) * rate.value;
+            total.value = ((weight.value / 11.664) * rate.value).toFixed(0);
             GrandTotal();
         } else if (price_per.value == "Qty") {
-            total.value = qty.value * rate.value;
+            total.value = (qty.value * rate.value).toFixed(0);
             GrandTotal();
         }
     }
@@ -365,8 +365,8 @@ error_reporting(E_ALL);
                                         <option value="K" selected>K</option>`;
                     }
                     tr += `</select></td>
-                                <td> <input type="number"  id="quantity[]" name="quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity" required></td>
-                                <td> <input type="number" step="any"  id="weight[]" name="weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight" required></td>
+                                <td> <input type="number"  id="quantity[]" name="quantity[]" value="${data[i].quantity}" class="form-control" placeholder="Quantity"></td>
+                                <td> <input type="number" step="any"  id="weight[]" name="weight[]" value="${data[i].weight}" class="form-control" placeholder="Weight"></td>
                                 <td><input type="number" step="any"  id="rate[]" name="rate[]" value="${data[i].rate}" class="form-control" placeholder="Rate" required></td>
                                 <td><input type="number" step="any"  id="total[]" name="total[]" value="${data[i].total_amount}" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                 <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>

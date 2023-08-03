@@ -443,25 +443,39 @@ error_reporting(E_ALL);
         price_per = document.querySelectorAll('#price_per\\[\\]')[i];
         e_price_per = document.querySelectorAll('#e_price_per\\[\\]')[i];
         qty = document.querySelectorAll('#quantity\\[\\]')[i];
+        console.log("dasd", qty);
         weight = document.querySelectorAll('#weight\\[\\]')[i];
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
-        if (e_price_per.value == "K") {
-            total.value = weight.value * rate.value * 5;
-        } else if (e_price_per.value == "Tola") {
-            total.value = ((weight.value / 11.664) * rate.value).toFixed(3);
-        } else if (e_price_per.value == "Qty") {
-            total.value = qty.value * rate.value;
+        console.log(price_per);
+        console.log(e_price_per);
+        if (e_price_per != undefined) {
+            if (e_price_per.value == "K") {
+                total.value = (weight.value * rate.value * 5).toFixed(0);
+            } else if (e_price_per.value == "Tola") {
+                total.value = ((weight.value / 11.664) * rate.value).toFixed(0);
+            } else if (e_price_per.value == "Qty") {
+                total.value = (qty.value * rate.value).toFixed(0);
+            }
         }
-        s_invoice=document.getElementById("s-invoice").value;
+        if (price_per != undefined) {
+            if (price_per.value == "K") {
+                total.value = (weight.value * rate.value * 5).toFixed(0);
+            } else if (price_per.value == "Tola") {
+                total.value = ((weight.value / 11.664) * rate.value).toFixed(0);
+            } else if (price_per.value == "Qty") {
+                total.value = (qty.value * rate.value).toFixed(0);
+            }
+        }
+        s_invoice = document.getElementById("s-invoice").value;
         if (s_invoice != "") {
             if (price_per.value == "K") {
-            total.value = qty.value * rate.value * 5;
-        } else if (price_per.value == "Tola") {
-            total.value = (weight.value / 11.664) * rate.value;
-        } else if (price_per.value == "Qty") {
-            total.value = qty.value * rate.value;
-        }
+                total.value = (qty.value * rate.value * 5).toFixed(0);
+            } else if (price_per.value == "Tola") {
+                total.value = ((weight.value / 11.664) * rate.value).toFixed(0);
+            } else if (price_per.value == "Qty") {
+                total.value = (qty.value * rate.value).toFixed(0);
+            }
         }
 
     }
@@ -474,6 +488,7 @@ error_reporting(E_ALL);
         e_price_per = document.querySelectorAll('#e_price_per\\[\\]');
         weight = document.querySelectorAll('#weight\\[\\]');
         qty = document.querySelectorAll('#quantity\\[\\]');
+        console.log("qty", qty);
         rate = document.querySelectorAll('#rate\\[\\]');
         for (let i = 0; i < price_per.length; i++) {
             price_per[i].addEventListener('change', function() {
@@ -547,7 +562,7 @@ error_reporting(E_ALL);
 
         $("#select-invoice").click(GetInvoices());
 
-    }); 
+    });
 
     $(document).on("submit", "#stock-form", function(e) {
         e.preventDefault();
@@ -632,5 +647,4 @@ error_reporting(E_ALL);
             }
         });
     });
-
 </script>

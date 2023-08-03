@@ -1720,7 +1720,6 @@
 
  	function CalculateReturnedWastage(element) {
  		var quantity = element.querySelector("input[id='sh_qty']");
- 		console.log("wastageelement", element);
  		var select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0].selectize;
  		if (select_stone_setter == undefined) {
  			select_stone_setter = element.previousElementSibling.querySelectorAll('select[id="select-stone_setter[]"]')[0];
@@ -1794,7 +1793,6 @@
  			},
  			success: function(data) {
  				data = JSON.parse(data);
- 				console.log(data);
  				let printWindow = window.open("", "_blank");
  				if (data[0].purity == data[0]['18k']) {
  					var purity = '18k';
@@ -1877,7 +1875,6 @@
  			},
  			success: function(data) {
  				data = JSON.parse(data);
- 				console.log(data);
  				let printWindow = window.open("", "_blank");
  				if (data[0].purity == data[0]['manufacturer_18k']) {
  					var purity = '18k';
@@ -1950,7 +1947,6 @@
  	}
 
  	function PrintSetter(element) {
- 		console.log(element);
  		let id = document.getElementsByClassName("code")[0].value;
  		let area = element.parentNode.parentNode.parentNode.parentNode;
  		let vendor_id = area.querySelectorAll('select[id="select-stone_setter[]"]');
@@ -1966,9 +1962,7 @@
  				vendor_id: vendor_id
  			},
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
- 				console.log(data);
  				let printWindow = window.open("", "_blank");
  				// Generate slip content
  				let slipContent = `
@@ -2032,7 +2026,6 @@
 
  		let id = document.getElementsByClassName("code")[0].value;
  		let area = element.parentNode.parentNode.parentNode.parentNode.previousElementSibling;
- 		console.log(area);
  		let vendor_id = area.querySelectorAll('select[id="select-stone_setter[]"]');
  		vendor_id = vendor_id[0].value;
  		$.ajax({
@@ -2044,11 +2037,7 @@
  				vendor_id: vendor_id
  			},
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
- 				console.log(data);
-
-
  				// Generate slip content
  				let slipContent = `
                 <!DOCTYPE html>
@@ -2134,7 +2123,6 @@
  			},
  			success: function(data) {
  				data = JSON.parse(data);
- 				console.log("manufacturer data", data);
  				var select_manufacturer = $('#select-manufacturer')[0].selectize;
  				select_manufacturer.setValue(data[0].vendor_id);
  				var code = document.getElementsByClassName('code');
@@ -2167,7 +2155,6 @@
  					},
  					success: function(response) {
  						var data1 = JSON.parse(response);
- 						console.log("dasda", data1);
  						var select_manufacturer_purity = $('#select-manufacturer-purity')[0].selectize;
  						for (var i = 0; i < data1.length; i++) {
  							var newOption = {
@@ -2189,7 +2176,6 @@
  						let option = select_manufacturer_purity.getOption(data[0].purity_text);
 
  						if (option) {
- 							console.log("option", option);
  							option.text = data[0].purity_text;
  							option.value = data[0].purity;
  							select_manufacturer_purity.updateOption(data[0].purity_text, option);
@@ -2959,7 +2945,6 @@
  				id: id
  			},
  			success: function(data) {
- 				console.log("additional", data);
  				if (data !== "[]") {
  					data = JSON.parse(data);
  					let table = document.getElementById('additionalTable');
@@ -3014,10 +2999,8 @@
  						table.innerHTML += row;
  					}
  					let selectType = document.querySelectorAll('select[id="a_type[]"]');
-					console.log("selectType", selectType);
  					for (i = 0; i < selectType.length; i++) {
  						let currentSelectType = selectType[i];
- 						console.log("good", i, currentSelectType);
  						currentSelectType.value = data[i].type;
  					}
  					GetAllAdditionals();
@@ -3692,7 +3675,6 @@
  		var r_grand_weight = document.querySelectorAll("#r_grand_weight");
  		var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
  		var s_total_weight = document.querySelectorAll('input[id="s_total_weight[]"]');
- 		console.log("s_total_weight", s_total_weight);
  		var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
  		for (var i = 0; i < sh_qty.length; i++) {
  			sh_qty[i].addEventListener("change", function() {
@@ -3798,10 +3780,8 @@
  		var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  		var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
  		var grand_total_weight = document.querySelectorAll('input[id="grand_total_weight[]"]');
- 		console.log("grand_total_weight", grand_total_weight);
  		grand_total_weight.forEach(function(input) {
  			input.addEventListener('change', function() {
- 				console.log("grand_total_weight function");
  				let current = this.parentNode.parentNode.parentNode.nextElementSibling;
  				ReturnedPayable(current);
  			});
@@ -4160,7 +4140,6 @@
  			contentType: false,
  			processData: false,
  			success: function(data) {
- 				console.log(data);
  				data = JSON.parse(data);
  				if (data[0] == "success") {
  					Swal.fire({
@@ -4300,7 +4279,6 @@
  				},
  				success: function(response) {
  					var data = JSON.parse(response);
- 					console.log(data);
 
  					select_manufacturer_purity.clearOptions();
 
@@ -4371,14 +4349,54 @@
  				var data1 = JSON.parse(data);
  				console.log("data12", data1);
 
- 				if (data1 && data1[0] && data1[0][selectedOptionValue] !== undefined) {
- 					var updatedOption = {
+ 				if (data1 !== undefined && data1[0] !== undefined && data1[0][selectedOptionValue] !== undefined) {
+					var updatedOption = {
  						value: String(data1[0][selectedOptionValue]), // Convert to string
  						text: selectedOptionValue
  					};
 
  					select_manufacturer_purity.updateOption(selectedOptionValue, updatedOption);
  					manufacturer_rate.value = data1[0][selectedOptionValue];
+ 					if (selectedOptionValue=="18k"){
+						console.log("18k selected")
+						var option21={
+							value: "21k",
+							text: "21k"
+						};
+						var option22={
+							value: "22k",
+							text: "22k"
+						}
+						select_manufacturer_purity.updateOption("21k",option21);
+						select_manufacturer_purity.updateOption("22k",option22);
+					}
+					if (selectedOptionValue=="21k"){
+						console.log("21k selected")
+						var option18={
+							value: "18k",
+							text: "18k"
+						};
+						var option22={
+							value: "22k",
+							text: "22k"
+						}
+						select_manufacturer_purity.updateOption("18k",option18);
+						select_manufacturer_purity.updateOption("22k",option22);
+					}
+					if (selectedOptionValue=="22k"){
+						console.log("22k selected")
+						var option21={
+							value: "21k",
+							text: "21k"
+						};
+						var option18={
+							value: "18k",
+							text: "18k"
+						}
+						select_manufacturer_purity.updateOption("21k",option21);
+						select_manufacturer_purity.updateOption("18k",option18);
+					}
+					
  				}
  			}
  		});
