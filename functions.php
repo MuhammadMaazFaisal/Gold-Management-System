@@ -1649,7 +1649,7 @@ function AddStock()
             $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
             $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
             $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
-            $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
+            $getRecordStatement2->bindParam(':barcode', $_POST['stock_barcode'][$i]);
             if ($getRecordStatement2->execute()) {
                 array_push($array, "success");
             } else {
@@ -1714,14 +1714,27 @@ function GetStockData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT s.date AS stock_date, sd.barcode, s.p_id, v.name, sd.detail, sd.type, sd.price_per, sd.quantity, sd.weight, sd.rate, sd.total_amount
-                        FROM
-                            stock s
-                            JOIN stock_details sd ON s.id = sd.s_id
-                            JOIN purchasing p ON s.p_id = p.id
-                            JOIN vendor v ON p.vendor_id = v.id
-                        ORDER BY
-                            stock_date DESC ";
+    $getRecordQuery = "SELECT 
+    MAX(s.date) AS stock_date,
+    sd.barcode,
+    MAX(s.p_id) AS p_id,
+    MAX(v.name) AS name,
+    MAX(sd.detail) AS detail,
+    MAX(sd.type) AS type,
+    MAX(sd.price_per) AS price_per,
+    SUM(sd.quantity) AS total_quantity,
+    SUM(sd.weight) AS total_weight,
+    MAX(sd.rate) AS rate,
+    SUM(sd.total_amount) AS total_amount
+FROM
+    stock s
+    JOIN stock_details sd ON s.id = sd.s_id
+    JOIN purchasing p ON s.p_id = p.id
+    JOIN vendor v ON p.vendor_id = v.id
+GROUP BY
+    sd.barcode, sd.type
+ORDER BY
+    stock_date DESC;";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

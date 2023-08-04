@@ -175,11 +175,11 @@ error_reporting(E_ALL);
                             title: 'Price Per'
                         },
                         {
-                            data: 'quantity',
+                            data: 'total_quantity',
                             title: 'Quantity'
                         },
                         {
-                            data: 'weight',
+                            data: 'total_weight',
                             title: 'Weight'
                         },
                         {
