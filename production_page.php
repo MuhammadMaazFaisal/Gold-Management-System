@@ -282,6 +282,7 @@
  																		<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Purity:</label>
  																		<div class="col-sm-3">
  																			<select required="" name="purity" id="select-manufacturer-purity" class="form-control form-select" placeholder="Purity" required>
+ 																				<option value="">Please Select Purity</option>
  																			</select>
  																		</div>
  																	</div>
@@ -1728,19 +1729,21 @@
  			var vendor_id = select_stone_setter.getValue();
 
  		}
- 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		var selectedValues = selectElement.getValue();
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedValues = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedText = selectedOption.text;
  		var unpolish_weight = document.getElementById('unpolish_weight').value;
 
- 		for (var i = 0; i < selectedValues.length; i++) {
- 			var selectedValue = selectedValues[i];
- 			var selectedOption = selectElement.options[selectedValue];
- 			if (selectedOption) {
- 				var selectedText = selectedOption.text;
- 			} else {
- 				var selectedText = '18k';
- 			}
- 		}
+ 		// for (var i = 0; i < selectedValues.length; i++) {
+ 		// 	var selectedValue = selectedValues[i];
+ 		// 	var selectedOption = selectElement.options[selectedValue];
+ 		// 	if (selectedOption) {
+ 		// 		var selectedText = selectedOption.text;
+ 		// 	} else {
+ 		// 		var selectedText = '18k';
+ 		// 	}
+ 		// }
 
  		$.ajax({
  			url: "functions.php",
@@ -2123,6 +2126,7 @@
  			},
  			success: function(data) {
  				data = JSON.parse(data);
+ 				console.log(data);
  				var select_manufacturer = $('#select-manufacturer')[0].selectize;
  				select_manufacturer.setValue(data[0].vendor_id);
  				var code = document.getElementsByClassName('code');
@@ -2155,33 +2159,44 @@
  					},
  					success: function(response) {
  						var data1 = JSON.parse(response);
- 						var select_manufacturer_purity = $('#select-manufacturer-purity')[0].selectize;
- 						for (var i = 0; i < data1.length; i++) {
- 							var newOption = {
- 								text: "18k",
- 								value: "18k"
- 							};
- 							var newOption1 = {
- 								text: "21k",
- 								value: "21k"
- 							};
- 							var newOption2 = {
- 								text: "22k",
- 								value: "22k"
+ 						console.log(data1);
+ 						var selectElement = document.getElementById('select-manufacturer-purity');
+
+ 						var newOption = document.createElement("option");
+ 						newOption.value = data[0]["18k"];
+ 						newOption.text = "18k";
+
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption);
+ 						var newOption1 = document.createElement("option");
+ 						newOption1.value = data[0]["21k"];
+ 						newOption1.text = "21k";
+
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption1);
+ 						var newOption2 = document.createElement("option");
+ 						newOption2.value = data[0]["22k"];
+ 						newOption2.text = "22k";
+
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption2);
+ 						const optionText =data[0].purity_text; // Replace with the text of the option you want to select
+ 						const options = selectElement.options;
+
+ 						for (let i = 0; i < options.length; i++) {
+ 							if (options[i].text === optionText) {
+								selectElement.selectedIndex = i; // Set the selectedIndex to the index of the found option
+ 								break; // Exit the loop once the option is found
  							}
- 							select_manufacturer_purity.addOption(newOption);
- 							select_manufacturer_purity.addOption(newOption1);
- 							select_manufacturer_purity.addOption(newOption2);
  						}
- 						let option = select_manufacturer_purity.getOption(data[0].purity_text);
 
- 						if (option) {
- 							option.text = data[0].purity_text;
- 							option.value = data[0].purity;
- 							select_manufacturer_purity.updateOption(data[0].purity_text, option);
- 							select_manufacturer_purity.setValue(data[0].purity);
+ 						// if (option) {
+ 						// 	option.text = data[0].purity_text;
+ 						// 	option.value = data[0].purity;
+ 						// 	select_manufacturer_purity.updateOption(data[0].purity_text, option);
+ 						// 	select_manufacturer_purity.setValue(data[0].purity);
 
- 						}
+ 						// }
 
  						GetAdditionalVendorData(id);
  						CalculateDifference();
@@ -2230,20 +2245,21 @@
  	}
 
  	async function GetStoneSetterData(id) {
- 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		var selectedValues = selectElement.getValue();
- 		var selectedText;
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedValues = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedText = selectedOption.text;
  		var code = id;
 
- 		for (var i = 0; i < selectedValues.length; i++) {
- 			var selectedValue = selectedValues[i];
- 			var selectedOption = selectElement.options[selectedValue];
- 			if (selectedOption) {
- 				selectedText = selectedOption.text;
- 			} else {
- 				selectedText = '18k';
- 			}
- 		}
+ 		// for (var i = 0; i < selectedValues.length; i++) {
+ 		// 	var selectedValue = selectedValues[i];
+ 		// 	var selectedOption = selectElement.options[selectedValue];
+ 		// 	if (selectedOption) {
+ 		// 		selectedText = selectedOption.text;
+ 		// 	} else {
+ 		// 		selectedText = '18k';
+ 		// 	}
+ 		// }
 
  		$.ajax({
  			url: "functions.php",
@@ -3018,18 +3034,20 @@
  			wastage = parseFloat(wastage.toFixed(2));
  			document.getElementById('wastage').value = wastage;
  		}
- 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		var selectedValues = selectElement.getValue();
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedValues = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedText = selectedOption.text;
 
- 		for (var i = 0; i < selectedValues.length; i++) {
- 			var selectedValue = selectedValues[i];
- 			var selectedOption = selectElement.options[selectedValue];
- 			if (selectedOption) {
- 				var selectedText = selectedOption.text;
- 			} else {
- 				var selectedText = '18k';
- 			}
- 		}
+ 		// for (var i = 0; i < selectedValues.length; i++) {
+ 		// 	var selectedValue = selectedValues[i];
+ 		// 	var selectedOption = selectElement.options[selectedValue];
+ 		// 	if (selectedOption) {
+ 		// 		var selectedText = selectedOption.text;
+ 		// 	} else {
+ 		// 		var selectedText = '18k';
+ 		// 	}
+ 		// }
  		if (selectedText == '18k') {
  			var tValues = document.getElementById('tValues');
  			var total = (unpolish_weight + wastage) * 0.75;
@@ -3460,19 +3478,21 @@
  	function CalculatePolisherWastage() {
  		var code = $('#select-polisher').selectize()[0].selectize
  		var code = code.getValue();
- 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		var selectedValues = selectElement.getValue();
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedValues = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedText = selectedOption.text;
  		var unpolish_weight = document.getElementById('unpolish_weight').value;
 
- 		for (var i = 0; i < selectedValues.length; i++) {
- 			var selectedValue = selectedValues[i];
- 			var selectedOption = selectElement.options[selectedValue];
- 			if (selectedOption) {
- 				var selectedText = selectedOption.text;
- 			} else {
- 				var selectedText = '18k';
- 			}
- 		}
+ 		// for (var i = 0; i < selectedValues.length; i++) {
+ 		// 	var selectedValue = selectedValues[i];
+ 		// 	var selectedOption = selectElement.options[selectedValue];
+ 		// 	if (selectedOption) {
+ 		// 		var selectedText = selectedOption.text;
+ 		// 	} else {
+ 		// 		var selectedText = '18k';
+ 		// 	}
+ 		// }
  		$.ajax({
  			url: "functions.php",
  			method: "POST",
@@ -3535,19 +3555,21 @@
  			var vendor_id = select_stone_setter.getValue();
 
  		}
- 		var selectElement = $('#select-manufacturer-purity').selectize()[0].selectize;
- 		var selectedValues = selectElement.getValue();
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedValues = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedText = selectedOption.text;
  		var unpolish_weight = document.getElementById('unpolish_weight').value;
 
- 		for (var i = 0; i < selectedValues.length; i++) {
- 			var selectedValue = selectedValues[i];
- 			var selectedOption = selectElement.options[selectedValue];
- 			if (selectedOption) {
- 				var selectedText = selectedOption.text;
- 			} else {
- 				var selectedText = '18k';
- 			}
- 		}
+ 		// for (var i = 0; i < selectedValues.length; i++) {
+ 		// 	var selectedValue = selectedValues[i];
+ 		// 	var selectedOption = selectElement.options[selectedValue];
+ 		// 	if (selectedOption) {
+ 		// 		var selectedText = selectedOption.text;
+ 		// 	} else {
+ 		// 		var selectedText = '18k';
+ 		// 	}
+ 		// }
 
  		$.ajax({
  			url: "functions.php",
@@ -3833,7 +3855,8 @@
  	$(document).ready(function() {
 
 
- 		$('select').selectize({
+
+ 		$('select:not(#select-manufacturer-purity)').selectize({
  			sortField: 'text'
  		});
 
@@ -3977,14 +4000,14 @@
  		var save = document.getElementById("m_save");
  		save.disabled = true;
  		var form = new FormData(this);
- 		var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
- 			sortField: 'text',
- 			searchField: 'item'
- 		})[0].selectize;
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedOptionValue = selectElement.value;
+ 		var selectedOption = selectElement.selectedOptions[0]; // Assuming you're only selecting one option
+ 		var selectedOptionText = selectedOption.text;
 
- 		var selectedOptionValue = select_manufacturer_purity.getValue();
- 		var selectedOption = select_manufacturer_purity.getItem(selectedOptionValue);
- 		var selectedOptionText = selectedOption.text();
+ 		// var selectedOptionValue = select_manufacturer_purity.getValue();
+ 		// var selectedOption = select_manufacturer_purity.getItem(selectedOptionValue);
+ 		// var selectedOptionText = selectedOption.text();
  		form.append('function', 'StepOne');
  		form.set('purity', selectedOptionValue);
 
@@ -4264,10 +4287,10 @@
  			});
 
 
- 			var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
- 				sortField: 'text',
- 				searchField: 'item'
- 			})[0].selectize;
+ 			// var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
+ 			// 	sortField: 'text',
+ 			// 	searchField: 'item'
+ 			// })[0].selectize;
 
 
  			$.ajax({
@@ -4280,33 +4303,57 @@
  				success: function(response) {
  					var data = JSON.parse(response);
 
- 					select_manufacturer_purity.clearOptions();
+ 					// select_manufacturer_purity.clearOptions();
 
- 					select_manufacturer_purity.addOptionGroup('purity', {
- 						label: 'Purity',
- 					});
+ 					// select_manufacturer_purity.addOptionGroup('purity', {
+ 					// 	label: 'Purity',
+ 					// });
 
  					// Add options and store values
- 					select_manufacturer_purity.addOption({
- 						group: 'purity',
- 						value: "18k",
- 						text: "18k"
- 					});
+ 					// select_manufacturer_purity.addOption({
+ 					// 	group: 'purity',
+ 					// 	value: "18k",
+ 					// 	text: "18k"
+ 					// });
 
- 					select_manufacturer_purity.addOption({
- 						group: 'purity',
- 						value: "21k",
- 						text: "21k"
- 					});
+ 					// select_manufacturer_purity.addOption({
+ 					// 	group: 'purity',
+ 					// 	value: "21k",
+ 					// 	text: "21k"
+ 					// });
 
- 					select_manufacturer_purity.addOption({
- 						group: 'purity',
- 						value: "22k",
- 						text: "22k"
- 					});
+ 					// select_manufacturer_purity.addOption({
+ 					// 	group: 'purity',
+ 					// 	value: "22k",
+ 					// 	text: "22k"
+ 					// });
 
- 					select_manufacturer_purity.refreshItems();
- 					select_manufacturer_purity.refreshOptions();
+ 					// select_manufacturer_purity.refreshItems();
+ 					// select_manufacturer_purity.refreshOptions();
+ 					var selectElement = document.getElementById('select-manufacturer-purity');
+ 					selectElement.options.length = 0;
+ 					var Option = document.createElement("option");
+ 					Option.value = "";
+ 					Option.text = "Please Select Purity";
+ 					selectElement.appendChild(Option);
+ 					var newOption = document.createElement("option");
+ 					newOption.value = data[0]["18k"];
+ 					newOption.text = "18k";
+
+ 					// Append the new option to the select element
+ 					selectElement.appendChild(newOption);
+ 					var newOption1 = document.createElement("option");
+ 					newOption1.value = data[0]["21k"];
+ 					newOption1.text = "21k";
+
+ 					// Append the new option to the select element
+ 					selectElement.appendChild(newOption1);
+ 					var newOption2 = document.createElement("option");
+ 					newOption2.value = data[0]["22k"];
+ 					newOption2.text = "22k";
+
+ 					// Append the new option to the select element
+ 					selectElement.appendChild(newOption2);
  				}
  			});
 
@@ -4323,13 +4370,17 @@
  	$(document).on('change', '#select-manufacturer-purity', function(e) {
  		e.preventDefault();
  		var manufacturer_rate = document.getElementById('manufacturer-rate');
- 		var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
- 			sortField: 'text',
- 			searchField: 'item'
- 		})[0].selectize;
+ 		var selectElement = document.getElementById('select-manufacturer-purity');
+ 		var selectedOptionValue = selectElement.value;
+ 		var selectedText = selectElement.text;
+ 		manufacturer_rate.value = selectedOptionValue
+ 		// var select_manufacturer_purity = $('#select-manufacturer-purity').selectize({
+ 		// 	sortField: 'text',
+ 		// 	searchField: 'item'
+ 		// })[0].selectize;
 
- 		var selectedOptionValue = select_manufacturer_purity.getValue();
- 		console.log("selectedOptionValue", selectedOptionValue);
+ 		// var selectedOptionValue = select_manufacturer_purity.getValue();
+ 		// console.log("selectedOptionValue", selectedOptionValue);
 
  		var select1 = $('#select-manufacturer').selectize({
  			sortField: 'text',
@@ -4338,70 +4389,70 @@
 
  		var selectedOptionValue1 = select1.getValue();
 
- 		$.ajax({
- 			url: "functions.php",
- 			method: "POST",
- 			data: {
- 				function: "GetVendor",
- 				id: selectedOptionValue1
- 			},
- 			success: function(data) {
- 				var data1 = JSON.parse(data);
- 				console.log("data12", data1);
+ 		// $.ajax({
+ 		// 	url: "functions.php",
+ 		// 	method: "POST",
+ 		// 	data: {
+ 		// 		function: "GetVendor",
+ 		// 		id: selectedOptionValue1
+ 		// 	},
+ 		// 	success: function(data) {
+ 		// 		var data1 = JSON.parse(data);
+ 		// 		console.log("data12", data1);
 
- 				if (data1 !== undefined && data1[0] !== undefined && data1[0][selectedOptionValue] !== undefined) {
-					var updatedOption = {
- 						value: String(data1[0][selectedOptionValue]), // Convert to string
- 						text: selectedOptionValue
- 					};
+ 		// 		if (data1 !== undefined && data1[0] !== undefined && data1[0][selectedOptionValue] !== undefined) {
+ 		// 			var updatedOption = {
+ 		// 				value: String(data1[0][selectedOptionValue]), // Convert to string
+ 		// 				text: selectedOptionValue
+ 		// 			};
 
- 					select_manufacturer_purity.updateOption(selectedOptionValue, updatedOption);
- 					manufacturer_rate.value = data1[0][selectedOptionValue];
- 					if (selectedOptionValue=="18k"){
-						console.log("18k selected")
-						var option21={
-							value: "21k",
-							text: "21k"
-						};
-						var option22={
-							value: "22k",
-							text: "22k"
-						}
-						select_manufacturer_purity.updateOption("21k",option21);
-						select_manufacturer_purity.updateOption("22k",option22);
-					}
-					if (selectedOptionValue=="21k"){
-						console.log("21k selected")
-						var option18={
-							value: "18k",
-							text: "18k"
-						};
-						var option22={
-							value: "22k",
-							text: "22k"
-						}
-						select_manufacturer_purity.updateOption("18k",option18);
-						select_manufacturer_purity.updateOption("22k",option22);
-					}
-					if (selectedOptionValue=="22k"){
-						console.log("22k selected")
-						var option21={
-							value: "21k",
-							text: "21k"
-						};
-						var option18={
-							value: "18k",
-							text: "18k"
-						}
-						select_manufacturer_purity.updateOption("21k",option21);
-						select_manufacturer_purity.updateOption("18k",option18);
-					}
-					
- 				}
- 			}
- 		});
-		 CalculateWastage();
- 		
+ 		// 			select_manufacturer_purity.updateOption(selectedOptionValue, updatedOption);
+ 		// 			manufacturer_rate.value = data1[0][selectedOptionValue];
+ 		// 			if (selectedOptionValue == "18k") {
+ 		// 				console.log("18k selected")
+ 		// 				var option21 = {
+ 		// 					value: "21k",
+ 		// 					text: "21k"
+ 		// 				};
+ 		// 				var option22 = {
+ 		// 					value: "22k",
+ 		// 					text: "22k"
+ 		// 				}
+ 		// 				select_manufacturer_purity.updateOption("21k", option21);
+ 		// 				select_manufacturer_purity.updateOption("22k", option22);
+ 		// 			}
+ 		// 			if (selectedOptionValue == "21k") {
+ 		// 				console.log("21k selected")
+ 		// 				var option18 = {
+ 		// 					value: "18k",
+ 		// 					text: "18k"
+ 		// 				};
+ 		// 				var option22 = {
+ 		// 					value: "22k",
+ 		// 					text: "22k"
+ 		// 				}
+ 		// 				select_manufacturer_purity.updateOption("18k", option18);
+ 		// 				select_manufacturer_purity.updateOption("22k", option22);
+ 		// 			}
+ 		// 			if (selectedOptionValue == "22k") {
+ 		// 				console.log("22k selected")
+ 		// 				var option21 = {
+ 		// 					value: "21k",
+ 		// 					text: "21k"
+ 		// 				};
+ 		// 				var option18 = {
+ 		// 					value: "18k",
+ 		// 					text: "18k"
+ 		// 				}
+ 		// 				select_manufacturer_purity.updateOption("21k", option21);
+ 		// 				select_manufacturer_purity.updateOption("18k", option18);
+ 		// 			}
+
+ 		// 		}
+ 		// 	}
+ 		// });
+ 		CalculateWastage();
+
  	});
 
  	$(document).on('change', '#select-stone_setter', function(e) {
@@ -4419,7 +4470,7 @@
  	$(document).on('input', '#product', function(e) {
  		e.preventDefault();
  		const inputs = document.querySelectorAll('input');
- 		const selects = document.querySelectorAll('select');
+ 		const selects = document.querySelectorAll('select:not(#select-manufacturer-purity)');
  		const textareas = document.querySelectorAll('textarea');
 
  		inputs.forEach(input => {
