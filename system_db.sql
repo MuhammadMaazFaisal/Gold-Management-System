@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 05, 2023 at 03:47 PM
--- Server version: 10.4.27-MariaDB
+-- Host: localhost:3306
+-- Generation Time: Sep 01, 2023 at 01:59 PM
+-- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -35,7 +35,16 @@ CREATE TABLE `additional_step` (
   `amount` varchar(191) DEFAULT NULL,
   `date` varchar(255) NOT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `additional_step`
+--
+
+INSERT INTO `additional_step` (`id`, `product_id`, `vendor_id`, `type`, `amount`, `date`, `status`) VALUES
+(24, 'R0020008', 'H012', 'Color Stones', '250', '2023-06-21', 'Active'),
+(25, 'R0020008', 'NL016', 'Sapphire', '270', '2023-06-21', 'Active'),
+(26, 'R0020008', 'AG015', 'Color Stones', '300', '2023-06-21', 'Active');
 
 -- --------------------------------------------------------
 
@@ -48,7 +57,7 @@ CREATE TABLE `articlecomplexityparameters` (
   `Quantity` int(11) DEFAULT NULL,
   `ComplexityParameterID` int(11) NOT NULL,
   `ArticleProcessingID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -62,7 +71,7 @@ CREATE TABLE `articlefigurerecord` (
   `FigureName` varchar(45) DEFAULT NULL,
   `FigureDate` timestamp NULL DEFAULT current_timestamp(),
   `ArticleProcessingID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -74,7 +83,7 @@ CREATE TABLE `articleprocessdetails` (
   `ArticleProcessDetailID` int(11) NOT NULL,
   `ArticleProcessingDetailDate` timestamp NULL DEFAULT current_timestamp(),
   `ArticleProcessingID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -88,7 +97,7 @@ CREATE TABLE `articleprocessing` (
   `ArticleProcessingStatus` varchar(45) DEFAULT NULL COMMENT 'InProgress, Completed, Rejected',
   `ArticleProcessingDate` timestamp NULL DEFAULT current_timestamp(),
   `UserAssignedArticleID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -102,7 +111,7 @@ CREATE TABLE `articleprocessingscores` (
   `TotalQuantity` int(11) DEFAULT NULL,
   `ScoreSummary` varchar(45) DEFAULT NULL,
   `ArticleProcessingID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -116,7 +125,7 @@ CREATE TABLE `articlereferenceextractions` (
   `ReferenceFileDate` timestamp NULL DEFAULT current_timestamp(),
   `UserID` int(11) NOT NULL,
   `ArticleID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -146,7 +155,7 @@ CREATE TABLE `articles` (
   `AddedBy` int(11) NOT NULL,
   `Status` varchar(20) NOT NULL DEFAULT 'Active' COMMENT 'Active,Archive',
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -161,7 +170,7 @@ CREATE TABLE `articlesfilesrecord` (
   `FileName` varchar(50) DEFAULT NULL,
   `FilePath` varchar(300) DEFAULT NULL,
   `ArticleID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -175,7 +184,7 @@ CREATE TABLE `assignmenttypes` (
   `AssignmentTypeCode` varchar(15) NOT NULL,
   `AddedBy` int(11) NOT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -191,7 +200,7 @@ CREATE TABLE `cash` (
   `amount` float NOT NULL,
   `details` text NOT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cash`
@@ -214,7 +223,7 @@ CREATE TABLE `cashaccount` (
   `name` varchar(45) DEFAULT NULL,
   `amount` varchar(300) DEFAULT NULL,
   `AddedBy` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cashaccount`
@@ -236,7 +245,7 @@ CREATE TABLE `complexityparameters` (
   `ComplexityParameterStatus` varchar(45) DEFAULT 'Active',
   `ComplexityParameterDate` datetime DEFAULT current_timestamp(),
   `AddedBy` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -259,7 +268,7 @@ CREATE TABLE `externalworkstepone` (
   `t_value` int(11) DEFAULT NULL,
   `date` timestamp NULL DEFAULT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `externalworkstepone`
@@ -283,7 +292,7 @@ CREATE TABLE `externalworksteptwo` (
   `ps_email` int(11) DEFAULT NULL,
   `date` timestamp NULL DEFAULT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `externalworksteptwo`
@@ -304,7 +313,7 @@ CREATE TABLE `goldaccount` (
   `name` varchar(45) DEFAULT NULL,
   `gold_issued` varchar(300) DEFAULT NULL,
   `AddedBy` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `goldaccount`
@@ -329,7 +338,7 @@ CREATE TABLE `gold_accont_step` (
   `pure_weight_issued` varchar(191) DEFAULT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active',
   `goldbarcode` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `gold_accont_step`
@@ -349,7 +358,7 @@ CREATE TABLE `issuearticles` (
   `Date` timestamp NULL DEFAULT current_timestamp(),
   `ArticleID` int(11) NOT NULL,
   `IssueID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -365,7 +374,7 @@ CREATE TABLE `issues` (
   `Date` datetime DEFAULT current_timestamp(),
   `Journals_JournalID` int(11) NOT NULL,
   `AddedBy` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -382,7 +391,7 @@ CREATE TABLE `item_list` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `item_list`
@@ -411,7 +420,7 @@ CREATE TABLE `journals` (
   `JournalURL` varchar(200) NOT NULL,
   `JournalAimsandScope` varchar(5000) NOT NULL,
   `JournalDate` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -439,14 +448,19 @@ CREATE TABLE `manufacturing_step` (
   `status` varchar(191) NOT NULL DEFAULT 'Active',
   `tValues` float NOT NULL,
   `barcode` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `manufacturing_step`
 --
 
 INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
-(97, 'I003', 'I0030001', '2023-08-04', 'external-work-directory/images//1691166799-', '', 'Select Type', 2, '12', '18k', 33.71, 32.71, 12, 4.21, NULL, NULL, 'Active', 28.44, '218171918759');
+(89, 'A004', 'A0040001', '2023-06-12', 'external-work-directory/images//1686590166-', '', 'Select Type', 17, '7.5', '', 15, 15, 8, 1.17, NULL, NULL, 'Inactive', 12.13, '467034126285'),
+(90, 'A004', 'A0040002', '2023-06-12', 'external-work-directory/images//1686590229-', '', 'Ring', 17, '7.5', '', 155.77, 155.77, 8, 12.17, NULL, NULL, 'Active', 125.95, '601005158528'),
+(91, 'R002', 'R0020003', '2023-06-12', 'external-work-directory/images//1686590343-', '', 'Tops', 12, '8.5', '', 219.19, 217.16, 9, 19.41, NULL, NULL, 'Active', 178.95, '584767710233'),
+(92, 'W001', 'W0010004', '2023-06-12', 'external-work-directory/images//1686590430-', '', 'Kara', 1, '6', '', 82.25, 82.25, 6, 5.14, NULL, NULL, 'Active', 76.47, '506594778317'),
+(94, 'W001', 'W0010006', '2023-06-15', 'external-work-directory/images//1686849497-', '', 'Select Type', 2, '6', '22k', 21, 21, 6, 1.31, NULL, NULL, 'Active', 20.44, '571153590262'),
+(96, 'R002', 'R0020008', '2023-06-20', 'external-work-directory/images//1687274158-', '', 'Repairing', 1, '8.5', '22k', 1.2, 1.5, 9, 0.11, NULL, NULL, 'Active', 0.98, '148524478677');
 
 -- --------------------------------------------------------
 
@@ -464,7 +478,7 @@ CREATE TABLE `metal` (
   `purity` float NOT NULL,
   `pure_weight` float NOT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `metal`
@@ -493,7 +507,14 @@ CREATE TABLE `polisher_step` (
   `Payable` float DEFAULT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active',
   `polisherbarcode` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `polisher_step`
+--
+
+INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `details`, `difference`, `rate`, `Wastage`, `Payable`, `status`, `polisherbarcode`) VALUES
+(43, '2023-06-11 19:00:00', 'R0020003', 'R005', 'external-work-directory/images/1686590366-', '', 2.03, 1, 2.28, -0.25, 'Active', '127671018517');
 
 -- --------------------------------------------------------
 
@@ -508,7 +529,7 @@ CREATE TABLE `po_items` (
   `price` float NOT NULL DEFAULT 0,
   `unit` varchar(50) NOT NULL,
   `total` float NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -525,7 +546,7 @@ CREATE TABLE `processingstages` (
   `ScoreCalculationRationale` varchar(45) DEFAULT NULL,
   `AddedBy` int(11) DEFAULT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -536,14 +557,21 @@ CREATE TABLE `processingstages` (
 CREATE TABLE `product` (
   `id` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `status`) VALUES
-('I0030001', 'Active');
+('A0040001', 'Inactive'),
+('A0040002', 'Active'),
+('R0020003', 'Active'),
+('R0020007', 'Active'),
+('R0020008', 'Active'),
+('W0010004', 'Active'),
+('W0010005', 'Active'),
+('W0010006', 'Active');
 
 -- --------------------------------------------------------
 
@@ -564,7 +592,7 @@ CREATE TABLE `purchase_order_list` (
   `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 = pending, 1 = partially received, 2 =received',
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `purchase_order_list`
@@ -586,7 +614,7 @@ CREATE TABLE `purchasing` (
   `total` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `purchasing`
@@ -594,7 +622,7 @@ CREATE TABLE `purchasing` (
 
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
 ('existing', 'existing', 0, '2023-07-20 16:25:24', ''),
-('PI-0002', 'H012', 1085734, '2023-08-04 16:43:07', 'Active');
+('PI-0001', 'H012', 4, '2023-07-03 15:36:16', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -616,15 +644,14 @@ CREATE TABLE `purchasing_details` (
   `total_amount` float NOT NULL,
   `remaining_total_amount` float NOT NULL,
   `barcode` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `purchasing_details`
 --
 
 INSERT INTO `purchasing_details` (`id`, `p_id`, `type`, `detail`, `price_per`, `quantity`, `remaining_quantity`, `weight`, `remaining_weight`, `rate`, `total_amount`, `remaining_total_amount`, `barcode`) VALUES
-(41, 'PI-0002', 'stone', 'dad', 'Qty', 1000, 400, 1000, 400, 1000, 1000000, 400000, '1691167374442'),
-(42, 'PI-0002', 'Pearls', 'sad', 'Tola', 1000, 400, 1000, 400, 1000, 85734, 34294, '1691167384978');
+(38, 'PI-0001', 'Zircon', '12', 'Qty', 2, 2, 2, 2, 2, 4, 4, '');
 
 -- --------------------------------------------------------
 
@@ -640,7 +667,7 @@ CREATE TABLE `returned_item` (
   `price` float NOT NULL,
   `weight` float NOT NULL,
   `quantity` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -662,7 +689,7 @@ CREATE TABLE `returned_stone_step` (
   `grand_weight` float NOT NULL,
   `payable` float NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -675,7 +702,7 @@ CREATE TABLE `roleprocessingstages` (
   `RoleID` int(11) NOT NULL,
   `ProcessingStageID` int(11) NOT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -689,7 +716,7 @@ CREATE TABLE `roles` (
   `RoleDescription` varchar(300) DEFAULT NULL,
   `Status` varchar(45) DEFAULT 'Active',
   `AddedBy` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `roles`
@@ -714,7 +741,7 @@ CREATE TABLE `rolesystemactivities` (
   `RoleID` int(11) NOT NULL,
   `SystemActivityID` int(11) NOT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rolesystemactivities`
@@ -756,7 +783,7 @@ CREATE TABLE `sechedule_set` (
   `Product_name` varchar(255) NOT NULL,
   `target_no` varchar(255) NOT NULL,
   `added_by` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sechedule_set`
@@ -779,17 +806,14 @@ CREATE TABLE `stock` (
   `total` float NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `stock`
 --
 
 INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
-('SI-0001', 'PI-0002', 500000, '2023-08-04 19:04:01', 'Active'),
-('SI-0002', 'PI-0002', 30000, '2023-08-04 19:06:09', 'Active'),
-('SI-0003', 'PI-0002', 0, '2023-08-04 19:06:43', 'Active'),
-('SI-0004', 'PI-0002', 70000, '2023-08-04 19:07:17', 'Active');
+('SI-0001', 'existing', 780, '2023-07-20 16:25:51', 'Active');
 
 -- --------------------------------------------------------
 
@@ -807,19 +831,15 @@ CREATE TABLE `stock_details` (
   `weight` float NOT NULL,
   `rate` float NOT NULL,
   `total_amount` float NOT NULL,
-  `barcode` bigint(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `barcode` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `stock_details`
 --
 
 INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES
-(72, 'SI-0001', 'stone', 'dad', 'Qty', 500, 500, 1000, 500000, 1691167374442),
-(73, 'SI-0001', 'Pearls', 'sad', 'Tola', 500, 500, 1000, 42867, 1691167384978),
-(74, 'SI-0002', 'stone', 'dad', 'Qty', 30, 30, 1000, 30000, 1691167374442),
-(75, 'SI-0004', 'stone', 'dad', 'Qty', 70, 70, 1000, 70000, 1691167374442),
-(76, 'SI-0004', 'Pearls', 'sad', 'Tola', 100, 100, 1000, 8573, 1691167384978);
+(60, 'SI-0001', 'Zircon', 'Ruby', 'K', 1, 12, 13, 780, 2147483647);
 
 -- --------------------------------------------------------
 
@@ -836,7 +856,7 @@ CREATE TABLE `stock_list` (
   `total` float NOT NULL DEFAULT current_timestamp(),
   `type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=IN , 2=OUT',
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -852,7 +872,16 @@ CREATE TABLE `stone` (
   `price` float NOT NULL,
   `weight` float NOT NULL,
   `quantity` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stone`
+--
+
+INSERT INTO `stone` (`id`, `code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES
+(121, '', 'S008', 'W0010004', 0, 0, 0),
+(122, '', 'S008', 'A0040002', 0, 0, 0),
+(123, '', 'S009', 'A0040002', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -868,7 +897,7 @@ CREATE TABLE `stone_setter_account` (
   `paid` varchar(255) NOT NULL,
   `ssabarcode` varchar(255) NOT NULL,
   `AddedBy` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -895,7 +924,16 @@ CREATE TABLE `stone_setter_step` (
   `grand_weight` float NOT NULL,
   `grand_total` float NOT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stone_setter_step`
+--
+
+INSERT INTO `stone_setter_step` (`Ssid`, `product_id`, `date`, `vendor_id`, `image`, `detail`, `retained_weight`, `total_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES
+(61, 'W0010004', '2023-06-11 19:00:00', 'S008', '', '', 0, 82.25, 82, 0, 6.9, 266, 0, 0, 0, 88.9, 0, 'Active'),
+(62, 'A0040002', '2023-06-11 19:00:00', 'S008', '', '', 105, 155.77, 50, 0, 5.39, 435, 0, 0, 0, 55.39, 0, 'Active'),
+(63, 'A0040002', '2023-06-11 19:00:00', 'S009', '', '', 0, 105, 105, 0, 2, 200, 0, 0, 0, 107, 0, 'Active');
 
 -- --------------------------------------------------------
 
@@ -912,7 +950,7 @@ CREATE TABLE `supplier_list` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `supplier_list`
@@ -935,7 +973,7 @@ CREATE TABLE `systemactivities` (
   `SystemActivityDescription` varchar(200) DEFAULT NULL,
   `AddedBy` int(11) DEFAULT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `systemactivities`
@@ -979,7 +1017,7 @@ CREATE TABLE `systemsettings` (
   `NegativeIndicatorScore` varchar(45) DEFAULT NULL,
   `AddedBy` int(11) DEFAULT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -995,7 +1033,7 @@ CREATE TABLE `userassignedarticles` (
   `AssignmentTypeID` int(11) NOT NULL,
   `Status` varchar(15) NOT NULL DEFAULT 'Assigned' COMMENT 'Not Assigned,	Assigned,	InProgress,	Holded,	Completed,	Reassigned',
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1047,7 @@ CREATE TABLE `usermonthlyprocessingscore` (
   `ArticlesScore` varchar(45) DEFAULT NULL,
   `UserID` int(11) NOT NULL,
   `MonthlyScoreDate` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1060,7 @@ CREATE TABLE `userprocessingstages` (
   `InProcessThreshold` varchar(45) DEFAULT NULL,
   `UserID` int(11) NOT NULL,
   `ProcessingStageID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1036,7 +1074,7 @@ CREATE TABLE `userreassignedarticles` (
   `UserReassignedArticleStatus` varchar(45) DEFAULT NULL,
   `UserAssignedArticleID` int(11) NOT NULL,
   `Date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1049,7 +1087,7 @@ CREATE TABLE `userroles` (
   `Date` timestamp NULL DEFAULT current_timestamp(),
   `UserID` int(11) NOT NULL,
   `RoleID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `userroles`
@@ -1077,7 +1115,7 @@ CREATE TABLE `users` (
   `UserStatus` varchar(45) DEFAULT 'Active',
   `AddedBy` varchar(100) DEFAULT NULL,
   `Date` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -1099,7 +1137,7 @@ CREATE TABLE `usersystemactivities` (
   `UserSystemActivityDate` timestamp NULL DEFAULT current_timestamp(),
   `UserID` int(11) NOT NULL,
   `SystemActivityID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1116,7 +1154,7 @@ CREATE TABLE `vendor` (
   `22k` float NOT NULL,
   `status` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `vendor`
@@ -1158,7 +1196,17 @@ CREATE TABLE `zircon` (
   `weight` float NOT NULL,
   `price` float NOT NULL,
   `quantity` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `zircon`
+--
+
+INSERT INTO `zircon` (`id`, `code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES
+(149, 'Round 2mm', 'S008', 'W0010004', 6.9, 0, 266),
+(150, 'Round 1.5mm Packet', 'S008', 'A0040002', 4.5, 0, 400),
+(151, 'Round 2mm', 'S008', 'A0040002', 0.89, 0, 35),
+(152, 'Round 2mm', 'S009', 'A0040002', 2, 0, 200);
 
 --
 -- Indexes for dumped tables
@@ -1680,7 +1728,7 @@ ALTER TABLE `journals`
 -- AUTO_INCREMENT for table `manufacturing_step`
 --
 ALTER TABLE `manufacturing_step`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `metal`
@@ -1704,7 +1752,7 @@ ALTER TABLE `processingstages`
 -- AUTO_INCREMENT for table `purchasing_details`
 --
 ALTER TABLE `purchasing_details`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `returned_item`
@@ -1746,7 +1794,7 @@ ALTER TABLE `sechedule_set`
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `stock_list`
