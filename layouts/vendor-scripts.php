@@ -18,3 +18,17 @@
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script>
+    function Logout(){
+        $.ajax({
+ 			url: "functions.php",
+ 			method: "POST",
+ 			data: {
+ 				function: "Logout"
+ 			},
+ 			success: function(response) {
+ 				window.location="auth-login.php"
+ 			}
+ 		});
+    }
+</script>

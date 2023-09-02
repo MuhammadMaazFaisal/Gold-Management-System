@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 // Check if the user is already logged in, if yes then redirect him to index page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: index");
+    header("location: index.php");
     exit;
 }
 // Include config file
@@ -59,89 +59,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (mysqli_stmt_fetch($stmt)) {
                         if (password_verify($password, $hashed_password)) {
                             // Password is correct, so start a new session
-                            session_start();
+                            // session_start();
 
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;
- // COde FOr Session of User - Activities
-
- $USA = "SELECT SystemActivityCode, UserSystemActivities.SystemActivityID FROM SystemActivities,UserSystemActivities 
- WHERE UserSystemActivities.SystemActivityID = SystemActivities.SystemActivityID and UserID=:id";
-     $USA = $pdo->prepare($USA);
-     $USA->bindParam(":id", $id);
-     $USA->execute();
-     $USA_session = $USA->fetchAll();
-
-     foreach ($USA_session as $rsa) {
-         $rsaname = $rsa["SystemActivityCode"];
-         $_SESSION[$rsaname] = $rsaname;
-     }
-
-     // COde FOr Session of User - Processing Stages
-
-     $UPS = "SELECT ProcessingStageCode, UserProcessingStages.ProcessingStageID FROM ProcessingStages,UserProcessingStages 
- WHERE UserProcessingStages.ProcessingStageID = ProcessingStages.ProcessingStageID and UserID=:id";
-     $UPS = $pdo->prepare($UPS);
-     $UPS->bindParam(":id", $id);
-     $UPS->execute();
-     $UPS_session = $UPS->fetchAll();
-
-     foreach ($UPS_session as $RPS) {
-         $RPSname = $RPS["ProcessingStageCode"];
-         $RPSid = $RPS["ProcessingStageID"];
-         $_SESSION["ProcessingStage"] = $RPSid;
-         $_SESSION[$RPSname] = $RPSid;
-     }
-
-                            // COde FOr Session of User - Roles
-                            $roles = "SELECT RoleName, UserRoles.RoleID FROM Roles,UserRoles WHERE UserRoles.RoleID = Roles.RoleID and UserID=:id";
-                            $roles = $pdo->prepare($roles);
-                            $roles->bindParam(":id", $id);
-                            $roles->execute();
-                            $roles_session = $roles->fetchAll();
-
-                            foreach ($roles_session as $role) {
-                                $rolename = $role["RoleName"];
-                                $roleid = $role["RoleID"];
-
-                                $_SESSION[$rolename] = $rolename;
-                                $_SESSION["role"] = $rolename;
-
-                                // COde FOr Session of Role - Activities
-
-                                $RSA = "SELECT SystemActivityCode, RoleSystemActivities.SystemActivityID FROM SystemActivities,RoleSystemActivities 
-                            WHERE RoleSystemActivities.SystemActivityID = SystemActivities.SystemActivityID and RoleID=:id";
-                                $RSA = $pdo->prepare($RSA);
-                                $RSA->bindParam(":id", $roleid);
-                                $RSA->execute();
-                                $RSA_session = $RSA->fetchAll();
-
-                                foreach ($RSA_session as $rsa) {
-                                    $rsaname = $rsa["SystemActivityCode"];
-                                    $_SESSION[$rsaname] = $rsaname;
-                                }
-
-                                // COde FOr Session of Role - Processing Stages
-
-                                $RPS = "SELECT ProcessingStageCode, RoleProcessingStages.ProcessingStageID FROM ProcessingStages,RoleProcessingStages 
-                            WHERE RoleProcessingStages.ProcessingStageID = ProcessingStages.ProcessingStageID and RoleID=:id";
-                                $RPS = $pdo->prepare($RPS);
-                                $RPS->bindParam(":id", $roleid);
-                                $RPS->execute();
-                                $RPS_session = $RPS->fetchAll();
-
-                                foreach ($RPS_session as $RPS) {
-                                    $RPSname = $RPS["ProcessingStageCode"];
-                                    $RPSid = $RPS["ProcessingStageID"];
-                                    $_SESSION["ProcessingStage"] = $RPSid;
-                                    $_SESSION[$RPSname] = $RPSid;
-                                }
-                            }
-
-
-
+                           
 
                             // Redirect user to welcome page
                             header("location: index.php");
@@ -167,18 +91,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($link);
 }
 ?>
-<?php include 'layouts/head-main.php'; ?>
+<?php
+// include language configuration file based on selected language
+$lang = "en";
+if (isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
+    $_SESSION['lang'] = $lang;
+}
+if (isset($_SESSION['lang'])) {
+    $lang = $_SESSION['lang'];
+} else {
+    $lang = "en";
+}
+require_once("./assets/lang/" . $lang . ".php");
+//require_once ("./../assets/lang/" . $lang . ".php");
+
+define('root', $_SERVER['DOCUMENT_ROOT']);
+
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $lang ?>">
 
 <head>
 
     <title>Login |</title>
-    <?php include 'layouts/head.php'; ?>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     <?php include 'layouts/head-style.php'; ?>
 
 </head>
 
-<?php include 'layouts/body.php'; ?>
+ <body>
 <div class="auth-page">
     <div class="container-fluid p-0">
         <div class="row g-0">
@@ -221,12 +167,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col">
-                                            <!-- <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="remember-check">
-                                                <label class="form-check-label" for="remember-check">
-                                                    Remember me
-                                                </label>
-                                            </div> -->
                                         </div>
 
                                     </div>
@@ -236,27 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </form>
 
                                 <div class="mt-4 pt-2 text-center">
-                                    <!-- <div class="signin-other-title">
-                                        <h5 class="font-size-14 mb-3 text-muted fw-medium">- Sign in with -</h5>
-                                    </div>
-
-                                    <ul class="list-inline mb-0">
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-primary text-white border-primary">
-                                                <i class="mdi mdi-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-                                                <i class="mdi mdi-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-                                                <i class="mdi mdi-google"></i>
-                                            </a>
-                                        </li>
-                                    </ul> -->
+                                   
                                 </div>
 
                                 <div class="mt-5 text-center">
@@ -294,9 +214,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="col-xl-7">
                             <div class="p-0 p-sm-4 px-xl-0">
                                 <div id="reviewcarouselIndicators" class="carousel slide" data-bs-ride="carousel">
-                                    
+
                                     <!-- end carouselIndicators -->
-                                   
+
                                     <!-- end carousel-inner -->
                                 </div>
                                 <!-- end review carousel -->

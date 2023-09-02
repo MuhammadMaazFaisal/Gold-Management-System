@@ -1,5 +1,12 @@
-<?php include 'layouts/session.php';
+<?php
+// Initialize the session
+session_start();
 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: auth-login.php");
+    exit;
+}
 
 // Include config file
 require_once "layouts/config.php";
@@ -8,17 +15,34 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// include language configuration file based on selected language
+$lang = "en";
+if (isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
+    $_SESSION['lang'] = $lang;
+}
+if (isset($_SESSION['lang'])) {
+    $lang = $_SESSION['lang'];
+} else {
+    $lang = "en";
+}
+require_once("./assets/lang/" . $lang . ".php");
+//require_once ("./../assets/lang/" . $lang . ".php");
+
+define('root', $_SERVER['DOCUMENT_ROOT']);
 
 ?>
-
-
-<?php include 'layouts/head-main.php'; ?>
+<!DOCTYPE html>
+<html lang="<?php echo $lang ?>">
 
 
 <head>
     <title><?php echo $language["Dashboard"]; ?> Production</title>
 
-    <?php include 'layouts/head.php'; ?>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     <link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 
@@ -30,119 +54,113 @@ error_reporting(E_ALL);
     }
 </style>
 
-<?php include 'layouts/body.php'; ?>
+ <body>
 
 <!-- Begin page -->
 <div id="layout-wrapper">
 
-    <?php include 'layouts/menu.php'; ?>
+    <?php include 'layouts/vertical-menu.php'; ?>
 
     <!-- ============================================================== -->
     <!-- Start right Content here -->
     <!-- ============================================================== -->
     <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card ">
+                            <div class="card-header card border border-danger">
+                                <h4 class="card-title">
+                                    PURCHASING
+                                </h4>
+
+                            </div>
+                            <div class="col d-flex justify-content-end me-4">
+                                <button type="button" onclick="DeletePurchasing()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Invoice</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
+                                    Select Invoice
+                                </button>
+                            </div>
+                            <div class="card-body px-4 ">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 ms-lg-auto ">
+                                        <div class="mt-4 mt-lg-0">
 
 
-        <?php if (isset($_SESSION['prodp'])) { ?>
+                                            <form id="form" method="POST" enctype="multipart/form-data">
+                                                <div class="row mb-4 justify-content-between">
+                                                    <div class="col-sm-3">
+
+                                                        <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
+                                                            <option value="">Select a vendor...</option>
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2">
+
+                                                        <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
+                                                    </div>
 
 
-            <div class="page-content">
-                <div class="container-fluid">
-                    <div class="row">
+                                                </div>
 
-                        <div class="col-lg-12">
-                            <div class="card ">
-                                <div class="card-header card border border-danger">
-                                    <h4 class="card-title">
-                                        PURCHASING
-                                    </h4>
+                                                <div class="table-responsive">
+                                                    <table class="table text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Detail</th>
+                                                                <th>Type</th>
+                                                                <th colspan="2">Price Per</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">Weight</th>
+                                                                <th scope="col">Rate</th>
+                                                                <th scope="col">Total Amount</th>
+                                                                <th scope="col">Barcode</th>
+                                                                <th scope="col">Action</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbody">
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
+                                                                <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
+                                                                <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                        <option value="">Select price per</option>
+                                                                        <option value="Qty">Qty</option>
+                                                                        <option value="Tola">Tola</option>
+                                                                        <option value="K">K</option>
 
-                                </div>
-                                <div class="col d-flex justify-content-end me-4">
-                                    <button type="button" onclick="DeletePurchasing()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Invoice</button>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
-                                        Select Invoice
-                                    </button>
-                                </div> 
-                                <div class="card-body px-4 ">
+                                                                    </select></td>
+                                                                <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
+                                                                <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
+                                                                <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                                                                <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                                                                <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
+                                                                <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
+                                                                <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="row mb-4 d-flex justify-content-end">
+                                                        <div class="d-flex justify-content-end col-sm-2 ">
 
-                                    <div class="row">
-
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0">
-
-
-                                                <form id="form" method="POST" enctype="multipart/form-data">
-                                                    <div class="row mb-4 justify-content-between">
-                                                        <div class="col-sm-3">
-
-                                                            <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
-                                                                <option value="">Select a vendor...</option>
-
-                                                            </select>
+                                                            <input type="text" id="grand_total" name="grand_total" class="form-control " placeholder="Grand Total" readonly required>
                                                         </div>
-                                                        <div class="col-sm-2">
-
-                                                            <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
-                                                        </div>
-
 
                                                     </div>
 
-                                                    <div class="table-responsive">
-                                                        <table class="table text-center">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">#</th>
-                                                                    <th scope="col">Detail</th>
-                                                                    <th>Type</th>
-                                                                    <th colspan="2">Price Per</th>
-                                                                    <th scope="col">Quantity</th>
-                                                                    <th scope="col">Weight</th>
-                                                                    <th scope="col">Rate</th>
-                                                                    <th scope="col">Total Amount</th>
-                                                                    <th scope="col">Barcode</th>
-                                                                    <th scope="col">Action</th>
-                                                                    <th scope="col"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="tbody">
-                                                                <tr>
-                                                                    <td scope="row">1</td>
-                                                                    <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
-                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
-                                                                            <option value="">Select price per</option>
-                                                                            <option value="Qty">Qty</option>
-                                                                            <option value="Tola">Tola</option>
-                                                                            <option value="K">K</option>
-
-                                                                        </select></td>
-                                                                    <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
-                                                                    <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
-                                                                    <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                                                                    <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
-                                                                    <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
-                                                                    <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="row mb-4 d-flex justify-content-end">
-                                                            <div class="d-flex justify-content-end col-sm-2 ">
-
-                                                                <input type="text" id="grand_total" name="grand_total" class="form-control " placeholder="Grand Total" readonly required>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="d-flex justify-content-end">
-                                                            <button type="button" class="btn btn-success me-2">Print</button>
-                                                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
-                                                        </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-success me-2">Print</button>
+                                                        <button type="submit" name="submit" class="btn btn-primary">Save</button>
                                                     </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -151,15 +169,8 @@ error_reporting(E_ALL);
                     </div>
                 </div>
             </div>
-            <!-- End Page-content -->
-
-
-        <?php } // Super Admin 
-        ?>
-
-
-
-
+        </div>
+        <!-- End Page-content -->
 
         <?php include 'layouts/footer.php'; ?>
     </div>
@@ -201,16 +212,123 @@ error_reporting(E_ALL);
 <!-- END layout-wrapper -->
 
 <!-- Right Sidebar -->
-<?php include 'layouts/right-sidebar.php'; ?>
+<div class="right-bar">
+    <div data-simplebar class="h-100">
+        <div class="rightbar-title d-flex align-items-center bg-dark p-3">
+
+            <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
+
+            <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                <i class="mdi mdi-close noti-icon"></i>
+            </a>
+        </div>
+
+        <!-- Settings -->
+        <hr class="m-0" />
+
+        <div class="p-4">
+            <h6 class="mb-3">Layout</h6>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
+                <label class="form-check-label" for="layout-vertical">Vertical</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
+                <label class="form-check-label" for="layout-mode-light">Light</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
+                <label class="form-check-label" for="layout-mode-dark">Dark</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                <label class="form-check-label" for="topbar-color-light">Light</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                <label class="form-check-label" for="topbar-color-dark">Dark</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                <label class="form-check-label" for="sidebar-size-default">Default</label>
+            </div>
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+            </div>
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                <label class="form-check-label" for="sidebar-color-light">Light</label>
+            </div>
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+            </div>
+            <div class="form-check sidebar-setting">
+                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+            </div>
+
+            <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
+                <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
+                <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+            </div>
+
+        </div>
+
+    </div> <!-- end slimscroll-menu-->
+</div>
+
+<!-- Right bar overlay-->
+<div class="rightbar-overlay"></div>
 <!-- /Right-bar -->
 
 <!-- JAVASCRIPT -->
 <?php include 'layouts/vendor-scripts.php'; ?>
-
-
-
-
-
 <!-- apexcharts -->
 <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
 
@@ -229,27 +347,28 @@ error_reporting(E_ALL);
 </html>
 
 <script>
-    function DeletePurchasing(){
+    function DeletePurchasing() {
         var product = document.getElementById('invoice');
- 		if (product.value == '') {
- 			alert('Please Select Invoice');
- 		} else {
- 			$.ajax({
- 				url: "functions.php",
- 				method: "POST",
- 				data: {
- 					function: "DeletePurchasing",
- 					id: product.value
- 				},
- 				success: function(response) {
- 					var data = JSON.parse(response);
- 					if (data.status == 'success') {
- 						location.reload();
- 					}
- 				}
- 			});
- 		}
+        if (product.value == '') {
+            alert('Please Select Invoice');
+        } else {
+            $.ajax({
+                url: "functions.php",
+                method: "POST",
+                data: {
+                    function: "DeletePurchasing",
+                    id: product.value
+                },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.status == 'success') {
+                        location.reload();
+                    }
+                }
+            });
+        }
     }
+
     function AddProduct() {
         let area = document.getElementById('tbody');
         let tr = document.createElement('tr');
@@ -318,16 +437,16 @@ error_reporting(E_ALL);
     function GetProductId(btn) {
         var id = btn.parentNode.parentNode.id;
         var vendor_id = btn.parentNode.parentNode.children[2].innerHTML;
-        var total=btn.parentNode.parentNode.children[4].innerHTML;
+        var total = btn.parentNode.parentNode.children[4].innerHTML;
         $('#product-modal').modal('hide');
         var product = document.getElementById("invoice");
         product.value = id;
-        GetPurchasingDetails(id,vendor_id,total);
+        GetPurchasingDetails(id, vendor_id, total);
     }
 
-    function GetPurchasingDetails(id,vendor_id,total) {
+    function GetPurchasingDetails(id, vendor_id, total) {
         var delete_btn = document.getElementById("delete-product");
- 		delete_btn.disabled = false;
+        delete_btn.disabled = false;
         $.ajax({
             url: "functions.php",
             method: "POST",
@@ -340,10 +459,10 @@ error_reporting(E_ALL);
                 console.log("purchasing", data);
                 var area = document.getElementById('tbody');
                 area.innerHTML = "";
-                let GrandTotal=document.getElementById('grand_total');
-                GrandTotal.value=total;
+                let GrandTotal = document.getElementById('grand_total');
+                GrandTotal.value = total;
                 var select_manufacturer = $('#select-manufacturer')[0].selectize;
- 				select_manufacturer.setValue(vendor_id);
+                select_manufacturer.setValue(vendor_id);
                 for (i = 0; i < data.length; i++) {
                     let tr = `<tr>
                                 <td scope="row">1</td>
