@@ -28,8 +28,8 @@ if (isset($_SESSION['lang'])) {
 } else {
     $lang = "en";
 }
-require_once("./assets/lang/" . $lang . ".php");
-//require_once ("./../assets/lang/" . $lang . ".php");
+require_once("../assets/lang/" . $lang . ".php");
+//require_once ("./../../assets/lang/" . $lang . ".php");
 
 define('root', $_SERVER['DOCUMENT_ROOT']);
 
@@ -44,9 +44,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
-    <link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 
     <?php include 'layouts/head-style.php'; ?>
 </head>
@@ -577,17 +577,17 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 
     <!-- apexcharts -->
-    <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+    <script src="../assets/libs/apexcharts/apexcharts.min.js"></script>
 
     <!-- Plugins js-->
     <script src="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
     <script src="assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
     <!-- dashboard init -->
-    <script src="assets/js/pages/dashboard.init.js"></script>
+    <script src="../assets/js/pages/dashboard.init.js"></script>
 
     <!-- App js -->
-    <script src="assets/js/app.js"></script>
+    <script src="../assets/js/app.js"></script>
 
     </body>
 

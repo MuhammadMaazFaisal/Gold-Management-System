@@ -148,6 +148,16 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class=" ">
+                        <i data-feather="file-text"></i>
+                        <span data-key="t-bank">Sales</span>
+
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="sales_returns.php" data-key="t-register">Sales Returns</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class=" ">
                         <i data-feather="layers"></i>
                         <span data-key="t-authentication">Reports</span>
                     </a>
