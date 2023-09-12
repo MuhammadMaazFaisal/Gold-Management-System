@@ -100,28 +100,25 @@
                 <li>
                     <a href="javascript: void(0);" class=" ">
                         <i data-feather="file-text"></i>
-                        <span data-key="t-authentication">Vendor Management</span>
+                        <span data-key="t-authentication">Buyer Management</span>
 
                     </a>
 
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="manufacturer.php" data-key="t-register">Manufacturer</a></li>
-                        <li><a href="polisher.php" data-key="t-register">Polisher</a></li>
-                        <li><a href="stone-setter.php" data-key="t-register">Stone Setter</a></li>
-                        <li><a href="vendor.php" data-key="t-register">Vendor</a></li>
+                        <li><a href="buyer.php" data-key="t-register">Buyer</a></li>
                     </ul>
 
                 </li>
                 <li>
                     <a href="javascript: void(0);" class=" ">
                         <i data-feather="layers"></i>
-                        <span data-key="t-authentication">Metal</span>
+                        <span data-key="t-authentication">Gold</span>
 
                     </a>
 
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="issue_metal.php" data-key="t-register">Issue Metal</a></li>
-                        <li><a href="recieve_metal.php" data-key="t-register">Receive Metal</a></li>
+                        <li><a href="issue_gold.php" data-key="t-register">Issue Gold</a></li>
+                        <li><a href="recieve_gold.php" data-key="t-register">Receive Gold</a></li>
                     </ul>
 
                 </li>
@@ -141,14 +138,12 @@
                 <li>
                     <a href="javascript: void(0);" class=" ">
                         <i data-feather="file-text"></i>
-                        <span data-key="t-bank">Manage Stock</span>
+                        <span data-key="t-bank">POS</span>
 
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="stock.php" data-key="t-register">Stock</a></li>
-                        <li><a href="purchasing.php" data-key="t-register">Purchasing</a></li>
-                        <li><a href="add_stock.php" data-key="t-register">Add Stock</a></li>
-
+                        <li><a href="generate_invoice.php" data-key="t-register">Generate Invoice</a></li>
+                        <li><a href="current_invoice.php" data-key="t-register">Current Invoices</a></li>
                     </ul>
                 </li>
                 <li>
@@ -157,10 +152,8 @@
                         <span data-key="t-authentication">Reports</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="manufacturing_report.php" data-key="t-register">Manufecturing Report</a></li>
-                        <li><a href="polishing_report.php" data-key="t-register">Polishing Report</a></li>
-                        <li><a href="#" data-key="t-register">Stone Setting Report</a></li>
-                        <li><a href="#" data-key="t-register">Addintional Accounts Report</a></li>
+                        <li><a href="invoices.php" data-key="t-register">Invoices</a></li>
+                        <li><a href="pil.php" data-key="t-register">PIL</a></li>
                     </ul>
                 </li>
                 <li>
