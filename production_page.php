@@ -1838,6 +1838,7 @@
                         @page {
                             size: 80mm 200mm;
                             margin: 0;
+							margin-top:-20px;
                         }
 
                         body {
