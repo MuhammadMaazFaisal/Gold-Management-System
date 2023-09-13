@@ -347,7 +347,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
         function SelectMetal() {
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 type: "POST",
                 data: {
                     function: "SelectCash",
@@ -399,7 +399,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 return;
             } else {
                 $.ajax({
-                    url: "functions.php",
+                    url: "layouts/functions.php",
                     type: "POST",
                     data: {
                         function: "DeleteCash",
@@ -503,7 +503,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             });
 
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
                     function: "GetCashVendors"
@@ -529,7 +529,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             form.append('function', 'CashRecord');
             form.append('type', 'recieved');
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: form,
                 contentType: false,

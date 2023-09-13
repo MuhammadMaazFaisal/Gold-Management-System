@@ -331,7 +331,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "manufacturer.php";
+                                window.location.href = "buyer.php";
                             }
                         })
                     } else {
@@ -447,7 +447,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "manufacturer.php";
+                                    window.location.href = "buyer.php";
                                 }
                             })
                         } else {
@@ -482,7 +482,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "manufacturer.php";
+                                    window.location.href = "buyer.php";
                                 }
                             })
                         } else {

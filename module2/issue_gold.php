@@ -354,7 +354,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
         function SelectMetal() {
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 type: "POST",
                 data: {
                     function: "SelectGold",
@@ -406,7 +406,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 return;
             } else {
                 $.ajax({
-                    url: "functions.php",
+                    url: "layouts/functions.php",
                     type: "POST",
                     data: {
                         function: "DeleteGold",
@@ -510,7 +510,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             });
 
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
                     function: "GetBuyers"
@@ -536,7 +536,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             form.append('function', 'GoldRecord');
             form.append('type', 'issued');
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: form,
                 contentType: false,

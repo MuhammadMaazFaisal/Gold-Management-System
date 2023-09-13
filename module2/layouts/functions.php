@@ -42,7 +42,7 @@ function CashRecord()
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':date', $_POST['date']);
-    $getRecordStatement->bindParam(':buyer_id', $_POST['buyer']);
+    $getRecordStatement->bindParam(':buyer_id', $_POST['vendor']);
     $getRecordStatement->bindParam(':type', $_POST['type']);
     $getRecordStatement->bindParam(':details', $_POST['detail']);
     $getRecordStatement->bindParam(':amount', $_POST['amount']);
@@ -140,7 +140,7 @@ function GoldRecord()
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':date', $_POST['date']);
-    $getRecordStatement->bindParam(':buyer_id', $_POST['buyer']);
+    $getRecordStatement->bindParam(':buyer_id', $_POST['vendor']);
     $getRecordStatement->bindParam(':type', $_POST['type']);
     $getRecordStatement->bindParam(':details', $_POST['detail']);
     $getRecordStatement->bindParam(':amount', $_POST['amount']);
