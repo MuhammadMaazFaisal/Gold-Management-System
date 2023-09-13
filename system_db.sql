@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 02, 2023 at 07:59 PM
+-- Generation Time: Sep 13, 2023 at 05:12 PM
 -- Server version: 8.0.30
--- PHP Version: 7.4.1
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,6 +49,30 @@ INSERT INTO `additional_step` (`id`, `product_id`, `vendor_id`, `type`, `amount`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `buyer`
+--
+
+CREATE TABLE `buyer` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `buyer`
+--
+
+INSERT INTO `buyer` (`id`, `name`, `status`, `date`) VALUES
+('AR005', 'Abdul Rafay', 'Active', '2023-09-13'),
+('MF001', 'Maaz Faisal', 'Inactive', '2023-09-13'),
+('MF002', 'Maaz Faisal', 'Inactive', '2023-09-13'),
+('MF003', 'Maaz Faisal', 'Inactive', '2023-09-13'),
+('MF004', 'Maaz Faisal', 'Active', '2023-09-13');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cash`
 --
 
@@ -70,6 +94,52 @@ INSERT INTO `cash` (`id`, `date`, `vendor_id`, `type`, `amount`, `details`, `sta
 (1, '2023-06-20', 'I003', 'issued', 120, '123', 'Inactive'),
 (2, '2023-06-20', 'I003', 'recieved', 250, '123', 'Inactive'),
 (3, '2023-06-20', 'H012', 'issued', 223, '3123', 'Active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `m2_cash`
+--
+
+CREATE TABLE `m2_cash` (
+  `id` int NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `buyer_id` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `details` text NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `amount` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `m2_cash`
+--
+
+INSERT INTO `m2_cash` (`id`, `date`, `buyer_id`, `type`, `details`, `status`, `amount`) VALUES
+(1, '2023-09-13', 'MF004', 'issued', '32safdsfdsf', 'Inactive', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `m2_gold`
+--
+
+CREATE TABLE `m2_gold` (
+  `id` int NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `buyer_id` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `details` text NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `amount` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `m2_gold`
+--
+
+INSERT INTO `m2_gold` (`id`, `date`, `buyer_id`, `type`, `details`, `status`, `amount`) VALUES
+(1, '2023-09-13', 'MF004', 'issued', '', 'Inactive', 12354700);
 
 -- --------------------------------------------------------
 
@@ -497,11 +567,31 @@ ALTER TABLE `additional_step`
   ADD KEY `vendor_id` (`vendor_id`);
 
 --
+-- Indexes for table `buyer`
+--
+ALTER TABLE `buyer`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cash`
 --
 ALTER TABLE `cash`
   ADD PRIMARY KEY (`id`),
   ADD KEY `vendor_id` (`vendor_id`);
+
+--
+-- Indexes for table `m2_cash`
+--
+ALTER TABLE `m2_cash`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `buyer_id` (`buyer_id`);
+
+--
+-- Indexes for table `m2_gold`
+--
+ALTER TABLE `m2_gold`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `buyer_id` (`buyer_id`);
 
 --
 -- Indexes for table `manufacturing_step`
@@ -630,6 +720,18 @@ ALTER TABLE `cash`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `m2_cash`
+--
+ALTER TABLE `m2_cash`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `m2_gold`
+--
+ALTER TABLE `m2_gold`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `manufacturing_step`
 --
 ALTER TABLE `manufacturing_step`
@@ -711,6 +813,18 @@ ALTER TABLE `additional_step`
 --
 ALTER TABLE `cash`
   ADD CONSTRAINT `cash_ibfk_1` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`id`);
+
+--
+-- Constraints for table `m2_cash`
+--
+ALTER TABLE `m2_cash`
+  ADD CONSTRAINT `m2_cash_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `m2_gold`
+--
+ALTER TABLE `m2_gold`
+  ADD CONSTRAINT `m2_gold_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `manufacturing_step`
