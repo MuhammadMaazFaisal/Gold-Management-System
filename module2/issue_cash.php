@@ -372,11 +372,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 							<tr>
 							<td>${data.records[i].id}</td>
 							<td>${data.records[i].id}</td>
-							<td>${data.records[i].vendor_id}</td>
+							<td>${data.records[i].buyer_id}</td>
 							<td>${data.records[i].name}</td>
 							<td>${data.records[i].amount}</td>
 							<td>${data.records[i].date}</td>
-							<td><button class="btn btn-primary select-btn" data-product-id="${data.records[i]['id']}" data-vendor-id="${data.records[i]['vendor_id']}" data-vendor-name="${data.records[i]['name']}" data-date="${data.records[i]['date']}" data-amount="${data.records[i]['amount']}" data-details="${data.records[i]['details']}">Select</button></td>
+							<td><button class="btn btn-primary select-btn" data-product-id="${data.records[i]['id']}" data-vendor-id="${data.records[i]['buyer_id']}" data-vendor-name="${data.records[i]['name']}" data-date="${data.records[i]['date']}" data-amount="${data.records[i]['amount']}" data-details="${data.records[i]['details']}">Select</button></td>
 							</tr>
 							`;
                             table_body.innerHTML += row;
@@ -513,7 +513,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 url: "functions.php",
                 method: "POST",
                 data: {
-                    function: "GetCashVendors"
+                    function: "GetBuyers"
                 },
                 success: function(response) {
                     var data = JSON.parse(response);

@@ -9,7 +9,7 @@ if ($_POST['function'] == 'GetAllVendorData') {
 } elseif ($_POST['function'] == 'VendorDelete') {
     VendorDelete();
 } elseif ($_POST['function'] == 'GetVendor') {
-    GetVendor();
+    GetVendor(); 
 } elseif ($_POST['function'] == 'UpdateVendor') {
     UpdateVendor();
 } elseif ($_POST['function'] == 'ProductCount') {

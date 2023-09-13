@@ -77,11 +77,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                     <div class="col-lg-12">
                         <div class="row mb-2">
-                            <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Vendor:</label>
+                            <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Buyer:</label>
                             <div class="col-sm-3">
 
-                                <select id="select-vendor" placeholder="Pick a vendor...">
-                                    <option value="">Select a vendor...</option>
+                                <select id="select-vendor" placeholder="Pick a buyer...">
+                                    <option value="">Select a buyer...</option>
 
                                 </select>
                             </div>
@@ -295,10 +295,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         function GetValue(id) {
             var delete1 = document.getElementById("delete");
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
-                    function: "GetVendor",
+                    function: "GetBuyer",
                     id: id
                 },
                 success: function(response) {
@@ -306,9 +306,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     delete1.classList.remove("disabled");
                     document.getElementById("id").value = data[0].id;
                     document.getElementById("name").value = data[0].name;
-                    document.getElementById("18k").value = data[0]['18k'];
-                    document.getElementById("21k").value = data[0]['21k'];
-                    document.getElementById("22k").value = data[0]['22k'];
                     document.getElementById("name").readOnly = true;
                 }
             });
@@ -317,10 +314,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         function Delete() {
             var id = document.getElementById("id").value;
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
-                    function: "VendorDelete",
+                    function: "BuyerDelete",
                     id: id
                 },
                 success: function(response) {
@@ -329,7 +326,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     if (data[0] == "success") {
                         Swal.fire({
                             title: 'Deleted!',
-                            text: 'Manufacturer Deleted Successfully',
+                            text: 'Buyer Deleted Successfully',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
@@ -369,10 +366,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 }
             }
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
-                    function: "VendorCount"
+                    function: "BuyerCount"
                 },
                 success: function(response) {
                     var data = JSON.parse(response);
@@ -388,13 +385,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 sortField: 'text'
             });
             $.ajax({
-                url: "functions.php",
+                url: "layouts/functions.php",
                 method: "POST",
                 data: {
-                    function: "GetAllVendorData",
-                    type: "manufacturer"
+                    function: "GetAllBuyerData",
                 },
                 success: function(response) {
+                    console.log(response);
                     var data = JSON.parse(response);
                     var select = $('#select-vendor')[0].selectize;
                     for (var i = 0; i < data.length; i++) {
@@ -433,10 +430,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             var id = document.getElementById("id").value;
             if (id1 === id) {
                 var data = new FormData(form);
-                data.append("function", "UpdateVendor");
-                data.append("type", "manufacturer");
+                data.append("function", "UpdateBuyer");
                 $.ajax({
-                    url: "functions.php",
+                    url: "layouts/functions.php",
                     method: "POST",
                     data: data,
                     processData: false,
@@ -467,20 +463,21 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             } else {
 
                 var data = new FormData(form);
-                data.append("function", "AddVendor");
-                data.append("type", "manufacturer");
+                data.append("function", "AddBuyer");
+                // data.append("type", "manufacturer");
                 $.ajax({
-                    url: "functions.php",
+                    url: "layouts/functions.php",
                     method: "POST",
                     data: data,
                     processData: false,
                     contentType: false,
                     success: function(response) {
+                        console.log(response);
                         var data = JSON.parse(response);
                         if (data[0] == "success") {
                             Swal.fire({
                                 title: 'Success!',
-                                text: 'Manufacturer Added Successfully',
+                                text: 'Buyer Added Successfully',
                                 icon: 'success',
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
