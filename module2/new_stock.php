@@ -185,18 +185,38 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                         <label for="against_weight">Against Weight</label><br>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row mt-4">
 
-                                                    <div class="col-md-4">
-                                                        <label>Profile Picture</label>
-                                                        <div class="form-group mx-auto mt-0 mt-md-5 " style="width: 200px;">
-                                                            <input style="visibility: hidden !important;" type="file" name="image" id="image" accept=".jpg, .png, .gif"><label id="label" for="image">+</label>
-                                                            <p id=num_images class="text-center mx-auto mt-2"></p>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-sm-3">
-                                                        <input type="radio" id="against_weight" name="against" value="CSS">
-                                                        <label for="against_weight">Against Weight</label><br>
+
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="row mb-4">
+                                                            <label for="date" class="col-sm-1 col-form-label">Date:</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="date" id="date" class="form-control" placeholder="Date">
+                                                            </div>
+                                                            <label for="vendor" class="col-sm-1 col-form-label">P-Code:</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" id="p_code" class="form-control" placeholder="P-Code">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <label for="detail" class="col-sm-1 col-form-label">Details:</label>
+                                                            <div class="col-sm-11">
+                                                                <textarea type="text" id="detail" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <label for="date" class="col-sm-1 col-form-label">Type:</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" id="type" class="form-control" placeholder="Type">
+                                                            </div>
+                                                            <label for="vendor" class="col-sm-1 col-form-label">Purity:</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" id="purity" class="form-control" placeholder="Purity">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
