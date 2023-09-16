@@ -171,7 +171,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <div class="row">
 
                                         <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive">
+                                            <div class="mt-4 mt-lg-0">
 
                                                 <div class="row">
                                                     <div class="col-sm-3">
@@ -248,19 +248,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-header card border border-success">
-                                    <h4 class="card-title">
-                                        Addition
-                                    </h4>
-
-                                </div>
-                                <div class="card-body px-4 ">
-
+                                    <h2 class="mt-4 mb-3">
+                                        Addition:
+                                    </h2>
                                     <div class="row">
 
                                         <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive">
+                                            <div class="mt-4 mt-lg-0">
 
                                                 <div class="row mb-4">
 
@@ -293,7 +287,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                     </div>
                                                     <div class="col-sm-2">
 
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" >
+                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control">
                                                     </div>
                                                     <div class="col-sm-2">
 
@@ -306,7 +300,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                                                         <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Loss">
                                                     </div>
-                                                    
+
                                                 </div>
                                                 <div class="row mb-4">
                                                     <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Gross Weight:</label>
@@ -317,14 +311,14 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                     <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">St/Per:</label>
                                                     <div class="col-sm-2">
 
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="St/Per" >
+                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="St/Per">
                                                     </div>
                                                     <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Net Weight:</label>
                                                     <div class="col-sm-2">
 
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Net Weight"  >
+                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Net Weight">
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
