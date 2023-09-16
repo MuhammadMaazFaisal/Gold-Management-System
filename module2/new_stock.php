@@ -221,104 +221,111 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                                                     </div>
                                                     <div class="row">
-                                                        <label for="date" class="col-sm-1 col-form-label">Weight:</label>
-                                                        <div class="col-sm-2">
-                                                            <input type="text" id="type" class="form-control" placeholder="">
+                                                        <div class="col-4 row">
+                                                            <label for="date" class="col-sm-4 col-form-label">Weight:</label>
+
+                                                            <div class="col-sm-7">
+                                                                <input type="text" id="weight" class="form-control" placeholder="">
+                                                            </div>
                                                         </div>
-                                                        <label for="vendor" class="col-sm-1 col-form-label">Stone:</label>
-                                                        <div class="col-sm-1">
-                                                            <input type="text" id="purity" class="form-control" placeholder="Stone">
+                                                        <div class="col-8" id="add_area">
+                                                            <div class="row">
+                                                                <label for="vendor" class="col-sm-1 col-form-label">Stone:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="text" id="stone" class="form-control" placeholder="Stone">
+                                                                </div>
+
+                                                                <label for="vendor" class="col-sm-2 col-form-label">Weight:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="text" id="weight_add" class="form-control" placeholder="Weight">
+                                                                </div>
+                                                                <div class="col-sm-1">
+
+                                                                    <i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
+                                                                </div>
+                                                                <label for="vendor" class="col-sm-1 col-form-label">Price:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="number" id="price" class="form-control" placeholder="Price">
+                                                                </div>
+                                                            </div>
                                                         </div>
 
-                                                        <label for="vendor" class="col-sm-1 col-form-label">Weight:</label>
-                                                        <div class="col-sm-1">
-                                                            <input type="text" id="purity" class="form-control" placeholder="Weight">
-                                                        </div>
-                                                        <div class="col-sm-1">
-
-                                                            <i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
-                                                        </div>
-                                                        <label for="vendor" class="col-sm-1 col-form-label">Price:</label>
-                                                        <div class="col-sm-2">
-                                                            <input type="number" id="purity" class="form-control" placeholder="Price">
-                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <h2 class="mt-4 mb-3">
-                                        Addition:
-                                    </h2>
-                                    <div class="row">
+                                        <h2 class="mt-4 mb-3">
+                                            Addition:
+                                        </h2>
+                                        <div class="row">
 
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0">
+                                            <div class="col-lg-12 ms-lg-auto ">
+                                                <div class="mt-4 mt-lg-0">
 
-                                                <div class="row mb-4">
-
+                                                    <div class="row mb-4">
 
 
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">P-Code:</label>
-                                                    <div class="col-sm-2">
+
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">P-Code:</label>
+                                                        <div class="col-sm-2">
 
 
-                                                        <select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
-                                                            <option value="">P-Code</option>
+                                                            <select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+                                                                <option value="">P-Code</option>
 
-                                                        </select>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col-sm-1 p-0">
+                                                            <i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+                                                        </div>
+
+
+
+
 
                                                     </div>
-                                                    <div class="col-sm-1 p-0">
-                                                        <i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Clip:</label>
+                                                        <div class="col-sm-2">
+
+                                                            <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Clip">
+                                                        </div>
+                                                        <div class="col-sm-2">
+
+                                                            <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control">
+                                                        </div>
+                                                        <div class="col-sm-2">
+
+                                                            <i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
+                                                        </div>
                                                     </div>
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Loss:</label>
+                                                        <div class="col-sm-2">
 
+                                                            <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Loss">
+                                                        </div>
 
-
-
-
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Clip:</label>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Clip">
                                                     </div>
-                                                    <div class="col-sm-2">
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Gross Weight:</label>
+                                                        <div class="col-sm-2">
 
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control">
+                                                            <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Gross Weight">
+                                                        </div>
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">St/Per:</label>
+                                                        <div class="col-sm-2">
+
+                                                            <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="St/Per">
+                                                        </div>
+                                                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Net Weight:</label>
+                                                        <div class="col-sm-2">
+
+                                                            <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Net Weight">
+                                                        </div>
+
                                                     </div>
-                                                    <div class="col-sm-2">
-
-                                                        <i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Loss:</label>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Loss">
-                                                    </div>
-
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Gross Weight:</label>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Gross Weight">
-                                                    </div>
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">St/Per:</label>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="St/Per">
-                                                    </div>
-                                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Net Weight:</label>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Net Weight">
-                                                    </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -326,148 +333,147 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 </div>
                             </div>
                         </div>
+                        <!-- End Page-content -->
+
+
+                        <?php include 'layouts/footer.php'; ?>
                     </div>
-                    <!-- End Page-content -->
+                    <!-- end main content-->
 
-
-                    <?php include 'layouts/footer.php'; ?>
                 </div>
-                <!-- end main content-->
+                <!-- END layout-wrapper -->
 
-            </div>
-            <!-- END layout-wrapper -->
+                <!-- Right Sidebar -->
+                <div class="right-bar">
+                    <div data-simplebar class="h-100">
+                        <div class="rightbar-title d-flex align-items-center bg-dark p-3">
 
-            <!-- Right Sidebar -->
-            <div class="right-bar">
-                <div data-simplebar class="h-100">
-                    <div class="rightbar-title d-flex align-items-center bg-dark p-3">
+                            <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
 
-                        <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
-
-                        <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
-                            <i class="mdi mdi-close noti-icon"></i>
-                        </a>
-                    </div>
-
-                    <!-- Settings -->
-                    <hr class="m-0" />
-
-                    <div class="p-4">
-                        <h6 class="mb-3">Layout</h6>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
-                            <label class="form-check-label" for="layout-vertical">Vertical</label>
+                            <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                                <i class="mdi mdi-close noti-icon"></i>
+                            </a>
                         </div>
 
-                        <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+                        <!-- Settings -->
+                        <hr class="m-0" />
 
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
-                            <label class="form-check-label" for="layout-mode-light">Light</label>
+                        <div class="p-4">
+                            <h6 class="mb-3">Layout</h6>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
+                                <label class="form-check-label" for="layout-vertical">Vertical</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
+                                <label class="form-check-label" for="layout-mode-light">Light</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
+                                <label class="form-check-label" for="layout-mode-dark">Dark</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                                <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                                <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                                <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                                <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                                <label class="form-check-label" for="topbar-color-light">Light</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                                <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                                <label class="form-check-label" for="sidebar-size-default">Default</label>
+                            </div>
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                                <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+                            </div>
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                                <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                                <label class="form-check-label" for="sidebar-color-light">Light</label>
+                            </div>
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                                <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+                            </div>
+                            <div class="form-check sidebar-setting">
+                                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                                <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+                            </div>
+
+                            <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
+                                <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
+                                <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+                            </div>
+
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
-                            <label class="form-check-label" for="layout-mode-dark">Dark</label>
-                        </div>
 
-                        <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+                    </div> <!-- end slimscroll-menu-->
+                </div>
 
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
-                            <label class="form-check-label" for="layout-width-fuild">Fluid</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
-                            <label class="form-check-label" for="layout-width-boxed">Boxed</label>
-                        </div>
+                <!-- Right bar overlay-->
+                <div class="rightbar-overlay"></div>
+                <!-- /Right-bar -->
 
-                        <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+                <!-- JAVASCRIPT -->
+                <?php include 'layouts/vendor-scripts.php'; ?>
 
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
-                            <label class="form-check-label" for="layout-position-fixed">Fixed</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
-                            <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
-                        </div>
+                <!-- apexcharts -->
+                <script src="../assets/libs/apexcharts/apexcharts.min.js"></script>
 
-                        <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+                <!-- Plugins js-->
+                <script src="../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+                <script src="../assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
-                            <label class="form-check-label" for="topbar-color-light">Light</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
-                            <label class="form-check-label" for="topbar-color-dark">Dark</label>
-                        </div>
+                <!-- dashboard init -->
+                <script src="../assets/js/pages/dashboard.init.js"></script>
 
-                        <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
-
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
-                            <label class="form-check-label" for="sidebar-size-default">Default</label>
-                        </div>
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
-                            <label class="form-check-label" for="sidebar-size-compact">Compact</label>
-                        </div>
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
-                            <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
-                        </div>
-
-                        <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
-
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
-                            <label class="form-check-label" for="sidebar-color-light">Light</label>
-                        </div>
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
-                            <label class="form-check-label" for="sidebar-color-dark">Dark</label>
-                        </div>
-                        <div class="form-check sidebar-setting">
-                            <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
-                            <label class="form-check-label" for="sidebar-color-brand">Brand</label>
-                        </div>
-
-                        <h6 class="mt-4 mb-3 pt-2">Direction</h6>
-
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
-                            <label class="form-check-label" for="layout-direction-ltr">LTR</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
-                            <label class="form-check-label" for="layout-direction-rtl">RTL</label>
-                        </div>
-
-                    </div>
-
-                </div> <!-- end slimscroll-menu-->
-            </div>
-
-            <!-- Right bar overlay-->
-            <div class="rightbar-overlay"></div>
-            <!-- /Right-bar -->
-
-            <!-- JAVASCRIPT -->
-            <?php include 'layouts/vendor-scripts.php'; ?>
-
-            <!-- apexcharts -->
-            <script src="../assets/libs/apexcharts/apexcharts.min.js"></script>
-
-            <!-- Plugins js-->
-            <script src="../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-            <script src="../assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
-
-            <!-- dashboard init -->
-            <script src="../assets/js/pages/dashboard.init.js"></script>
-
-            <!-- App js -->
-            <script src="../assets/js/app.js"></script>
+                <!-- App js -->
+                <script src="../assets/js/app.js"></script>
 
 </body>
 
@@ -543,6 +549,60 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
         });
     }
+
+    function Add(element) {
+        area = document.getElementById("add_area");
+        var div = document.createElement('div');
+        div.setAttribute('class', 'row mt-4 remove');
+        div.innerHTML = `<label for="vendor" class="col-sm-1 col-form-label">Stone:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="text" id="stone" class="form-control" placeholder="Stone">
+                                                                </div>
+
+                                                                <label for="vendor" class="col-sm-2 col-form-label">Weight:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="text" id="weight_add" class="form-control" placeholder="Weight">
+                                                                </div>
+                                                                <div class="col-sm-1">
+
+                                                                    <i onclick="Remove(this)" class="fa fa-minus-circle p-2"></i>
+                                                                </div>
+                                                                <label for="vendor" class="col-sm-1 col-form-label">Price:</label>
+                                                                <div class="col-sm-2">
+                                                                    <input type="number" id="price" class="form-control" placeholder="Price">
+                                                                </div>`;
+        area.appendChild(div);
+        // var stone = document.querySelectorAll('input[id="stone"]');
+        // var weight_add = document.querySelectorAll('input[id="weight_add"]');
+        // var price = document.querySelectorAll('input[id="price"]');
+
+        // stone.forEach(function(input) {
+        //     input.addEventListener('input', function() {
+        //         let current = this.parentNode.parentNode.parentNode.parentNode;
+        //         stone(current);
+        //     });
+        // })
+        // weight_add.forEach(function(input) {
+        //     input.addEventListener('input', function() {
+        //         let current = this.parentNode.parentNode.parentNode.parentNode;
+        //         weightadd(current);
+        //     });
+        // })
+        // price.forEach(function(input) {
+        //     input.addEventListener('input', function() {
+        //         let current = this.parentNode.parentNode.parentNode.parentNode;
+        //         price(current);
+        //     });
+        // })
+
+
+
+    }
+
+    function Remove(element){
+        element.parentNode.parentNode.remove();
+    }
+
 
     $(document).ready(function() {
         GetData();
