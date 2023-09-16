@@ -412,9 +412,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 var data = new FormData(form);
                 data.append("function", "UpdateVendor");
                 data.append("type", "vendor");
-                data.append("18k", '-');
-                data.append("21k", '-');
-                data.append("22k", '-');
+                data.append("18k", '0');
+                data.append("21k", '0');
+                data.append("22k", '0');
                 $.ajax({
                     url: "functions.php",
                     method: "POST",
@@ -449,9 +449,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 var data = new FormData(form);
                 data.append("function", "AddVendor");
                 data.append("type", "vendor");
-                data.append("18k", '-');
-                data.append("21k", '-');
-                data.append("22k", '-');
+                data.append("18k", '0');
+                data.append("21k", '0');
+                data.append("22k", '0');
                 $.ajax({
                     url: "functions.php",
                     method: "POST",
@@ -459,6 +459,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     processData: false,
                     contentType: false,
                     success: function(response) {
+                        console.log(response)
                         var data = JSON.parse(response);
                         if (data[0] == "success") {
                             Swal.fire({

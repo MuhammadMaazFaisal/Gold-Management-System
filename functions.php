@@ -1639,9 +1639,9 @@ function AddStock()
     } else {
         array_push($array, "error");
     }
-    $count = count($_POST['checkbox']);
+    $count = max(json_decode($_POST['checkbox_values'], true));
     $values = json_decode($_POST['checkbox_values'], true);
-    for ($i = 0; $i < $count; $i++) {
+    for ($i = 0; $i <= $count; $i++) {
         if (in_array($i, $values)) {
             $getRecordQuery1 = "UPDATE purchasing_details
             SET
