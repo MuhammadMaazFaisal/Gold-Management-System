@@ -285,11 +285,16 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 
                                                     </div>
-                                                    <div class="row mb-4">
+                                                    <div class="row mb-4" id="clip_add_area">
                                                         <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Clip:</label>
                                                         <div class="col-sm-2">
 
-                                                            <input type="text" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Clip">
+
+                                                            <select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+                                                                <option value="">Clip</option>
+
+                                                            </select>
+
                                                         </div>
                                                         <div class="col-sm-2">
 
@@ -297,7 +302,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                         </div>
                                                         <div class="col-sm-2">
 
-                                                            <i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
+                                                            <i onclick="AddClip(this)" class="fa fa-plus-circle p-2"></i>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-4">
@@ -603,6 +608,32 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         element.parentNode.parentNode.remove();
     }
 
+    function AddClip(element) {
+        area = document.getElementById("clip_add_area");
+        var div = document.createElement('div');
+        div.setAttribute('class', 'row mt-4 remove');
+        div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Clip:</label>
+                                                        <div class="col-sm-2">
+
+
+                                                            <select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+                                                                <option value="">Clip</option>
+
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col-sm-2">
+
+                                                            <input type="text" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control">
+                                                        </div>
+                                                        <div class="col-sm-2">
+
+                                                            <i onclick="Remove(this)" class="fa fa-minus-circle p-2"></i>
+                                                        </div>
+                                                    </div>`;
+        area.appendChild(div);
+
+    }
 
     $(document).ready(function() {
         GetData();
