@@ -1853,6 +1853,7 @@
  						var purity = '22k';
  					}
 
+
  					// Generate slip content
  					let slipContent = `
                 <!DOCTYPE html>
@@ -1901,8 +1902,30 @@
                 <p><span class="label" style="margin-right:6px;">Polished:</span><span>${data[0].polish_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
                 <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].tValues}</span></p>
-                </body>
-                </html>
+				<svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -1983,8 +2006,30 @@
 				<p><span class="label" style="margin-right:6px;">Rate:</span><span>${data[0].polisher_rate}</span></p>
                 <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].polisher_wastage}</span></p>
                 <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -2059,8 +2104,30 @@
                 <p><span class="label" style="margin-right:6px;">Zircon Weight:</span><span>${data[0].z_total_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Stone Weight:</span><span>${data[0].s_total_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">grand Weight:</span><span>${data[0].grand_weight}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -2134,8 +2201,30 @@
                 <p><span class="label"  style="margin-right:6px;">S-Quantity:</span><span>${data[0].shruded_quantity}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
  					let printWindow = window.open("", "_blank");
 
