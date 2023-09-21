@@ -114,6 +114,8 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetPurchasingDetails();
 } elseif ($_POST['function'] == 'Logout') {
     Logout();
+} elseif ($_POST['function'] == 'GetlZirconDetails') {
+    GetlZirconDetails();
 }
 
 
@@ -135,6 +137,22 @@ function Logout()
 
 
 // -------------------------Production Page-------------------------//
+
+function GetlZirconDetails(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $getRecordQuery="SELECT * FROM `stock_details` WHERE `barcode` = :barcode";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':barcode', $_POST['barcode']);
+    if($getRecordStatement->execute()){
+        $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
 function PrintManufacturer()
 {
     include 'layouts/session.php';
@@ -313,7 +331,7 @@ function GetAllZircons()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT `id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode` FROM `stock_details` WHERE (`type` = 'Zircon' OR `type` = 'zircon') AND quantity > 0";
+    $getRecordQuery = "SELECT `id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode` FROM `stock_details` WHERE quantity > 0";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -329,7 +347,7 @@ function GetAllStones()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT `id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode` FROM `stock_details` WHERE (`type` = 'Stone' OR `type` = 'stone') AND quantity > 0";
+    $getRecordQuery = "SELECT `id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode` FROM `stock_details` WHERE quantity > 0";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

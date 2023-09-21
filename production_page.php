@@ -516,15 +516,15 @@
  														<div class="row mb-4">
  															<h5>Zircon:</h6>
  																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
- 																<div class="col-sm-2">
+ 																<div class="col-sm-1">
  																	<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
  																		<option value="">Select a zircon...</option>
 
  																	</select>
 
  																</div>
- 																<div class="col-sm-1 p-0">
- 																	<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+ 																<div class="col-sm-2 p-0">
+ 																	<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
  																</div>
  																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
  																<div class="col-sm-2">
@@ -565,7 +565,7 @@
  														<div class="row mb-4">
  															<h5>Stone:</h5>
  															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
- 															<div class="col-sm-2">
+ 															<div class="col-sm-1">
 
 
  																<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
@@ -574,8 +574,8 @@
  																</select>
 
  															</div>
- 															<div class="col-sm-1 p-0">
- 																<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+ 															<div class="col-sm-2 p-0">
+ 																<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
  															</div>
  															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
  															<div class="col-sm-2">
@@ -1181,6 +1181,22 @@
  			});
  		}
 
+ 		function GetZiroconDetails(barcode, element) {
+ 			$.ajax({
+ 				url: "functions.php",
+ 				type: "POST",
+ 				data: {
+ 					function: "GetlZirconDetails",
+ 					barcode: barcode
+ 				},
+ 				success: function(data) {
+ 					data = JSON.parse(data);
+ 					console.log(data);
+ 					element.value = data.type + ' | ' + data.detail;
+ 				}
+ 			});
+ 		}
+
  		function GetAllZircons() {
  			$.ajax({
  				url: "functions.php",
@@ -1190,13 +1206,14 @@
  				},
  				success: function(data) {
  					data = JSON.parse(data);
+ 					console.log("zircons", data);
  					let zircon = document.querySelectorAll('select[id="zircon_code[]"]');
  					let delete_area = zircon[0].parentElement;
  					var selectizeControls = delete_area.querySelectorAll('.selectize-control');
  					if (selectizeControls[0] != undefined) {
  						if (zircon.length > 1) {
  							// Get the first selectize control (index 0)
- 							selectizeControls[0].remove();
+ 							// selectizeControls[0].remove();
  						}
  					}
  					// Start the loop from the second element (index 1)
@@ -1208,13 +1225,17 @@
  						var selectElement = zircon[i];
  						var selectizeInstance = $(selectElement).selectize()[0].selectize;
 
+ 						selectizeInstance.on('change', function() {
+ 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 						});
+
  						var options = selectizeInstance.options;
 
  						if (Object.keys(options).length === 0) {
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1227,8 +1248,8 @@
  							selectizeInstance.removeOption(option1);
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1247,8 +1268,8 @@
  							selectizeInstance = $(selectElement).selectize()[0].selectize;
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1304,13 +1325,17 @@
  						var selectElement = stone[i];
  						var selectizeInstance = $(selectElement).selectize()[0].selectize;
 
+ 						selectizeInstance.on('change', function() {
+ 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 						});
+
  						var options = selectizeInstance.options;
 
  						if (Object.keys(options).length === 0) {
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1323,8 +1348,8 @@
  							selectizeInstance.removeOption(option1);
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1343,8 +1368,8 @@
  							selectizeInstance = $(selectElement).selectize()[0].selectize;
  							for (let j = 0; j < data.length; j++) {
  								var newOption = {
- 									value: data[j].detail,
- 									text: data[j].detail
+ 									value: data[j].barcode,
+ 									text: data[j].barcode
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
@@ -1449,17 +1474,17 @@
 										</div>
 										<div class="row mb-4">
 											<h5>Zircon:</h6>
-												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
-												<div class="col-sm-2">
-													<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
-														<option value="">Select a zircon...</option>
+											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+ 																<div class="col-sm-1">
+ 																	<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+ 																		<option value="">Select a zircon...</option>
 
-													</select>
+ 																	</select>
 
-												</div>
-												<div class="col-sm-1 p-0">
-													<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
-												</div>
+ 																</div>
+ 																<div class="col-sm-2 p-0">
+																 <input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
+ 																</div>
 												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
 												<div class="col-sm-2">
 
@@ -1499,7 +1524,7 @@
 										<div class="row mb-4">
 											<h5>Stone:</h5>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-											<div class="col-sm-2">
+											<div class="col-sm-1">
 
 
 												<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
@@ -1508,8 +1533,8 @@
 												</select>
 
 											</div>
-											<div class="col-sm-1 p-0">
-												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+											<div class="col-sm-2 p-0">
+											<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
 											</div>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 											<div class="col-sm-2">
@@ -1828,6 +1853,7 @@
  						var purity = '22k';
  					}
 
+
  					// Generate slip content
  					let slipContent = `
                 <!DOCTYPE html>
@@ -1876,8 +1902,30 @@
                 <p><span class="label" style="margin-right:6px;">Polished:</span><span>${data[0].polish_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
                 <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].tValues}</span></p>
-                </body>
-                </html>
+				<svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -1958,8 +2006,30 @@
 				<p><span class="label" style="margin-right:6px;">Rate:</span><span>${data[0].polisher_rate}</span></p>
                 <p><span class="label" style="margin-right:6px;">Wastage:</span><span>${data[0].polisher_wastage}</span></p>
                 <p><span class="label" style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -2034,8 +2104,30 @@
                 <p><span class="label" style="margin-right:6px;">Zircon Weight:</span><span>${data[0].z_total_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Stone Weight:</span><span>${data[0].s_total_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">grand Weight:</span><span>${data[0].grand_weight}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
 
  					// Write slip content to the new tab
@@ -2109,8 +2201,30 @@
                 <p><span class="label"  style="margin-right:6px;">S-Quantity:</span><span>${data[0].shruded_quantity}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Wastage:</span><span>${data[0].wastage}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Payable:</span><span>${data[0].payable}</span></p>
-                </body>
-                </html>
+                <svg id="barcode"></svg>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${data[0].product_id}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
             `;
  					let printWindow = window.open("", "_blank");
 
@@ -2359,15 +2473,15 @@
 									<div class="row mb-4">
 										<h5>Zircon:</h6>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
-											<div class="col-sm-2">
+											<div class="col-sm-1">
 												<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
 													<option value="${data[0].zircons[0].code}">${data[0].zircons[0].code}</option>
 
 												</select>
 
 											</div>
-											<div class="col-sm-1 p-0">
-												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+											<div class="col-sm-2 p-0">
+												<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
 											</div>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
 											<div class="col-sm-2">
@@ -2408,7 +2522,7 @@
 									<div class="row mb-4">
 										<h5>Stone:</h5>
 										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-										<div class="col-sm-2">
+										<div class="col-sm-1">
 
 
 											<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
@@ -2417,7 +2531,7 @@
 											</select>
 
 										</div>
-										<div class="col-sm-1 p-0">
+										<div class="col-sm-2 p-0">
 											<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
 										</div>
 										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
@@ -2558,19 +2672,18 @@
 
  								var div = document.createElement('div');
  								div.setAttribute('class', 'zi row mb-4 remove');
- 								div.innerHTML = `
+ 								div.innerHTML = `				
 								<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
-								<div class="col-sm-2">
-								<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
-													<option value="${data[i].code}">${data[i].code}</option>
+									<div class="col-sm-1">
+										<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+										<option value="${data[i].code}">${data[i].code}</option>
 
-												</select>
-									
+										</select>
 
-								</div>
-								<div class="col-sm-1 p-0">
-									<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
-								</div>
+									</div>
+									<div class="col-sm-2 p-0">
+										<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
+									</div>
 								<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
 								<div class="col-sm-2">
 
@@ -2630,7 +2743,7 @@
  								div2.setAttribute('class', 'row mb-4 remove');
  								div2.innerHTML = `
 									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-1">
 
 									<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
 												<option value="${data[i].code}">${data[i].code}</option>
@@ -2638,8 +2751,8 @@
 											</select>
 
 									</div>
-									<div class="col-sm-1 p-0">
-										<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+									<div class="col-sm-2 p-0">
+									<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
 									</div>
 									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 									<div class="col-sm-2">
@@ -3210,7 +3323,7 @@
  			var div2 = document.createElement('div');
  			div2.setAttribute('class', 'row mb-4 remove');
  			div2.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-1">
 
 									<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
  																			<option value="">Select a stone...</option>
@@ -3218,8 +3331,8 @@
  																		</select>
 
 									</div>
-									<div class="col-sm-1 p-0">
-									<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+									<div class="col-sm-2 p-0">
+									<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
 									</div>
 									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 									<div class="col-sm-2">
@@ -3264,17 +3377,16 @@
  			area = element.parentNode.parentNode.nextElementSibling;
  			var div = document.createElement('div');
  			div.setAttribute('class', 'row mb-4 remove');
- 			div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-				<div class="col-sm-2">
+ 			div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+				<div class="col-sm-1">
+					<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+						<option value="">Select a zircon...</option>
 
-				<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon" required>
- 																			<option value="">Select a zircon...</option>
-
- 																		</select>
+					</select>
 
 				</div>
-				<div class="col-sm-1 p-0">
-				<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+				<div class="col-sm-2 p-0">
+					<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
 				</div>
 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 				<div class="col-sm-2">
@@ -3363,17 +3475,16 @@
  			area = element.parentNode.parentNode.nextElementSibling;
  			var div = document.createElement('div');
  			div.setAttribute('class', 'row mb-4 remove');
- 			div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-				<div class="col-sm-2">
+ 			div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+				<div class="col-sm-1">
+					<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
+						<option value="">Select a zircon...</option>
 
-				<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon" required>
- 																			<option value="">Select a zircon...</option>
-
- 																		</select>
+					</select>
 
 				</div>
-				<div class="col-sm-1 p-0">
-				<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
+				<div class="col-sm-2 p-0">
+					<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
 				</div>
 				<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 				<div class="col-sm-2">
@@ -3776,10 +3887,12 @@
 
  		function StoneSetterListeners() {
  			var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
+ 			var zircon_code = document.querySelectorAll('select[id="zircon_code[]"]');
  			var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
  			var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  			var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
  			var grand_total_weight = document.querySelectorAll('input[id="grand_total_weight[]"]');
+
  			grand_total_weight.forEach(function(input) {
  				input.addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.nextElementSibling;
@@ -3806,6 +3919,7 @@
  			})
  			zircon_weight.forEach(function(input) {
  				input.addEventListener('change', function() {
+
  					let current = this.parentNode.parentNode.parentNode;
  					ZirconWeight(current);
  				});

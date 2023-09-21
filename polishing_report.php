@@ -106,7 +106,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                             </table>
 
                                         </div>
-                                        <div class="row mb-4 justify-content-end">
+                                        <div class="row my-4 justify-content-end">
                                             <div class="col-sm-2">
 
                                                 <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
