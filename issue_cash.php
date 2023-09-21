@@ -474,7 +474,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 </head>
                 <body>
                 <p><span class="label" style="margin-right:6px";>Date:</span><span>${$('#date').val()}</span></p>
-                <p><span class="label" style="margin-right:6px";>Vendor ID:</span><span>${$("#vendor").selectize()[0].selectize.getValue()}</span></p>
+                <p><span class="label" style="margin-right:6px";>Vendor ID:</span><span>${$("#vendor").selectize()[0].selectize.options[$("#vendor").selectize()[0].selectize.getValue()].text}</span></p>
                 <p><span class="label" style="margin-right:6px";>Detail:</span><span>${$('#detail').val()}</span></p>
                 <p><span class="label" style="margin-right:6px";>Amount:</span><span>${$('#amount').val()}</span></p>
                 </body>
