@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: auth-login.php");
     exit;
 }
@@ -54,113 +54,114 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     }
 </style>
 
- <body>
+<body>
 
-<!-- Begin page -->
-<div id="layout-wrapper">
+    <!-- Begin page -->
+    <div id="layout-wrapper">
 
-    <?php include 'layouts/vertical-menu.php'; ?>
+        <?php include 'layouts/vertical-menu.php'; ?>
 
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                <div class="row">
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
 
-                    <div class="col-lg-12">
-                        <div class="card ">
-                            <div class="card-header card border border-danger">
-                                <h4 class="card-title">
-                                    PURCHASING
-                                </h4>
+                        <div class="col-lg-12">
+                            <div class="card ">
+                                <div class="card-header card border border-danger">
+                                    <h4 class="card-title">
+                                        PURCHASING
+                                    </h4>
 
-                            </div>
-                            <div class="col d-flex justify-content-end me-4">
-                                <button type="button" onclick="DeletePurchasing()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Invoice</button>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
-                                    Select Invoice
-                                </button>
-                            </div>
-                            <div class="card-body px-4 ">
+                                </div>
+                                <div class="col d-flex justify-content-end me-4">
+                                    <button type="button" onclick="DeletePurchasing()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Invoice</button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
+                                        Select Invoice
+                                    </button>
+                                </div>
+                                <div class="card-body px-4 ">
 
-                                <div class="row">
+                                    <div class="row">
 
-                                    <div class="col-lg-12 ms-lg-auto ">
-                                        <div class="mt-4 mt-lg-0">
-
-
-                                            <form id="form" method="POST" enctype="multipart/form-data">
-                                                <div class="row mb-4 justify-content-between">
-                                                    <div class="col-sm-3">
-
-                                                        <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
-                                                            <option value="">Select a vendor...</option>
-
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-2">
-
-                                                        <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
-                                                    </div>
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0">
 
 
-                                                </div>
+                                                <form id="form" method="POST" enctype="multipart/form-data">
+                                                    <div class="row mb-4 justify-content-between">
+                                                        <div class="col-sm-3">
 
-                                                <div class="table-responsive">
-                                                    <table class="table text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">Detail</th>
-                                                                <th>Type</th>
-                                                                <th colspan="2">Price Per</th>
-                                                                <th scope="col">Quantity</th>
-                                                                <th scope="col">Weight</th>
-                                                                <th scope="col">Rate</th>
-                                                                <th scope="col">Total Amount</th>
-                                                                <th scope="col">Barcode</th>
-                                                                <th scope="col">Action</th>
-                                                                <th scope="col"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tbody">
-                                                            <tr>
-                                                                <td scope="row">1</td>
-                                                                <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
-                                                                <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
-                                                                        <option value="">Select price per</option>
-                                                                        <option value="Qty">Qty</option>
-                                                                        <option value="Tola">Tola</option>
-                                                                        <option value="K">K</option>
+                                                            <select id="select-manufacturer" class="vendor" name="vendor_id" placeholder="Pick a vendor..." required>
+                                                                <option value="">Select a vendor...</option>
 
-                                                                    </select></td>
-                                                                <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
-                                                                <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
-                                                                <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
-                                                                <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
-                                                                <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                                                <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
-                                                                <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <div class="row mb-4 d-flex justify-content-end">
-                                                        <div class="d-flex justify-content-end col-sm-2 ">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-2">
 
-                                                            <input type="text" id="grand_total" name="grand_total" class="form-control " placeholder="Grand Total" readonly required>
+                                                            <input type="text" name="invoice" id="invoice" class="form-control" placeholder="Invoice" readonly required>
                                                         </div>
 
+
                                                     </div>
 
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-success me-2">Print</button>
-                                                        <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                    <div class="table-responsive">
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">#</th>
+                                                                    <th scope="col">Detail</th>
+                                                                    <th>Type</th>
+                                                                    <th colspan="2">Price Per</th>
+                                                                    <th scope="col">Quantity</th>
+                                                                    <th scope="col">Weight</th>
+                                                                    <th scope="col">Rate</th>
+                                                                    <th scope="col">Total Amount</th>
+                                                                    <th scope="col">Barcode</th>
+                                                                    <th scope="col">Action</th>
+                                                                    <th scope="col"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody">
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
+                                                                    <td> <input type="text" value="" id="type[]" name="type[]" placeholder="Type" class="form-control" required></td>
+                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                            <option value="">Select price per</option>
+                                                                            <option value="Qty">Qty</option>
+                                                                            <option value="Tola">Tola</option>
+                                                                            <option value="K">K</option>
+
+                                                                        </select></td>
+                                                                    <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
+                                                                    <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
+                                                                    <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                                                                    <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
+                                                                    <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
+                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
+                                                                    <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="row mb-4 d-flex justify-content-end">
+                                                            <div class="d-flex justify-content-end col-sm-2 ">
+
+                                                                <input type="text" id="grand_total" name="grand_total" class="form-control " placeholder="Grand Total" readonly required>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-success me-2">Print</button>
+                                                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -169,178 +170,177 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End Page-content -->
+            <!-- End Page-content -->
 
-        <?php include 'layouts/footer.php'; ?>
+            <?php include 'layouts/footer.php'; ?>
+        </div>
+        <!-- end main content-->
+
     </div>
-    <!-- end main content-->
 
-</div>
+    <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="product-table" class="table table-hover ">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Invoice ID</th>
+                                <th scope="col">Vendor ID</th>
+                                <th scope="col">Vendor Name</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table-body">
 
-<div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table id="product-table" class="table table-hover ">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Invoice ID</th>
-                            <th scope="col">Vendor ID</th>
-                            <th scope="col">Vendor Name</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="product-table-body">
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- END layout-wrapper -->
+    <!-- END layout-wrapper -->
 
-<!-- Right Sidebar -->
-<div class="right-bar">
-    <div data-simplebar class="h-100">
-        <div class="rightbar-title d-flex align-items-center bg-dark p-3">
+    <!-- Right Sidebar -->
+    <div class="right-bar">
+        <div data-simplebar class="h-100">
+            <div class="rightbar-title d-flex align-items-center bg-dark p-3">
 
-            <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
+                <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
 
-            <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
-                <i class="mdi mdi-close noti-icon"></i>
-            </a>
-        </div>
-
-        <!-- Settings -->
-        <hr class="m-0" />
-
-        <div class="p-4">
-            <h6 class="mb-3">Layout</h6>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
-                <label class="form-check-label" for="layout-vertical">Vertical</label>
+                <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                    <i class="mdi mdi-close noti-icon"></i>
+                </a>
             </div>
 
-            <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+            <!-- Settings -->
+            <hr class="m-0" />
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
-                <label class="form-check-label" for="layout-mode-light">Light</label>
+            <div class="p-4">
+                <h6 class="mb-3">Layout</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
+                    <label class="form-check-label" for="layout-vertical">Vertical</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
+                    <label class="form-check-label" for="layout-mode-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
+                    <label class="form-check-label" for="layout-mode-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                    <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                    <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                    <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                    <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                    <label class="form-check-label" for="topbar-color-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                    <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                    <label class="form-check-label" for="sidebar-size-default">Default</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                    <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                    <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                    <label class="form-check-label" for="sidebar-color-light">Light</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                    <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                    <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
+                    <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
+                    <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+                </div>
+
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
-                <label class="form-check-label" for="layout-mode-dark">Dark</label>
-            </div>
 
-            <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+        </div> <!-- end slimscroll-menu-->
+    </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
-                <label class="form-check-label" for="layout-width-fuild">Fluid</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
-                <label class="form-check-label" for="layout-width-boxed">Boxed</label>
-            </div>
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+    <!-- /Right-bar -->
 
-            <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+    <!-- JAVASCRIPT -->
+    <?php include 'layouts/vendor-scripts.php'; ?>
+    <!-- apexcharts -->
+    <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
-                <label class="form-check-label" for="layout-position-fixed">Fixed</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
-                <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
-            </div>
+    <!-- Plugins js-->
+    <script src="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
-            <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+    <!-- dashboard init -->
+    <script src="assets/js/pages/dashboard.init.js"></script>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
-                <label class="form-check-label" for="topbar-color-light">Light</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
-                <label class="form-check-label" for="topbar-color-dark">Dark</label>
-            </div>
-
-            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
-
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
-                <label class="form-check-label" for="sidebar-size-default">Default</label>
-            </div>
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
-                <label class="form-check-label" for="sidebar-size-compact">Compact</label>
-            </div>
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
-                <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
-            </div>
-
-            <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
-
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
-                <label class="form-check-label" for="sidebar-color-light">Light</label>
-            </div>
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
-                <label class="form-check-label" for="sidebar-color-dark">Dark</label>
-            </div>
-            <div class="form-check sidebar-setting">
-                <input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
-                <label class="form-check-label" for="sidebar-color-brand">Brand</label>
-            </div>
-
-            <h6 class="mt-4 mb-3 pt-2">Direction</h6>
-
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
-                <label class="form-check-label" for="layout-direction-ltr">LTR</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
-                <label class="form-check-label" for="layout-direction-rtl">RTL</label>
-            </div>
-
-        </div>
-
-    </div> <!-- end slimscroll-menu-->
-</div>
-
-<!-- Right bar overlay-->
-<div class="rightbar-overlay"></div>
-<!-- /Right-bar -->
-
-<!-- JAVASCRIPT -->
-<?php include 'layouts/vendor-scripts.php'; ?>
-<!-- apexcharts -->
-<script src="assets/libs/apexcharts/apexcharts.min.js"></script>
-
-<!-- Plugins js-->
-<script src="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
-
-<!-- dashboard init -->
-<script src="assets/js/pages/dashboard.init.js"></script>
-
-<!-- App js -->
-<script src="assets/js/app.js"></script>
+    <!-- App js -->
+    <script src="assets/js/app.js"></script>
 
 </body>
 
@@ -564,7 +564,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     td4.innerHTML = data[i].name;
                     td4_1.innerHTML = data[i].total;
                     date = data[i].date;
-                    td5.innerHTML = date.slice(0, 10);
+                    const inputDateStr = data[i].date;
+                    const inputDate = new Date(inputDateStr);
+                    const day = inputDate.getDate().toString().padStart(2, '0');
+                    const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+                    const year = inputDate.getFullYear();
+                    const formattedDate = `${day}-${month}-${year}`;
+                    td5.innerHTML = formattedDate;
                     td6.classList.add("p-1");
                     td6.appendChild(btn);
                     tr.appendChild(td1);

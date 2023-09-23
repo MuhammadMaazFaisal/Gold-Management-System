@@ -329,6 +329,18 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         {
                             data: 'total_amount',
                             title: 'Total'
+                        },
+                        {
+                            data: 'barcode',
+                            title: 'Barcode',
+                            render: function(data, type, row) {
+                                if (type === 'display' || type === 'filter') {
+                                    // Create a button element with the barcode as a data attribute
+                                    return '<button class="print-button" onclick=Print(this)>Print</button>';
+                                } else {
+                                    return data;
+                                }
+                            }
                         }
                     ],
                     responsive: true
@@ -345,6 +357,83 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
         });
     }
+
+    function Print(barcode) {
+        var parent=barcode.parentNode.parentNode;
+        let printWindow = window.open("", "_blank");
+        let slipContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    @media print {
+                        @page {
+                            size: 80mm 200mm;
+                            margin: 0;
+							margin-top:-20px;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            padding: 10px;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #333;
+                        }
+
+                        p {
+                            margin-bottom: 5px;
+                        }
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                </style>
+                </head>
+                <body>
+				<svg id="barcode"></svg>
+                <p><span class="label" style="margin-right:6px;">${parent.children[5].innerHTML} | ${parent.children[4].innerHTML}</span></p>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+				<script>
+            // Function to render barcode
+            function renderBarcode() {
+                const barcodeElement = document.getElementById("barcode");
+                if (barcodeElement) {
+                    JsBarcode(barcodeElement, "${parent.children[1].innerHTML}", {
+                        format: "CODE128",
+                        width: 2,
+                        height: 50,
+                    });
+                    window.print();
+                } else {
+                    // Barcode element not found, retry after a short delay
+                    setTimeout(renderBarcode, 100);
+                }
+            }
+
+            // Start rendering barcode
+            renderBarcode();
+        <\/script>
+    </body>
+    </html>
+            `;
+
+        // Write slip content to the new tab
+        printWindow.document.open();
+        printWindow.document.write(slipContent);
+        printWindow.print();
+        printWindow.document.close();
+
+
+
+    }
+
 
     function calculateSums(filteredData) {
         var totalAmountSum = filteredData

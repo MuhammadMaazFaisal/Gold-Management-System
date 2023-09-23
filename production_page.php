@@ -1182,6 +1182,7 @@
  		}
 
  		function GetZiroconDetails(barcode, element) {
+ 			console.log(barcode, element)
  			$.ajax({
  				url: "functions.php",
  				type: "POST",
@@ -1192,6 +1193,7 @@
  				success: function(data) {
  					data = JSON.parse(data);
  					console.log(data);
+					element.value='';
  					element.value = data.type + ' | ' + data.detail;
  				}
  			});
@@ -1226,6 +1228,7 @@
  						var selectizeInstance = $(selectElement).selectize()[0].selectize;
 
  						selectizeInstance.on('change', function() {
+ 							console.log("allzircons")
  							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
  						});
 
@@ -1281,9 +1284,18 @@
  							}
  							selectizeInstance.refreshOptions();
 
+ 							selectizeInstance.on('change', function() {
+ 								console.log("allzircons")
+ 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							});
+
 
 
  						}
+						 selectizeInstance.on('change', function() {
+ 								console.log("allzircons")
+ 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							});
 
  					}
  					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
@@ -1380,9 +1392,16 @@
  								selctedValue = "";
  							}
  							selectizeInstance.refreshOptions();
+							 selectizeInstance.on('change', function() {
+ 								console.log("allzircons")
+ 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							});
 
  						}
-
+						 selectizeInstance.on('change', function() {
+ 								console.log("allzircons")
+ 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							});
 
  					}
  					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
@@ -4170,6 +4189,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
+					console.log(data);
  					data = JSON.parse(data);
  					if (data[0] == "success" && data[1] == "success") {
  						Swal.fire({

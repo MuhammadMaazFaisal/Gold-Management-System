@@ -424,13 +424,20 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 console.log(data);
                 tbody = document.getElementById("modal-tbody");
                 for (i = 0; i < data.length; i++) {
+                    date = data[i].date;
+                    const inputDateStr = data[i].date;
+                    const inputDate = new Date(inputDateStr);
+                    const day = inputDate.getDate().toString().padStart(2, '0');
+                    const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+                    const year = inputDate.getFullYear();
+                    const formattedDate = `${day}-${month}-${year}`;
                     value = `<tr id="${data[i].id}">
                             <th scope="row">${i+1}</th>
                             <td>${data[i].id}</td>
                             <td>${data[i].vendor_id}</td>
                             <td>${data[i].name}</td>
                             <td>Rs ${data[i].total}</td>
-                            <td>${data[i].date}</td>
+                            <td>${formattedDate}</td>
                             <td>
                                 <button type="button" onclick="SelectInvoice(this)" class="btn btn-primary" >
                                     Select

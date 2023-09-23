@@ -696,17 +696,14 @@ function StepThree()
     $z_code = $_POST['zircon_code'];
     $z_weight = $_POST['zircon_weight'];
     $z_quantity = $_POST['zircon_quantity'];
-    $total_z_price = $_POST['zircon_total'];
     $total_z_weight = $_POST['zircon_total_weight'];
     $total_z_quantity = $_POST['zircon_total_quantity'];
     $s_code = $_POST['stone_code'];
     $s_weight = $_POST['stone_weight'];
     $s_quantity = $_POST['stone_quantity'];
-    $total_s_price = $_POST['stone_total'];
     $total_s_weight = $_POST['stone_total_weight'];
     $total_s_quantity = $_POST['stone_total_quantity'];
     $grand_weight = $_POST['grand_total_weight'];
-    $grand_price = $_POST['grand_total'];
 
 
 
@@ -720,9 +717,9 @@ function StepThree()
     $qryStatement->execute();
     $array = array();
     if ($qryStatement->rowCount() > 0) {
-        $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_price`=:total_z_price,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_price`=:total_s_price,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight,`grand_total`=:grand_price, `total_weight`=:total_weight, `retained_weight`=:retained_weight WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
+        $qry2 = "UPDATE `stone_setter_step` SET `date`=:date,`image`=:imageNamepo,`detail`=:details,`Issued_weight`=:issued_weight,`z_total_weight`=:total_z_weight,`z_total_quantity`=:total_z_quantity,`s_total_weight`=:total_s_weight,`s_total_quantity`=:total_s_quantity,`grand_weight`=:grand_weight, `total_weight`=:total_weight, `retained_weight`=:retained_weight WHERE `product_id` = :product_id AND `vendor_id` = :vendor_id";
     } else {
-        $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `total_weight`, `retained_weight`, `Issued_weight`, `z_total_price`, `z_total_weight`, `z_total_quantity`, `s_total_price`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `grand_total`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:total_weight,:retained_weight,:issued_weight,:total_z_price,:total_z_weight,:total_z_quantity,:total_s_price,:total_s_weight,:total_s_quantity,:grand_weight,:grand_price,'Active')";
+        $qry2 = "INSERT INTO `stone_setter_step`( `product_id`, `date`, `vendor_id`, `image`, `detail`, `total_weight`, `retained_weight`, `Issued_weight`, `z_total_weight`, `z_total_quantity`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `status`) VALUES (:product_id,:date,:vendor_id,:imageNamepo,:details,:total_weight,:retained_weight,:issued_weight,:total_z_weight,:total_z_quantity,:total_s_weight,:total_s_quantity,:grand_weight,'Active')";
     }
     $qryStatement2 = $pdo->prepare($qry2);
     $qryStatement2->bindParam(':product_id', $product_id[0]);
@@ -731,14 +728,11 @@ function StepThree()
     $qryStatement2->bindParam(':imageNamepo', $imageNamepo[0]);
     $qryStatement2->bindParam(':details', $details[0]);
     $qryStatement2->bindParam(':issued_weight', $issued_weight[0]);
-    $qryStatement2->bindParam(':total_z_price', $total_z_price[0]);
     $qryStatement2->bindParam(':total_z_weight', $total_z_weight[0]);
     $qryStatement2->bindParam(':total_z_quantity', $total_z_quantity[0]);
-    $qryStatement2->bindParam(':total_s_price', $total_s_price[0]);
     $qryStatement2->bindParam(':total_s_weight', $total_s_weight[0]);
     $qryStatement2->bindParam(':total_s_quantity', $total_s_quantity[0]);
     $qryStatement2->bindParam(':grand_weight', $grand_weight[0]);
-    $qryStatement2->bindParam(':grand_price', $grand_price[0]);
     $qryStatement2->bindParam(':total_weight', $total_weight[0]);
     $qryStatement2->bindParam(':retained_weight', $retained_weight[0]);
     if ($qryStatement2->execute()) {
@@ -768,8 +762,11 @@ function StepThree()
     }
 
     for ($i = 0; $i < @count($z_code); $i++) {
+        if($z_code[$i] != ''){
+            break;
+        }
         $z_weight1 = $z_weight[$i];
-        $z_quantity1 = $z_quantity[$i];
+        $z_quantity1 = $z_quantity[$i] ? $z_quantity[$i] : 0;
         $z_code1 = $z_code[$i];
 
         $qry = "INSERT INTO `zircon`(`code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES (:z_code,:vendor_id,:product_id,:z_weight,0,:z_quantity)";
@@ -788,8 +785,11 @@ function StepThree()
     }
 
     for ($i = 0; $i < @count($s_code); $i++) {
+        if($s_code[$i] != ''){
+            break;
+        }
         $s_weight1 = $s_weight[$i];
-        $s_quantity1 = $s_quantity[$i];
+        $s_quantity1 = $s_quantity[$i] ? $s_quantity[$i] : 0;
         $s_code1 = $s_code[$i];
         $qry1 = "INSERT INTO `stone`(`code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES (:s_code,:vendor_id,:product_id,0,:s_weight,:s_quantity)";
 
@@ -1486,12 +1486,11 @@ function AddPurchasing()
     if ($getRecordStatement->execute()) {
         $array1 = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         if (count($array1) == 0) {
-            $getRecordQuery = "INSERT INTO `purchasing`(`id`, `vendor_id`, `total`, `date`, `status`) VALUES (:id, :vendor_id, :total, :date, 'Active')";
+            $getRecordQuery = "INSERT INTO `purchasing`(`id`, `vendor_id`, `total`, `status`) VALUES (:id, :vendor_id, :total, 'Active')";
             $getRecordStatement = $pdo->prepare($getRecordQuery);
             $getRecordStatement->bindParam(':id', $_POST['invoice']);
             $getRecordStatement->bindParam(':vendor_id', $_POST['vendor_id']);
             $getRecordStatement->bindParam(':total', $_POST['grand_total']);
-            $getRecordStatement->bindParam(':date', $_POST['date']);
             if ($getRecordStatement->execute()) {
                 array_push($array, "success");
             } else {
