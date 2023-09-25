@@ -36,7 +36,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $lang ?>">
-
+0
 
 <head>
     <title><?php echo $language["Dashboard"]; ?> Production</title>

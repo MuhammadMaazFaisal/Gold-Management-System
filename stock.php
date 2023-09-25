@@ -328,9 +328,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         },
                         {
                             data: 'total_amount',
-                            title: 'Total'
-                        },
-                        {
+                            title: 'Total',
                             data: 'barcode',
                             title: 'Barcode',
                             render: function(data, type, row) {
