@@ -94,6 +94,9 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="production_page.php" data-key="t-register">Add Production</a></li>
                     </ul>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="semi_finish.php" data-key="t-register">Semi Finished</a></li>
+                    </ul>
 
                 </li>
                 <li>

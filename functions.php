@@ -116,8 +116,11 @@ if ($_POST['function'] == 'GetAllVendorData') {
     Logout();
 } elseif ($_POST['function'] == 'GetlZirconDetails') {
     GetlZirconDetails();
+} elseif ($_POST['function'] == 'SemiFinish'){
+    SemiFinish();
+}  elseif ($_POST['function'] == 'GetProductData'){
+    GetProductData(); 
 }
-
 
 function Logout()
 {
@@ -1035,6 +1038,42 @@ function GetStoneSetterData()
     }
 }
 
+function SemiFinish()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    
+    // Get the 'id' value from POST data
+    $id = $_POST['id'];
+
+    // Prepare the SQL query
+    $qry = "UPDATE `product` SET `status` = '2' WHERE `id` = :id";
+    $qryStatement = $pdo->prepare($qry);
+    
+    // Bind the 'id' value to the placeholder :id
+    $qryStatement->bindParam(':id', $id, PDO::PARAM_STR); 
+    
+    // Execute the query and check for success
+    if ($qryStatement->execute()) {
+        echo "Update successful.";
+    } else {
+        $errorInfo = $qryStatement->errorInfo();
+        echo "Update failed. Error: " . $errorInfo[2];
+    }
+}
+
+// Call the SemiFinish function
+
+
+
+
+
+    
+    
+
+
 function GetZircons()
 {
     include 'layouts/session.php';
@@ -1771,6 +1810,23 @@ GROUP BY
     sd.barcode, sd.type
 ORDER BY
     stock_date DESC;";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetProductData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT `id`, `status` FROM `product` WHERE `status`='2'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

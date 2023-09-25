@@ -858,14 +858,18 @@
  														<div class="col-sm-3">
 
  															<div>
- 																<button type="submit" id="s_save" class="btn btn-success">Log</button>
-																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
+
+ 																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
  															</div>
+ 															
  														</div>
  													</div>
  												</form>
  											</div>
  										</div>
+ 									</div>
+ 									<div>
+ 										<button type='submit' id="s_save" class="btn btn-success" onclick="SemiFinish()">Log</button>
  									</div>
 
 
@@ -1194,7 +1198,7 @@
  				success: function(data) {
  					data = JSON.parse(data);
  					console.log(data);
-					element.value='';
+ 					element.value = '';
  					element.value = data.type + ' | ' + data.detail;
  				}
  			});
@@ -1293,10 +1297,10 @@
 
 
  						}
-						 selectizeInstance.on('change', function() {
- 								console.log("allzircons")
- 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
- 							});
+ 						selectizeInstance.on('change', function() {
+ 							console.log("allzircons")
+ 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 						});
 
  					}
  					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
@@ -1393,16 +1397,16 @@
  								selctedValue = "";
  							}
  							selectizeInstance.refreshOptions();
-							 selectizeInstance.on('change', function() {
+ 							selectizeInstance.on('change', function() {
  								console.log("allzircons")
  								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
  							});
 
  						}
-						 selectizeInstance.on('change', function() {
- 								console.log("allzircons")
- 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
- 							});
+ 						selectizeInstance.on('change', function() {
+ 							console.log("allzircons")
+ 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 						});
 
  					}
  					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
@@ -1853,21 +1857,30 @@
  			ReturnedPayable(element);
  		}
 
-		function SemiFinish(){
-			var semi_id = getElementById('product')
-			console.log(semi_id) 
-			$.ajax({
+ 		function SemiFinish() {
+	
+			
+
+ 			let id = document.getElementById('product').value;
+
+ 			$.ajax({
  				url: "functions.php",
  				method: "POST",
  				data: {
  					function: "SemiFinish",
- 					
+ 					id: id
+
  				},
- 				success: function(response) {
+				 success: function(data) {
+ 					console.log(data);}
+					});
 				}
-	
-			})
-		}
+
+								
+
+
+
+ 		
 
 
  		function PrintManufacturer() {
@@ -4207,7 +4220,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
-					console.log(data);
+ 					console.log(data);
  					data = JSON.parse(data);
  					if (data[0] == "success" && data[1] == "success") {
  						Swal.fire({
@@ -4304,6 +4317,8 @@
  			});
 
  		})
+
+
 
  		$(document).on('submit', '#filter-data', function(e) {
  			e.preventDefault();
