@@ -1049,7 +1049,7 @@ function SemiFinish()
     $id = $_POST['id'];
 
     // Prepare the SQL query
-    $qry = "UPDATE `product` SET `status` = '2' WHERE `id` = :id";
+    $qry = "UPDATE `product` SET `status` = 'SemiFinished' WHERE `id` = :id";
     $qryStatement = $pdo->prepare($qry);
     
     // Bind the 'id' value to the placeholder :id
@@ -1826,7 +1826,7 @@ function GetProductData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT `id`, `status` FROM `product` WHERE `status`='2'";
+    $getRecordQuery = "SELECT `id`, `status` FROM `product` WHERE `status`='SemiFinished'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

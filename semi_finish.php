@@ -282,14 +282,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     data: data,
                     columns: [{
                             data: 'id',
-                            title: 'ID'
-                        },
-                        {
-                            data: 'status',
-                            title: 'Status',
-                            
-            
+                            title: 'P_ID'
                         }
+                        
 
 
                     ],
