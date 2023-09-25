@@ -858,7 +858,8 @@
  														<div class="col-sm-3">
 
  															<div>
- 																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
+ 																<button type="submit" id="s_save" class="btn btn-success">Log</button>
+																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
  															</div>
  														</div>
  													</div>
@@ -1851,6 +1852,23 @@
  			grand_total_weight.value = parseFloat(total_weight.value) + parseFloat(wastage.value);
  			ReturnedPayable(element);
  		}
+
+		function SemiFinish(){
+			var semi_id = getElementById('product')
+			console.log(semi_id) 
+			$.ajax({
+ 				url: "functions.php",
+ 				method: "POST",
+ 				data: {
+ 					function: "SemiFinish",
+ 					
+ 				},
+ 				success: function(response) {
+				}
+	
+			})
+		}
+
 
  		function PrintManufacturer() {
  			let id = document.getElementsByClassName("code")[0].value;
