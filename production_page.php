@@ -861,7 +861,7 @@
 
  																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
  															</div>
- 															
+
  														</div>
  													</div>
  												</form>
@@ -1099,6 +1099,8 @@
  				var selectElement = type[i];
  				var selectizeInstance = $(selectElement).selectize()[0].selectize;
  			}
+
+
  			$.ajax({
  				url: "functions.php",
  				method: "POST",
@@ -1117,6 +1119,7 @@
  							selectizeControls[0].remove();
  						}
  					}
+
  					// Start the loop from the second element (index 1)
  					for (var i = 1; i < selectizeControls.length; i++) {
  						var selectizeControl = selectizeControls[i];
@@ -1757,6 +1760,34 @@
  			var product = document.getElementById("product");
  			product.value = id;
  			$("#product").trigger('input');
+ 			$.ajax({
+ 				url: "functions.php",
+ 				method: "POST",
+ 				data: {
+ 					function: "GetSemiFinishStatus",
+
+ 				},
+ 				success: function(data) {
+ 					var data = JSON.parse(data);
+ 					s_id = data.id;
+ 					
+
+ 					// Hide all save buttons if the product ID status is semi-finished
+ 					// Get the save button element by its ID
+ 					const saveButtons = document.querySelectorAll('.btn-primary');
+					
+
+ 					if (s_id === id.val) {
+ 						saveButtons.forEach(function(button) {
+ 							button.classList.add('d-none');
+ 						})
+ 					}
+
+
+ 				}
+ 			})
+
+
  		}
 
  		function ReturnedPayable(element) {
@@ -1858,8 +1889,8 @@
  		}
 
  		function SemiFinish() {
-	
-			
+
+
 
  			let id = document.getElementById('product').value;
 
@@ -1871,18 +1902,18 @@
  					id: id
 
  				},
-				 success: function(data) {
+ 				success: function(data) {
  					console.log(data);
-					location.reload();
-				 }
-					});
-				}
-
-								
+ 					location.reload();
+ 				}
+ 			});
+ 		}
 
 
 
- 		
+
+
+
 
 
  		function PrintManufacturer() {
@@ -3813,6 +3844,21 @@
 
  		}
 
+ 		// function GetData() {
+ 		// 	$.ajax({
+ 		// 		url: "functions.php",
+ 		// 		type: "POST",
+ 		// 		data: {
+ 		// 			function: "GetProductData"
+ 		// 		},
+ 		// 		success: function(data) {
+ 		// 			data = JSON.parse(data);
+ 		// 			var semiId = data[i][0].id
+ 		// 			console.log(data);
+ 		// 		}
+ 		// 	})
+ 		// }
+
  		function ReturnedStoneListeners() {
  			var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
  			var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
@@ -4009,10 +4055,13 @@
  				method: "POST",
  				data: {
  					function: "GetModalProducts"
+
  				},
  				success: function(response) {
+
  					var data = JSON.parse(response);
  					var tbody = document.getElementById("product-table-body");
+
  					for (var i = 0; i < data.length; i++) {
  						var tr = document.createElement("tr");
  						var td1 = document.createElement("td");
@@ -4043,7 +4092,10 @@
  						tr.appendChild(td5);
  						tr.appendChild(td6);
  						tbody.appendChild(tr);
+
  					};
+
+
  				}
  			});
 
@@ -4090,7 +4142,9 @@
  			});
 
 
+
  			GetAllAdditionals();
+
 
 
  			var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
@@ -4116,8 +4170,6 @@
  			var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
 
 
-
-
  			manufacturer_rate.addEventListener("change", function() {
  				CalculateWastage();
  			});
@@ -4130,7 +4182,10 @@
 
  			ReturnedStoneListeners();
  			StoneSetterListeners();
-
+ 			//  if (td2.innerHTML === semiId.innerHTML) {
+ 			// 			var save1=getElementById("s-save")
+ 			// 			save1.classList.add("d-none");
+ 			// 		}
 
  		});
 
@@ -4147,6 +4202,8 @@
  			form.set('purity', selectedOptionValue);
 
  			form.append('purity_text', selectedOptionText);
+
+
  			$.ajax({
  				url: "functions.php",
  				type: "POST",
@@ -4172,6 +4229,8 @@
  					}
  				}
  			});
+
+
 
  		})
 
@@ -4319,6 +4378,8 @@
  			});
 
  		})
+
+
 
 
 
@@ -4555,6 +4616,20 @@
 
  			}
  		});
+
+ 		// // Get all save buttons
+ 		// const saveButtons = document.querySelector('#s_save');
+
+ 		// // Get the product ID status
+ 		// const productIdStatus = document.querySelector('#' + s_id).value;
+
+ 		// // Hide all save buttons if the product ID status is semi-finished
+ 		// if (productIdStatus === 'SemiFinished') {
+ 		// 	saveButtons.forEach(btn => btn.classList.add('d-none'));
+ 		// }
+
+ 		// Get all save buttons
+
 
  		$(document).on('input', '#Zircon', function(e) {
  			e.preventDefault();

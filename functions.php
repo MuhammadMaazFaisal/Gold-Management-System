@@ -9,7 +9,7 @@ if ($_POST['function'] == 'GetAllVendorData') {
 } elseif ($_POST['function'] == 'VendorDelete') {
     VendorDelete();
 } elseif ($_POST['function'] == 'GetVendor') {
-    GetVendor(); 
+    GetVendor();
 } elseif ($_POST['function'] == 'UpdateVendor') {
     UpdateVendor();
 } elseif ($_POST['function'] == 'ProductCount') {
@@ -116,12 +116,13 @@ if ($_POST['function'] == 'GetAllVendorData') {
     Logout();
 } elseif ($_POST['function'] == 'GetlZirconDetails') {
     GetlZirconDetails();
-} elseif ($_POST['function'] == 'SemiFinish'){
+} elseif ($_POST['function'] == 'SemiFinish') {
     SemiFinish();
-}  elseif ($_POST['function'] == 'GetProductData'){
-    GetProductData(); 
+} elseif ($_POST['function'] == 'GetProductData') {
+    GetProductData();
+} elseif ($_POST['function'] == 'GetSemiFinishStatus') {
+    GetSemiFinishStatus();
 }
-
 function Logout()
 {
     // Initialize the session
@@ -141,15 +142,16 @@ function Logout()
 
 // -------------------------Production Page-------------------------//
 
-function GetlZirconDetails(){
+function GetlZirconDetails()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-    $getRecordQuery="SELECT * FROM `stock_details` WHERE `barcode` = :barcode";
+    $getRecordQuery = "SELECT * FROM `stock_details` WHERE `barcode` = :barcode";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':barcode', $_POST['barcode']);
-    if($getRecordStatement->execute()){
+    if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
         die;
@@ -272,6 +274,23 @@ function GetModalProducts()
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
         die;
+    }
+}
+
+function GetSemiFinishStatus()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT `id` FROM `product` WHERE `status`='SemiFinished'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
     }
 }
 
@@ -765,7 +784,7 @@ function StepThree()
     }
 
     for ($i = 0; $i < @count($z_code); $i++) {
-        if($z_code[$i] != ''){
+        if ($z_code[$i] != '') {
             break;
         }
         $z_weight1 = $z_weight[$i];
@@ -788,7 +807,7 @@ function StepThree()
     }
 
     for ($i = 0; $i < @count($s_code); $i++) {
-        if($s_code[$i] != ''){
+        if ($s_code[$i] != '') {
             break;
         }
         $s_weight1 = $s_weight[$i];
@@ -1044,17 +1063,17 @@ function SemiFinish()
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-    
+
     // Get the 'id' value from POST data
     $id = $_POST['id'];
 
     // Prepare the SQL query
     $qry = "UPDATE `product` SET `status` = 'SemiFinished' WHERE `id` = :id";
     $qryStatement = $pdo->prepare($qry);
-    
+
     // Bind the 'id' value to the placeholder :id
-    $qryStatement->bindParam(':id', $id, PDO::PARAM_STR); 
-    
+    $qryStatement->bindParam(':id', $id, PDO::PARAM_STR);
+
     // Execute the query and check for success
     if ($qryStatement->execute()) {
         echo "Update successful.";
@@ -1070,8 +1089,8 @@ function SemiFinish()
 
 
 
-    
-    
+
+
 
 
 function GetZircons()
