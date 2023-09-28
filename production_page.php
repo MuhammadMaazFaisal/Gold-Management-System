@@ -259,7 +259,7 @@
 
  																		<!-- <button type="submit" class="btn btn-primary">Save</button> -->
  																		<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintManufacturer()">Print</button>
- 																		<button type="submit" class="btn btn-primary" id="m_save" value="Save">Save</button>
+ 																		<button type="submit" class="btn btn-primary btn1" id="m_save" value="Save">Save</button>
  																	</div>
  																</div>
  															</div>
@@ -391,7 +391,7 @@
 
  																	<div>
  																		<button type="button" id="polisher_print_btn" class="btn btn-success waves-effect waves-light" onclick="PrintPolisher()">Print</button>
- 																		<button type="submit" id="polisher_save_btn" class="btn btn-primary" value="Save">Save</button>
+ 																		<button type="submit" id="polisher_save_btn" class="btn btn-primary btn1" value="Save">Save</button>
  																	</div>
  																</div>
  															</div>
@@ -637,7 +637,7 @@
 
  																<div>
  																	<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
- 																	<button type="submit" class="btn btn-primary" id="s_save">Save</button>
+ 																	<button type="submit" class="btn btn-primary btn1" id="s_save">Save</button>
  																</div>
  															</div>
  														</div>
@@ -735,7 +735,7 @@
 
  																<div>
  																	<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)">Print</button>
- 																	<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+ 																	<button type="submit" class="btn btn-primary btn1" id="r_save">Save</button>
  																</div>
  															</div>
  														</div>
@@ -859,7 +859,7 @@
 
  															<div>
 
- 																<button type="submit" id="a_save" class="btn btn-primary">Save</button>
+ 																<button type="submit" id="a_save" class="btn btn-primary btn1">Save</button>
  															</div>
 
  														</div>
@@ -869,7 +869,7 @@
  										</div>
  									</div>
  									<div>
- 										<button type='submit' id="s_save" class="btn btn-success" onclick="SemiFinish()">Log</button>
+ 										<button type='submit' id="s_save" class="btn btn-success btn1" onclick="SemiFinish()">Log</button>
  									</div>
 
 
@@ -1623,7 +1623,7 @@
 
 												<div>
 													<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
-													<button type="submit" class="btn btn-primary" id="s_save">Save</button>
+													<button type="submit" class="btn btn-primary btn1" id="s_save">Save</button>
 												</div>
 											</div>
 										</div>
@@ -1721,7 +1721,7 @@
 
 												<div>
 													<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)>Print</button>
-													<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+													<button type="submit" class="btn btn-primary btn1" id="r_save">Save</button>
 												</div>
 											</div>
 										</div>
@@ -1759,36 +1759,39 @@
  			delete_btn.disabled = false;
  			var product = document.getElementById("product");
  			product.value = id;
+
  			$("#product").trigger('input');
  			$.ajax({
  				url: "functions.php",
  				method: "POST",
  				data: {
  					function: "GetSemiFinishStatus",
-
  				},
  				success: function(data) {
  					var data = JSON.parse(data);
- 					s_id = data.id;
- 					
 
- 					// Hide all save buttons if the product ID status is semi-finished
- 					// Get the save button element by its ID
- 					const saveButtons = document.querySelectorAll('.btn-primary');
-					
+ 					// Get the 'id' value from your input field
+ 					const id = document.getElementById('product').value;
+ 					console.log(id);
 
- 					if (s_id === id.val) {
- 						saveButtons.forEach(function(button) {
- 							button.classList.add('d-none');
- 						})
+ 					// Hide save buttons if 's_id' matches 'id'
+ 					const saveButtons = document.querySelectorAll('.btn1');
+
+ 					for (var i = 0; i < data.length; i++) {
+ 						var s_id = data[i].id;
+ 						console.log(s_id);
+
+ 						if (s_id === id) {
+ 							saveButtons.forEach(function(button) {
+ 								button.classList.add('d-none');
+ 							});
+ 						}
  					}
-
-
  				}
- 			})
-
+ 			});
 
  		}
+
 
  		function ReturnedPayable(element) {
  			var payable = element.querySelector("input[id='r_payable']");
@@ -2677,7 +2680,7 @@
 
 											<div>
 												<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
-												<button type="submit" class="btn btn-primary" id="s_save">Save</button>
+												<button type="submit" class="btn btn-primary btn1" id="s_save">Save</button>
 											</div>
 										</div>
 									</div>
@@ -2982,7 +2985,7 @@
 
 											<div>
 												<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)">Print</button>
-												<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+												<button type="submit" class="btn btn-primary btn1" id="r_save">Save</button>
 											</div>
 										</div>
 									</div>
@@ -3082,7 +3085,7 @@
 
 										<div>
 											<button type="" class="btn btn-success waves-effect waves-light">Print</button>
-											<button type="submit" class="btn btn-primary" id="r_save">Save</button>
+											<button type="submit" class="btn btn-primary btn1" id="r_save">Save</button>
 										</div>
 									</div>
 								</div>
