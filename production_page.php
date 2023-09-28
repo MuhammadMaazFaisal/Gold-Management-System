@@ -1784,7 +1784,14 @@
  						if (s_id === id) {
  							saveButtons.forEach(function(button) {
  								button.classList.add('d-none');
+								
  							});
+							break;
+
+ 						} else if (s_id != id) {
+ 							saveButtons.forEach(function(button) {
+ 								button.classList.remove('d-none');
+ 							})
  						}
  					}
  				}
