@@ -868,8 +868,8 @@
  											</div>
  										</div>
  									</div>
- 									<div>
- 										<button type='submit' id="s_save" class="btn btn-success btn1" onclick="SemiFinish()">Log</button>
+ 									<div class="d-flex justify-content-end">
+ 										<button type='submit' class="btn btn-danger btn1 px-3" onclick="SemiFinish()">Lock</button>
  									</div>
 
 
@@ -1139,10 +1139,13 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
 
+
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length === 1) {
  							option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
@@ -1153,12 +1156,15 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							selectizeInstance.setValue(option1);
 
 
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							if (selectizeInstance.getValue() != "") {
  								var selctedValue = selectizeInstance.getValue();
@@ -1173,18 +1179,23 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
  							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
  								selectizeInstance.setValue(selctedValue);
  								selctedValue = "";
  							}
+
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
 
 
 
  						}
  					}
+					 window.scrollTo(0, 0);
+
  				}
  			});
  		}
@@ -1250,10 +1261,13 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
 
+
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length === 1) {
  							option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
@@ -1264,12 +1278,15 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							selectizeInstance.setValue(option1);
 
 
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							if (selectizeInstance.getValue() != "") {
  								var selctedValue = selectizeInstance.getValue();
@@ -1284,13 +1301,16 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
  								selectizeInstance.setValue(selctedValue);
  								selctedValue = "";
  							}
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
 
  							selectizeInstance.on('change', function() {
  								console.log("allzircons")
@@ -1359,10 +1379,12 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
 
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length === 1) {
  							option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
@@ -1373,12 +1395,15 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							selectizeInstance.setValue(option1);
 
 
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							if (selectizeInstance.getValue() != "") {
  								var selctedValue = selectizeInstance.getValue();
@@ -1393,13 +1418,16 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
  								selectizeInstance.setValue(selctedValue);
  								selctedValue = "";
  							}
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  							selectizeInstance.on('change', function() {
  								console.log("allzircons")
  								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
@@ -1784,9 +1812,9 @@
  						if (s_id === id) {
  							saveButtons.forEach(function(button) {
  								button.classList.add('d-none');
-								
+
  							});
-							break;
+ 							break;
 
  						} else if (s_id != id) {
  							saveButtons.forEach(function(button) {
@@ -1903,20 +1931,40 @@
 
 
  			let id = document.getElementById('product').value;
+ 			if (id == "") {
+ 				Swal.fire({
+ 					title: 'Error!',
+ 					text: 'Please select a product first!',
+ 					icon: 'error',
+ 					confirmButtonText: 'Ok'
+ 				})
+ 			} else {
 
- 			$.ajax({
- 				url: "functions.php",
- 				method: "POST",
- 				data: {
- 					function: "SemiFinish",
- 					id: id
 
- 				},
- 				success: function(data) {
- 					console.log(data);
- 					location.reload();
- 				}
- 			});
+ 				$.ajax({
+ 					url: "functions.php",
+ 					method: "POST",
+ 					data: {
+ 						function: "SemiFinish",
+ 						id: id
+
+ 					},
+ 					success: function(data) {
+ 						console.log(data);
+ 						Swal.fire({
+ 							title: 'Success!',
+ 							text: 'Semi Finish Added Successfully!',
+ 							icon: 'success',
+ 							confirmButtonText: 'Ok'
+ 						}).then((result) => {
+ 							if (result.isConfirmed) {
+ 								location.reload();
+ 							}
+ 						});
+
+ 					}
+ 				});
+ 			}
  		}
 
 
@@ -3804,10 +3852,13 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
 
+
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length === 1) {
  							option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
@@ -3818,12 +3869,15 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							selectizeInstance.setValue(option1);
 
 
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							selectizeInstance.clearOptions();
  							selectizeInstance.destroy();
@@ -3835,9 +3889,12 @@
  								};
  								if (selectizeInstance != undefined) {
  									selectizeInstance.addOption(newOption);
+
  								}
  							}
+
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.close();
  						}
  					}
  				}
@@ -4057,7 +4114,8 @@
 
 
  			$('select:not(#select-manufacturer-purity)').selectize({
- 				sortField: 'text'
+ 				sortField: 'text',
+ 				openOnFocus: false
  			});
 
  			$.ajax({
@@ -4126,6 +4184,7 @@
  						};
  						select.addOption(newOption);
  					}
+ 					select.close();
 
  				}
  			});
@@ -4147,6 +4206,8 @@
  						};
  						select.addOption(newOption);
  					}
+ 					select.close();
+
 
  				}
  			});
@@ -4552,7 +4613,8 @@
 
  			var select1 = $('#select-manufacturer').selectize({
  				sortField: 'text',
- 				searchField: 'item'
+ 				searchField: 'item',
+ 				openOnFocus: false
  			})[0].selectize;
 
  			var selectedOptionValue1 = select1.getValue();

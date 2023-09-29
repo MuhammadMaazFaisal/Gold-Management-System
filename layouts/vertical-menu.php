@@ -93,7 +93,20 @@
 
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="production_page.php" data-key="t-register">Add Production</a></li>
-                        <li><a href="semi_finish.php" data-key="t-register">Semi Finished</a></li>
+                        
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class=" ">
+                        <i data-feather="file-text"></i>
+                        <span data-key="t-authentication">Products</span>
+
+                    </a>
+
+                    <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="semi_finish.php" data-key="t-register">Semi-Finished</a></li>
+                        
                     </ul>
 
                 </li>
