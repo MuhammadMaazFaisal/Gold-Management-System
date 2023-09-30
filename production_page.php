@@ -1804,9 +1804,6 @@
  		}
 
  		function SemiFinish() {
-
-
-
  			let id = document.getElementById('product').value;
  			if (id == "") {
  				Swal.fire({
@@ -1816,8 +1813,6 @@
  					confirmButtonText: 'Ok'
  				})
  			} else {
-
-
  				$.ajax({
  					url: "functions.php",
  					method: "POST",
@@ -1843,13 +1838,6 @@
  				});
  			}
  		}
-
-
-
-
-
-
-
 
  		function PrintManufacturer() {
  			let id = document.getElementsByClassName("code")[0].value;
@@ -3726,17 +3714,7 @@
  		}
 
  		function GetStoneSetterNames() {
- 			let stonesetters = document.querySelectorAll('select[id="select-stone_setter[]"]');
- 			let delete_area = stonesetters[0].parentElement;
- 			var selectizeControls = delete_area.querySelectorAll('.selectize-control');
- 			if (selectizeControls[0] != undefined) {
- 				// Get the first selectize control (index 0)
- 				selectizeControls[0].remove();
- 			}
- 			// Start the loop from the second element (index 1)
- 			for (var i = 1; i < selectizeControls.length; i++) {
- 				var selectizeControl = selectizeControls[i];
- 			}
+ 			const stonesetters = document.querySelectorAll('select[id="select-stone_setter[]"]');
 
  			$.ajax({
  				url: "functions.php",
@@ -3745,83 +3723,60 @@
  					function: "GetStoneSetterNames"
  				},
  				success: function(response) {
- 					var data = JSON.parse(response);
+ 					const data = JSON.parse(response);
 
- 					for (let i = 0; i < stonesetters.length; i++) {
- 						var selectElement = stonesetters[i];
- 						var selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 					stonesetters.forEach(selectElement => {
+ 						let selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						const options = selectizeInstance.options;
 
- 						var options = selectizeInstance.options;
+ 						selectizeInstance.settings.openOnFocus = false;
 
  						if (Object.keys(options).length === 0) {
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].name
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.name
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
- 							selectizeInstance.settings.openOnFocus = false;
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.settings.openOnFocus = true;
- 							selectizeInstance.close();
+ 								selectizeInstance.addOption(newOption);
+ 							});
  						} else if (Object.keys(options).length === 1) {
- 							option1 = Object.keys(options)[0];
+ 							const option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].name
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.name
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
+ 								selectizeInstance.addOption(newOption);
+ 							});
  							selectizeInstance.setValue(option1);
-
- 							selectizeInstance.settings.openOnFocus = false;
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.settings.openOnFocus = true;
- 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							selectizeInstance.clearOptions();
  							selectizeInstance.destroy();
- 							selectizeInstance = $(selectElement).selectize()[0].selectize;
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].name
- 								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
 
- 								}
- 							}
- 							selectizeInstance.settings.openOnFocus = false;
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.settings.openOnFocus = true;
- 							selectizeInstance.close();
+ 							selectizeInstance = $(selectElement).selectize()[0].selectize;
+
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.name
+ 								};
+ 								selectizeInstance.addOption(newOption);
+ 							});
  						}
- 					}
+
+ 						selectizeInstance.settings.openOnFocus = true;
+ 						selectizeInstance.close();
+ 					});
  				}
  			});
 
  			const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
-
- 			// Loop through the selected div elements
  			divsWithSiblings.forEach(div => {
- 				// Remove each div element
  				div.remove();
  			});
-
-
  		}
+
 
  		// function GetData() {
  		// 	$.ajax({
