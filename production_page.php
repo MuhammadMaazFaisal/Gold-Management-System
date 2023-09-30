@@ -440,7 +440,7 @@
  											<div class="col-lg-12 ms-lg-auto ">
 
  												<div class="mb-2 d-flex justify-content-end" style="margin-top: -30px;">
- 													<button type="button" class="btn btn-primary" onclick="AddStoneSetter()">
+ 													<button type="button" class="btn btn-primary btn1" onclick="AddStoneSetter()">
  														Add Stone Setter
  													</button>
  												</div>
@@ -1666,7 +1666,13 @@
  			product.value = id;
 
  			$("#product").trigger('input');
- 			$.ajax({
+			RemoveSaveBtn();
+ 			
+
+ 		}
+
+		function RemoveSaveBtn(){
+			$.ajax({
  				url: "functions.php",
  				method: "POST",
  				data: {
@@ -1701,8 +1707,7 @@
  					}
  				}
  			});
-
- 		}
+		}
 
 
  		function ReturnedPayable(element) {
@@ -2410,7 +2415,7 @@
  								var day = ("0" + date.getDate()).slice(-2);
  								var date = year + "-" + month + "-" + day;
  								let content = `<div class="stone-setter${i}">
-								<form id="stepthree" class="" method="POST" enctype="multipart/form-data">
+								<form id="stepthree" class="mt-5" method="POST" enctype="multipart/form-data">
 									<?php
 
 									$randomstone = random_int(0000000000, 779900000000);
@@ -2651,9 +2656,9 @@
 
 
  								await GetReturnedData(id, data[i].vendor_id, i);
- 								await GetStoneSetterNames();
  								await GetZirconData(id, data[i].vendor_id, i);
  								await GetStoneData(id, data[i].vendor_id, i);
+								RemoveSaveBtn();
 
 
  							}
@@ -2682,7 +2687,6 @@
  			await GetAllStones();
  			await ReturnedStoneListeners();
  			await StoneSetterListeners();
-
  		}
 
  		function GetZirconData(id, vendor_id, si) {
