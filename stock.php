@@ -114,6 +114,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary" id="printDataTable">Print Data</button>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -357,7 +363,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     }
 
     function Print(barcode) {
-        var parent=barcode.parentNode.parentNode;
+        var parent = barcode.parentNode.parentNode;
         let printWindow = window.open("", "_blank");
         let slipContent = `
                 <!DOCTYPE html>
@@ -457,7 +463,97 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         $('#total').val(totalAmountSum.toFixed(2));
     }
 
+    function printCurrentDataTable() {
+        var table = $('#stock-table').DataTable();
+        var visibleRows = table.rows({
+            search: 'applied'
+        }).data().toArray();
+
+        var styles = "<style>";
+        styles += `
+    @media print {
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+            box-sizing: border-box;
+        }
+
+        .table th, .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+            box-sizing: border-box;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            box-sizing: border-box;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+            box-sizing: border-box;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6;
+            box-sizing: border-box;
+        }
+    }
+`;
+        styles += "</style>";
+
+
+
+        var printContent = "<div class='centered-content'><table class='table table-bordered'>";
+        printContent += "<thead><tr>";
+        $('#stock-table thead th').each(function() {
+            printContent += "<th>" + $(this).text() + "</th>";
+        });
+        printContent += "</tr></thead>";
+
+        printContent += "<tbody>";
+        for (var i = 0; i < visibleRows.length; i++) {
+            printContent += "<tr>";
+            $.each(visibleRows[i], function(key, value) {
+                printContent += "<td>" + value + "</td>";
+            });
+            printContent += "</tr>";
+        }
+        printContent += "</table></div>";
+
+        var printWindow = window.open('', '', 'width=800, height=600');
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write(styles);
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+
+
+
+
+
     $(document).ready(function() {
         GetData();
+
+    });
+
+    $(document).on('click', '#printDataTable', function() {
+        printCurrentDataTable();
     });
 </script>
