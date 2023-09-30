@@ -554,7 +554,7 @@
  															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" name="zircon_total_quantity[]" value="" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+ 																<input type="number" name="zircon_total_quantity[]" value="0" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
  															<div class="col-sm-3">
@@ -654,14 +654,11 @@
  															</div>
  															<div id="returned-area[]" class="row">
  																<h5>Zircon/Stone Return:</h5>
- 																<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
- 																	<div class="col-sm-2">
+ 																<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+ 																	<div class="col-sm-3">
 
- 																		<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+ 																		<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
 
- 																	</div>
- 																	<div class="col-sm-1 p-0">
- 																		<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
  																	</div>
  																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
  																	<div class="col-sm-2">
@@ -1094,12 +1091,11 @@
 
  	<script>
  		function GetAllAdditionals() {
- 			let type = document.querySelectorAll('select[id="a_type[]"]:not(.selectized)');
- 			for (var i = 0; i < type.length; i++) {
- 				var selectElement = type[i];
- 				var selectizeInstance = $(selectElement).selectize()[0].selectize;
- 			}
-
+ 			// Initialization for 'type' selectizes
+ 			const typeElements = document.querySelectorAll('select[id="a_type[]"]:not(.selectized)');
+ 			typeElements.forEach(selectElement => {
+ 				$(selectElement).selectize();
+ 			});
 
  			$.ajax({
  				url: "functions.php",
@@ -1109,113 +1105,81 @@
  					type: "vendor"
  				},
  				success: function(response) {
- 					var data = JSON.parse(response);
- 					let zircon = document.querySelectorAll('select[id="select-vendor[]"]');
- 					let delete_area = zircon[0].parentElement;
- 					var selectizeControls = delete_area.querySelectorAll('.selectize-control');
- 					if (selectizeControls[0] != undefined) {
- 						if (zircon.length > 1) {
- 							// Get the first selectize control (index 0)
- 							selectizeControls[0].remove();
- 						}
- 					}
+ 					const data = JSON.parse(response);
+ 					const zirconElements = document.querySelectorAll('select[id="select-vendor[]"]');
 
- 					// Start the loop from the second element (index 1)
- 					for (var i = 1; i < selectizeControls.length; i++) {
- 						var selectizeControl = selectizeControls[i];
+ 					zirconElements.forEach(selectElement => {
+ 						let selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						const options = selectizeInstance.options;
 
- 					}
- 					for (let i = 0; i < zircon.length; i++) {
- 						var selectElement = zircon[i];
- 						var selectizeInstance = $(selectElement).selectize()[0].selectize;
-
- 						var options = selectizeInstance.options;
+ 						selectizeInstance.settings.openOnFocus = false;
 
  						if (Object.keys(options).length === 0) {
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].id + " | " + data[j].name
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.id + " | " + item.name
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
+ 								selectizeInstance.addOption(newOption);
+ 							});
  						} else if (Object.keys(options).length === 1) {
- 							option1 = Object.keys(options)[0];
+ 							const option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].id + " | " + data[j].name
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.id + " | " + item.name
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
+ 								selectizeInstance.addOption(newOption);
+ 							});
  							selectizeInstance.setValue(option1);
-
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
- 							if (selectizeInstance.getValue() != "") {
- 								var selctedValue = selectizeInstance.getValue();
- 							}
+ 							const selctedValue = selectizeInstance.getValue();
  							selectizeInstance.clearOptions();
  							selectizeInstance.destroy();
+
  							selectizeInstance = $(selectElement).selectize()[0].selectize;
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].id,
- 									text: data[j].id + " | " + data[j].name
+
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.id,
+ 									text: item.id + " | " + item.name
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
+ 								selectizeInstance.addOption(newOption);
+ 							});
 
- 								}
- 							}
- 							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
+ 							if (selctedValue) {
  								selectizeInstance.setValue(selctedValue);
- 								selctedValue = "";
  							}
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
-
-
-
  						}
- 					}
-					 window.scrollTo(0, 0);
 
+ 						selectizeInstance.settings.openOnFocus = true;
+ 						selectizeInstance.close();
+ 					});
  				}
  			});
  		}
 
+
  		function GetZiroconDetails(barcode, element) {
- 			console.log(barcode, element)
- 			$.ajax({
- 				url: "functions.php",
- 				type: "POST",
- 				data: {
- 					function: "GetlZirconDetails",
- 					barcode: barcode
- 				},
- 				success: function(data) {
- 					data = JSON.parse(data);
- 					console.log(data);
- 					element.value = '';
- 					element.value = data.type + ' | ' + data.detail;
- 				}
- 			});
+ 			if (barcode != "") {
+ 				$.ajax({
+ 					url: "functions.php",
+ 					type: "POST",
+ 					data: {
+ 						function: "GetlZirconDetails",
+ 						barcode: barcode
+ 					},
+ 					success: function(data) {
+ 						data = JSON.parse(data);
+ 						console.log(data);
+ 						element.value = '';
+ 						element.value = data.type + ' | ' + data.detail;
+ 					}
+ 				});
+ 			} else {
+ 				element.value = '';
+ 			}
  		}
 
  		function GetAllZircons() {
@@ -1227,119 +1191,72 @@
  				},
  				success: function(data) {
  					data = JSON.parse(data);
- 					console.log("zircons", data);
- 					let zircon = document.querySelectorAll('select[id="zircon_code[]"]');
- 					let delete_area = zircon[0].parentElement;
- 					var selectizeControls = delete_area.querySelectorAll('.selectize-control');
- 					if (selectizeControls[0] != undefined) {
- 						if (zircon.length > 1) {
- 							// Get the first selectize control (index 0)
- 							// selectizeControls[0].remove();
- 						}
- 					}
- 					// Start the loop from the second element (index 1)
- 					for (var i = 1; i < selectizeControls.length; i++) {
- 						var selectizeControl = selectizeControls[i];
 
- 					}
- 					for (let i = 0; i < zircon.length; i++) {
- 						var selectElement = zircon[i];
- 						var selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 					const zircon = document.querySelectorAll('select[id="zircon_code[]"]');
 
- 						selectizeInstance.on('change', function() {
- 							console.log("allzircons")
- 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
- 						});
+ 					zircon.forEach(selectElement => {
+ 						let selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						const options = selectizeInstance.options;
 
- 						var options = selectizeInstance.options;
+ 						selectizeInstance.settings.openOnFocus = false;
 
  						if (Object.keys(options).length === 0) {
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
+ 								selectizeInstance.addOption(newOption);
+ 							});
  						} else if (Object.keys(options).length === 1) {
- 							option1 = Object.keys(options)[0];
+ 							const option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
+ 								selectizeInstance.addOption(newOption);
+ 							});
  							selectizeInstance.setValue(option1);
-
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
- 							if (selectizeInstance.getValue() != "") {
- 								var selctedValue = selectizeInstance.getValue();
- 							}
+ 							let selctedValue = selectizeInstance.getValue();
  							selectizeInstance.clearOptions();
  							selectizeInstance.destroy();
+
  							selectizeInstance = $(selectElement).selectize()[0].selectize;
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
- 							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
- 								selectizeInstance.setValue(selctedValue);
- 								selctedValue = "";
- 							}
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
-
- 							selectizeInstance.on('change', function() {
- 								console.log("allzircons")
- 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 								selectizeInstance.addOption(newOption);
  							});
 
-
-
+ 							if (selctedValue) {
+ 								selectizeInstance.setValue(selctedValue);
+ 							}
  						}
+
+ 						selectizeInstance.settings.openOnFocus = true;
+ 						selectizeInstance.close();
+
  						selectizeInstance.on('change', function() {
- 							console.log("allzircons")
- 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							GetZiroconDetails(this.getValue(), selectElement.parentNode.nextElementSibling.children[0]);
  						});
-
- 					}
- 					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
-
- 					// Loop through the selected div elements
- 					divsWithSiblings.forEach(div => {
- 						// Remove each div element
- 						div.remove();
  					});
 
+ 					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
+ 					divsWithSiblings.forEach(div => {
+ 						div.remove();
+ 					});
  				}
  			});
  		}
 
- 		function GetAllStones() {
 
+ 		function GetAllStones() {
  			$.ajax({
  				url: "functions.php",
  				type: "POST",
@@ -1348,109 +1265,70 @@
  				},
  				success: function(data) {
  					data = JSON.parse(data);
- 					let stone = document.querySelectorAll('select[id="stone_code[]"]');
- 					let delete_area = stone[0].parentElement;
- 					var selectizeControls = delete_area.querySelectorAll('.selectize-control');
- 					if (selectizeControls[0] != undefined) {
- 						// Get the first selectize control (index 0)
- 						if (stone.length > 1) {
- 							selectizeControls[0].remove();
- 						}
- 					}
- 					// Start the loop from the second element (index 1)
- 					for (var i = 1; i < selectizeControls.length; i++) {
- 						var selectizeControl = selectizeControls[i];
- 					}
- 					for (let i = 0; i < stone.length; i++) {
- 						var selectElement = stone[i];
- 						var selectizeInstance = $(selectElement).selectize()[0].selectize;
 
- 						selectizeInstance.on('change', function() {
- 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
- 						});
+ 					const stone = document.querySelectorAll('select[id="stone_code[]"]');
 
- 						var options = selectizeInstance.options;
+ 					stone.forEach(selectElement => {
+ 						let selectizeInstance = $(selectElement).selectize()[0].selectize;
+ 						const options = selectizeInstance.options;
+
+ 						selectizeInstance.settings.openOnFocus = false;
 
  						if (Object.keys(options).length === 0) {
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
+ 								selectizeInstance.addOption(newOption);
+ 							});
  						} else if (Object.keys(options).length === 1) {
- 							option1 = Object.keys(options)[0];
+ 							const option1 = Object.keys(options)[0];
  							selectizeInstance.removeOption(option1);
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
+ 								selectizeInstance.addOption(newOption);
+ 							});
  							selectizeInstance.setValue(option1);
-
-
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
- 							if (selectizeInstance.getValue() != "") {
- 								var selctedValue = selectizeInstance.getValue();
- 							}
+ 							let selctedValue = selectizeInstance.getValue();
  							selectizeInstance.clearOptions();
  							selectizeInstance.destroy();
+
  							selectizeInstance = $(selectElement).selectize()[0].selectize;
- 							for (let j = 0; j < data.length; j++) {
- 								var newOption = {
- 									value: data[j].barcode,
- 									text: data[j].barcode
+
+ 							data.forEach(item => {
+ 								const newOption = {
+ 									value: item.barcode,
+ 									text: item.barcode
  								};
- 								if (selectizeInstance != undefined) {
- 									selectizeInstance.addOption(newOption);
-
- 								}
- 							}
-
- 							if (selctedValue != undefined && selctedValue != "" && selctedValue != null) {
- 								selectizeInstance.setValue(selctedValue);
- 								selctedValue = "";
- 							}
- 							selectizeInstance.refreshOptions();
- 							selectizeInstance.close();
- 							selectizeInstance.on('change', function() {
- 								console.log("allzircons")
- 								GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 								selectizeInstance.addOption(newOption);
  							});
 
+ 							if (selctedValue) {
+ 								selectizeInstance.setValue(selctedValue);
+ 							}
  						}
+
+ 						selectizeInstance.settings.openOnFocus = true;
+ 						selectizeInstance.close();
+
  						selectizeInstance.on('change', function() {
- 							console.log("allzircons")
- 							GetZiroconDetails(selectizeInstance.getValue(), zircon[i].parentNode.nextElementSibling.children[0]);
+ 							GetZiroconDetails(this.getValue(), selectElement.parentNode.nextElementSibling.children[0]);
  						});
-
- 					}
- 					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
-
- 					// Loop through the selected div elements
- 					divsWithSiblings.forEach(div => {
- 						// Remove each div element
- 						div.remove();
  					});
 
+ 					const divsWithSiblings = document.querySelectorAll('div.selectize-control.single + div.selectize-control.single');
+ 					divsWithSiblings.forEach(div => {
+ 						div.remove();
+ 					});
  				}
  			});
  		}
+
 
  		function AddStoneSetter() {
  			var product_id = document.getElementsByClassName('code')[0].value;
@@ -1460,7 +1338,9 @@
  			const lastRetainedWeightValue = lastRetainedWeightInput.value;
 
  			var date = new Date().toISOString().slice(0, 10);
- 			area.innerHTML += `<hr>	<div class="mt-4 mt-lg-0">
+ 			area.innerHTML += `
+			<h1>Stone Setter</h1>
+			<hr>	<div class="mt-4 mt-lg-0">
 									<form id="stepthree" method="POST" enctype="multipart/form-data">
 										<?php
 
@@ -1568,7 +1448,7 @@
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total Quantity:</label>
 											<div class="col-sm-2">
 
-												<input type="number" name="zircon_total_quantity[]" value="" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
+												<input type="number" name="zircon_total_quantity[]" value="0" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
 											</div>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total Price:</label>
 											<div class="col-sm-3">
@@ -1668,14 +1548,11 @@
 											</div>
 											<div id="returned-area[]" class="row">
 												<h5>Zircon/Stone Return:</h5>
-												<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-													<div class="col-sm-2">
+												<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+													<div class="col-sm-3">
 
-														<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+														<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
 
-													</div>
-													<div class="col-sm-1 p-0">
-														<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
 													</div>
 													<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 													<div class="col-sm-2">
@@ -2659,14 +2536,17 @@
 
 											<input type="number" step="any" name="zircon_total[]" value="${data[i].z_total_price}" id="zircon_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
 										</div>
-									</div>
-									<div class="row mb-4">
+									</div>`;
+
+ 								if (data[i].stones.length > 0) {
+ 									content += `<div class="row mb-4">
 										<h5>Stone:</h5>
 										<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
 										<div class="col-sm-1">
 
 
 											<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+											
 												<option value="${data[0].stones[0].code}">${data[0].stones[0].code}</option>
 
 											</select>
@@ -2691,8 +2571,43 @@
 										</div>
 
 
-									</div>
-									<div id="area2">
+									</div>`;
+ 								} else {
+ 									content += `<div class="row mb-4">
+ 															<h5>Stone:</h5>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+ 															<div class="col-sm-1">
+
+
+ 																<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
+ 																	<option value="">Select a stone...</option>
+
+ 																</select>
+
+ 															</div>
+ 															<div class="col-sm-2 p-0">
+ 																<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
+ 															</div>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+ 															<div class="col-sm-2">
+
+ 																<input type="number" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Stone Weight">
+ 															</div>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 															<div class="col-sm-2">
+
+ 																<input type="number" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Stone Quantity">
+ 															</div>
+ 															<div class="col-sm-2">
+
+ 																<i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
+ 															</div>
+
+
+ 														</div>`;
+ 								}
+
+ 								content += `<div id="area2">
 
 									</div>
 									<div class="row mb-4">
@@ -2959,14 +2874,11 @@
 										</div>
 										<div id="returned-area[]" class="row">
 											<h5>Zircon/Stone Return:</h5>
-											<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-												<div class="col-sm-2">
+											<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+												<div class="col-sm-3">
 
-													<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+													<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
 
-												</div>
-												<div class="col-sm-1 p-0">
-													<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
 												</div>
 												<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 												<div class="col-sm-2">
@@ -3059,14 +2971,11 @@
 									</div>
 									<div id="returned-area[]" class="row">
 										<h5>Zircon/Stone Return:</h5>
-										<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-											<div class="col-sm-2">
+										<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+											<div class="col-sm-3">
 
-												<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Code">
+												<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
 
-											</div>
-											<div class="col-sm-1 p-0">
-												<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
 											</div>
 											<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 											<div class="col-sm-2">
@@ -3856,8 +3765,9 @@
  								}
  							}
 
-
+ 							selectizeInstance.settings.openOnFocus = false;
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.settings.openOnFocus = true;
  							selectizeInstance.close();
  						} else if (Object.keys(options).length === 1) {
  							option1 = Object.keys(options)[0];
@@ -3875,8 +3785,9 @@
 
  							selectizeInstance.setValue(option1);
 
-
+ 							selectizeInstance.settings.openOnFocus = false;
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.settings.openOnFocus = true;
  							selectizeInstance.close();
  						} else if (Object.keys(options).length > 1) {
  							selectizeInstance.clearOptions();
@@ -3892,8 +3803,9 @@
 
  								}
  							}
-
+ 							selectizeInstance.settings.openOnFocus = false;
  							selectizeInstance.refreshOptions();
+ 							selectizeInstance.settings.openOnFocus = true;
  							selectizeInstance.close();
  						}
  					}
@@ -4343,8 +4255,8 @@
  			e.preventDefault();
  			var save = document.getElementById("s_save");
  			var form = new FormData(this);
- 			for (var pair of form.entries()) {}
  			form.append('function', 'StepThree');
+
  			$.ajax({
  				url: "functions.php",
  				type: "POST",

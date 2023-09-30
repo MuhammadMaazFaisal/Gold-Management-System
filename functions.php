@@ -726,6 +726,10 @@ function StepThree()
     $total_s_weight = $_POST['stone_total_weight'];
     $total_s_quantity = $_POST['stone_total_quantity'];
     $grand_weight = $_POST['grand_total_weight'];
+    $total_z_weight[0] = $total_z_weight[0] === '' ? 0 : $total_z_weight[0];
+    $total_z_quantity[0] = $total_z_quantity[0] === '' ? 0 : $total_z_quantity[0];
+    $total_s_weight[0] = $total_s_weight[0] === '' ? 0 : $total_s_weight[0];
+    $total_s_quantity[0] = $total_s_quantity[0] === '' ? 0 : $total_s_quantity[0];
 
 
 
@@ -784,7 +788,7 @@ function StepThree()
     }
 
     for ($i = 0; $i < @count($z_code); $i++) {
-        if ($z_code[$i] != '') {
+        if ($z_code[$i] == '') {
             break;
         }
         $z_weight1 = $z_weight[$i];
@@ -805,9 +809,9 @@ function StepThree()
             array_push($array, 'success');
         }
     }
-
     for ($i = 0; $i < @count($s_code); $i++) {
-        if ($s_code[$i] != '') {
+   
+        if ($s_code[$i] == '') {
             break;
         }
         $s_weight1 = $s_weight[$i];
