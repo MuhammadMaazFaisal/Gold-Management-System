@@ -1849,7 +1849,7 @@ function GetProductData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT `id`, `status` FROM `product` WHERE `status`='SemiFinished'";
+    $getRecordQuery = "SELECT * FROM `product` WHERE `status`='SemiFinished'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

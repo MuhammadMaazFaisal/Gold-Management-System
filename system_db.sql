@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 23, 2023 at 06:46 PM
+-- Generation Time: Sep 30, 2023 at 07:46 PM
 -- Server version: 8.0.30
 -- PHP Version: 7.4.1
 
@@ -235,20 +235,21 @@ INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `
 
 CREATE TABLE `product` (
   `id` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL,
+  `date_created` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `status`) VALUES
-('AC0050001', 'Active'),
-('AC0050004', 'Active'),
-('AW0040003', 'Active'),
-('IM0030005', 'Active'),
-('RF0010002', 'Active'),
-('RF0010006', 'Active');
+INSERT INTO `product` (`id`, `status`, `date_created`) VALUES
+('AC0050001', 'SemiFinished', '2023-09-30 15:30:49'),
+('AC0050004', 'Active', '0000-00-00 00:00:00'),
+('AW0040003', 'Active', '0000-00-00 00:00:00'),
+('IM0030005', 'Active', '0000-00-00 00:00:00'),
+('RF0010002', 'Active', '0000-00-00 00:00:00'),
+('RF0010006', 'Active', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
