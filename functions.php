@@ -766,6 +766,8 @@ function StepThree()
     }
 
 
+    // echo json_encode($array, true);
+
     $qry3 = "SELECT * FROM `stone_setter_step` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
     $qryStatement3 = $pdo->prepare($qry3);
     $qryStatement3->bindParam(':product_id', $product_id[0]);
@@ -773,44 +775,6 @@ function StepThree()
     $qryStatement3->execute();
     $array = array();
     if ($qryStatement3->rowCount() > 0) {
-        // Update Zircon
-        $qry001 = "SELECT `code`, `weight`, `quantity` FROM `zircon` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
-        $qryStatement001 = $pdo->prepare($qry001);
-        $qryStatement001->bindParam(':product_id', $product_id[0]);
-        $qryStatement001->bindParam(':vendor_id', $vendor_id[0]);
-        $qryStatement001->execute();
-        $results = $qryStatement001->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($results as $result) {
-            $qryUpdate = "UPDATE `stock_details` 
-                      SET `weight` = `weight` + :weight, `quantity` = `quantity` + :quantity 
-                      WHERE `barcode` = :barcode LIMIT 1";
-            $updateStatement = $pdo->prepare($qryUpdate);
-            $updateStatement->bindParam(':weight', $result['weight']);
-            $updateStatement->bindParam(':quantity', $result['quantity']);
-            $updateStatement->bindParam(':barcode', $result['code']);
-            $updateStatement->execute();
-        }
-
-        // Update Stone
-        $qry002 = "SELECT `code`, `weight`, `quantity` FROM `stone` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
-        $qryStatement002 = $pdo->prepare($qry002);
-        $qryStatement002->bindParam(':product_id', $product_id[0]);
-        $qryStatement002->bindParam(':vendor_id', $vendor_id[0]);
-        $qryStatement002->execute();
-        $results002 = $qryStatement002->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($results002 as $result) {
-            $qryUpdate = "UPDATE `stock_details` 
-                      SET `weight` = `weight` + :weight, `quantity` = `quantity` + :quantity 
-                      WHERE `barcode` = :barcode 
-                      LIMIT 1";
-            $updateStatement = $pdo->prepare($qryUpdate);
-            $updateStatement->bindParam(':weight', $result['weight']);
-            $updateStatement->bindParam(':quantity', $result['quantity']);
-            $updateStatement->bindParam(':barcode', $result['code']);
-            $updateStatement->execute();
-        }
-
-        // Delete Records
         $qry2 = "DELETE FROM `zircon` WHERE `product_id` = :product_id and `vendor_id` = :vendor_id";
         $qryStatement2 = $pdo->prepare($qry2);
         $qryStatement2->bindParam(':product_id', $product_id[0]);
@@ -831,23 +795,10 @@ function StepThree()
         $z_quantity1 = $z_quantity[$i] ? $z_quantity[$i] : 0;
         $z_code1 = $z_code[$i];
 
-        // Subtract from stock_details first
-        $qryUpdateStock = "UPDATE `stock_details` 
-                           SET `weight` = `weight` - :z_weight, `quantity` = `quantity` - :z_quantity 
-                           WHERE `barcode` = :z_code 
-                           LIMIT 1";
-
-        $updateStockStmt = $pdo->prepare($qryUpdateStock);
-        $updateStockStmt->bindParam(':z_code', $z_code1);
-        $updateStockStmt->bindParam(':z_weight', $z_weight1);
-        $updateStockStmt->bindParam(':z_quantity', $z_quantity1);
-        $updateStockStmt->execute();
-
-        // Now insert into zircon
-        $qry = "INSERT INTO `zircon`(`code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) 
-                VALUES (:z_code,:vendor_id,:product_id,:z_weight,0,:z_quantity)";
+        $qry = "INSERT INTO `zircon`(`code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES (:z_code,:vendor_id,:product_id,:z_weight,0,:z_quantity)";
 
         $statement = $pdo->prepare($qry);
+
         $statement->bindParam(':z_code', $z_code1);
         $statement->bindParam(':product_id', $product_id[0]);
         $statement->bindParam(':z_weight', $z_weight1);
@@ -856,29 +807,18 @@ function StepThree()
 
         if ($statement->execute()) {
             array_push($array, 'success');
+            $stockqry="Update";
         }
     }
 
     for ($i = 0; $i < @count($s_code); $i++) {
-
+   
         if ($s_code[$i] == '') {
             break;
         }
         $s_weight1 = $s_weight[$i];
         $s_quantity1 = $s_quantity[$i] ? $s_quantity[$i] : 0;
         $s_code1 = $s_code[$i];
-        // Subtract from stock_details first
-        $qryUpdateStock = "UPDATE `stock_details` 
-                           SET `weight` = `weight` - :s_weight, `quantity` = `quantity` - :s_quantity 
-                           WHERE `barcode` = :s_code 
-                           LIMIT 1";
-
-        $updateStockStmt = $pdo->prepare($qryUpdateStock);
-        $updateStockStmt->bindParam(':s_code', $s_code1);
-        $updateStockStmt->bindParam(':s_weight', $s_weight1);
-        $updateStockStmt->bindParam(':s_quantity', $s_quantity1);
-        $updateStockStmt->execute();
-
         $qry1 = "INSERT INTO `stone`(`code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES (:s_code,:vendor_id,:product_id,0,:s_weight,:s_quantity)";
 
         $statement1 = $pdo->prepare($qry1);
@@ -894,28 +834,6 @@ function StepThree()
         }
     }
 
-    // $statement1 = $pdo->prepare($qry4);
-
-    // $statement1->bindParam(':product_id', $product_id[0]);
-    // $statement1->bindParam(':date', $date[0]);
-    // $statement1->bindParam(':vendor_id', $vendor_id[0]);
-    // $statement1->bindParam(':imageNamepo', $pName[0]);
-    // $statement1->bindParam(':details', $details[0]);
-    // $statement1->bindParam(':issued_weight', $issued_weight[0]);
-    // $statement1->bindParam(':total_z_price', $total_z_price[0]);
-    // $statement1->bindParam(':total_z_weight', $total_z_weight[0]);
-    // $statement1->bindParam(':total_z_quantity', $total_z_quantity[0]);
-    // $statement1->bindParam(':total_s_price', $total_s_price[0]);
-    // $statement1->bindParam(':total_s_weight', $total_s_weight[0]);
-    // $statement1->bindParam(':total_s_quantity', $total_s_quantity[0]);
-    // $statement1->bindParam(':grand_weight', $grand_weight[0]);
-    // $statement1->bindParam(':grand_price', $grand_price[0]);
-
-    // move_uploaded_file($imageTmpName[0], $pName[0]);
-
-    // if ($statement1->execute()) {
-    //     array_push($array, 'success');
-    // }
     echo json_encode($array, true);
 }
 
