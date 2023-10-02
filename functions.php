@@ -810,7 +810,6 @@ function StepThree()
             $stockqry="Update";
         }
     }
-
     for ($i = 0; $i < @count($s_code); $i++) {
    
         if ($s_code[$i] == '') {
