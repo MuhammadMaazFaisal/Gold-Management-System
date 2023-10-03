@@ -1830,7 +1830,7 @@
  						console.log(data);
  						Swal.fire({
  							title: 'Success!',
- 							text: 'Semi Finish Added Successfully!',
+ 							text: 'Product Added to Semi-Finished Successfully!',
  							icon: 'success',
  							confirmButtonText: 'Ok'
  						}).then((result) => {
@@ -4225,7 +4225,7 @@
  				success: function(data) {
  					console.log(data);
  					data = JSON.parse(data);
- 					if (data[0] == "success" && data[1] == "success") {
+ 					if (data[0] == "success") {
  						Swal.fire({
  							title: 'Success!',
  							text: 'Stone Setter Record Saved Successfully',
