@@ -213,7 +213,7 @@ function PrintSetter()
     $array = array();
     $id = $_POST['id'];
     $vendor_id = $_POST['vendor_id'];
-    $getRecordQuery = "SELECT ss.`Ssid`, ss.`product_id`, ss.`date`, ss.`vendor_id`, ss.`image`, ss.`detail`, ss.`retained_weight`, ss.`total_weight`, ss.`Issued_weight`, ss.`z_total_price`, ss.`z_total_weight`, ss.`z_total_quantity`, ss.`s_total_price`, ss.`s_total_weight`, ss.`s_total_quantity`, ss.`grand_weight`, ss.`grand_total`, ss.`status`, v.`type` AS vendor_type, v.`name` AS vendor_name, v.`18k`, v.`21k`, v.`22k`, v.`status` AS vendor_status, v.`date` AS vendor_date
+    $getRecordQuery = "SELECT ss.`Ssid`, ss.`product_id`, ss.`date`, ss.`vendor_id`, ss.`image`, ss.`detail`, ss.`retained_weight`, ss.`total_weight`, ss.`Issued_weight`, ss.`z_total_weight`, ss.`z_total_quantity`, ss.`s_total_weight`, ss.`s_total_quantity`, ss.`grand_weight`, ss.`status`, v.`type` AS vendor_type, v.`name` AS vendor_name, v.`18k`, v.`21k`, v.`22k`, v.`status` AS vendor_status, v.`date` AS vendor_date
     FROM `stone_setter_step` AS ss
     LEFT JOIN `vendor` AS v ON ss.`vendor_id` = v.`id`
     WHERE ss.`product_id` = :id AND ss.`vendor_id` = :v_id";

@@ -1666,13 +1666,13 @@
  			product.value = id;
 
  			$("#product").trigger('input');
-			RemoveSaveBtn();
- 			
+ 			RemoveSaveBtn();
+
 
  		}
 
-		function RemoveSaveBtn(){
-			$.ajax({
+ 		function RemoveSaveBtn() {
+ 			$.ajax({
  				url: "functions.php",
  				method: "POST",
  				data: {
@@ -1707,7 +1707,7 @@
  					}
  				}
  			});
-		}
+ 		}
 
 
  		function ReturnedPayable(element) {
@@ -1855,6 +1855,7 @@
  				},
  				success: function(data) {
  					data = JSON.parse(data);
+ 					console.log(data);
  					let printWindow = window.open("", "_blank");
  					if (data[0].purity == data[0]['18k']) {
  						var purity = '18k';
@@ -1904,7 +1905,7 @@
                 <body>
                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
                 <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
-                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
                 <p><span class="label" style="margin-right:6px;">Detail:</span><span>${data[0].details}</span></p>
                 <p><span class="label" style="margin-right:6px;">Type:</span><span>${data[0].type}</span></p>
                 <p><span class="label" style="margin-right:6px;">Quantity:</span><span>${data[0].quantity}</span></p>
@@ -2008,7 +2009,7 @@
                 <body>
 				<p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].polisher_step_date}</span></p>
                 <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
-                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].polisher_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].polisher_name}</span></p>
                 <p><span class="label" style="margin-right:6px;">Type:</span><span>${data[0].type}</span></p>
                 <p><span class="label" style="margin-right:6px;">Quantity:</span><span>${data[0].quantity}</span></p>
                 <p><span class="label" style="margin-right:6px;">Purity:</span><span>${purity}</span></p>
@@ -2110,7 +2111,7 @@
                 <body>
                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
                 <p><span class="label" style="margin-right:6px;">Barcode:</span><span>${data[0].product_id}</span></p>
-                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
                 <p><span class="label" style="margin-right:6px;">Issued Weight:</span><span>${data[0].Issued_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Zircon Weight:</span><span>${data[0].z_total_weight}</span></p>
                 <p><span class="label" style="margin-right:6px;">Stone Weight:</span><span>${data[0].s_total_weight}</span></p>
@@ -2205,8 +2206,8 @@
                 </head>
                 <body>
                 <p><span class="label"  style="margin-right:6px;">Date:</span><span>${data[0].date}</span></p>
-                <p><span class="label"  style="margin-right:6px;">Barcode:</span><span></span></p>
-                <p><span class="label"  style="margin-right:6px;">Name:</span><span>${data[0].vendor_name}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Barcode:</span><span>${data[0].product_id}</span></p>
+                <p><span class="label"  style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Received Weight:</span><span>${data[0].received_weight}</span></p>
                 <p><span class="label"  style="margin-right:6px;">Stone Weight:</span><span>${data[0].stone_weight}</span></p>
                 <p><span class="label"  style="margin-right:6px;">S-Quantity:</span><span>${data[0].shruded_quantity}</span></p>
@@ -2655,10 +2656,11 @@
  								document.getElementById("stone-setter-area").innerHTML += content;
 
 
- 								await GetReturnedData(id, data[i].vendor_id, i);
+
  								await GetZirconData(id, data[i].vendor_id, i);
  								await GetStoneData(id, data[i].vendor_id, i);
-								RemoveSaveBtn();
+ 								await GetReturnedData(id, data[i].vendor_id, i);
+ 								RemoveSaveBtn();
 
 
  							}
@@ -3078,14 +3080,11 @@
  						for (i = 1; i < data.length; i++) {
  							var div = document.createElement('div');
  							div.setAttribute('class', 'row mb-4 remove');
- 							div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
-									<div class="col-sm-2">
+ 							div.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+									<div class="col-sm-3">
 
-										<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Code" required>
+										<input type="text" name="r_code[]" id="r_code[]" value="${data[i].code}" class="form-control" placeholder="Detail">
 
-									</div>
-									<div class="col-sm-1 p-0">
-										<i class="fa fa-barcode fa-3x" onclick="BarCode(this)"></i>
 									</div>
 									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
 									<div class="col-sm-2">
@@ -3560,6 +3559,44 @@
  			GetAllZircons();
 
 
+ 		}
+
+ 		function AddReturned(element) {
+ 			var returned_area = element.parentNode.parentNode.parentNode;
+ 			var div2 = document.createElement('div');
+ 			div2.setAttribute('class', 'row mb-4 remove');
+ 			div2.innerHTML = `<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+									<div class="col-sm-3">
+
+										<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
+
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+									<div class="col-sm-2">
+										<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight" required>
+									</div>
+									<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+									<div class="col-sm-2">
+										<input type="number" step="any" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity" required>
+									</div>
+									<div class="col-sm-2">
+										<i class="delete-returned fa fa-minus-circle p-2"></i>
+									</div>`;
+ 			returned_area.appendChild(div2);
+ 			var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
+ 			var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
+ 			r_quantity.forEach(function(input) {
+ 				input.addEventListener('input', function() {
+ 					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 					ReturnedQuantity(current);
+ 				});
+ 			})
+ 			r_weight.forEach(function(input) {
+ 				input.addEventListener('input', function() {
+ 					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+ 					ReturnedWeight(current);
+ 				});
+ 			})
  		}
 
  		function CalculateDifference() {
@@ -4289,7 +4326,7 @@
  			e.preventDefault();
  			var save = document.getElementById("a_save");
  			save.disabled = true;
- 			var product = document.getElementById('product').value;
+ 			var product = document.getElementById('code').value;
  			var form = new FormData(this);
  			form.append('function', 'StepFour');
  			form.append('product_id', product);
@@ -4300,6 +4337,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
+ 					console.log(data)
  					data = JSON.parse(data);
  					if (data[0] == "success") {
  						Swal.fire({
