@@ -74,7 +74,6 @@ function GetBuyers()
     }
 }
 
-
 function SelectCash()
 {
     include 'session.php';
@@ -154,8 +153,6 @@ function GoldRecord()
         echo json_encode($getRecordStatement->errorInfo(), true);
     }
 }
-
-
 
 function SelectGold()
 {

@@ -386,6 +386,93 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
     }
 
+    function GetDataAll() {
+        if ($.fn.DataTable.isDataTable('#polisher-table')) {
+            $('#polisher-table').DataTable().destroy();
+        }
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "GetPolisherReportDataAll",
+            },
+            success: function(data) {
+                data = JSON.parse(data);
+                console.log(data);
+                var table = $('#polisher-table').DataTable({
+                    data: data,
+                    columns: [{
+                            data: 'date',
+                            title: 'Date'
+                        },
+                        {
+                            data: 'image',
+                            title: 'Pic',
+                            render: function(data, type, row, meta) {
+                                return '<img src="' + data + '" width="50" height="50"/>';
+                            }
+                        },
+                        {
+                            data: 'polisherbarcode',
+                            title: 'Barcode'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Vendor Name'
+                        },
+                        {
+                            data: 'm_details',
+                            title: 'Detail'
+                        },
+                        {
+                            data: 'm_type',
+                            title: 'type'
+                        },
+                        {
+                            data: 'm_quantity',
+                            title: 'quantity'
+                        },
+                        {
+                            data: 'difference',
+                            title: 'Difference'
+                        },
+                        {
+                            data: 'm_purity',
+                            title: 'purity'
+                        },
+                        {
+                            data: 'rate',
+                            title: 'Rate'
+                        },
+                        {
+                            data: 'Payable',
+                            title: '24k',
+                            className: 'metal',
+                        },
+                        {
+                            data: 'metal_pure_weight',
+                            title: '24K',
+                            className: 'jewellery column-border',
+                            render: function(data, type, row, meta) {
+                                if (row.metal_type === 'issued') {
+                                    return (data);
+                                } else {
+                                    return (-data);
+                                }
+                            }
+                        }
+                    ]
+                });
+                CalculateTotal();
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        GetDataAll();
+
+    });
+
     $(document).ready(function() {
         $('select').selectize({
             sortField: 'text'

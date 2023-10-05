@@ -395,6 +395,89 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
     }
 
+    function GetDataAll() {
+        if ($.fn.DataTable.isDataTable('#manufacturer-table')) {
+            $('#manufacturer-table').DataTable().destroy();
+        }
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "GetManufacturerReportDataAll",
+            },
+            success: function(data) {
+                
+                data = JSON.parse(data);
+                var table = $('#manufacturer-table').DataTable({
+                    data: data,
+                    columns: [{
+                            data: 'date',
+                            title: 'Date'
+                        },
+                        {
+                            data: 'image',
+                            title: 'Pic',
+                            render: function(data, type, row, meta) {
+                                return '<img src="' + data + '" width="50" height="50"/>';
+                            }
+                        },
+                        {
+                            data: 'barcode',
+                            title: 'Barcode'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Vendor Name'
+                        },
+                        {
+                            data: 'details',
+                            title: 'Detail'
+                        },
+                        {
+                            data: 'type',
+                            title: 'Type'
+                        },
+                        {
+                            data: 'quantity',
+                            title: 'Quantity'
+                        },
+                        {
+                            data: 'purity',
+                            title: 'purity'
+                        },
+                        {
+                            data: 'rate',
+                            title: 'Rate'
+                        },
+                        {
+                            data: 'tValues',
+                            title: '24k',
+                            className: 'metal',
+                        },
+                        {
+                            data: 'metal_pure_weight',
+                            title: '24K',
+                            className: 'jewellery column-border',
+                            render: function(data, type, row, meta) {
+                                if (row.metal_type === 'issued') {
+                                    return (data);
+                                } else {
+                                    return (-data);
+                                }
+                            }
+                        }
+                    ]
+                });
+                CalculateTotal();
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        GetDataAll();
+
+    });
+
     $(document).ready(function() {
         $('select').selectize({
             sortField: 'text'
@@ -421,6 +504,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
         });
     });
+
+    
 
     $(document).on('change', '#select-vendor', function(e) {
         e.preventDefault();

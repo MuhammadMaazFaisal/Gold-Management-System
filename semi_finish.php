@@ -276,6 +276,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 function: "GetProductData"
             },
             success: function(data) {
+                console.log(data);
                 data = JSON.parse(data);
                 console.log(data);
                 var table = $('#product-table').DataTable({
@@ -287,7 +288,26 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         {
                             data: 'date_created',
                             title: 'Date Created'
-                        }
+                        },
+                        {                        
+                            data: 'image',
+                            title: 'Pic',
+                            render: function(data, type, row, meta) {
+                                return '<img src="' + data + '" width="50" height="50"/>';
+                            }
+                        },
+                        {
+                            data: 'barcode',
+                            title: 'Barcode'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Vendor Name'
+                        },
+                        {
+                            data: 'type',
+                            title: 'Type'
+                        },
                         
 
 
