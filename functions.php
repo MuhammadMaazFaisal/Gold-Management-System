@@ -92,6 +92,8 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStoneSetterNames();
 } elseif ($_POST['function'] == 'PrintManufacturer') {
     PrintManufacturer();
+} elseif ($_POST['function'] == 'PrintSemiFinish') {
+    PrintSemiFinish();
 } elseif ($_POST['function'] == 'PrintPolisher') {
     PrintPolisher();
 } elseif ($_POST['function'] == 'PrintSetter') {
@@ -126,6 +128,8 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetProductData();
 } elseif ($_POST['function'] == 'GetSemiFinishStatus') {
     GetSemiFinishStatus();
+} elseif ($_POST['function'] == 'GetAdditionalAccountData') {
+    GetAdditionalAccountData();
 }
 function Logout()
 {
@@ -157,6 +161,36 @@ function GetlZirconDetails()
     $getRecordStatement->bindParam(':barcode', $_POST['barcode']);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function PrintSemiFinish()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT ms.id, ms.vendor_id, ms.product_id, ms.date, ms.image, v.name AS vendor_name, p.`id`, 
+    p.`status`, 
+    p.`date_created`,
+    v.`id`,
+    v.`name`,
+    s.`product_id`,
+    s.`Issued_weight`
+    FROM manufacturing_step AS ms
+    INNER JOIN vendor AS v ON ms.vendor_id = v.id
+    JOIN `stone_setter_step` s ON ms.`product_id` = s.`product_id`
+    JOIN `product` p ON ms.`product_id` = p.`id`
+    WHERE p.`status`='SemiFinished'";
+    
+    
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
         die;
     }
@@ -1247,23 +1281,34 @@ function GetReturnedStoneData()
     }
 }
 
-function GetAdditionalData()
+function GetAdditionalAccountData()
 {
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-
-    $id = $_POST['id'];
-    $qry = "SELECT * FROM additional_step WHERE product_id = :id";
-    $qryStatement = $pdo->prepare($qry);
-    $qryStatement->bindParam(':id', $id);
     $array = array();
-    if ($qryStatement->execute()) {
-        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($result, true);
+    $getRecordQuery = "SELECT 
+    v.`id`,
+    v.`name`,
+    a.`vendor_id`,
+    a.`date`,
+    a.`type`,
+    a.`amount`,
+    a.`product_id`,
+    m.`product_id`,
+    m.`barcode`
+    FROM `vendor` v
+    JOIN `additional_step` a ON v.`id` = a.`vendor_id`
+    JOIN `manufacturing_step` m ON a.`product_id` =  m.`product_id`
+    WHERE v.`id` = a.`vendor_id`";
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
     } else {
-        echo json_encode($qryStatement->errorInfo(), true);
+        echo json_encode($getRecordStatement->errorInfo(), true);
     }
 }
 
@@ -1916,59 +1961,55 @@ function GetProductData()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "SELECT 
-    `id`, 
-    `status`, 
-    `date_created`,
-    NULL as `type`, 
-    NULL as `name`, 
-    NULL as `vendor_id`, 
-    NULL as `product_id`,  
-    NULL as `image`, 
-    NULL as `details`, 
-    NULL as `quantity`, 
-    NULL as `purity`, 
-    NULL as `unpolish_weight`, 
-    NULL as `polish_weight`, 
-    NULL as `rate`,
-    NULL as `wastage`, 
-    NULL as `unpure_weight`, 
-    NULL as `pure_weight`, 
-    NULL as `tValues`, 
-    NULL as `barcode`,
-    NULL as `additional_status`,
-    NULL as `m_status`,
-    NULL as `m_date_created`
-    FROM `product` 
-    WHERE `status`='SemiFinished'
-
-    UNION ALL
-
-    SELECT 
-    v.`id`, 
-    v.`type`, 
-    v.`name`, 
-    m.`vendor_id`, 
+    m.`vendor_id`,
     m.`product_id`, 
-    m.`date`, 
-    m.`image`, 
-    m.`details`, 
-    m.`type`, 
-    m.`quantity`, 
-    m.`purity`, 
-    m.`unpolish_weight`, 
-    m.`polish_weight`, 
-    m.`rate`,
-    m.`wastage`, 
-    m.`unpure_weight`, 
-    m.`pure_weight`, 
-    m.`tValues`, 
+    m.`image`,  
     m.`barcode`,
-    m.`status` as additional_status,
-    m.`status` as m_status,
-    m.`date` as m_date_created
-    FROM `vendor` v 
-    JOIN `manufacturing_step` m ON v.`id` = m.`vendor_id`";
+    p.`id`, 
+    p.`status`, 
+    p.`date_created`,
+    v.`id`,
+    v.`name`,
+    s.`product_id`,
+    s.`Issued_weight`
+    FROM `manufacturing_step` m
+    JOIN `product` p ON m.`product_id` = p.`id`
+    JOIN `vendor` v ON m.`vendor_id` = v.`id`
+    JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
+    WHERE p.`status`='SemiFinished'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
 
+function GetAdditionalData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    m.`vendor_id`,
+    m.`product_id`, 
+    m.`image`,  
+    m.`barcode`,
+    p.`id`, 
+    p.`status`, 
+    p.`date_created`,
+    v.`id`,
+    v.`name`,
+    s.`product_id`,
+    s.`Issued_weight`
+    FROM `manufacturing_step` m
+    JOIN `product` p ON m.`product_id` = p.`id`
+    JOIN `vendor` v ON m.`vendor_id` = v.`id`
+    JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
+    WHERE p.`status`='SemiFinished'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

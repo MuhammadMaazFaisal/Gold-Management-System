@@ -173,7 +173,7 @@
                         <li><a href="manufacturing_report.php" data-key="t-register">Manufecturing Report</a></li>
                         <li><a href="polishing_report.php" data-key="t-register">Polishing Report</a></li>
                         <li><a href="#" data-key="t-register">Stone Setting Report</a></li>
-                        <li><a href="#" data-key="t-register">Addintional Accounts Report</a></li>
+                        <li><a href="additional_report.php" data-key="t-register">Additional Accounts Report</a></li>
                     </ul>
                 </li>
                 <li>

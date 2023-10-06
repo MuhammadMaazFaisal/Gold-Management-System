@@ -3818,22 +3818,6 @@
  			});
  		}
 
-
- 		// function GetData() {
- 		// 	$.ajax({
- 		// 		url: "functions.php",
- 		// 		type: "POST",
- 		// 		data: {
- 		// 			function: "GetProductData"
- 		// 		},
- 		// 		success: function(data) {
- 		// 			data = JSON.parse(data);
- 		// 			var semiId = data[i][0].id
- 		// 			console.log(data);
- 		// 		}
- 		// 	})
- 		// }
-
  		function ReturnedStoneListeners() {
  			var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
  			var r_weight = document.querySelectorAll('input[id="r_weight[]"]');

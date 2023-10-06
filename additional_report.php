@@ -86,7 +86,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             <div class="card ">
                                 <div class="card-header card border border-danger">
                                     <h4 class="card-title">
-                                        Semi Finished Products
+                                        Additional Accounts Report
                                     </h4>
 
                                 </div>
@@ -106,11 +106,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-success waves-effect waves-light mt-3" onclick="PrintSemiFinish()">Print</button>
+                                            <button type="button" class="btn btn-success waves-effect waves-light mt-3" onclick="PrintAdditional()">Print</button>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -273,105 +273,105 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 <script>
 
-function PrintSemiFinish() {
+// function PrintAdditional() {
  			
- 			$.ajax({
- 				url: "functions.php",
- 				type: "POST",
- 				data: {
- 					function: "PrintSemiFinish",
- 				},
- 				success: function(data) {
-                    console.log(data);
- 					data = JSON.parse(data);
- 					console.log(data);
- 					let printWindow = window.open("", "_blank");
+//  			$.ajax({
+//  				url: "functions.php",
+//  				type: "POST",
+//  				data: {
+//  					function: "PrintAdditional",
+//  				},
+//  				success: function(data) {
+//                     console.log(data);
+//  					data = JSON.parse(data);
+//  					console.log(data);
+//  					let printWindow = window.open("", "_blank");
 
 
- 					// Generate slip content
- 					let slipContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                <style>
-                    @media print {
-                        @page {
-                            size: 80mm 200mm;
-                            margin: 0;
-							margin-top:-20px;
-                        }
+//  					// Generate slip content
+//  					let slipContent = `
+//                 <!DOCTYPE html>
+//                 <html>
+//                 <head>
+//                 <style>
+//                     @media print {
+//                         @page {
+//                             size: 80mm 200mm;
+//                             margin: 0;
+// 							margin-top:-20px;
+//                         }
 
-                        body {
-                            font-family: Arial, sans-serif;
-                            font-size: 12px;
-                            padding: 10px;
-                        }
+//                         body {
+//                             font-family: Arial, sans-serif;
+//                             font-size: 12px;
+//                             padding: 10px;
+//                         }
 
-                        h1 {
-                            font-size: 16px;
-                            text-align: center;
-                            margin: 10px 0;
-                            color: #333;
-                        }
+//                         h1 {
+//                             font-size: 16px;
+//                             text-align: center;
+//                             margin: 10px 0;
+//                             color: #333;
+//                         }
 
-                        p {
-                            margin-bottom: 5px;
-                        }
+//                         p {
+//                             margin-bottom: 5px;
+//                         }
 
-                        .label {
-                            font-weight: bold;
-                        }
-                    }
-                </style>
-                </head>
-                <body>
-                <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date_created}</span></p>
-                <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
-                <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
-                <p><span class="label" style="margin-right:6px;">Weight</span><span>:${data[0].Issued_weight}</span></p>
-				<svg id="barcode"></svg>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
-				<script>
-            // Function to render barcode
-            function renderBarcode() {
-                const barcodeElement = document.getElementById("barcode");
-                if (barcodeElement) {
-                    JsBarcode(barcodeElement, "${data[0].product_id}", {
-                        format: "CODE128",
-                        width: 2,
-                        height: 50,
-                    });
-                    window.print();
-                } else {
-                    // Barcode element not found, retry after a short delay
-                    setTimeout(renderBarcode, 100);
-                }
-            }
+//                         .label {
+//                             font-weight: bold;
+//                         }
+//                     }
+//                 </style>
+//                 </head>
+//                 <body>
+//                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date_created}</span></p>
+//                 <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
+//                 <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
+//                 <p><span class="label" style="margin-right:6px;">Weight</span><span>:${data[0].Issued_weight}</span></p>
+// 				<svg id="barcode"></svg>
+// 				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+// 				<script>
+//             // Function to render barcode
+//             function renderBarcode() {
+//                 const barcodeElement = document.getElementById("barcode");
+//                 if (barcodeElement) {
+//                     JsBarcode(barcodeElement, "${data[0].product_id}", {
+//                         format: "CODE128",
+//                         width: 2,
+//                         height: 50,
+//                     });
+//                     window.print();
+//                 } else {
+//                     // Barcode element not found, retry after a short delay
+//                     setTimeout(renderBarcode, 100);
+//                 }
+//             }
 
-            // Start rendering barcode
-            renderBarcode();
-        <\/script>
-    </body>
-    </html>
-            `;
+//             // Start rendering barcode
+//             renderBarcode();
+//         <\/script>
+//     </body>
+//     </html>
+//             `;
 
- 					// Write slip content to the new tab
- 					printWindow.document.open();
- 					printWindow.document.write(slipContent);
- 					printWindow.print();
- 					printWindow.document.close();
+//  					// Write slip content to the new tab
+//  					printWindow.document.open();
+//  					printWindow.document.write(slipContent);
+//  					printWindow.print();
+//  					printWindow.document.close();
 
 
- 				}
- 			});
- 		}
+//  				}
+//  			});
+//  		}
 
     function GetData() {
         $.ajax({
             url: "functions.php",
             type: "POST",
             data: {
-                function: "GetProductData"
+                function: "GetAdditionalAccountData"
             },
             success: function(data) {
                 data = JSON.parse(data);
@@ -379,31 +379,25 @@ function PrintSemiFinish() {
                 var table = $('#product-table').DataTable({
                     data: data,
                     columns: [{
-                            data: 'id',
-                            title: 'P_ID'
+                        
+                            data: 'date',
+                            title: 'Date'
                         },
                         {
-                            data: 'date_created',
-                            title: 'Date Created'
-                        },
-                        {
-                            data: 'image',
-                            title: 'Pic',
-                            render: function(data, type, row, meta) {
-                                return '<img src="' + data + '" width="50" height="50"/>';
-                            }
+                            data: 'name',
+                            title: 'Name'
                         },
                         {
                             data: 'barcode',
                             title: 'Product Code'
                         },
                         {
-                            data: 'name',
-                            title: 'Manufacturer Name'
+                            data: 'type',
+                            title: 'Type'
                         },
                         {
-                            data: 'Issued_weight',
-                            title: 'Weight'
+                            data: 'amount',
+                            title: 'Amount'
                         },
 
 
