@@ -130,6 +130,10 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetSemiFinishStatus();
 } elseif ($_POST['function'] == 'GetAdditionalAccountData') {
     GetAdditionalAccountData();
+}  elseif ($_POST['function'] == 'GetStoneSetterIssued') {
+    GetStoneSetterIssued();
+}  elseif ($_POST['function'] == 'GetStoneSetterReceived') {
+    GetStoneSetterReceived();
 }
 function Logout()
 {
@@ -1302,6 +1306,74 @@ function GetAdditionalAccountData()
     JOIN `additional_step` a ON v.`id` = a.`vendor_id`
     JOIN `manufacturing_step` m ON a.`product_id` =  m.`product_id`
     WHERE v.`id` = a.`vendor_id`";
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetStoneSetterIssued()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    v.`id`,
+    v.`name`,
+    ss.`vendor_id`,
+    ss.`date`,
+    ss.`image`,
+    ss.`z_total_weight`,
+    ss.`s_total_weight`,
+    ss.`grand_weight`,
+    ss.`product_id`,
+    m.`product_id`,
+    m.`barcode`
+    FROM `vendor` v
+    JOIN `stone_setter_step` ss ON v.`id` = ss.`vendor_id`
+    JOIN `manufacturing_step` m ON ss.`product_id` =  m.`product_id`
+    WHERE v.`id` = ss.`vendor_id`";
+
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetStoneSetterReceived()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    v.`id`,
+    v.`name`,
+    ss.`vendor_id`,
+    ss.`date`,
+    ss.`received_weight`,
+    ss.`rate`,
+    ss.`stone_quantity`,
+    ss.`wastage`,
+    ss.`grand_weight`,
+    ss.`payable`,
+    ss.`product_id`,
+    m.`product_id`,
+    m.`barcode`
+    FROM `vendor` v
+    JOIN `returned_stone_step` ss ON v.`id` = ss.`vendor_id`
+    JOIN `manufacturing_step` m ON ss.`product_id` =  m.`product_id`
+    WHERE v.`id` = ss.`vendor_id`";
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
