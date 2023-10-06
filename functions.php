@@ -1992,30 +1992,17 @@ function GetAdditionalData()
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
+
+    $id = $_POST['id'];
+    $qry = "SELECT * FROM additional_step WHERE product_id = :id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':id', $id);
     $array = array();
-    $getRecordQuery = "SELECT 
-    m.`vendor_id`,
-    m.`product_id`, 
-    m.`image`,  
-    m.`barcode`,
-    p.`id`, 
-    p.`status`, 
-    p.`date_created`,
-    v.`id`,
-    v.`name`,
-    s.`product_id`,
-    s.`Issued_weight`
-    FROM `manufacturing_step` m
-    JOIN `product` p ON m.`product_id` = p.`id`
-    JOIN `vendor` v ON m.`vendor_id` = v.`id`
-    JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
-    WHERE p.`status`='SemiFinished'";
-    $getRecordStatement = $pdo->prepare($getRecordQuery);
-    if ($getRecordStatement->execute()) {
-        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($array, true);
+    if ($qryStatement->execute()) {
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, true);
     } else {
-        echo json_encode($getRecordStatement->errorInfo(), true);
+        echo json_encode($qryStatement->errorInfo(), true);
     }
 }
 
