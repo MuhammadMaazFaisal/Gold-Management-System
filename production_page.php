@@ -1219,8 +1219,6 @@
  								selectizeInstance.addOption(newOption);
  							});
  							selectizeInstance.setValue(option1);
-							selectizeInstance.trigger('change');
-							alert("triggerred");
 							GetZiroconDetails(selectizeInstance.getValue(), selectElement.parentNode.nextElementSibling.children[0]);
  						} else if (Object.keys(options).length > 1) {
  							let selctedValue = selectizeInstance.getValue();
