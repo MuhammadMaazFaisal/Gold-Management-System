@@ -1944,7 +1944,7 @@
  					// Write slip content to the new tab
  					printWindow.document.open();
  					printWindow.document.write(slipContent);
- 					printWindow.print();
+ 					// printWindow.print();
  					printWindow.document.close();
 
 
@@ -2048,7 +2048,7 @@
  					// Write slip content to the new tab
  					printWindow.document.open();
  					printWindow.document.write(slipContent);
- 					printWindow.print();
+ 					// printWindow.print();
  					printWindow.document.close();
 
 
@@ -2146,7 +2146,7 @@
  					// Write slip content to the new tab
  					printWindow.document.open();
  					printWindow.document.write(slipContent);
- 					printWindow.print();
+ 					// printWindow.print();
  					printWindow.document.close();
 
 
@@ -2244,7 +2244,7 @@
  					// Write slip content to the new tab
  					printWindow.document.open();
  					printWindow.document.write(slipContent);
- 					printWindow.print();
+ 					// printWindow.print();
  					printWindow.document.close();
 
 

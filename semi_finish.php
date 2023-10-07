@@ -358,7 +358,6 @@ function PrintSemiFinish() {
  					// Write slip content to the new tab
  					printWindow.document.open();
  					printWindow.document.write(slipContent);
- 					printWindow.print();
  					printWindow.document.close();
 
 
@@ -378,13 +377,10 @@ function PrintSemiFinish() {
                 console.log(data);
                 var table = $('#product-table').DataTable({
                     data: data,
-                    columns: [{
-                            data: 'id',
-                            title: 'P_ID'
-                        },
+                    columns: [
                         {
-                            data: 'date_created',
-                            title: 'Date Created'
+                            data: 'product_id',
+                            title: 'Product ID'
                         },
                         {
                             data: 'image',
@@ -394,10 +390,6 @@ function PrintSemiFinish() {
                             }
                         },
                         {
-                            data: 'barcode',
-                            title: 'Product Code'
-                        },
-                        {
                             data: 'name',
                             title: 'Manufacturer Name'
                         },
@@ -405,6 +397,24 @@ function PrintSemiFinish() {
                             data: 'Issued_weight',
                             title: 'Weight'
                         },
+                        {
+                            data: 'date_created',
+                            title: 'Date Created'
+                        },
+                        {
+                            data: 'date_created',
+                            title: 'Tag',
+                            render: function(data, type, row) {
+                                if (type === 'display' || type === 'filter') {
+                                    // Create a button element with the barcode as a data attribute
+                                    return '<button class="print-button" onclick=Print(this)>Print</button>';
+                                } else {
+                                    return data;
+                                }
+                            }
+                        }
+                        
+                        
 
 
 

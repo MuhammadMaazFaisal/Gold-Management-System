@@ -93,11 +93,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <div class="card-body px-4 ">
 
                                     <div class="row">
-                                    <h3 class="mt-5">
-                                        Issued Report:
-                                    
-                                    
-                                    <hr></h3>
+                                        <h3 class="mt-5">
+                                            Issued Report:
+
+
+                                            <hr>
+                                        </h3>
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">
@@ -113,11 +114,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     </div>
 
                                     <div class="row">
-                                    <h3 class="mt-5">
-                                        Received Report:
-                                    
-                                    
-                                    <hr></h3>
+                                        <h3 class="mt-5">
+                                            Received Report:
+
+
+                                            <hr>
+                                        </h3>
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">
@@ -298,99 +300,98 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 </html>
 
 <script>
+    // function PrintAdditional() {
 
-// function PrintAdditional() {
- 			
-//  			$.ajax({
-//  				url: "functions.php",
-//  				type: "POST",
-//  				data: {
-//  					function: "PrintAdditional",
-//  				},
-//  				success: function(data) {
-//                     console.log(data);
-//  					data = JSON.parse(data);
-//  					console.log(data);
-//  					let printWindow = window.open("", "_blank");
-
-
-//  					// Generate slip content
-//  					let slipContent = `
-//                 <!DOCTYPE html>
-//                 <html>
-//                 <head>
-//                 <style>
-//                     @media print {
-//                         @page {
-//                             size: 80mm 200mm;
-//                             margin: 0;
-// 							margin-top:-20px;
-//                         }
-
-//                         body {
-//                             font-family: Arial, sans-serif;
-//                             font-size: 12px;
-//                             padding: 10px;
-//                         }
-
-//                         h1 {
-//                             font-size: 16px;
-//                             text-align: center;
-//                             margin: 10px 0;
-//                             color: #333;
-//                         }
-
-//                         p {
-//                             margin-bottom: 5px;
-//                         }
-
-//                         .label {
-//                             font-weight: bold;
-//                         }
-//                     }
-//                 </style>
-//                 </head>
-//                 <body>
-//                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date_created}</span></p>
-//                 <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
-//                 <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
-//                 <p><span class="label" style="margin-right:6px;">Weight</span><span>:${data[0].Issued_weight}</span></p>
-// 				<svg id="barcode"></svg>
-// 				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
-// 				<script>
-//             // Function to render barcode
-//             function renderBarcode() {
-//                 const barcodeElement = document.getElementById("barcode");
-//                 if (barcodeElement) {
-//                     JsBarcode(barcodeElement, "${data[0].product_id}", {
-//                         format: "CODE128",
-//                         width: 2,
-//                         height: 50,
-//                     });
-//                     window.print();
-//                 } else {
-//                     // Barcode element not found, retry after a short delay
-//                     setTimeout(renderBarcode, 100);
-//                 }
-//             }
-
-//             // Start rendering barcode
-//             renderBarcode();
-//         <\/script>
-//     </body>
-//     </html>
-//             `;
-
-//  					// Write slip content to the new tab
-//  					printWindow.document.open();
-//  					printWindow.document.write(slipContent);
-//  					printWindow.print();
-//  					printWindow.document.close();
+    //  			$.ajax({
+    //  				url: "functions.php",
+    //  				type: "POST",
+    //  				data: {
+    //  					function: "PrintAdditional",
+    //  				},
+    //  				success: function(data) {
+    //                     console.log(data);
+    //  					data = JSON.parse(data);
+    //  					console.log(data);
+    //  					let printWindow = window.open("", "_blank");
 
 
-//  				}
-//  			});
-//  		}
+    //  					// Generate slip content
+    //  					let slipContent = `
+    //                 <!DOCTYPE html>
+    //                 <html>
+    //                 <head>
+    //                 <style>
+    //                     @media print {
+    //                         @page {
+    //                             size: 80mm 200mm;
+    //                             margin: 0;
+    // 							margin-top:-20px;
+    //                         }
+
+    //                         body {
+    //                             font-family: Arial, sans-serif;
+    //                             font-size: 12px;
+    //                             padding: 10px;
+    //                         }
+
+    //                         h1 {
+    //                             font-size: 16px;
+    //                             text-align: center;
+    //                             margin: 10px 0;
+    //                             color: #333;
+    //                         }
+
+    //                         p {
+    //                             margin-bottom: 5px;
+    //                         }
+
+    //                         .label {
+    //                             font-weight: bold;
+    //                         }
+    //                     }
+    //                 </style>
+    //                 </head>
+    //                 <body>
+    //                 <p><span class="label" style="margin-right:6px;">Date:</span><span>${data[0].date_created}</span></p>
+    //                 <p><span class="label" style="margin-right:6px;">Barcode</span><span>:${data[0].product_id}</span></p>
+    //                 <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].vendor_id} | ${data[0].vendor_name}</span></p>
+    //                 <p><span class="label" style="margin-right:6px;">Weight</span><span>:${data[0].Issued_weight}</span></p>
+    // 				<svg id="barcode"></svg>
+    // 				<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+    // 				<script>
+    //             // Function to render barcode
+    //             function renderBarcode() {
+    //                 const barcodeElement = document.getElementById("barcode");
+    //                 if (barcodeElement) {
+    //                     JsBarcode(barcodeElement, "${data[0].product_id}", {
+    //                         format: "CODE128",
+    //                         width: 2,
+    //                         height: 50,
+    //                     });
+    //                     window.print();
+    //                 } else {
+    //                     // Barcode element not found, retry after a short delay
+    //                     setTimeout(renderBarcode, 100);
+    //                 }
+    //             }
+
+    //             // Start rendering barcode
+    //             renderBarcode();
+    //         <\/script>
+    //     </body>
+    //     </html>
+    //             `;
+
+    //  					// Write slip content to the new tab
+    //  					printWindow.document.open();
+    //  					printWindow.document.write(slipContent);
+    //  					printWindow.print();
+    //  					printWindow.document.close();
+
+
+    //  				}
+    //  			});
+    //  		}
 
     function GetDataIssued() {
         $.ajax({
@@ -406,17 +407,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 var table = $('#product-table1').DataTable({
                     data: data,
                     columns: [{
-                        
-                            data: 'date',
-                            title: 'Date'
+                            data: 'product_id',
+                            title: 'Product ID'
                         },
                         {
                             data: 'name',
                             title: 'Name'
-                        },
-                        {
-                            data: 'barcode',
-                            title: 'Product Code'
                         },
                         // {
                         //     data: 'type',
@@ -433,6 +429,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         {
                             data: 'grand_weight',
                             title: 'Grand Total Weight'
+                        },
+                        {
+                            data: 'date',
+                            title: 'Date'
                         },
 
 
@@ -460,18 +460,14 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 var table = $('#product-table2').DataTable({
                     data: data,
                     columns: [{
-                        
-                            data: 'date',
-                            title: 'Date'
+                            data: 'product_id',
+                            title: 'Product ID'
                         },
                         // {
                         //     data: 'name',
                         //     title: 'Name'
                         // },
-                        // {
-                        //     data: 'barcode',
-                        //     title: 'Product Code'
-                        // },
+
                         {
                             data: 'received_weight',
                             title: 'Returned Weight'
@@ -482,7 +478,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         },
                         {
                             data: 'stone_quantity',
-                            title: 'Stone Quantity' 
+                            title: 'Stone Quantity'
                         },
                         {
                             data: 'wastage',
@@ -491,11 +487,15 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         {
                             data: 'grand_weight',
                             title: 'Grand Total'
-                        }, 
+                        },
                         {
                             data: 'payable',
                             title: 'Payable'
-                        }, 
+                        },
+                        {
+                            data: 'date',
+                            title: 'Date'
+                        },
 
 
 
@@ -512,5 +512,4 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         GetDataIssued();
         GetDataReceived();
     });
-
 </script>
