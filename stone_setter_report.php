@@ -93,9 +93,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <div class="card-body px-4 ">
 
                                     <div class="row">
-                                    <h4 class="card-title">
-                                        Issued
-                                    </h4>
+                                    <h3 class="mt-5">
+                                        Issued Report:
+                                    
+                                    
+                                    <hr></h3>
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">
@@ -111,9 +113,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     </div>
 
                                     <div class="row">
-                                    <h4 class="card-title">
-                                        Received
-                                    </h4>
+                                    <h3 class="mt-5">
+                                        Received Report:
+                                    
+                                    
+                                    <hr></h3>
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">

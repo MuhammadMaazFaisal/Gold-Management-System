@@ -971,8 +971,8 @@ function ReturnedStepThree()
     $product_id = $_POST['product_id'];
     $vendor_id = $_POST['vendor_id'];
     $received_weight = $_POST['received_weight'];
-    $r_stone_weight = $_POST['r_stone_weight'];
-    $r_stone_quantity = $_POST['r_stone_quantity'];
+    $r_stone_weight = $_POST['r_stone_weight'] ? $_POST['r_stone_weight'] : 0;
+    $r_stone_quantity = $_POST['r_stone_quantity'] ? $_POST['r_stone_quantity'] : 0;
     $r_total_weight = $_POST['r_total_weight'];
     $r_rate = $_POST['r_rate'];
     $r_wastage = $_POST['r_wastage'];
@@ -1023,6 +1023,9 @@ function ReturnedStepThree()
 
     if (is_array($r_code)) {
         for ($i = 0; $i < @count($r_code); $i++) {
+            if($r_code[$i] == ''){
+                break;
+            }
             $r_code1 = $r_code[$i];
             $r_weight1 = $r_weight[$i];
             $r_quantity1 = $r_quantity[$i];
@@ -1039,7 +1042,6 @@ function ReturnedStepThree()
             }
         }
     }
-    array_push($array, $r_code);
     echo json_encode($array, true);
 }
 

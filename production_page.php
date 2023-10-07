@@ -1219,6 +1219,9 @@
  								selectizeInstance.addOption(newOption);
  							});
  							selectizeInstance.setValue(option1);
+							selectizeInstance.trigger('change');
+							alert("triggerred");
+							GetZiroconDetails(selectizeInstance.getValue(), selectElement.parentNode.nextElementSibling.children[0]);
  						} else if (Object.keys(options).length > 1) {
  							let selctedValue = selectizeInstance.getValue();
  							selectizeInstance.clearOptions();
@@ -4286,8 +4289,9 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
+					console.log(data);
  					data = JSON.parse(data);
- 					if (data[0] == "success" && data[1] == "success") {
+ 					if (data[0] == "success") {
  						Swal.fire({
  							title: 'Success!',
  							text: 'Stone Setter Record Saved Successfully',
