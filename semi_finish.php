@@ -360,7 +360,6 @@ function PrintSemiFinish() {
  					printWindow.document.write(slipContent);
  					printWindow.document.close();
 
-
  				}
  			});
  		}
@@ -407,7 +406,7 @@ function PrintSemiFinish() {
                             render: function(data, type, row) {
                                 if (type === 'display' || type === 'filter') {
                                     // Create a button element with the barcode as a data attribute
-                                    return '<button class="print-button" onclick=Print(this)>Print</button>';
+                                    return '<button class="print-button" onclick=PrintSemiFinish(this)>Print</button>';
                                 } else {
                                     return data;
                                 }
