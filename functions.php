@@ -1064,7 +1064,7 @@ function StepFour()
     $qryStatement1 = $pdo->prepare($qry1);
     $qryStatement1->bindParam(':product_id', $product_id);
     $qryStatement1->execute();
-    $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
+    // $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
 
     $qry = "Insert into `additional_step`(`product_id`,`vendor_id`,`type`,`amount`,`date`,`status`) VALUES (:product_id,:vendor_id,:type,:amount,:date,'Active')";
 
