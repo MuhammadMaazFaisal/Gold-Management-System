@@ -47,7 +47,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="assets/images/favicon.ico">
 
-	<link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+	<link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet"
+		type="text/css" />
 
 	<?php include 'layouts/head-style.php'; ?>
 </head>
@@ -83,7 +84,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 									</div>
 									<div class="col d-flex justify-content-end me-4">
-										<button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="SelectMetal2()" data-bs-target="#product-modal">
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+											onclick="SelectMetal2()" data-bs-target="#product-modal">
 											Show History
 										</button>
 									</div>
@@ -100,41 +102,62 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 														$randomgold = random_int(0000000000, 929900000000);
 														echo "<input type='hidden' name='goldbarcode' value='$randomgold' class='form-control'>";
 														?>
-														<input style="display: none;" type="number" step="any" name="product_id" id="product_id" class="form-control">
+														<input style="display: none;" type="number" step="any"
+															name="product_id" id="product_id" class="form-control">
 														<div class="row mb-4">
-															<label for="date" class="col-sm-1 col-form-label">Date:</label>
+															<label for="date"
+																class="col-sm-1 col-form-label">Date:</label>
 															<div class="col-sm-5">
-																<input type="date" name="date" id="date" class="form-control" placeholder="Date">
+																<input type="date" name="date" id="date"
+																	class="form-control" placeholder="Date">
 															</div>
-															<label for="vendor" class="col-sm-1 col-form-label">Name:</label>
+															<label for="vendor"
+																class="col-sm-1 col-form-label">Name:</label>
 															<div class="col-sm-5">
-																<select id="vendor" name="vendor" required class="form-control form-select"></select>
+																<select id="vendor" name="vendor" required
+																	class="form-control form-select"></select>
 															</div>
 														</div>
 														<div class="row mb-4">
-															<label for="detail" class="col-sm-1 col-form-label">Details:</label>
+															<label for="detail"
+																class="col-sm-1 col-form-label">Details:</label>
 															<div class="col-sm-11">
-																<textarea type="text" name="detail" id="detail" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
+																<textarea type="text" name="detail" id="detail"
+																	class="form-control" style="height: 107px;"
+																	placeholder="Details"></textarea>
 															</div>
 														</div>
 														<div class="row mb-5">
-															<label for="issued_weight" class="col-sm-1 col-form-label">Issued Weight:</label>
+															<label for="issued_weight"
+																class="col-sm-1 col-form-label">Issued Weight:</label>
 															<div class="col-sm-2">
-																<input type="number" step="any" name="issued_weight" id="issued_weight" class="form-control" placeholder="Gold Issued Weight">
+																<input type="number" step="any" name="issued_weight"
+																	id="issued_weight" class="form-control"
+																	placeholder="Gold Issued Weight">
 															</div>
-															<label for="purity" class="col-sm-1 col-form-label">Purity:</label>
+															<label for="purity"
+																class="col-sm-1 col-form-label">Purity:</label>
 															<div class="col-sm-3">
-																<input type="number" step="any" name="purity" id="purity" class="form-control" placeholder="Purity">
+																<input type="number" step="any" name="purity"
+																	id="purity" class="form-control"
+																	placeholder="Purity">
 															</div>
-															<label for="pure_weight" class="col-sm-1 col-form-label">Pure Weight Issued:</label>
+															<label for="pure_weight"
+																class="col-sm-1 col-form-label">Pure Weight
+																Issued:</label>
 															<div class="col-sm-3">
-																<input type="number" step="any" name="pure_weight" id="pure_weight" class="form-control" placeholder="Pure Weight Issued">
+																<input type="number" step="any" name="pure_weight"
+																	id="pure_weight" class="form-control"
+																	placeholder="Pure Weight Issued">
 															</div>
 															<div class="row d-flex justify-content-end">
 																<div class="d-flex justify-content-end">
-																	<button type="button" class="btn btn-primary mx-1" onclick="Print()">Print</button>
-																	<button type="button" class="btn btn-danger mx-1" onclick="Delete()">Delete</button>
-																	<button type="submit" class="btn btn-primary">Save</button>
+																	<button type="button" class="btn btn-primary mx-1"
+																		onclick="Print()">Print</button>
+																	<button type="button" class="btn btn-danger mx-1"
+																		onclick="Delete()">Delete</button>
+																	<button type="submit"
+																		class="btn btn-primary">Save</button>
 																</div>
 															</div>
 														</div>
@@ -194,7 +217,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 								<label for="total_issued_weight" class="form-label">Total Pure Weight:</label>
 							</div>
 							<div class="col-3">
-								<input type="number" step="any" id="total_pure_weight" class="form-control" placeholder="Total Pure Weight">
+								<input type="number" step="any" id="total_pure_weight" class="form-control"
+									placeholder="Total Pure Weight">
 							</div>
 						</div>
 					</div>
@@ -223,92 +247,110 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 				<div class="p-4">
 					<h6 class="mb-3">Layout</h6>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout" id="layout-vertical" value="vertical">
+						<input class="form-check-input" type="radio" name="layout" id="layout-vertical"
+							value="vertical">
 						<label class="form-check-label" for="layout-vertical">Vertical</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
+						<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light"
+							value="light">
 						<label class="form-check-label" for="layout-mode-light">Light</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
+						<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark"
+							value="dark">
 						<label class="form-check-label" for="layout-mode-dark">Dark</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+						<input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild"
+							value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
 						<label class="form-check-label" for="layout-width-fuild">Fluid</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+						<input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed"
+							value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
 						<label class="form-check-label" for="layout-width-boxed">Boxed</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+						<input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed"
+							value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
 						<label class="form-check-label" for="layout-position-fixed">Fixed</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+						<input class="form-check-input" type="radio" name="layout-position"
+							id="layout-position-scrollable" value="scrollable"
+							onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
 						<label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+						<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light"
+							value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
 						<label class="form-check-label" for="topbar-color-light">Light</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+						<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark"
+							value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
 						<label class="form-check-label" for="topbar-color-dark">Dark</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
 
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default"
+							value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
 						<label class="form-check-label" for="sidebar-size-default">Default</label>
 					</div>
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact"
+							value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
 						<label class="form-check-label" for="sidebar-size-compact">Compact</label>
 					</div>
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+						<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small"
+							value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
 						<label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
 
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light"
+							value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
 						<label class="form-check-label" for="sidebar-color-light">Light</label>
 					</div>
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark"
+							value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
 						<label class="form-check-label" for="sidebar-color-dark">Dark</label>
 					</div>
 					<div class="form-check sidebar-setting">
-						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+						<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand"
+							value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
 						<label class="form-check-label" for="sidebar-color-brand">Brand</label>
 					</div>
 
 					<h6 class="mt-4 mb-3 pt-2">Direction</h6>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
+						<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr"
+							value="ltr">
 						<label class="form-check-label" for="layout-direction-ltr">LTR</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
+						<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl"
+							value="rtl">
 						<label class="form-check-label" for="layout-direction-rtl">RTL</label>
 					</div>
 
@@ -325,7 +367,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 		<?php include 'layouts/vendor-scripts.php'; ?>
 
 		<script>
-			$(document).on('click', '.select-btn', function() {
+			$(document).on('click', '.select-btn', function () {
 				var productId = $(this).data('product-id');
 				var vendorId = $(this).data('vendor-id');
 				var date = $(this).data('date');
@@ -367,7 +409,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 							function: "DeleteMetal",
 							id: product
 						},
-						success: function(data) {
+						success: function (data) {
 							console.log(data);
 							data = JSON.parse(data);
 							if (data.status == 'success') {
@@ -398,8 +440,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 <html>
                 <head>
                 <style>
-                    @media print {
-                        @page {
+@mediaprint {
+@page{
                             size: 80mm 200mm;
                             margin: 0;
                         }
@@ -455,7 +497,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 					data: {
 						function: "GetMetalVendors"
 					},
-					success: function(response) {
+					success: function (response) {
 						var data = JSON.parse(response);
 						var select = $('#modal-select')[0].selectize;
 						for (var i = 0; i < data.length; i++) {
@@ -474,7 +516,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 					data: {
 						function: "SelectMetal"
 					},
-					success: function(data) {
+					success: function (data) {
 						data = JSON.parse(data);
 						console.log(data);
 						if (data.records.length > 0) {
@@ -534,12 +576,15 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 				var issued_weight = document.getElementById('issued_weight').value;
 				var purity = document.getElementById('purity').value;
 				var pure_weight = issued_weight * purity;
-
-				pure_weight = pure_weight.toFixed(2) + '0';
-				document.getElementById('pure_weight').value = pure_weight;
+				if (purity==0.99) {
+					document.getElementById('pure_weight').value = issued_weight;
+				} else {
+					pure_weight = pure_weight.toFixed(2) + '0';
+					document.getElementById('pure_weight').value = pure_weight;
+				}
 			}
 
-			$(document).ready(function() {
+			$(document).ready(function () {
 				var issued_weight = document.getElementById('issued_weight');
 				var purity = document.getElementById('purity');
 				purity.addEventListener('change', CalculatePureWeight);
@@ -556,7 +601,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 					data: {
 						function: "GetMetalVendors"
 					},
-					success: function(response) {
+					success: function (response) {
 						var data = JSON.parse(response);
 						var select = $('#vendor')[0].selectize;
 						for (var i = 0; i < data.length; i++) {
@@ -571,7 +616,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 				});
 			});
 
-			$(document).on('change', '#modal-select', function(e) {
+			$(document).on('change', '#modal-select', function (e) {
 				e.preventDefault();
 				var select_manufacturer_purity = $('#modal-select').selectize({
 					sortField: 'text',
@@ -587,7 +632,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 						function: "SelectMetalVendor",
 						id: selectedOptionValue
 					},
-					success: function(data) {
+					success: function (data) {
 						data = JSON.parse(data);
 						console.log("metal", data);
 						if (data.records.length > 0) {
@@ -625,7 +670,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 				});
 			});
 
-			$('#form').on('submit', function(e) {
+			$('#form').on('submit', function (e) {
 				e.preventDefault();
 				var form = new FormData(this);
 				form.append('function', 'MetalRecord');
@@ -637,7 +682,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 					contentType: false,
 					cache: false,
 					processData: false,
-					success: function(response) {
+					success: function (response) {
 						console.log(response);
 						var data = JSON.parse(response);
 						if (data[0] == "success") {
@@ -646,11 +691,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 								text: "Record Saved Successfully",
 								icon: "success",
 								confirmButtonText: 'Ok'
-							}).then((result) => {
-								if (result.isConfirmed) {
-									location.reload();
-								}
-							});
+							})
 						} else {
 							Swal.fire({
 								title: 'Error!',

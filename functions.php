@@ -628,7 +628,7 @@ function StepOne()
     $row = $qry3Statement->fetch(PDO::FETCH_ASSOC);
     if ($row && $row['id'] == $code) {
         array_push($array, 'success');
-        $qry = "UPDATE `manufacturing_step` SET `vendor_id`=:vendor_id,`image`=:imageName,`product_id`=:code,`type`=:fType,`quantity`=:quantity,`purity`=:pValue`,purity_text`=:purity_text,`unpolish_weight`=:unpolish_weight,`polish_weight`=:polish_weight,`rate`=:rate,`wastage`=:wastage,`tValues`=:tValues,`date`=:fDate,`details`=:details,`barcode`=:barcode WHERE `product_id` = '$code'";
+        $qry = "UPDATE `manufacturing_step` SET `vendor_id`=:vendor_id,`image`=:imageName,`product_id`=:code,`type`=:fType,`quantity`=:quantity,`purity`=:pValue,`purity_text`=:purity_text,`unpolish_weight`=:unpolish_weight,`polish_weight`=:polish_weight,`rate`=:rate,`wastage`=:wastage,`tValues`=:tValues,`date`=:fDate,`details`=:details,`barcode`=:barcode WHERE `product_id` = '$code'";
     } else {
         $qry1 = "INSERT INTO `product`(`id`, `status`) VALUES (:code, 'Active')";
         $qry1Statement = $pdo->prepare($qry1);
@@ -639,7 +639,7 @@ function StepOne()
             array_push($array, 'success');
         }
         $qry = "INSERT INTO manufacturing_step(`vendor_id`, `image`, `product_id`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `tValues`, `date`, `details`,`barcode`)
-    VALUES (:vendor_id, :imageName, :code, :fType, :quantity, :pValue,:purity_text, :unpolish_weight, :polish_weight, :rate, :wastage, :tValues, :fDate, :details, :barcode);";
+        VALUES (:vendor_id, :imageName, :code, :fType, :quantity, :pValue,:purity_text, :unpolish_weight, :polish_weight, :rate, :wastage, :tValues, :fDate, :details, :barcode);";
     }
 
     $qryStatement = $pdo->prepare($qry);
