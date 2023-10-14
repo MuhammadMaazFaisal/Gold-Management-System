@@ -93,12 +93,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <div class="card-body px-4 ">
 
                                     <div class="row">
-                                        <h3 class="mt-5">
-                                            Issued Report:
-
-
-                                            <hr>
-                                        </h3>
 
                                         <div class="col-lg-12 ms-lg-auto ">
                                             <div class="mt-4 mt-lg-0 table-responsive">
@@ -113,26 +107,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <h3 class="mt-5">
-                                            Received Report:
-
-
-                                            <hr>
-                                        </h3>
-
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive">
-
-                                                <table id="product-table2" class="table table-hover">
-                                                    <thead class="table-dark">
-                                                    </thead>
-                                                    <tbody id="tbody2">
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <!-- <div class="row">
                                         <div class="d-flex justify-content-end">
@@ -431,44 +405,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             title: 'Grand Total Weight'
                         },
                         {
-                            data: 'date',
-                            title: 'Date'
-                        },
-
-
-
-                    ],
-                    responsive: true
-                });
-
-
-            }
-        });
-    }
-
-    function GetDataReceived() {
-        $.ajax({
-            url: "functions.php",
-            type: "POST",
-            data: {
-                function: "GetStoneSetterReceived"
-            },
-            success: function(data) {
-                console.log(data);
-                data = JSON.parse(data);
-                console.log(data);
-                var table = $('#product-table2').DataTable({
-                    data: data,
-                    columns: [{
-                            data: 'product_id',
-                            title: 'Product ID'
-                        },
-                        // {
-                        //     data: 'name',
-                        //     title: 'Name'
-                        // },
-
-                        {
                             data: 'received_weight',
                             title: 'Returned Weight'
                         },
@@ -508,8 +444,70 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
     }
 
+    // function GetDataReceived() {
+    //     $.ajax({
+    //         url: "functions.php",
+    //         type: "POST",
+    //         data: {
+    //             function: "GetStoneSetterReceived"
+    //         },
+    //         success: function(data) {
+    //             console.log(data);
+    //             data = JSON.parse(data);
+    //             console.log(data);
+    //             var table = $('#product-table1').DataTable({
+    //                 data: data,
+    //                 columns: [{
+    //                         data: 'product_id',
+    //                         title: 'Product ID'
+    //                     },
+    //                     // {
+    //                     //     data: 'name',
+    //                     //     title: 'Name'
+    //                     // },
+
+    //                     {
+    //                         data: 'received_weight',
+    //                         title: 'Returned Weight'
+    //                     },
+    //                     {
+    //                         data: 'rate',
+    //                         title: 'Rate'
+    //                     },
+    //                     {
+    //                         data: 'stone_quantity',
+    //                         title: 'Stone Quantity'
+    //                     },
+    //                     {
+    //                         data: 'wastage',
+    //                         title: 'Wastage'
+    //                     },
+    //                     {
+    //                         data: 'grand_weight',
+    //                         title: 'Grand Total'
+    //                     },
+    //                     {
+    //                         data: 'payable',
+    //                         title: 'Payable'
+    //                     },
+    //                     {
+    //                         data: 'date',
+    //                         title: 'Date'
+    //                     },
+
+
+
+    //                 ],
+    //                 responsive: true
+    //             });
+
+
+    //         }
+    //     });
+    // }
+
     $(document).ready(function() {
         GetDataIssued();
-        GetDataReceived();
+        // GetDataReceived();
     });
 </script>

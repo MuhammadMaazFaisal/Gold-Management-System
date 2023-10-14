@@ -4175,6 +4175,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
+					console.log(data);
  					data = JSON.parse(data);
  					if (data[0] == "success" && data[1] == "success") {
  						Swal.fire({
@@ -4361,6 +4362,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
+					console.log(data);
  					data = JSON.parse(data);
  					if (data[0] == "error") {
  						Swal.fire({

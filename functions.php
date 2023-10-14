@@ -132,9 +132,10 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetAdditionalAccountData();
 }  elseif ($_POST['function'] == 'GetStoneSetterIssued') {
     GetStoneSetterIssued();
-}  elseif ($_POST['function'] == 'GetStoneSetterReceived') {
-    GetStoneSetterReceived();
 }
+// }  elseif ($_POST['function'] == 'GetStoneSetterReceived') {
+//     GetStoneSetterReceived();
+// }
 function Logout()
 {
     // Initialize the session
@@ -1064,7 +1065,7 @@ function StepFour()
     $qryStatement1 = $pdo->prepare($qry1);
     $qryStatement1->bindParam(':product_id', $product_id);
     $qryStatement1->execute();
-    $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
+    // $row = $qryStatement1->fetch(PDO::FETCH_ASSOC);
 
     $qry = "Insert into `additional_step`(`product_id`,`vendor_id`,`type`,`amount`,`date`,`status`) VALUES (:product_id,:vendor_id,:type,:amount,:date,'Active')";
 
@@ -1335,11 +1336,20 @@ function GetStoneSetterIssued()
     ss.`s_total_weight`,
     ss.`grand_weight`,
     ss.`product_id`,
+    sr.`vendor_id`,
+    sr.`received_weight`,
+    sr.`rate`,
+    sr.`stone_quantity`,
+    sr.`wastage`,
+    sr.`grand_weight`,
+    sr.`payable`,
     m.`product_id`,
     m.`barcode`
     FROM `vendor` v
     JOIN `stone_setter_step` ss ON v.`id` = ss.`vendor_id`
+    JOIN `returned_stone_step` sr ON ss.`vendor_id` = sr.`vendor_id`
     JOIN `manufacturing_step` m ON ss.`product_id` =  m.`product_id`
+
     WHERE v.`id` = ss.`vendor_id`";
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
@@ -1351,40 +1361,40 @@ function GetStoneSetterIssued()
     }
 }
 
-function GetStoneSetterReceived()
-{
-    include 'layouts/session.php';
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    require_once "layouts/config.php";
-    $array = array();
-    $getRecordQuery = "SELECT 
-    v.`id`,
-    v.`name`,
-    ss.`vendor_id`,
-    ss.`date`,
-    ss.`received_weight`,
-    ss.`rate`,
-    ss.`stone_quantity`,
-    ss.`wastage`,
-    ss.`grand_weight`,
-    ss.`payable`,
-    ss.`product_id`,
-    m.`product_id`,
-    m.`barcode`
-    FROM `vendor` v
-    JOIN `returned_stone_step` ss ON v.`id` = ss.`vendor_id`
-    JOIN `manufacturing_step` m ON ss.`product_id` =  m.`product_id`
-    WHERE v.`id` = ss.`vendor_id`";
+// function GetStoneSetterReceived()
+// {
+//     include 'layouts/session.php';
+//     error_reporting(E_ALL);
+//     ini_set('display_errors', 1);
+//     require_once "layouts/config.php";
+//     $array = array();
+//     $getRecordQuery = "SELECT 
+//     v.`id`,
+//     v.`name`,
+//     ss.`vendor_id`,
+//     ss.`date`,
+//     ss.`received_weight`,
+//     ss.`rate`,
+//     ss.`stone_quantity`,
+//     ss.`wastage`,
+//     ss.`grand_weight`,
+//     ss.`payable`,
+//     ss.`product_id`,
+//     m.`product_id`,
+//     m.`barcode`
+//     FROM `vendor` v
+//     JOIN `returned_stone_step` ss ON v.`id` = ss.`vendor_id`
+//     JOIN `manufacturing_step` m ON ss.`product_id` =  m.`product_id`
+//     WHERE v.`id` = ss.`vendor_id`";
 
-    $getRecordStatement = $pdo->prepare($getRecordQuery);
-    if ($getRecordStatement->execute()) {
-        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($array, true);
-    } else {
-        echo json_encode($getRecordStatement->errorInfo(), true);
-    }
-}
+//     $getRecordStatement = $pdo->prepare($getRecordQuery);
+//     if ($getRecordStatement->execute()) {
+//         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+//         echo json_encode($array, true);
+//     } else {
+//         echo json_encode($getRecordStatement->errorInfo(), true);
+//     }
+// }
 
 function DeleteProduct()
 {
