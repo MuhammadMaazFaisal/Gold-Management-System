@@ -555,8 +555,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 				var purity = document.getElementById('purity').value;
 				var pure_weight = issued_weight * purity;
 
-				pure_weight = pure_weight.toFixed(2) + '0';
-				document.getElementById('pure_weight').value = pure_weight;
+				if (purity==0.99) {
+					document.getElementById('pure_weight').value = issued_weight;
+				} else {
+					pure_weight = pure_weight.toFixed(2) + '0';
+					document.getElementById('pure_weight').value = pure_weight;
+				}
 			}
 
 			$(document).ready(function() {
@@ -673,11 +677,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 								text: "Record Saved Successfully",
 								icon: "success",
 								confirmButtonText: 'Ok'
-							}).then((result) => {
-								if (result.isConfirmed) {
-									location.reload();
-								}
-							});
+							})
 						} else {
 							Swal.fire({
 								title: 'Error!',

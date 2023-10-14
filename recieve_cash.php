@@ -551,11 +551,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 text: "Record Saved Successfully",
                                 icon: "success",
                                 confirmButtonText: 'Ok'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                }
-                            });
+                            })
                         } else {
                             Swal.fire({
                                 title: 'Error!',
