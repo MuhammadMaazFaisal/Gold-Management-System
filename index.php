@@ -44,7 +44,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     <style>
         /* CSS code to set fixed height for card bodies */
         .card-bodyi {
-            height: 500px;
+            height: 400px;
             /* Adjust the height value as needed */
             overflow-y: auto;
             /* Add a vertical scrollbar if content exceeds the fixed height */
@@ -85,7 +85,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <h3 class="mb-3 text-white">Manufecturing Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
                                 </div>
-                                <div class="card-bodyi px-3 ">
+                                <div class="card-bodyi px-2 ">
                                     <div class="row">
                                         <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
                                         <div class="col-sm-5">
@@ -134,7 +134,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <h3 class="mb-3 text-white">Polishing Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
                                 </div>
-                                <div class="card-bodyi px-3 ">
+                                <div class="card-bodyi px-2 ">
 
                                     <div class="row">
                                         <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
@@ -182,7 +182,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <h3 class="mb-3 text-white">Stone Settting Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
                                 </div>
-                                <div class="card-bodyi px-3 ">
+                                <div class="card-bodyi px-2 ">
 
                                     <div class="row">
                                         <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
@@ -232,7 +232,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <h3 class="mb-3 text-white">Vendors</h3>
                                     <h3 class="mb-4 text-light"></h3>
                                 </div>
-                                <div class="card-bodyi px-3 ">
+                                <div class="card-bodyi px-2 ">
                                     <div class="row">
                                         <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
                                         <div class="col-sm-5">
