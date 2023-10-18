@@ -69,12 +69,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                     <!-- start page title -->
                     <div class="row">
-                        <div class="card ">
-                            <div class="card-header card border border-danger">
-                                <h2 class="card-title">
-                                    Dashboard
-                                </h2>
-
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mb-2">
+                                <h4 class="mb-sm-0 font-size-18">DASHBOARD</h4>
                             </div>
                         </div>
                     </div>
@@ -895,6 +892,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 }
             });
         }
+
         function GetVendorData(vendor_id) {
             if ($.fn.DataTable.isDataTable('#vendor-table')) {
                 $('#vendor-table').DataTable().destroy();
@@ -929,7 +927,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'name',
                                 title: 'Vendor Name'
                             },
-                            
+
                         ]
                     });
                     CalculateTotal();
