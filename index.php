@@ -41,6 +41,15 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     <link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 
     <?php include 'layouts/head-style.php'; ?>
+    <style>
+        /* CSS code to set fixed height for card bodies */
+        .card-bodyi {
+            height: 500px;
+            /* Adjust the height value as needed */
+            overflow-y: auto;
+            /* Add a vertical scrollbar if content exceeds the fixed height */
+        }
+    </style>
 </head>
 
 <body>
@@ -60,244 +69,109 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                     <!-- start page title -->
                     <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0 font-size-18">DASHBOARD</h4>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end page title -->
-
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Role</span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <div id="mini-chart1" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-success text-success">2</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Users</span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart2" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-danger text-danger">1</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-->
-
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Unactive Users</span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart2" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-danger text-danger">1</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-->
-
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">System Activities</span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart2" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-danger text-danger">1</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-->
-
-
-
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Manufacturing </span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart3" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-success text-success">+ 6</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Polisher</span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart4" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-success text-success">+2.95%</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-10">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">ADDITIONAL MANUFACTURING
-
-                                            </span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-success text-success">+2.95%</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-                        <div class="col-xl-3 col-md-6">
-                            <!-- card -->
-                            <div class="card card-h-100">
-                                <!-- card body -->
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">GOLD ACCOUNT DETAILS
-
-                                            </span>
-                                            <h4 class="mb-3">
-                                                <span class="counter-value">0</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <div id="mini-chart4" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <span class="badge bg-soft-success text-success">+2.95%</span>
-                                        <span class="ms-1 text-muted font-size-13">Since last week</span>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-
-                    </div><!-- end row-->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0 font-size-18">STOCK PANEL</h4>
-
-
+                        <div class="card ">
+                            <div class="card-header card border border-danger">
+                                <h2 class="card-title">
+                                    Dashboard
+                                </h2>
 
                             </div>
                         </div>
                     </div>
-
-
                     <div class="row">
-
-
-
                         <div class="col-lg-4">
-                            <div class="card bg-dark border-dark text-light">
+                            <div class="card bg-warning border-warning text-white-50">
                                 <div class="card-body">
-                                    <h3 class="mb-4 text-light">Suppliers</h3>
+                                    <h3 class="mb-3 text-white">Manufecturing Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
                                 </div>
+                                <div class="card-bodyi px-3 ">
+                                    <div class="row">
+                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
+                                        <div class="col-sm-5">
+
+                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
+                                                <option value="">Select a manufacturer...</option>
+
+                                            </select>
+                                        </div> -->
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
+
+                                                <table id="manufacturer-table" class="table table-hover">
+                                                    <thead class="table-dark">
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="row my-4 justify-content-end">
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div><!-- end col -->
+                        </div>
+
+
 
                         <div class="col-lg-4">
                             <div class="card bg-success border-success text-white-50">
                                 <div class="card-body">
-                                    <h3 class="mb-3 text-white">PO Records</h3>
+                                    <h3 class="mb-3 text-white">Polishing Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
+                                </div>
+                                <div class="card-bodyi px-3 ">
+
+                                    <div class="row">
+                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+                                        <div class="col-sm-5">
+
+                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
+                                                <option value="">Select a polisher...</option>
+
+                                            </select>
+                                        </div> -->
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
+
+                                                <table id="polisher-table" class="table table-hover">
+                                                    <thead class="table-dark">
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="row my-4 justify-content-end">
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- end col -->
@@ -305,25 +179,66 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         <div class="col-lg-4">
                             <div class="card bg-info border-info text-white-50">
                                 <div class="card-body">
-                                    <h3 class="mb-3 text-white">Item</h3>
+                                    <h3 class="mb-3 text-white">Stone Settting Department</h3>
                                     <h3 class="mb-4 text-light"></h3>
+                                </div>
+                                <div class="card-bodyi px-3 ">
+
+                                    <div class="row">
+                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+                                        <div class="col-sm-5">
+
+                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
+                                                <option value="">Select a polisher...</option>
+
+                                            </select>
+                                        </div> -->
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
+
+                                                <table id="product-tabless" class="table table-hover">
+                                                    <thead class="table-dark">
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="row my-4 justify-content-end">
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div><!-- end col -->
 
-                    </div><!-- end row-->
+                    </div><!-- end col -->
 
-                    <!-- end row -->
-                </div>
-                <!-- container-fluid -->
+                </div><!-- end row-->
+
+
             </div>
-            <!-- End Page-content -->
-
-            <?php include 'layouts/footer.php'; ?>
+            <!-- container-fluid -->
         </div>
-        <!-- end main content-->
+        <!-- End Page-content -->
 
+        <?php include 'layouts/footer.php'; ?>
     </div>
+    <!-- end main content-->
+
+
     <!-- END layout-wrapper -->
 
     <!-- Right Sidebar -->
@@ -457,6 +372,481 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
     <!-- App js -->
     <script src="assets/js/app.js"></script>
+    <script>
+        function GetData(vendor_id) {
+            if ($.fn.DataTable.isDataTable('#manufacturer-table')) {
+                $('#manufacturer-table').DataTable().destroy();
+            }
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetManufacturerReportData",
+                    id: vendor_id
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    var table = $('#manufacturer-table').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            // {
+                            //     data: 'image',
+                            //     title: 'Pic',
+                            //     render: function(data, type, row, meta) {
+                            //         return '<img src="' + data + '" width="50" height="50"/>';
+                            //     }
+                            // },
+                            {
+                                data: 'vendor_id',
+                                title: 'ID'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Vendor Name'
+                            },
+                            // {
+                            //     data: 'details',
+                            //     title: 'Detail'
+                            // },
+                            // {
+                            //     data: 'type',
+                            //     title: 'Type'
+                            // },
+                            // {
+                            //     data: 'quantity',
+                            //     title: 'Quantity'
+                            // },
+                            // {
+                            //     data: 'purity',
+                            //     title: 'purity'
+                            // },
+                            // {
+                            //     data: 'rate',
+                            //     title: 'Rate'
+                            // },
+                            {
+                                data: 'tValues',
+                                title: '24k',
+                                className: 'metal',
+                            },
+                            {
+                                data: 'metal_pure_weight',
+                                title: '24K',
+                                className: 'jewellery column-border',
+                                render: function(data, type, row, meta) {
+                                    if (row.metal_type === 'issued') {
+                                        return (data);
+                                    } else {
+                                        return (-data);
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    CalculateTotal();
+                }
+            });
+        }
+
+        function GetDataAll() {
+            if ($.fn.DataTable.isDataTable('#manufacturer-table')) {
+                $('#manufacturer-table').DataTable().destroy();
+            }
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetManufacturerReportDataAll",
+                },
+                success: function(data) {
+
+                    data = JSON.parse(data);
+                    var table = $('#manufacturer-table').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            // {
+                            //     data: 'image',
+                            //     title: 'Pic',
+                            //     render: function(data, type, row, meta) {
+                            //         return '<img src="' + data + '" width="50" height="50"/>';
+                            //     }
+                            // },
+                            {
+                                data: 'vendor_id',
+                                title: 'ID'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Vendor Name'
+                            },
+                            // {
+                            //     data: 'details',
+                            //     title: 'Detail'
+                            // },
+                            // {
+                            //     data: 'type',
+                            //     title: 'Type'
+                            // },
+                            // {
+                            //     data: 'quantity',
+                            //     title: 'Quantity'
+                            // },
+                            // {
+                            //     data: 'purity',
+                            //     title: 'purity'
+                            // },
+                            // {
+                            //     data: 'rate',
+                            //     title: 'Rate'
+                            // },
+                            {
+                                data: 'tValues',
+                                title: '24k',
+                                className: 'metal',
+                            },
+                            {
+                                data: 'metal_pure_weight',
+                                title: '24K',
+                                className: 'jewellery column-border',
+                                render: function(data, type, row, meta) {
+                                    if (row.metal_type === 'issued') {
+                                        return (data);
+                                    } else {
+                                        return (-data);
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    CalculateTotal();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            GetDataAll();
+            GetDataAllP();
+            GetDataIssued();
+
+        });
+
+        $(document).ready(function() {
+            $('select').selectize({
+                sortField: 'text'
+            })
+
+            $.ajax({
+                url: "functions.php",
+                method: "POST",
+                data: {
+                    function: "GetAllVendorData",
+                    type: "manufacturer"
+                },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    var select = $('#select-vendor')[0].selectize;
+                    for (var i = 0; i < data.length; i++) {
+                        var newOption = {
+                            value: data[i].id,
+                            text: data[i].id + " | " + data[i].name
+                        };
+                        select.addOption(newOption);
+                    }
+
+                }
+            });
+        });
+
+
+
+        $(document).on('change', '#select-vendor', function(e) {
+            e.preventDefault();
+            var select1 = $(this).val();
+            GetData(select1);
+        });
+
+        function GetData(vendor_id) {
+            if ($.fn.DataTable.isDataTable('#polisher-table')) {
+                $('#polisher-table').DataTable().destroy();
+            }
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetPolisherReportData",
+                    id: vendor_id
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    var table = $('#polisher-table').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            // {
+                            //     data: 'image',
+                            //     title: 'Pic',
+                            //     render: function(data, type, row, meta) {
+                            //         return '<img src="' + data + '" width="50" height="50"/>';
+                            //     }
+                            // },
+                            {
+                                data: 'ID',
+                                title: 'id'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Vendor Name'
+                            },
+                            {
+                                data: 'm_details',
+                                title: 'Detail'
+                            },
+                            // {
+                            //     data: 'm_type',
+                            //     title: 'type'
+                            // },
+                            // {
+                            //     data: 'm_quantity',
+                            //     title: 'quantity'
+                            // },
+                            // {
+                            //     data: 'difference',
+                            //     title: 'Difference'
+                            // },
+                            // {
+                            //     data: 'm_purity',
+                            //     title: 'purity'
+                            // },
+                            // {
+                            //     data: 'rate',
+                            //     title: 'Rate'
+                            // },
+                            {
+                                data: 'Payable',
+                                title: '24k',
+                                className: 'metal',
+                            },
+                            {
+                                data: 'metal_pure_weight',
+                                title: '24K',
+                                className: 'jewellery column-border',
+                                render: function(data, type, row, meta) {
+                                    if (row.metal_type === 'issued') {
+                                        return (data);
+                                    } else {
+                                        return (-data);
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    CalculateTotal();
+                }
+            });
+        }
+
+        function GetDataAllP() {
+            if ($.fn.DataTable.isDataTable('#polisher-table')) {
+                $('#polisher-table').DataTable().destroy();
+            }
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetPolisherReportDataAll",
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    var table = $('#polisher-table').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            // {
+                            //     data: 'image',
+                            //     title: 'Pic',
+                            //     render: function(data, type, row, meta) {
+                            //         return '<img src="' + data + '" width="50" height="50"/>';
+                            //     }
+                            // },
+                            {
+                                data: 'vendor_id',
+                                title: 'Id'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Vendor Name'
+                            },
+                            // {
+                            //     data: 'm_details',
+                            //     title: 'Detail'
+                            // },
+                            // {
+                            //     data: 'm_type',
+                            //     title: 'type'
+                            // },
+                            // {
+                            //     data: 'm_quantity',
+                            //     title: 'quantity'
+                            // },
+                            // {
+                            //     data: 'difference',
+                            //     title: 'Difference'
+                            // },
+                            // {
+                            //     data: 'm_purity',
+                            //     title: 'purity'
+                            // },
+                            // {
+                            //     data: 'rate',
+                            //     title: 'Rate'
+                            // },
+                            {
+                                data: 'Payable',
+                                title: '24k',
+                                className: 'metal',
+                            },
+                            {
+                                data: 'metal_pure_weight',
+                                title: '24K',
+                                className: 'jewellery column-border',
+                                render: function(data, type, row, meta) {
+                                    if (row.metal_type === 'issued') {
+                                        return (data);
+                                    } else {
+                                        return (-data);
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    CalculateTotal();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('select').selectize({
+                sortField: 'text'
+            })
+
+            $.ajax({
+                url: "functions.php",
+                method: "POST",
+                data: {
+                    function: "GetAllVendorData",
+                    type: "polisher"
+                },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    var select = $('#select-vendor')[0].selectize;
+                    for (var i = 0; i < data.length; i++) {
+                        var newOption = {
+                            value: data[i].id,
+                            text: data[i].id + " | " + data[i].name
+                        };
+                        select.addOption(newOption);
+                    }
+
+                }
+            });
+        });
+
+        $(document).on('change', '#select-vendor', function(e) {
+            e.preventDefault();
+            var select1 = $(this).val();
+            GetData(select1);
+        });
+
+        function GetDataIssued() {
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetStoneSetterIssued"
+                },
+                success: function(data) {
+                    console.log(data);
+                    data = JSON.parse(data);
+                    console.log(data);
+                    var table = $('#product-tabless').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            {
+                                data: 'product_id',
+                                title: 'Product ID'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Name'
+                            },
+                            // {
+                            //     data: 'type',
+                            //     title: 'Type'
+                            // },
+                            {
+                                data: 'z_total_weight',
+                                title: 'Total Zircon Weight'
+                            },
+                            {
+                                data: 's_total_weight',
+                                title: 'Total Stone Weight'
+                            },
+                            {
+                                data: 'grand_weight',
+                                title: 'Grand Total Weight'
+                            },
+                            {
+                                data: 'received_weight',
+                                title: 'Returned Weight'
+                            },
+                            // {
+                            //     data: 'rate',
+                            //     title: 'Rate'
+                            // },
+                            {
+                                data: 'stone_quantity',
+                                title: 'Stone Quantity'
+                            },
+                            // {
+                            //     data: 'wastage',
+                            //     title: 'Wastage'
+                            // },
+                            {
+                                data: 'grand_weight',
+                                title: 'Grand Total'
+                            },
+                            {
+                                data: 'payable',
+                                title: 'Payable'
+                            },
+
+
+
+
+                        ],
+                        responsive: true
+                    });
+
+
+                }
+            });
+        }
+    </script>
 
 </body>
 

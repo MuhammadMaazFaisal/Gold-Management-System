@@ -2045,22 +2045,23 @@ function GetProductData()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "SELECT 
+  p.`id` AS product_ids,
+    p.`id`, 
+    p.`status`, 
+    p.`date_created`,
     m.`vendor_id`,
     m.`product_id`, 
     m.`image`,  
     m.`barcode`,
-    p.`id`, 
-    p.`status`, 
-    p.`date_created`,
     v.`id`,
     v.`name`,
     s.`product_id`,
     s.`Issued_weight`
-    FROM `manufacturing_step` m
-    JOIN `product` p ON m.`product_id` = p.`id`
-    JOIN `vendor` v ON m.`vendor_id` = v.`id`
-    JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
-    WHERE p.`status`='SemiFinished'";
+    FROM `product` p
+    LEFT JOIN `manufacturing_step` m ON p.`id` = m.`product_id`
+    LEFT JOIN `vendor` v ON m.`vendor_id` = v.`id`
+    LEFT JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
+    WHERE p.`status` = 'SemiFinished'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

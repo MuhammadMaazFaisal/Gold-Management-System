@@ -378,7 +378,7 @@ function PrintSemiFinish() {
                     data: data,
                     columns: [
                         {
-                            data: 'product_id',
+                            data: 'product_ids',
                             title: 'Product ID'
                         },
                         {
