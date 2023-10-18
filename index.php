@@ -227,7 +227,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     </div><!-- end row -->
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="card bg-warning border-warning text-white-50">
+                            <div class="card bg-danger border-danger text-white-50">
                                 <div class="card-body">
                                     <h3 class="mb-3 text-white">Vendors</h3>
                                     <h3 class="mb-4 text-light"></h3>
