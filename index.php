@@ -224,7 +224,55 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             </div>
                         </div><!-- end col -->
 
-                    </div><!-- end col -->
+                    </div><!-- end row -->
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card bg-warning border-warning text-white-50">
+                                <div class="card-body">
+                                    <h3 class="mb-3 text-white">Vendors</h3>
+                                    <h3 class="mb-4 text-light"></h3>
+                                </div>
+                                <div class="card-bodyi px-3 ">
+                                    <div class="row">
+                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
+                                        <div class="col-sm-5">
+
+                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
+                                                <option value="">Select a manufacturer...</option>
+
+                                            </select>
+                                        </div> -->
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
+
+                                                <table id="vendor-table" class="table table-hover">
+                                                    <thead class="table-dark">
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="row my-4 justify-content-end">
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div><!-- end row-->
 
@@ -533,6 +581,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             GetDataAll();
             GetDataAllP();
             GetDataIssued();
+            GetVendorData();
 
         });
 
@@ -843,6 +892,47 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     });
 
 
+                }
+            });
+        }
+        function GetVendorData(vendor_id) {
+            if ($.fn.DataTable.isDataTable('#vendor-table')) {
+                $('#vendor-table').DataTable().destroy();
+            }
+            $.ajax({
+                url: "functions.php",
+                type: "POST",
+                data: {
+                    function: "GetVendorData",
+                    id: vendor_id
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    var table = $('#vendor-table').DataTable({
+                        data: data,
+                        columns: [{
+                                data: 'date',
+                                title: 'Date'
+                            },
+                            // {
+                            //     data: 'image',
+                            //     title: 'Pic',
+                            //     render: function(data, type, row, meta) {
+                            //         return '<img src="' + data + '" width="50" height="50"/>';
+                            //     }
+                            // },
+                            {
+                                data: 'id',
+                                title: 'ID'
+                            },
+                            {
+                                data: 'name',
+                                title: 'Vendor Name'
+                            },
+                            
+                        ]
+                    });
+                    CalculateTotal();
                 }
             });
         }
