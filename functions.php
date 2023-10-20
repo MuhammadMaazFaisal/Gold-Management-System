@@ -1453,7 +1453,7 @@ function GetStoneSetterIssued()
     ss.`vendor_id`,
     ss.`date`,
     ss.`image`,
-    ss.`z_total_weight`,
+    ss.`Issued_weight`,
     ss.`s_total_weight`,
     ss.`grand_weight`,
     ss.`product_id`,

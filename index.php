@@ -52,7 +52,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             font-size: 1.5em;
             font-weight: 500;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: #f3efef;
+            background-color: #adb5bd;
             font-family: 'Roboto', sans-serif;
             text-align: -webkit-center;
         }
@@ -159,84 +159,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             </div>
                         </div>
                     </div>
-
-
-
-                    <!-- HTML -->
-                    <!-- 
-                    <div class="row">
-
-                        <div class="col-lg-4">
-                            <div class="card bg-warning border-none">
-                                <div class="card-header">
-                                    <h3 class="text-white">Manufacturing Department</h3>
-                                </div>
-                                <div class="card-body table-responsive">
-                                    <table id="manufacturer-table" class="table table-hover">
-                                        <thead class="table-dark">
-                                        </thead>
-                                        <tbody id="tbody-manufacturer">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="card bg-success border-none">
-                                <div class="card-header">
-                                    <h3 class="text-white">Polishing Department</h3>
-                                </div>
-                                <div class="card-body table-responsive">
-                                    <table id="polisher-table" class="table table-hover">
-                                        <thead class="table-dark">
-                                        </thead>
-                                        <tbody id="tbody-polisher">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="card bg-danger border-none">
-                                <div class="card-header">
-                                    <h3 class="text-white">Vendors</h3>
-                                </div>
-                                <div class="card-body table-responsive">
-                                    <table id="vendor-table" class="table table-hover">
-                                        <thead class="table-dark">
-                                        </thead>
-                                        <tbody id="tbody-vendor">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> -->
-
-                    <!-- <div class="row mt-4">
-
-                        <div class="col-lg-12">
-                            <div class="card bg-info border-none">
-                                <div class="card-header">
-                                    <h3 class="text-white">Stone Setting Department</h3>
-                                </div>
-                                <div class="card-body table-responsive">
-                                    <table id="product-tabless" class="table table-hover">
-                                        <thead class="table-dark">
-                                        </thead>
-                                        <tbody id="tbody-product">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> -->
-
-
                 </div><!-- end row-->
 
 
@@ -431,7 +353,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             }
                         ]
                     });
-                    // CalculateTotal();
+
                 }
             });
         }
@@ -683,7 +605,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 success: function(data) {
                     console.log(data);
                     data = JSON.parse(data);
-                    console.log(data);
+                    console.log("stone",data);
                     var table = $('#product-tabless').DataTable({
                         "lengthChange": false,
                         data: data,
@@ -700,36 +622,17 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 title: 'Name'
                             },
                             {
-                                data: 'z_total_weight',
-                                title: 'Total Zircon Weight'
-                            },
-                            {
-                                data: 's_total_weight',
-                                title: 'Total Stone Weight'
-                            },
-                            {
-                                data: 'grand_weight',
-                                title: 'Grand Total Weight'
+                                data: 'Issued_weight',
+                                title: 'Issued Weight'
                             },
                             {
                                 data: 'received_weight',
-                                title: 'Returned Weight'
-                            },
-                            {
-                                data: 'stone_quantity',
-                                title: 'Stone Quantity'
-                            },
-                            {
-                                data: 'grand_weight',
-                                title: 'Grand Total'
+                                title: 'Received Weight'
                             },
                             {
                                 data: 'payable',
                                 title: 'Payable'
                             },
-
-
-
 
                         ],
                         responsive: true
