@@ -42,12 +42,34 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
     <?php include 'layouts/head-style.php'; ?>
     <style>
-        /* CSS code to set fixed height for card bodies */
-        .card-bodyi {
+        /* CSS */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .card-header {
+            font-size: 1.5em;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #f3efef;
+            font-family: 'Roboto', sans-serif;
+            text-align: -webkit-center;
+        }
+
+        .card-body {
+            padding: 20px;
             height: 400px;
             /* Adjust the height value as needed */
             overflow-y: auto;
-            /* Add a vertical scrollbar if content exceeds the fixed height */
+        }
+
+        .table {
+            width: 100% !important;
+        }
+
+        .margin{
+            margin: 0px 5px 0px 5px;
         }
     </style>
 </head>
@@ -75,201 +97,145 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card bg-warning border-warning text-white-50">
-                                <div class="card-body">
-                                    <h3 class="mb-3 text-white">Manufecturing Department</h3>
-                                    <h3 class="mb-4 text-light"></h3>
+                    <div class="row mb-5">
+                        <div class="col-4 p-0">
+                            <div class="margin card">
+                                <div class="card-header">
+                                    Manufacturing Department
                                 </div>
-                                <div class="card-bodyi px-2 ">
-                                    <div class="row">
-                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
-                                        <div class="col-sm-5">
-
-                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
-                                                <option value="">Select a manufacturer...</option>
-
-                                            </select>
-                                        </div> -->
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
-
-                                                <table id="manufacturer-table" class="table table-hover">
-                                                    <thead class="table-dark">
-                                                    </thead>
-                                                    <tbody id="tbody">
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                            <!-- <div class="row my-4 justify-content-end">
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                    </div>
+                                <div class="card-body">
+                                    <table id="manufacturer-table" class="table table-striped table-bordered">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="tbody-manufacturer">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-
-
-                        <div class="col-lg-4">
-                            <div class="card bg-success border-success text-white-50">
-                                <div class="card-body">
-                                    <h3 class="mb-3 text-white">Polishing Department</h3>
-                                    <h3 class="mb-4 text-light"></h3>
+                        <div class="col-4 p-0">
+                            <div class="margin card">
+                                <div class="card-header">
+                                    Polishing Department
                                 </div>
-                                <div class="card-bodyi px-2 ">
-
-                                    <div class="row">
-                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
-                                        <div class="col-sm-5">
-
-                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
-                                                <option value="">Select a polisher...</option>
-
-                                            </select>
-                                        </div> -->
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
-
-                                                <table id="polisher-table" class="table table-hover">
-                                                    <thead class="table-dark">
-                                                    </thead>
-                                                    <tbody id="tbody">
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                            <!-- <div class="row my-4 justify-content-end">
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                    </div>
+                                <div class="card-body">
+                                    <table id="polisher-table" class="table table-striped table-bordered">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="tbody-polisher">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div><!-- end col -->
-
-                        <div class="col-lg-4">
-                            <div class="card bg-info border-info text-white-50">
+                        </div>
+                        <div class="col-4 p-0">
+                            <div class="margin card">
+                                <div class="card-header">
+                                    Additional Vendors
+                                </div>
                                 <div class="card-body">
-                                    <h3 class="mb-3 text-white">Stone Settting Department</h3>
-                                    <h3 class="mb-4 text-light"></h3>
-                                </div>
-                                <div class="card-bodyi px-2 ">
-
-                                    <div class="row">
-                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
-                                        <div class="col-sm-5">
-
-                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
-                                                <option value="">Select a polisher...</option>
-
-                                            </select>
-                                        </div> -->
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
-
-                                                <table id="product-tabless" class="table table-hover">
-                                                    <thead class="table-dark">
-                                                    </thead>
-                                                    <tbody id="tbody">
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                            <!-- <div class="row my-4 justify-content-end">
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end col -->
-
-                    </div><!-- end row -->
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card bg-danger border-danger text-white-50">
-                                <div class="card-body">
-                                    <h3 class="mb-3 text-white">Vendors</h3>
-                                    <h3 class="mb-4 text-light"></h3>
-                                </div>
-                                <div class="card-bodyi px-2 ">
-                                    <div class="row">
-                                        <!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex">Name:</label>
-                                        <div class="col-sm-5">
-
-                                            <select id="select-vendor" name="vendor_id" placeholder="Pick a manufacturer..." required>
-                                                <option value="">Select a manufacturer...</option>
-
-                                            </select>
-                                        </div> -->
-                                        <div class="col-lg-12 ms-lg-auto ">
-                                            <div class="mt-4 mt-lg-0 table-responsive" style="min-height: 100%;">
-
-                                                <table id="vendor-table" class="table table-hover">
-                                                    <thead class="table-dark">
-                                                    </thead>
-                                                    <tbody id="tbody">
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                            <!-- <div class="row my-4 justify-content-end">
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" step="any" name="total_metal_issued" value="" id="total_metal_issued" class="form-control form-control card d-none" placeholder="Total Metal">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="total_metal_recieved" value="" id="total_metal_recieved" class="form-control form-control card d-none" placeholder="Total Jewellery">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="payable" value="" id="payable" class="form-control form-control card bg-dark border-dark text-light d-none" placeholder="payable">
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                    </div>
+                                    <table id="vendor-table" class="table table-striped table-bordered">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="tbody-vendor">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="m-0 p-0 col-12 card">
+                            <div class="card-header">
+                                Stone Setting Department
+                            </div>
+                            <div class="card-body">
+                                <table id="product-tabless" class="table table-striped table-bordered">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="tbody-product">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- HTML -->
+                    <!-- 
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <div class="card bg-warning border-none">
+                                <div class="card-header">
+                                    <h3 class="text-white">Manufacturing Department</h3>
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table id="manufacturer-table" class="table table-hover">
+                                        <thead class="table-dark">
+                                        </thead>
+                                        <tbody id="tbody-manufacturer">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card bg-success border-none">
+                                <div class="card-header">
+                                    <h3 class="text-white">Polishing Department</h3>
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table id="polisher-table" class="table table-hover">
+                                        <thead class="table-dark">
+                                        </thead>
+                                        <tbody id="tbody-polisher">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card bg-danger border-none">
+                                <div class="card-header">
+                                    <h3 class="text-white">Vendors</h3>
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table id="vendor-table" class="table table-hover">
+                                        <thead class="table-dark">
+                                        </thead>
+                                        <tbody id="tbody-vendor">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+                    <!-- <div class="row mt-4">
+
+                        <div class="col-lg-12">
+                            <div class="card bg-info border-none">
+                                <div class="card-header">
+                                    <h3 class="text-white">Stone Setting Department</h3>
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table id="product-tabless" class="table table-hover">
+                                        <thead class="table-dark">
+                                        </thead>
+                                        <tbody id="tbody-product">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
 
                 </div><!-- end row-->
 
@@ -432,18 +398,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 success: function(data) {
                     data = JSON.parse(data);
                     var table = $('#manufacturer-table').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
                                 title: 'Date'
                             },
-                            // {
-                            //     data: 'image',
-                            //     title: 'Pic',
-                            //     render: function(data, type, row, meta) {
-                            //         return '<img src="' + data + '" width="50" height="50"/>';
-                            //     }
-                            // },
                             {
                                 data: 'vendor_id',
                                 title: 'ID'
@@ -452,26 +412,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'name',
                                 title: 'Vendor Name'
                             },
-                            // {
-                            //     data: 'details',
-                            //     title: 'Detail'
-                            // },
-                            // {
-                            //     data: 'type',
-                            //     title: 'Type'
-                            // },
-                            // {
-                            //     data: 'quantity',
-                            //     title: 'Quantity'
-                            // },
-                            // {
-                            //     data: 'purity',
-                            //     title: 'purity'
-                            // },
-                            // {
-                            //     data: 'rate',
-                            //     title: 'Rate'
-                            // },
                             {
                                 data: 'tValues',
                                 title: '24k',
@@ -491,7 +431,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             }
                         ]
                     });
-                    CalculateTotal();
+                    // CalculateTotal();
                 }
             });
         }
@@ -510,18 +450,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                     data = JSON.parse(data);
                     var table = $('#manufacturer-table').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
                                 title: 'Date'
                             },
-                            // {
-                            //     data: 'image',
-                            //     title: 'Pic',
-                            //     render: function(data, type, row, meta) {
-                            //         return '<img src="' + data + '" width="50" height="50"/>';
-                            //     }
-                            // },
                             {
                                 data: 'vendor_id',
                                 title: 'ID'
@@ -530,26 +464,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'name',
                                 title: 'Vendor Name'
                             },
-                            // {
-                            //     data: 'details',
-                            //     title: 'Detail'
-                            // },
-                            // {
-                            //     data: 'type',
-                            //     title: 'Type'
-                            // },
-                            // {
-                            //     data: 'quantity',
-                            //     title: 'Quantity'
-                            // },
-                            // {
-                            //     data: 'purity',
-                            //     title: 'purity'
-                            // },
-                            // {
-                            //     data: 'rate',
-                            //     title: 'Rate'
-                            // },
                             {
                                 data: 'tValues',
                                 title: '24k',
@@ -569,7 +483,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             }
                         ]
                     });
-                    CalculateTotal();
+                    // CalculateTotal();
                 }
             });
         }
@@ -632,18 +546,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     data = JSON.parse(data);
                     console.log(data);
                     var table = $('#polisher-table').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
                                 title: 'Date'
                             },
-                            // {
-                            //     data: 'image',
-                            //     title: 'Pic',
-                            //     render: function(data, type, row, meta) {
-                            //         return '<img src="' + data + '" width="50" height="50"/>';
-                            //     }
-                            // },
                             {
                                 data: 'ID',
                                 title: 'id'
@@ -656,26 +564,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'm_details',
                                 title: 'Detail'
                             },
-                            // {
-                            //     data: 'm_type',
-                            //     title: 'type'
-                            // },
-                            // {
-                            //     data: 'm_quantity',
-                            //     title: 'quantity'
-                            // },
-                            // {
-                            //     data: 'difference',
-                            //     title: 'Difference'
-                            // },
-                            // {
-                            //     data: 'm_purity',
-                            //     title: 'purity'
-                            // },
-                            // {
-                            //     data: 'rate',
-                            //     title: 'Rate'
-                            // },
                             {
                                 data: 'Payable',
                                 title: '24k',
@@ -695,7 +583,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             }
                         ]
                     });
-                    CalculateTotal();
+                    // CalculateTotal();
                 }
             });
         }
@@ -714,18 +602,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     data = JSON.parse(data);
                     console.log(data);
                     var table = $('#polisher-table').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
                                 title: 'Date'
                             },
-                            // {
-                            //     data: 'image',
-                            //     title: 'Pic',
-                            //     render: function(data, type, row, meta) {
-                            //         return '<img src="' + data + '" width="50" height="50"/>';
-                            //     }
-                            // },
                             {
                                 data: 'vendor_id',
                                 title: 'Id'
@@ -734,30 +616,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'name',
                                 title: 'Vendor Name'
                             },
-                            // {
-                            //     data: 'm_details',
-                            //     title: 'Detail'
-                            // },
-                            // {
-                            //     data: 'm_type',
-                            //     title: 'type'
-                            // },
-                            // {
-                            //     data: 'm_quantity',
-                            //     title: 'quantity'
-                            // },
-                            // {
-                            //     data: 'difference',
-                            //     title: 'Difference'
-                            // },
-                            // {
-                            //     data: 'm_purity',
-                            //     title: 'purity'
-                            // },
-                            // {
-                            //     data: 'rate',
-                            //     title: 'Rate'
-                            // },
                             {
                                 data: 'Payable',
                                 title: '24k',
@@ -777,7 +635,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             }
                         ]
                     });
-                    CalculateTotal();
+                    // CalculateTotal();
                 }
             });
         }
@@ -827,6 +685,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     data = JSON.parse(data);
                     console.log(data);
                     var table = $('#product-tabless').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
@@ -840,10 +699,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'name',
                                 title: 'Name'
                             },
-                            // {
-                            //     data: 'type',
-                            //     title: 'Type'
-                            // },
                             {
                                 data: 'z_total_weight',
                                 title: 'Total Zircon Weight'
@@ -860,18 +715,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 data: 'received_weight',
                                 title: 'Returned Weight'
                             },
-                            // {
-                            //     data: 'rate',
-                            //     title: 'Rate'
-                            // },
                             {
                                 data: 'stone_quantity',
                                 title: 'Stone Quantity'
                             },
-                            // {
-                            //     data: 'wastage',
-                            //     title: 'Wastage'
-                            // },
                             {
                                 data: 'grand_weight',
                                 title: 'Grand Total'
@@ -907,18 +754,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 success: function(data) {
                     data = JSON.parse(data);
                     var table = $('#vendor-table').DataTable({
+                        "lengthChange": false,
                         data: data,
                         columns: [{
                                 data: 'date',
                                 title: 'Date'
                             },
-                            // {
-                            //     data: 'image',
-                            //     title: 'Pic',
-                            //     render: function(data, type, row, meta) {
-                            //         return '<img src="' + data + '" width="50" height="50"/>';
-                            //     }
-                            // },
                             {
                                 data: 'id',
                                 title: 'ID'
@@ -930,7 +771,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                         ]
                     });
-                    CalculateTotal();
+                    // CalculateTotal();
                 }
             });
         }

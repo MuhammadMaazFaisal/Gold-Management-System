@@ -106,6 +106,7 @@
 
                     <ul class="sub-menu" aria-expanded="false">
                     <li><a href="semi_finish.php" data-key="t-register">Semi-Finished</a></li>
+                    <li><a href="add_product.php" data-key="t-register">Add Product</a></li>
                         
                     </ul>
 

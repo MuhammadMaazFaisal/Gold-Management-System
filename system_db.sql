@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 04, 2023 at 12:12 AM
+-- Generation Time: Oct 21, 2023 at 02:25 AM
 -- Server version: 8.0.30
--- PHP Version: 7.4.33
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -148,7 +148,7 @@ CREATE TABLE `manufacturing_step` (
 
 INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
 (106, 'RF001', 'RF0010001', '2023-10-02', 'external-work-directory/images//1696290008-', '', 'Repairing', 23, '7', '21k', 31, 27, 7, 2.26, NULL, NULL, 'Active', 29.1, '150879056225'),
-(107, 'AW004', 'AW0040002', '2023-10-03', 'external-work-directory/images//1696375203-', '', 'Ring', 2, '6', '18k', 28, 26, 6, 1.75, NULL, NULL, 'Active', 22.31, '263936097453'),
+(107, 'AW004', 'AW0040002', '2023-10-03', 'external-work-directory/images//1697165022-', '', 'Ring', 2, '6', '18k', 30, 26, 6, 1.88, NULL, NULL, 'Active', 23.91, ''),
 (108, 'RF001', 'RF0010003', '2023-10-03', 'external-work-directory/images//1696375858-', '', 'Polish paid', 23, '7', '21k', 33, 31, 7, 2.41, NULL, NULL, 'Active', 30.98, '20536064306');
 
 -- --------------------------------------------------------
@@ -196,7 +196,7 @@ CREATE TABLE `polisher_step` (
 
 INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `details`, `difference`, `rate`, `Wastage`, `Payable`, `status`, `polisherbarcode`) VALUES
 (46, '2023-10-01 19:00:00', 'RF0010001', 'R006', 'external-work-directory/images/1696290043-', 'Nothing', 4, 1, 0.32, 3.68, 'Active', '270530890683'),
-(47, '2023-10-02 19:00:00', 'AW0040002', 'H007', 'external-work-directory/images/1696375215-', '', 2, 1, 0.29, 1.71, 'Active', '925994549660'),
+(47, '2023-10-02 19:00:00', 'AW0040002', 'H007', 'external-work-directory/images/1697165028-', '', 4, 1, 0.3, 1.7, 'Active', ''),
 (48, '2023-10-02 19:00:00', 'RF0010003', 'R006', 'external-work-directory/images/1696375865-', '', 2, 1, 0.34, 1.66, 'Active', '398550419229');
 
 -- --------------------------------------------------------
@@ -207,6 +207,8 @@ INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `
 
 CREATE TABLE `product` (
   `id` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `weight` varchar(255) DEFAULT NULL,
   `status` varchar(255) NOT NULL,
   `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -215,10 +217,11 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `status`, `date_created`) VALUES
-('AW0040002', 'Active', '2023-10-03 23:20:03'),
-('RF0010001', 'SemiFinished', '2023-10-02 23:40:08'),
-('RF0010003', 'Active', '2023-10-03 23:30:58');
+INSERT INTO `product` (`id`, `name`, `weight`, `status`, `date_created`) VALUES
+('AW0040002', NULL, NULL, 'Active', '2023-10-03 23:20:03'),
+('C001', 'Clip', '5003', 'SemiProduct', '2023-10-21 02:12:02'),
+('RF0010001', NULL, NULL, 'SemiFinished', '2023-10-02 23:40:08'),
+('RF0010003', NULL, NULL, 'Active', '2023-10-03 23:30:58');
 
 -- --------------------------------------------------------
 
@@ -297,7 +300,6 @@ CREATE TABLE `returned_item` (
 
 INSERT INTO `returned_item` (`id`, `code`, `vendor_id`, `product_id`, `price`, `weight`, `quantity`) VALUES
 (55, 'zircon', 'ZA010', 'RF0010001', 0, 5, 50),
-(56, 'r-1', 'S009', 'AW0040002', 0, 10, 25),
 (57, '3', 'ZA010', 'RF0010003', 0, 21, 21);
 
 -- --------------------------------------------------------
@@ -328,7 +330,7 @@ CREATE TABLE `returned_stone_step` (
 
 INSERT INTO `returned_stone_step` (`id`, `product_id`, `vendor_id`, `received_weight`, `stone_weight`, `stone_quantity`, `total_weight`, `rate`, `shruded_quantity`, `wastage`, `grand_weight`, `payable`, `date`) VALUES
 (33, 'RF0010001', 'ZA010', 30, 5, 50, 35, 0, 10, 0.04, 35.04, 1.96, '2023-10-02 23:56:19'),
-(34, 'AW0040002', 'S009', 25, 10, 25, 35, 0, 20, 0.07, 35.07, 0.93, '2023-10-03 23:22:41'),
+(34, 'AW0040002', 'S009', 27, 0, 0, 27, 0, 20, 0.07, 27.07, 8.93, '2023-10-07 00:02:50'),
 (35, 'RF0010003', 'ZA010', 51, 21, 21, 72, 0, 31, 0.11, 72.11, -31.11, '2023-10-03 23:31:55');
 
 -- --------------------------------------------------------
@@ -389,7 +391,7 @@ INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quant
 (92, 'SI-0002', 'Zircon', '1.8mm', 'Qty', 800, 80, 1, 900, 1696290121498),
 (93, 'SI-0003', 'Zircon', '1.8mm', 'Qty', 100, 10, 1, 100, 1696290121498),
 (94, 'SI-0004', 'Zircon', '2.0mm', 'Qty', 980, 90, 1.2, 1200, 1696291376987),
-(95, 'SI-0005', 'Zircon', '1.7mm', 'Qty', 250, 25, 0.7, 175, 1696378137618),
+(95, 'SI-0005', 'Zircon', '1.7mm', 'Qty', 130, 13, 0.7, 175, 1696378137618),
 (96, 'SI-0006', 'Zircon', '1.7mm', 'Qty', 700, 70, 0.7, 490, 1696378137618),
 (97, 'SI-0007', 'Zircon', '1.7mm', 'Qty', 50, 5, 0.7, 35, 1696378137618);
 
@@ -439,7 +441,7 @@ CREATE TABLE `stone_setter_step` (
 
 INSERT INTO `stone_setter_step` (`Ssid`, `product_id`, `date`, `vendor_id`, `image`, `detail`, `retained_weight`, `total_weight`, `Issued_weight`, `z_total_weight`, `z_total_quantity`, `s_total_weight`, `s_total_quantity`, `grand_weight`, `status`) VALUES
 (72, 'RF0010001', '2023-10-01 19:00:00', 'ZA010', '', '', 0, 27, 27, 10, 100, 0, 0, 37, 'Active'),
-(73, 'AW0040002', '2023-10-02 19:00:00', 'S009', '', '', 0, 26, 26, 10, 100, 0, 0, 36, 'Active'),
+(73, 'AW0040002', '2023-10-02 19:00:00', 'S009', '', '', 0, 26, 26, 22, 220, 0, 0, 48, 'Active'),
 (74, 'RF0010003', '2023-10-02 19:00:00', 'ZA010', '', '', 0, 31, 31, 10, 20, 0, 0, 41, 'Active');
 
 -- --------------------------------------------------------
@@ -531,8 +533,9 @@ CREATE TABLE `zircon` (
 
 INSERT INTO `zircon` (`id`, `code`, `vendor_id`, `product_id`, `weight`, `price`, `quantity`) VALUES
 (182, '1696290104622', 'ZA010', 'RF0010001', 10, 0, 100),
-(183, '1696290121498', 'S009', 'AW0040002', 10, 0, 100),
-(184, '1696291376987', 'ZA010', 'RF0010003', 10, 0, 20);
+(184, '1696291376987', 'ZA010', 'RF0010003', 10, 0, 20),
+(185, '1696290121498', 'S009', 'AW0040002', 10, 0, 100),
+(186, '1696378137618', 'S009', 'AW0040002', 12, 0, 120);
 
 --
 -- Indexes for dumped tables
@@ -739,7 +742,7 @@ ALTER TABLE `purchasing_details`
 -- AUTO_INCREMENT for table `returned_item`
 --
 ALTER TABLE `returned_item`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `returned_stone_step`
@@ -775,7 +778,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `zircon`
 --
 ALTER TABLE `zircon`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 
 --
 -- Constraints for dumped tables

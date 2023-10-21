@@ -272,24 +272,23 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 </html>
 
 <script>
+    function PrintSemiFinish() {
 
-function PrintSemiFinish() {
- 			
- 			$.ajax({
- 				url: "functions.php",
- 				type: "POST",
- 				data: {
- 					function: "PrintSemiFinish",
- 				},
- 				success: function(data) {
-                    console.log(data);
- 					data = JSON.parse(data);
- 					console.log(data);
- 					let printWindow = window.open("", "_blank");
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "PrintSemiFinish",
+            },
+            success: function(data) {
+                console.log(data);
+                data = JSON.parse(data);
+                console.log(data);
+                let printWindow = window.open("", "_blank");
 
 
- 					// Generate slip content
- 					let slipContent = `
+                // Generate slip content
+                let slipContent = `
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -355,14 +354,14 @@ function PrintSemiFinish() {
     </html>
             `;
 
- 					// Write slip content to the new tab
- 					printWindow.document.open();
- 					printWindow.document.write(slipContent);
- 					printWindow.document.close();
+                // Write slip content to the new tab
+                printWindow.document.open();
+                printWindow.document.write(slipContent);
+                printWindow.document.close();
 
- 				}
- 			});
- 		}
+            }
+        });
+    }
 
     function GetData() {
         $.ajax({
@@ -376,8 +375,7 @@ function PrintSemiFinish() {
                 console.log(data);
                 var table = $('#product-table').DataTable({
                     data: data,
-                    columns: [
-                        {
+                    columns: [{
                             data: 'product_ids',
                             title: 'Product ID'
                         },
@@ -394,7 +392,14 @@ function PrintSemiFinish() {
                         },
                         {
                             data: 'Issued_weight',
-                            title: 'Weight'
+                            title: 'Weight',
+                            render: function(data, type, row, meta) {
+                                if (data == null) {
+                                    return row.weight;
+                                } else {
+                                    return data;
+                                }
+                            }
                         },
                         {
                             data: 'date_created',
@@ -412,8 +417,8 @@ function PrintSemiFinish() {
                                 }
                             }
                         }
-                        
-                        
+
+
 
 
 

@@ -2,16 +2,28 @@
 
 if ($_POST['function'] == 'GetAllVendorData') {
     GetAllVendorData();
+} elseif ($_POST['function'] == 'GetAllSemiProductData') {
+    GetAllSemiProductData();
 } elseif ($_POST['function'] == 'VendorCount') {
     VendorCount();
+} elseif ($_POST['function'] == 'SemiProductCount') {
+    SemiProductCount();
 } elseif ($_POST['function'] == 'AddVendor') {
     AddVendor();
+} elseif ($_POST['function'] == 'AddSemiProduct') {
+    AddSemiProduct();
 } elseif ($_POST['function'] == 'VendorDelete') {
     VendorDelete();
+} elseif ($_POST['function'] == 'SemiProductDelete') {
+    SemiProductDelete();
 } elseif ($_POST['function'] == 'GetVendor') {
     GetVendor();
+} elseif ($_POST['function'] == 'GetSemiProduct') {
+    GetSemiProduct();
 } elseif ($_POST['function'] == 'UpdateVendor') {
     UpdateVendor();
+} elseif ($_POST['function'] == 'UpdateSemiProduct') {
+    UpdateSemiProduct();
 } elseif ($_POST['function'] == 'ProductCount') {
     ProductCount();
 } elseif ($_POST['function'] == 'GetAllProduct') {
@@ -130,7 +142,7 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetSemiFinishStatus();
 } elseif ($_POST['function'] == 'GetAdditionalAccountData') {
     GetAdditionalAccountData();
-}  elseif ($_POST['function'] == 'GetStoneSetterIssued') {
+} elseif ($_POST['function'] == 'GetStoneSetterIssued') {
     GetStoneSetterIssued();
 } elseif ($_POST['function'] == 'GetVendorData') {
     GetVendorData();
@@ -192,8 +204,8 @@ function PrintSemiFinish()
     JOIN `stone_setter_step` s ON ms.`product_id` = s.`product_id`
     JOIN `product` p ON ms.`product_id` = p.`id`
     WHERE p.`status`='SemiFinished'";
-    
-    
+
+
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
@@ -456,6 +468,23 @@ function GetAllVendorData()
     }
 }
 
+function GetAllSemiProductData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $type = $_POST['type'];
+    $getRecordQuery = "SELECT * FROM `product` WHERE `status` = 'SemiProduct'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+        die;
+    }
+}
+
 function VendorCount()
 {
     include 'layouts/session.php';
@@ -464,6 +493,23 @@ function VendorCount()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `vendor`";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $row = $getRecordStatement->fetch();
+        array_push($array, str_pad($row['count'] + 1, 3, '0', STR_PAD_LEFT));
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function SemiProductCount()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `product` where status='SemiProduct'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $row = $getRecordStatement->fetch();
@@ -496,6 +542,26 @@ function AddVendor()
     }
 }
 
+function AddSemiProduct()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $array = array();
+    $getRecordQuery = "INSERT INTO `product`(`id`,`name`, `weight`,`status`) VALUES (:id,:name,:weight,'SemiProduct')";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':weight', $_POST['weight'], PDO::PARAM_STR);
+    if ($getRecordStatement->execute()) {
+        array_push($array, 'success');
+        echo json_encode($array, true);
+        die;
+    }
+}
+
 function VendorDelete()
 {
     include 'layouts/session.php';
@@ -504,6 +570,23 @@ function VendorDelete()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "UPDATE `vendor` SET `status` = 'Inactive' WHERE `id` = :id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    if ($getRecordStatement->execute()) {
+        array_push($array, 'success');
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function SemiProductDelete()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "UPDATE `product` SET `status` = 'Inactive' WHERE `id` = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
@@ -530,6 +613,23 @@ function GetVendor()
     }
 }
 
+function GetSemiProduct()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $id = $_POST['id'];
+    $getRecordQuery = "SELECT * FROM `product` WHERE `status` = 'SemiProduct' AND `id` = '$id'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        array_push($array, $getRecordStatement->fetch(PDO::FETCH_ASSOC));
+        echo json_encode($array, true);
+        die;
+    }
+}
+
 function UpdateVendor()
 {
     include 'layouts/session.php';
@@ -546,6 +646,25 @@ function UpdateVendor()
     $getRecordStatement->bindParam(':21k', $_POST['21k'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':22k', $_POST['22k'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
+    if ($getRecordStatement->execute()) {
+        array_push($array, 'success');
+        echo json_encode($array, true);
+        die;
+    }
+}
+
+function UpdateSemiProduct()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "UPDATE `product` SET `name` = :name,`weight`= :weight WHERE `id` = :id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':weight', $_POST['weight'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         array_push($array, 'success');
         echo json_encode($array, true);
@@ -1026,7 +1145,7 @@ function ReturnedStepThree()
 
     if (is_array($r_code)) {
         for ($i = 0; $i < @count($r_code); $i++) {
-            if($r_code[$i] == ''){
+            if ($r_code[$i] == '') {
                 break;
             }
             $r_code1 = $r_code[$i];
@@ -1371,7 +1490,7 @@ function GetVendorData()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = " SELECT * FROM `vendor`";
-   
+
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
@@ -2033,6 +2152,8 @@ function GetProductData()
     $getRecordQuery = "SELECT 
   p.`id` AS product_ids,
     p.`id`, 
+    p.`name`,
+    p.`weight`,
     p.`status`, 
     p.`date_created`,
     m.`vendor_id`,
@@ -2047,7 +2168,7 @@ function GetProductData()
     LEFT JOIN `manufacturing_step` m ON p.`id` = m.`product_id`
     LEFT JOIN `vendor` v ON m.`vendor_id` = v.`id`
     LEFT JOIN `stone_setter_step` s ON m.`product_id` = s.`product_id`
-    WHERE p.`status` = 'SemiFinished'";
+    WHERE p.`status` = 'SemiFinished' OR p.`status` = 'SemiProduct'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
