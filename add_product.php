@@ -110,7 +110,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                         <label for="weight" style="text-align: right;" class=" col-sm-1 col-form-label">Weight:</label>
                                                         <div class="col-sm-3">
 
-                                                            <input type="text" name="weight" id="weight" value="" class="form-control" placeholder="Weight" required>
+                                                            <input type="text" name="weight" id="weight" value="" class="form-control" placeholder="Weight">
                                                         </div>
 
                                                         <label for="id" style="text-align: right;" class=" col-sm-1 col-form-label">Id:</label>

@@ -476,7 +476,7 @@ function GetAllSemiProductData()
     require_once "layouts/config.php";
     $array = array();
     $type = $_POST['type'];
-    $getRecordQuery = "SELECT * FROM `product` WHERE `status` = 'SemiProduct'";
+    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'SemiProduct'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -509,7 +509,7 @@ function SemiProductCount()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `product` where status='SemiProduct'";
+    $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `universal_product` where status='SemiProduct'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $row = $getRecordStatement->fetch();
@@ -550,7 +550,7 @@ function AddSemiProduct()
     require_once "layouts/config.php";
 
     $array = array();
-    $getRecordQuery = "INSERT INTO `product`(`id`,`name`, `weight`,`status`) VALUES (:id,:name,:weight,'SemiProduct')";
+    $getRecordQuery = "INSERT INTO `universal_product`(`id`,`name`, `weight`,`status`) VALUES (:id,:name,:weight,'SemiProduct')";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
@@ -586,7 +586,7 @@ function SemiProductDelete()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "UPDATE `product` SET `status` = 'Inactive' WHERE `id` = :id";
+    $getRecordQuery = "UPDATE `universal_product` SET `status` = 'Inactive' WHERE `id` = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
@@ -621,7 +621,7 @@ function GetSemiProduct()
     require_once "layouts/config.php";
     $array = array();
     $id = $_POST['id'];
-    $getRecordQuery = "SELECT * FROM `product` WHERE `status` = 'SemiProduct' AND `id` = '$id'";
+    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'SemiProduct' AND `id` = '$id'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         array_push($array, $getRecordStatement->fetch(PDO::FETCH_ASSOC));
@@ -660,7 +660,7 @@ function UpdateSemiProduct()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "UPDATE `product` SET `name` = :name,`weight`= :weight WHERE `id` = :id";
+    $getRecordQuery = "UPDATE `universal_product` SET `name` = :name,`weight`= :weight WHERE `id` = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
