@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 24, 2023 at 02:29 PM
+-- Generation Time: Oct 25, 2023 at 09:20 AM
 -- Server version: 8.0.30
--- PHP Version: 7.4.33
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -126,15 +126,6 @@ CREATE TABLE `manufacturing_step` (
   `barcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `manufacturing_step`
---
-
-INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
-(106, 'RF001', 'RF0010001', '2023-10-02', 'external-work-directory/images//1696290008-', '', 'Repairing', 23, '7', '21k', 31, 27, 7, 2.26, NULL, NULL, 'Inactive', 29.1, '150879056225'),
-(107, 'AW004', 'AW0040002', '2023-10-03', 'external-work-directory/images//1696375203-', '', 'Ring', 2, '6', '18k', 28, 26, 6, 1.75, NULL, NULL, 'Inactive', 22.31, '263936097453'),
-(108, 'RF001', 'RF0010003', '2023-10-03', 'external-work-directory/images//1696375858-', '', 'Polish paid', 23, '7', '21k', 33, 31, 7, 2.41, NULL, NULL, 'Inactive', 30.98, '20536064306');
-
 -- --------------------------------------------------------
 
 --
@@ -174,15 +165,6 @@ CREATE TABLE `polisher_step` (
   `polisherbarcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `polisher_step`
---
-
-INSERT INTO `polisher_step` (`id`, `date`, `product_id`, `vendor_id`, `image`, `details`, `difference`, `rate`, `Wastage`, `Payable`, `status`, `polisherbarcode`) VALUES
-(46, '2023-10-01 19:00:00', 'RF0010001', 'R006', 'external-work-directory/images/1696290043-', 'Nothing', 4, 1, 0.32, 3.68, 'Active', '270530890683'),
-(47, '2023-10-02 19:00:00', 'AW0040002', 'H007', 'external-work-directory/images/1696375215-', '', 2, 1, 0.29, 1.71, 'Active', '925994549660'),
-(48, '2023-10-02 19:00:00', 'RF0010003', 'R006', 'external-work-directory/images/1696375865-', '', 2, 1, 0.34, 1.66, 'Active', '398550419229');
-
 -- --------------------------------------------------------
 
 --
@@ -194,15 +176,6 @@ CREATE TABLE `product` (
   `status` varchar(255) NOT NULL,
   `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`id`, `status`, `date_created`) VALUES
-('AW0040002', 'Inactive', '2023-10-03 23:20:03'),
-('RF0010001', 'Inactive', '2023-10-02 23:40:08'),
-('RF0010003', 'Inactive', '2023-10-03 23:30:58');
 
 -- --------------------------------------------------------
 
@@ -223,9 +196,7 @@ CREATE TABLE `purchasing` (
 --
 
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
-('existing', 'existing', 0, '2023-09-16 17:17:03', 'active'),
-('PI-0002', 'S013', 2600, '2023-10-02 23:42:08', 'Active'),
-('PI-0003', 'S013', 700, '2023-10-04 00:09:03', 'Active');
+('existing', 'existing', 0, '2023-09-16 17:17:03', 'active');
 
 -- --------------------------------------------------------
 
@@ -306,15 +277,7 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
-('SI-0001', 'PI-0002', 450, '2023-10-02 23:42:54', 'Active'),
-('SI-0002', 'PI-0002', 450, '2023-10-02 23:43:42', 'Active'),
-('SI-0003', 'PI-0002', 0, '2023-10-02 23:43:58', 'Active'),
-('SI-0004', 'existing', 1200, '2023-10-03 00:03:31', 'Active'),
-('SI-0005', 'PI-0003', 175, '2023-10-04 00:09:51', 'Active'),
-('SI-0006', 'PI-0003', 490, '2023-10-04 00:10:23', 'Active'),
-('SI-0007', 'PI-0003', 35, '2023-10-04 00:10:49', 'Active'),
-('SI-0008', 'existing', 100, '2023-10-24 14:22:55', 'Active'),
-('SI-0009', 'existing', 1000, '2023-10-24 14:29:09', 'Active');
+('SI-0004', 'existing', 1200, '2023-10-03 00:03:31', 'Active');
 
 -- --------------------------------------------------------
 
@@ -334,13 +297,6 @@ CREATE TABLE `stock_details` (
   `total_amount` float NOT NULL,
   `barcode` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `stock_details`
---
-
-INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES
-(99, 'SI-0009', 'zircon', '2.5 mm', 'K', 5, 20, 10, 1000, 1698157719712);
 
 -- --------------------------------------------------------
 
@@ -395,14 +351,6 @@ CREATE TABLE `universal_product` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `universal_product`
---
-
-INSERT INTO `universal_product` (`id`, `name`, `weight`, `status`) VALUES
-('R001', 'Ruby', '', 'Inactive'),
-('R002', 'Ruby', '10', 'Inactive');
-
 -- --------------------------------------------------------
 
 --
@@ -453,20 +401,7 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `type`, `name`, `18k`, `21k`, `22k`, `status`, `date`) VALUES
-('AW004', 'manufacturer', 'Asim Wasim', 6, 6, 6, 'Inactive', '2023-09-16'),
-('existing', 'existing', 'existing', 0, 0, 0, 'inactive', ''),
-('H007', 'polisher', 'Hanif', 1, 1, 1, 'Inactive', '2023-09-16'),
-('HK015', 'vendor', 'Haji Kareem', 0, 0, 0, 'Inactive', '2023-09-16'),
-('IM003', 'manufacturer', 'Imran Mamo', 6, 6, 6, 'Inactive', '2023-09-16'),
-('MH011', 'stone setter', 'Muhammad Hamza', 0.35, 0.35, 0.35, 'Inactive', '2023-09-16'),
-('MS008', 'stone setter', 'Muhammad Siraj', 0.35, 0.35, 0.35, 'Inactive', '2023-09-16'),
-('R006', 'polisher', 'Rafiq', 1, 1, 1, 'Inactive', '2023-09-16'),
-('RF001', 'manufacturer', 'Raees Fancy', 7, 7, 7, 'Inactive', '2023-09-16'),
-('S009', 'stone setter', 'Surfraz', 0.35, 0.35, 0.35, 'Inactive', '2023-09-16'),
-('S013', 'vendor', 'Sharafat', 0, 0, 0, 'Inactive', '2023-09-16'),
-('SS012', 'vendor', 'Saleem Shastri', 0, 0, 0, 'Inactive', '2023-09-16'),
-('WM002', 'manufacturer', 'Waqas Mehmood', 6, 6, 6, 'Inactive', '2023-09-16'),
-('ZA010', 'stone setter', 'Zaki Abbasi', 0.35, 0.35, 0.35, 'Inactive', '2023-09-16');
+('existing', 'existing', 'existing', 0, 0, 0, 'inactive', '');
 
 -- --------------------------------------------------------
 
@@ -610,6 +545,12 @@ ALTER TABLE `stone_setter_step`
   ADD PRIMARY KEY (`Ssid`),
   ADD KEY `vendor_id` (`vendor_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `universal_product`
+--
+ALTER TABLE `universal_product`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
