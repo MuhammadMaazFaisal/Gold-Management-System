@@ -1489,7 +1489,7 @@ function GetVendorData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = " SELECT * FROM `vendor`";
+    $getRecordQuery = " SELECT * FROM `vendor` where type!='existing'";
 
 
     $getRecordStatement = $pdo->prepare($getRecordQuery);

@@ -655,6 +655,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     id: vendor_id
                 },
                 success: function(data) {
+                    console.log(data);
                     data = JSON.parse(data);
                     var table = $('#vendor-table').DataTable({
                         "lengthChange": false,
