@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 25, 2023 at 09:20 AM
+-- Generation Time: Oct 28, 2023 at 01:47 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -126,6 +126,13 @@ CREATE TABLE `manufacturing_step` (
   `barcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `manufacturing_step`
+--
+
+INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
+(109, 'MM002', 'C1001', '2023-10-28', 'external-work-directory/images//1698500668-', '', 'C1001', 12, '12', '18k', 30, 28, 12, 3.75, NULL, NULL, 'Active', 25.31, '603480975232');
+
 -- --------------------------------------------------------
 
 --
@@ -177,6 +184,13 @@ CREATE TABLE `product` (
   `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `status`, `date_created`) VALUES
+('C1001', 'Active', '2023-10-28 13:44:28');
+
 -- --------------------------------------------------------
 
 --
@@ -210,10 +224,10 @@ CREATE TABLE `purchasing_details` (
   `type` varchar(255) NOT NULL,
   `detail` varchar(255) NOT NULL,
   `price_per` varchar(255) NOT NULL,
-  `quantity` int NOT NULL,
-  `remaining_quantity` int NOT NULL,
-  `weight` float NOT NULL,
-  `remaining_weight` float NOT NULL,
+  `quantity` int DEFAULT NULL,
+  `remaining_quantity` int DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `remaining_weight` float DEFAULT NULL,
   `rate` float NOT NULL,
   `total_amount` float NOT NULL,
   `remaining_total_amount` float NOT NULL,
@@ -272,13 +286,6 @@ CREATE TABLE `stock` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `stock`
---
-
-INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
-('SI-0004', 'existing', 1200, '2023-10-03 00:03:31', 'Active');
-
 -- --------------------------------------------------------
 
 --
@@ -291,8 +298,8 @@ CREATE TABLE `stock_details` (
   `type` varchar(255) NOT NULL,
   `detail` varchar(255) NOT NULL,
   `price_per` varchar(255) NOT NULL,
-  `quantity` int NOT NULL,
-  `weight` float NOT NULL,
+  `quantity` int DEFAULT NULL,
+  `weight` float DEFAULT NULL,
   `rate` float NOT NULL,
   `total_amount` float NOT NULL,
   `barcode` bigint NOT NULL
@@ -351,6 +358,13 @@ CREATE TABLE `universal_product` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `universal_product`
+--
+
+INSERT INTO `universal_product` (`id`, `name`, `weight`, `status`) VALUES
+('C1001', 'Clip 1.5mm', NULL, 'Active');
+
 -- --------------------------------------------------------
 
 --
@@ -401,7 +415,8 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `type`, `name`, `18k`, `21k`, `22k`, `status`, `date`) VALUES
-('existing', 'existing', 'existing', 0, 0, 0, 'inactive', '');
+('existing', 'existing', 'existing', 0, 0, 0, 'inactive', ''),
+('MM002', 'manufacturer', 'Muhammad Maaz', 12, 13, 14, 'Active', '2023-10-28');
 
 -- --------------------------------------------------------
 
@@ -606,7 +621,7 @@ ALTER TABLE `m2_gold`
 -- AUTO_INCREMENT for table `manufacturing_step`
 --
 ALTER TABLE `manufacturing_step`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `metal`

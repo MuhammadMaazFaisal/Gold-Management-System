@@ -146,10 +146,9 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStoneSetterIssued();
 } elseif ($_POST['function'] == 'GetVendorData') {
     GetVendorData();
+}elseif ($_POST['function'] == 'GetUniversalProduct') {
+    GetUniversalProduct();
 }
-// }  elseif ($_POST['function'] == 'GetStoneSetterReceived') {
-//     GetStoneSetterReceived();
-// }
 function Logout()
 {
     // Initialize the session
@@ -476,7 +475,7 @@ function GetAllSemiProductData()
     require_once "layouts/config.php";
     $array = array();
     $type = $_POST['type'];
-    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'SemiProduct'";
+    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'Active'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -509,7 +508,7 @@ function SemiProductCount()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `universal_product` where status='SemiProduct'";
+    $getRecordQuery = "SELECT LPAD(COUNT(*), 3, '0') AS `count` FROM `universal_product` where status='Active'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $row = $getRecordStatement->fetch();
@@ -550,11 +549,10 @@ function AddSemiProduct()
     require_once "layouts/config.php";
 
     $array = array();
-    $getRecordQuery = "INSERT INTO `universal_product`(`id`,`name`, `weight`,`status`) VALUES (:id,:name,:weight,'SemiProduct')";
+    $getRecordQuery = "INSERT INTO `universal_product`(`id`,`name`,`status`) VALUES (:id,:name,'Active')";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
-    $getRecordStatement->bindParam(':weight', $_POST['weight'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         array_push($array, 'success');
         echo json_encode($array, true);
@@ -613,6 +611,22 @@ function GetVendor()
     }
 }
 
+function GetUniversalProduct()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'Active'";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        array_push($array, $getRecordStatement->fetch(PDO::FETCH_ASSOC));
+        echo json_encode($array, true);
+        die;
+    }
+}
+
 function GetSemiProduct()
 {
     include 'layouts/session.php';
@@ -621,7 +635,7 @@ function GetSemiProduct()
     require_once "layouts/config.php";
     $array = array();
     $id = $_POST['id'];
-    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'SemiProduct' AND `id` = '$id'";
+    $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'Active' AND `id` = '$id'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         array_push($array, $getRecordStatement->fetch(PDO::FETCH_ASSOC));
@@ -660,11 +674,10 @@ function UpdateSemiProduct()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "UPDATE `universal_product` SET `name` = :name,`weight`= :weight WHERE `id` = :id";
+    $getRecordQuery = "UPDATE `universal_product` SET `name` = :name WHERE `id` = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
-    $getRecordStatement->bindParam(':weight', $_POST['weight'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         array_push($array, 'success');
         echo json_encode($array, true);

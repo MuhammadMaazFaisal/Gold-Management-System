@@ -51,8 +51,7 @@
  	<!-- App favicon -->
  	<link rel="shortcut icon" href="assets/images/favicon.ico">
 
- 	<link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet"
- 		type="text/css" />
+ 	<link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 
  	<?php include 'layouts/head-style.php'; ?>
  </head>
@@ -86,18 +85,14 @@
  					<!-- end page title -->
 
  					<div class="row mb-2">
- 						<label for="horizontal-firstname-input"
- 							class="col-sm-1 col-form-label d-flex justify-content-end">Product:</label>
+ 						<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Product:</label>
  						<div class="col-sm-2">
- 							<input type="text" class="form-control" id="product" name="product"
- 								placeholder="Product ID" value="">
+ 							<input type="text" class="form-control" id="product" name="product" placeholder="Product ID" value="">
 
  						</div>
  						<div class="col d-flex justify-content-end me-4">
- 							<button type="button" onclick="DeleteProduct()" class="btn btn-danger me-3"
- 								id="delete-product" disabled>Delete Product</button>
- 							<button type="button" class="btn btn-primary" data-bs-toggle="modal"
- 								data-bs-target="#product-modal">
+ 							<button type="button" onclick="DeleteProduct()" class="btn btn-danger me-3" id="delete-product" disabled>Delete Product</button>
+ 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-modal">
  								Select Product
  							</button>
  						</div>
@@ -133,14 +128,10 @@
 																?>
  															<div id="manufacturer-div">
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
  																	<div class="col-sm-5">
 
- 																		<select id="select-manufacturer"
- 																			name="vendor_id"
- 																			placeholder="Pick a manufacturer..."
- 																			required>
+ 																		<select id="select-manufacturer" name="vendor_id" placeholder="Pick a manufacturer..." required>
  																			<option value="">Select a manufacturer...
  																			</option>
 
@@ -148,56 +139,41 @@
  																	</div>
 
 
- 																	<label for="horizontal-firstname-input"
- 																		name="product_id"
- 																		class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
+ 																	<label for="horizontal-firstname-input" name="product_id" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
  																		Code:</label>
 
  																	<div class="col-sm-5">
 
 
- 																		<input type="text" name="code" id="code"
- 																			value="" class="form-control code"
- 																			placeholder="code" readonly>
+ 																		<input type="text" name="code" id="code" value="" class="form-control code" placeholder="code" readonly>
 
  																	</div>
  																</div>
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
  																	<div class="col-sm-5">
 
- 																		<input type="date" name="date" id="date"
- 																			class="form-control">
+ 																		<input type="date" name="date" id="date" class="form-control">
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Image
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image
  																		Upload:</label>
  																	<div class="col-sm-5">
 
- 																		<input type="file" id="image" name="image"
- 																			value="" class="form-control"
- 																			accept="image/*">
+ 																		<input type="file" id="image" name="image" value="" class="form-control" accept="image/*">
  																	</div>
  																</div>
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
  																	<div class="col-sm-11">
 
- 																		<textarea type="text" id="details"
- 																			name="details" value=""
- 																			class="form-control" style="height: 107px;"
- 																			placeholder="Details"></textarea>
+ 																		<textarea type="text" id="details" name="details" value="" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
  																	</div>
  																</div>
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Type:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Type:</label>
  																	<div class="col-sm-3">
 
- 																		<select required="" name="type" id="type"
- 																			class="form-control form-select">
+ 																		<select required="" name="type" id="type" class="form-control form-select">
  																			<option>Select Type</option>
  																			<option value="Set">Set</option>
  																			<option value="Tops">Tops</option>
@@ -229,66 +205,44 @@
  																			<option value="Jhumar">Jhumar</option>
  																		</select>
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" value="" id="quantity"
- 																			name="quantity" class="form-control"
- 																			placeholder="QTY" required>
+ 																		<input type="number" value="" id="quantity" name="quantity" class="form-control" placeholder="QTY" required>
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Purity:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Purity:</label>
  																	<div class="col-sm-3">
- 																		<select required="" name="purity"
- 																			id="select-manufacturer-purity"
- 																			class="form-control form-select"
- 																			placeholder="Purity" required>
+ 																		<select required="" name="purity" id="select-manufacturer-purity" class="form-control form-select" placeholder="Purity" required>
  																			<option value="">Please Select Purity
  																			</option>
  																		</select>
  																	</div>
  																</div>
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Unpolish
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Unpolish
  																		Weight:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any"
- 																			name="unpolish_weight" value=""
- 																			id="unpolish_weight" class="form-control"
- 																			placeholder="Unpolish Weight" required>
+ 																		<input type="number" step="any" name="unpolish_weight" value="" id="unpolish_weight" class="form-control" placeholder="Unpolish Weight" required>
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Polish
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Polish
  																		Weight:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any"
- 																			name="polish_weight" id="polish_weight"
- 																			value="" class="form-control"
- 																			placeholder="polish Weight" required>
+ 																		<input type="number" step="any" name="polish_weight" id="polish_weight" value="" class="form-control" placeholder="polish Weight" required>
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" name="rate"
- 																			id="manufacturer-rate" value=""
- 																			class="form-control" placeholder="Rate"
- 																			required>
+ 																		<input type="number" step="any" name="rate" id="manufacturer-rate" value="" class="form-control" placeholder="Rate" required>
  																	</div>
  																</div>
 
  																<div class="row mb-4">
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" name="wastage"
- 																			id="wastage" value="" class="form-control"
- 																			placeholder="Wastage" readonly>
+ 																		<input type="number" step="any" name="wastage" id="wastage" value="" class="form-control" placeholder="Wastage" readonly>
  																	</div>
  																	<!-- <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Unpure Weight:</label>
 																	<div class="col-sm-3">
@@ -301,13 +255,10 @@
 																	  <input type="text" name="pure_weight" id="pure_weight" class="form-control" placeholder="Pure Weight">
 																	</div> -->
 
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">24K:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">24K:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="number" step="any" name="tValues"
- 																			id="tValues" value="" class="form-control"
- 																			readonly>
+ 																		<input type="number" step="any" name="tValues" id="tValues" value="" class="form-control" readonly>
  																	</div>
  																</div>
  															</div>
@@ -319,12 +270,8 @@
  																	<div>
 
  																		<!-- <button type="submit" class="btn btn-primary">Save</button> -->
- 																		<button type="button"
- 																			class="btn btn-success waves-effect waves-light"
- 																			onclick="PrintManufacturer()">Print</button>
- 																		<button type="submit"
- 																			class="btn btn-primary btn1" id="m_save"
- 																			value="Save">Save</button>
+ 																		<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintManufacturer()">Print</button>
+ 																		<button type="submit" class="btn btn-primary btn1" id="m_save" value="Save">Save</button>
  																	</div>
  																</div>
  															</div>
@@ -385,26 +332,21 @@
 																?>
  															<div class="row mb-4">
 
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
  																<div class="col-sm-5">
 
- 																	<select id="select-polisher" name="vendor_id"
- 																		placeholder="Pick a polisher..." required>
+ 																	<select id="select-polisher" name="vendor_id" placeholder="Pick a polisher..." required>
  																		<option value="">Select a polisher...</option>
 
  																	</select>
  																</div>
- 																<label for="horizontal-firstname-input"
- 																	class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
+ 																<label for="horizontal-firstname-input" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
  																	Code:</label>
 
  																<div class="col-sm-5">
 
 
- 																	<input type="text" name="product_id" value=""
- 																		class="form-control code" placeholder="code"
- 																		readonly>
+ 																	<input type="text" name="product_id" value="" class="form-control code" placeholder="code" readonly>
 
  																</div>
 
@@ -412,69 +354,48 @@
  															</div>
  															<div class="row mb-4">
 
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
  																<div class="col-sm-5">
 
- 																	<input type="date" name="date" id="p_date"
- 																		class="form-control" placeholder="Date">
+ 																	<input type="date" name="date" id="p_date" class="form-control" placeholder="Date">
  																</div>
 
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Image
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image
  																	Upload:</label>
  																<div class="col-sm-5">
 
- 																	<input type="file" id="image" name="image" value=""
- 																		class="form-control" accept="image/*">
+ 																	<input type="file" id="image" name="image" value="" class="form-control" accept="image/*">
  																</div>
  															</div>
  															<div class="row mb-4">
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
  																<div class="col-sm-11">
 
- 																	<textarea type="text" name="detail" id="p_details"
- 																		class="form-control" style="height: 107px;"
- 																		placeholder="Details"></textarea>
+ 																	<textarea type="text" name="detail" id="p_details" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
  																</div>
  															</div>
 
  															<div class="row mb-4">
- 																<label for="horizontal-firstname-input"
- 																	for="difference"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Difference:</label>
+ 																<label for="horizontal-firstname-input" for="difference" class="col-sm-1 col-form-label d-flex justify-content-end">Difference:</label>
  																<div class="col-sm-2">
 
- 																	<input type="number" step="any" value=""
- 																		id="difference" name="difference" readonly
- 																		class="form-control" placeholder="Difference">
+ 																	<input type="number" step="any" value="" id="difference" name="difference" readonly class="form-control" placeholder="Difference">
  																</div>
- 																<label for="horizontal-firstname-input" for="p_rate"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+ 																<label for="horizontal-firstname-input" for="p_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
  																<div class="col-sm-2">
 
- 																	<input type="number" step="any" value=""
- 																		id="p_rate" name="p_rate" class="form-control"
- 																		placeholder="Rate" required>
+ 																	<input type="number" step="any" value="" id="p_rate" name="p_rate" class="form-control" placeholder="Rate" required>
  																</div>
 
- 																<label for="horizontal-firstname-input" for="poWas"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+ 																<label for="horizontal-firstname-input" for="poWas" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
  																<div class="col-sm-2">
 
- 																	<input type="number" step="any" value="" id="poWas"
- 																		name="poWas" class="form-control"
- 																		placeholder="Wastage" readonly>
+ 																	<input type="number" step="any" value="" id="poWas" name="poWas" class="form-control" placeholder="Wastage" readonly>
  																</div>
 
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">=</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">=</label>
  																<div class="col-sm-2">
- 																	<input type="number" step="any" value=""
- 																		id="payable" name="payable" readonly
- 																		class="form-control card bg-dark border-dark text-light"
- 																		placeholder="Payable / Receivable">
+ 																	<input type="number" step="any" value="" id="payable" name="payable" readonly class="form-control card bg-dark border-dark text-light" placeholder="Payable / Receivable">
  																</div>
  															</div>
 
@@ -483,12 +404,8 @@
  																<div class="col-sm-9">
 
  																	<div>
- 																		<button type="button" id="polisher_print_btn"
- 																			class="btn btn-success waves-effect waves-light"
- 																			onclick="PrintPolisher()">Print</button>
- 																		<button type="submit" id="polisher_save_btn"
- 																			class="btn btn-primary btn1"
- 																			value="Save">Save</button>
+ 																		<button type="button" id="polisher_print_btn" class="btn btn-success waves-effect waves-light" onclick="PrintPolisher()">Print</button>
+ 																		<button type="submit" id="polisher_save_btn" class="btn btn-primary btn1" value="Save">Save</button>
  																	</div>
  																</div>
  															</div>
@@ -536,10 +453,8 @@
 
  											<div class="col-lg-12 ms-lg-auto ">
 
- 												<div class="mb-2 d-flex justify-content-end"
- 													style="margin-top: -30px;">
- 													<button type="button" class="btn btn-primary btn1"
- 														onclick="AddStoneSetter()">
+ 												<div class="mb-2 d-flex justify-content-end" style="margin-top: -30px;">
+ 													<button type="button" class="btn btn-primary btn1" onclick="AddStoneSetter()">
  														Add Stone Setter
  													</button>
  												</div>
@@ -554,208 +469,149 @@
 															?>
 
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Name:</label>
  															<div class="col-sm-5">
 
- 																<select id="select-stone_setter[]" name="vendor[]"
- 																	placeholder="Pick a stone setter..." required>
+ 																<select id="select-stone_setter[]" name="vendor[]" placeholder="Pick a stone setter..." required>
  																	<option value="">Select a stone setter...</option>
 
  																</select>
  															</div>
 
 
- 															<label for="horizontal-firstname-input"
- 																class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
+ 															<label for="horizontal-firstname-input" class="bar-code col-sm-1 col-form-label d-flex justify-content-end">Bar
  																Code:</label>
 
  															<div class="col-sm-5">
 
 
- 																<input type="text" name="code[]" value=""
- 																	class="form-control code" placeholder="code"
- 																	readonly>
+ 																<input type="text" name="code[]" value="" class="form-control code" placeholder="code" readonly>
 
  															</div>
 
  														</div>
  														<div class="row mb-4">
 
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Date:</label>
  															<div class="col-sm-5">
 
- 																<input type="date" name="date[]" id="s_date"
- 																	class="form-control" placeholder="Date">
+ 																<input type="date" name="date[]" id="s_date" class="form-control" placeholder="Date">
  															</div>
 
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Image
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Image
  																Upload:</label>
  															<div class="col-sm-5">
 
- 																<input type="file" id="image[]" name="image[]" value=""
- 																	class="form-control" accept="image/*">
+ 																<input type="file" id="image[]" name="image[]" value="" class="form-control" accept="image/*">
  															</div>
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Details:</label>
  															<div class="col-sm-11">
 
- 																<textarea type="text" name="detail[]" id="s_details[]"
- 																	class="form-control" style="height: 107px;"
- 																	placeholder="Details"></textarea>
+ 																<textarea type="text" name="detail[]" id="s_details[]" class="form-control" style="height: 107px;" placeholder="Details"></textarea>
  															</div>
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Weight:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="s_total_weight[]"
- 																	id="s_total_weight[]" class="form-control"
- 																	placeholder="Total Weight" readonly>
+ 																<input type="number" step="any" name="s_total_weight[]" id="s_total_weight[]" class="form-control" placeholder="Total Weight" readonly>
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">-
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">-
  																Retained Weight:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any"
- 																	name="retained_weight[]" id="retained_weight[]"
- 																	class="form-control" placeholder="Retained Weight">
+ 																<input type="number" step="any" name="retained_weight[]" id="retained_weight[]" class="form-control" placeholder="Retained Weight">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">=
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">=
  																Issued Weight:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="Issued_weight[]"
- 																	id="stepIssueweight[]" class="form-control"
- 																	placeholder="Issued Weight" readonly>
+ 																<input type="number" step="any" name="Issued_weight[]" id="stepIssueweight[]" class="form-control" placeholder="Issued Weight" readonly>
  															</div>
  														</div>
  														<div class="row mb-4">
  															<h5>Zircon:</h6>
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Code:</label>
  																<div class="col-sm-1">
- 																	<select name="zircon_code[]" id="zircon_code[]"
- 																		value="" class="form-control"
- 																		placeholder="Zircon">
+ 																	<select name="zircon_code[]" id="zircon_code[]" value="" class="form-control" placeholder="Zircon">
  																		<option value="">Select a zircon...</option>
 
  																	</select>
 
  																</div>
  																<div class="col-sm-2 p-0">
- 																	<input type="text" name="zircon_detail[]"
- 																		id="zircon_detail[]" value=""
- 																		class="form-control"
- 																		placeholder="Zircon Detail">
+ 																	<input type="text" name="zircon_detail[]" id="zircon_detail[]" value="" class="form-control" placeholder="Zircon Detail">
  																</div>
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label  d-flex justify-content-end">Weight:</label>
  																<div class="col-sm-2">
 
- 																	<input type="number" step="any"
- 																		name="zircon_weight[]" id="zircon_weight[]"
- 																		value="" class="form-control"
- 																		placeholder="Zircon">
+ 																	<input type="number" step="any" name="zircon_weight[]" id="zircon_weight[]" value="" class="form-control" placeholder="Zircon">
  																</div>
- 																<label for="horizontal-firstname-input"
- 																	class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 																<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
  																<div class="col-sm-2">
 
- 																	<input type="number" name="zircon_quantity[]"
- 																		id="zircon_quantity[]" value=""
- 																		class="form-control" placeholder="Zircon">
+ 																	<input type="number" name="zircon_quantity[]" id="zircon_quantity[]" value="" class="form-control" placeholder="Zircon">
  																</div>
  																<div class="col-sm-2">
 
- 																	<i onclick="Add(this)"
- 																		class="fa fa-plus-circle p-2"></i>
+ 																	<i onclick="Add(this)" class="fa fa-plus-circle p-2"></i>
  																</div>
  														</div>
  														<div id="area">
 
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Weight:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" step="any"
- 																	name="zircon_total_weight[]" value=""
- 																	id="zircon_total_weight[]"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="zircon_total_weight[]" value="" id="zircon_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  															<div class="col-sm-1"></div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Quantity:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" name="zircon_total_quantity[]"
- 																	value="0" id="zircon_total_quantity[]"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" name="zircon_total_quantity[]" value="0" id="zircon_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-none">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total
  																Price:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="zircon_total[]"
- 																	value="" id="zircon_total[]"
- 																	class="d-none form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="zircon_total[]" value="" id="zircon_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  														</div>
  														<div class="row mb-4">
  															<h5>Stone:</h5>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Code:</label>
  															<div class="col-sm-1">
 
 
- 																<select name="stone_code[]" id="stone_code[]" value=""
- 																	class="form-control" placeholder="Stone Code">
+ 																<select name="stone_code[]" id="stone_code[]" value="" class="form-control" placeholder="Stone Code">
  																	<option value="">Select a stone...</option>
 
  																</select>
 
  															</div>
  															<div class="col-sm-2 p-0">
- 																<input type="text" name="stone_detail[]"
- 																	id="stone_detail[]" value="" class="form-control"
- 																	placeholder="Stone Detail">
+ 																<input type="text" name="stone_detail[]" id="stone_detail[]" value="" class="form-control" placeholder="Stone Detail">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" step="any" name="stone_weight[]"
- 																	id="stone_weight[]" value="" class="form-control"
- 																	placeholder="Stone Weight">
+ 																<input type="number" step="any" name="stone_weight[]" id="stone_weight[]" value="" class="form-control" placeholder="Stone Weight">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" name="stone_quantity[]"
- 																	id="stone_quantity[]" value="" class="form-control"
- 																	placeholder="Stone Quantity">
+ 																<input type="number" name="stone_quantity[]" id="stone_quantity[]" value="" class="form-control" placeholder="Stone Quantity">
  															</div>
  															<div class="col-sm-2">
 
- 																<i onclick="AddStone(this)"
- 																	class="fa fa-plus-circle p-2"></i>
+ 																<i onclick="AddStone(this)" class="fa fa-plus-circle p-2"></i>
  															</div>
 
 
@@ -764,63 +620,41 @@
 
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Weight:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" step="any"
- 																	name="stone_total_weight[]" value=""
- 																	id="stone_total_weight[]"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="stone_total_weight[]" value="" id="stone_total_weight[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  															<div class="col-sm-1"></div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Quantity:</label>
  															<div class="col-sm-2">
 
- 																<input type="number" name="stone_total_quantity[]"
- 																	value="" id="stone_total_quantity[]"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" name="stone_total_quantity[]" value="" id="stone_total_quantity[]" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-none">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total
  																Price:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="stone_total[]"
- 																	value="" id="stone_total[]"
- 																	class="d-none form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="stone_total[]" value="" id="stone_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label ">Grand Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label ">Grand Total
  																Weight:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any"
- 																	name="grand_total_weight[]" value=""
- 																	id="grand_total_weight[]"
- 																	class=" form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="grand_total_weight[]" value="" id="grand_total_weight[]" class=" form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  														</div>
  														<div class="row mb-4">
  															<h5 class="d-none">Grand Total:</h5>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-none">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-none">Total
  																Price:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="grand_total[]"
- 																	value="" id="grand_total[]"
- 																	class="d-none form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="grand_total[]" value="" id="grand_total[]" class="d-none form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  														</div>
 
@@ -829,11 +663,8 @@
  															<div class="col-sm-9">
 
  																<div>
- 																	<button type="button"
- 																		class="btn btn-success waves-effect waves-light"
- 																		onclick="PrintSetter(this)">Print</button>
- 																	<button type="submit" class="btn btn-primary btn1"
- 																		id="s_save">Save</button>
+ 																	<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintSetter(this)">Print</button>
+ 																	<button type="submit" class="btn btn-primary btn1" id="s_save">Save</button>
  																</div>
  															</div>
  														</div>
@@ -846,120 +677,79 @@
  														<div class="row">
  															<label for="received_weight">Recieved Weight:</label>
  															<div class="col-sm-4 mb-4">
- 																<input type="number" step="any" name="received_weight"
- 																	value="" id="received_weight" class="form-control"
- 																	placeholder="Received weight">
+ 																<input type="number" step="any" name="received_weight" value="" id="received_weight" class="form-control" placeholder="Received weight">
  															</div>
  															<div id="returned-area[]" class="row">
  																<h5>Zircon/Stone Return:</h5>
- 																<div class="row mb-4"><label
- 																		for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
+ 																<div class="row mb-4"><label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Detail:</label>
  																	<div class="col-sm-3">
 
- 																		<input type="text" name="r_code[]"
- 																			id="r_code[]" value="" class="form-control"
- 																			placeholder="Detail">
+ 																		<input type="text" name="r_code[]" id="r_code[]" value="" class="form-control" placeholder="Detail">
 
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Weight:</label>
  																	<div class="col-sm-2">
 
- 																		<input type="number" step="any"
- 																			name="r_weight[]" id="r_weight[]" value=""
- 																			class="form-control" placeholder="Weight">
+ 																		<input type="number" step="any" name="r_weight[]" id="r_weight[]" value="" class="form-control" placeholder="Weight">
  																	</div>
- 																	<label for="horizontal-firstname-input"
- 																		class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
+ 																	<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Quantity:</label>
  																	<div class="col-sm-2">
 
- 																		<input type="number" name="r_quantity[]"
- 																			id="r_quantity[]" value=""
- 																			class="form-control"
- 																			placeholder="Quantity">
+ 																		<input type="number" name="r_quantity[]" id="r_quantity[]" value="" class="form-control" placeholder="Quantity">
  																	</div>
  																	<div class="col-sm-2">
 
- 																		<i class="fa fa-plus-circle p-2"
- 																			onclick="AddReturned(this)"></i>
+ 																		<i class="fa fa-plus-circle p-2" onclick="AddReturned(this)"></i>
  																	</div>
  																</div>
  															</div>
  														</div>
  														<div class="row">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Stone
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone
  																Weight:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" name="r_stone_weight"
- 																	value="" id="r_stone_weight"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="r_stone_weight" value="" id="r_stone_weight" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Stone
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Stone
  																Quantity:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" name="r_stone_quantity" value=""
- 																	id="r_stone_quantity"
- 																	class="form-control form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" name="r_stone_quantity" value="" id="r_stone_quantity" class="form-control form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Total
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Total
  																Weight Return:</label>
  															<div class="col-sm-3">
- 																<input type="number" step="any" name="r_total_weight"
- 																	value="" id="r_total_weight" class="form-control"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="r_total_weight" value="" id="r_total_weight" class="form-control" placeholder="Total">
  															</div>
- 															<label for="horizontal-firstname-input" for="r_rate"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
+ 															<label for="horizontal-firstname-input" for="r_rate" class="col-sm-1 col-form-label d-flex justify-content-end">Rate:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" value="" id="r_rate"
- 																	name="r_rate" class="form-control"
- 																	placeholder="Rate" required>
+ 																<input type="number" step="any" value="" id="r_rate" name="r_rate" class="form-control" placeholder="Rate" required>
  															</div>
 
- 															<label for="horizontal-firstname-input" for="sh_qty"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
+ 															<label for="horizontal-firstname-input" for="sh_qty" class="col-sm-1 col-form-label d-flex justify-content-end">S-Quantity:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" value="" id="sh_qty"
- 																	name="sh_qty" class="form-control"
- 																	placeholder="Shruded Quantity">
+ 																<input type="number" step="any" value="" id="sh_qty" name="sh_qty" class="form-control" placeholder="Shruded Quantity">
  															</div>
  														</div>
  														<div class="row mb-4">
- 															<label for="horizontal-firstname-input" for="r_wastage"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
+ 															<label for="horizontal-firstname-input" for="r_wastage" class="col-sm-1 col-form-label d-flex justify-content-end">Wastage:</label>
  															<div class="col-sm-3">
 
- 																<input type="number" step="any" value="" id="r_wastage"
- 																	name="r_wastage" class="form-control"
- 																	placeholder="Wastage" readonly>
+ 																<input type="number" step="any" value="" id="r_wastage" name="r_wastage" class="form-control" placeholder="Wastage" readonly>
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Grand
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Grand
  																Weight:</label>
  															<div class="col-sm-3">
- 																<input type="number" step="any" name="r_grand_weight"
- 																	value="" id="r_grand_weight"
- 																	class="form-control card bg-dark border-dark text-light"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="r_grand_weight" value="" id="r_grand_weight" class="form-control card bg-dark border-dark text-light" placeholder="Total">
  															</div>
- 															<label for="horizontal-firstname-input"
- 																class="col-sm-1 col-form-label d-flex justify-content-end">Payable:</label>
+ 															<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">Payable:</label>
  															<div class="col-sm-3">
- 																<input type="number" step="any" name="r_payable"
- 																	value="" id="r_payable" class="form-control"
- 																	placeholder="Total">
+ 																<input type="number" step="any" name="r_payable" value="" id="r_payable" class="form-control" placeholder="Total">
  															</div>
  														</div>
 
@@ -972,11 +762,8 @@
  															<div class="col-sm-9">
 
  																<div>
- 																	<button type="button"
- 																		class="btn btn-success waves-effect waves-light"
- 																		onclick="PrintReturned(this)">Print</button>
- 																	<button type="submit" class="btn btn-primary btn1"
- 																		id="r_save">Save</button>
+ 																	<button type="button" class="btn btn-success waves-effect waves-light" onclick="PrintReturned(this)">Print</button>
+ 																	<button type="submit" class="btn btn-primary btn1" id="r_save">Save</button>
  																</div>
  															</div>
  														</div>
@@ -1048,20 +835,17 @@
  															</tr>
  															<tr>
  																<td>
- 																	<input type="date" id="a_date[]" name="date[]"
- 																		class="form-control" placeholder="Date">
+ 																	<input type="date" id="a_date[]" name="date[]" class="form-control" placeholder="Date">
  																</td>
  																<td>
 
- 																	<select id="select-vendor[]" name="vendor_id[]"
- 																		placeholder="Pick a vendor...">
+ 																	<select id="select-vendor[]" name="vendor_id[]" placeholder="Pick a vendor...">
  																		<option value="">Select a vendor...</option>
 
  																	</select>
  																</td>
  																<td>
- 																	<select required="" id="a_type[]" name="type[]"
- 																		class="form-control form-select">
+ 																	<select required="" id="a_type[]" name="type[]" class="form-control form-select">
  																		<option value="">Select Type</option>
  																		<option value="Stone ">Stone</option>
  																		<option value="Dull">Dull</option>
@@ -1085,15 +869,12 @@
  																	</select>
  																</td>
  																<td>
- 																	<input type="number" step="any" id="amount[]"
- 																		name="amount[]" class="form-control"
- 																		placeholder="Amount">
+ 																	<input type="number" step="any" id="amount[]" name="amount[]" class="form-control" placeholder="Amount">
  																</td>
 
 
 
- 																<td><i class="fa fa-plus-circle p-2"
- 																		onclick="AddAdditional(this)"></i>
+ 																<td><i class="fa fa-plus-circle p-2" onclick="AddAdditional(this)"></i>
 
 
  																</td>
@@ -1109,8 +890,7 @@
 
  															<div>
 
- 																<button type="submit" id="a_save"
- 																	class="btn btn-primary btn1">Save</button>
+ 																<button type="submit" id="a_save" class="btn btn-primary btn1">Save</button>
  															</div>
 
  														</div>
@@ -1120,8 +900,7 @@
  										</div>
  									</div>
  									<div class="d-flex justify-content-end">
- 										<button type='submit' class="btn btn-danger btn1 px-3"
- 											onclick="SemiFinish()">Lock</button>
+ 										<button type='submit' class="btn btn-danger btn1 px-3" onclick="SemiFinish()">Lock</button>
  									</div>
 
 
@@ -1176,27 +955,21 @@
  					<form id="filter-data" method="POST" enctype="multipart/form-data">
  						<div class="card">
  							<div class="row my-4">
- 								<label for="from-date"
- 									class="col-sm-1 col-form-label d-flex justify-content-end">From:</label>
+ 								<label for="from-date" class="col-sm-1 col-form-label d-flex justify-content-end">From:</label>
  								<div class="col-sm-1">
  									<input type="date" name="from-date" id="from-date" class="form-control">
  								</div>
- 								<label for="horizontal-firstname-input"
- 									class="col-sm-1 col-form-label d-flex justify-content-end">To:</label>
+ 								<label for="horizontal-firstname-input" class="col-sm-1 col-form-label d-flex justify-content-end">To:</label>
  								<div class="col-sm-1">
  									<input type="date" name="to-date" id="to-date" class="form-control">
  								</div>
- 								<label for="product_id"
- 									class="col-sm-1 col-form-label d-flex justify-content-end">Product ID:</label>
+ 								<label for="product_id" class="col-sm-1 col-form-label d-flex justify-content-end">Product ID:</label>
  								<div class="col-sm-2">
- 									<input type="text" name="product_id" id="product_id" class="form-control"
- 										placeholder="Product ID">
+ 									<input type="text" name="product_id" id="product_id" class="form-control" placeholder="Product ID">
  								</div>
- 								<label for="vendor_id"
- 									class="col-sm-1 col-form-label d-flex justify-content-end">Vendor ID:</label>
+ 								<label for="vendor_id" class="col-sm-1 col-form-label d-flex justify-content-end">Vendor ID:</label>
  								<div class="col-sm-2">
- 									<input type="text" value="" id="vendor_id" name="vendor_id" class="form-control"
- 										placeholder="Vendor ID">
+ 									<input type="text" value="" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID">
  								</div>
  								<div class="col-sm-2">
  									<button type="submit" name="submit" class="btn btn-primary">Save</button>
@@ -1256,8 +1029,7 @@
  				<h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
 
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light"
- 						value="light">
+ 					<input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
  					<label class="form-check-label" for="layout-mode-light">Light</label>
  				</div>
  				<div class="form-check form-check-inline">
@@ -1268,88 +1040,74 @@
  				<h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
 
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild"
- 						value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+ 					<input class="form-check-input" type="radio" name="layout-width" id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
  					<label class="form-check-label" for="layout-width-fuild">Fluid</label>
  				</div>
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed"
- 						value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+ 					<input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
  					<label class="form-check-label" for="layout-width-boxed">Boxed</label>
  				</div>
 
  				<h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
 
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed"
- 						value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+ 					<input class="form-check-input" type="radio" name="layout-position" id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
  					<label class="form-check-label" for="layout-position-fixed">Fixed</label>
  				</div>
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable"
- 						value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+ 					<input class="form-check-input" type="radio" name="layout-position" id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
  					<label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
  				</div>
 
  				<h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
 
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light"
- 						value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+ 					<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
  					<label class="form-check-label" for="topbar-color-light">Light</label>
  				</div>
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark"
- 						value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+ 					<input class="form-check-input" type="radio" name="topbar-color" id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
  					<label class="form-check-label" for="topbar-color-dark">Dark</label>
  				</div>
 
  				<h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
 
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default"
- 						value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+ 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
  					<label class="form-check-label" for="sidebar-size-default">Default</label>
  				</div>
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact"
- 						value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+ 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
  					<label class="form-check-label" for="sidebar-size-compact">Compact</label>
  				</div>
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small"
- 						value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+ 					<input class="form-check-input" type="radio" name="sidebar-size" id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
  					<label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
  				</div>
 
  				<h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
 
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light"
- 						value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+ 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
  					<label class="form-check-label" for="sidebar-color-light">Light</label>
  				</div>
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark"
- 						value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+ 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
  					<label class="form-check-label" for="sidebar-color-dark">Dark</label>
  				</div>
  				<div class="form-check sidebar-setting">
- 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand"
- 						value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+ 					<input class="form-check-input" type="radio" name="sidebar-color" id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
  					<label class="form-check-label" for="sidebar-color-brand">Brand</label>
  				</div>
 
  				<h6 class="mt-4 mb-3 pt-2">Direction</h6>
 
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr"
- 						value="ltr">
+ 					<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-ltr" value="ltr">
  					<label class="form-check-label" for="layout-direction-ltr">LTR</label>
  				</div>
  				<div class="form-check form-check-inline">
- 					<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl"
- 						value="rtl">
+ 					<input class="form-check-input" type="radio" name="layout-direction" id="layout-direction-rtl" value="rtl">
  					<label class="form-check-label" for="layout-direction-rtl">RTL</label>
  				</div>
 
@@ -1366,6 +1124,49 @@
  	<?php include 'layouts/vendor-scripts.php'; ?>
 
  	<script>
+ 		function GetUniversalProducts() {
+ 			var $select = $('#type').selectize(); // Assuming #type is your select element
+ 			var selectize = $select[0].selectize; // This stores the selectize instance
+
+ 			$.ajax({
+ 				url: "functions.php",
+ 				method: "POST",
+ 				data: {
+ 					function: "GetUniversalProduct"
+ 				},
+ 				success: function(response) {
+ 					const data = JSON.parse(response);
+ 					for (let i = 0; i < data.length; i++) {
+ 						const element = data[i];
+ 						let optionData = {
+ 							value: element.id,
+ 							text: element.name
+ 						};
+
+ 						optionData['data_id'] = element.id;
+
+
+ 						selectize.addOption(optionData);
+ 						selectize.refreshOptions();
+ 					}
+ 				}
+ 			});
+
+ 			// Listen to the change event to conditionally call a function
+ 			selectize.on('change', function(value) {
+ 				const selectedOption = this.options[value];
+ 				if (selectedOption && selectedOption.data_id) {
+ 					// Call your function here
+ 					GetUId(selectedOption.data_id);
+ 				}
+ 			});
+ 		}
+
+ 		function GetUId(id) {
+ 			var code=document.getElementsByClassName('code');
+			code[0].value=id;
+ 		}
+
  		function GetAllAdditionals() {
  			// Initialization for 'type' selectizes
  			const typeElements = document.querySelectorAll('select[id="a_type[]"]:not(.selectized)');
@@ -1380,7 +1181,7 @@
  					function: "GetAllVendorData",
  					type: "vendor"
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					const data = JSON.parse(response);
  					const zirconElements = document.querySelectorAll('select[id="select-vendor[]"]');
 
@@ -1446,7 +1247,7 @@
  						function: "GetlZirconDetails",
  						barcode: barcode
  					},
- 					success: function (data) {
+ 					success: function(data) {
  						data = JSON.parse(data);
  						element.value = '';
  						element.value = data.type + ' | ' + data.detail;
@@ -1464,7 +1265,7 @@
  				data: {
  					function: "GetAllZircons"
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
 
  					const zircon = document.querySelectorAll('select[id="zircon_code[]"]');
@@ -1519,7 +1320,7 @@
  						selectizeInstance.settings.openOnFocus = true;
  						selectizeInstance.close();
 
- 						selectizeInstance.on('change', function () {
+ 						selectizeInstance.on('change', function() {
  							GetZiroconDetails(this.getValue(), selectElement.parentNode
  								.nextElementSibling.children[0]);
  						});
@@ -1542,7 +1343,7 @@
  				data: {
  					function: "GetAllStones"
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
 
  					const stone = document.querySelectorAll('select[id="stone_code[]"]');
@@ -1595,7 +1396,7 @@
  						selectizeInstance.settings.openOnFocus = true;
  						selectizeInstance.close();
 
- 						selectizeInstance.on('change', function () {
+ 						selectizeInstance.on('change', function() {
  							GetZiroconDetails(this.getValue(), selectElement.parentNode
  								.nextElementSibling.children[0]);
  						});
@@ -1916,7 +1717,7 @@
  			var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
 
  			for (var i = 0; i < retained_weight.length; i++) {
- 				retained_weight[i].addEventListener("change", function () {
+ 				retained_weight[i].addEventListener("change", function() {
  					CalculateIssuedWeight(this);
  				});
  			};
@@ -1938,7 +1739,7 @@
  			var id = btn.parentNode.parentNode.id;
  			$('#product-modal').modal('hide');
  			var remove = document.getElementsByClassName("remove");
- 			Array.from(remove).forEach(function (element) {
+ 			Array.from(remove).forEach(function(element) {
  				element.remove();
  			});
  			var delete_btn = document.getElementById("delete-product");
@@ -1959,7 +1760,7 @@
  				data: {
  					function: "GetSemiFinishStatus",
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					var data = JSON.parse(data);
 
  					// Get the 'id' value from your input field
@@ -1972,14 +1773,14 @@
  						var s_id = data[i].id;
 
  						if (s_id === id) {
- 							saveButtons.forEach(function (button) {
+ 							saveButtons.forEach(function(button) {
  								button.classList.add('d-none');
 
  							});
  							break;
 
  						} else if (s_id != id) {
- 							saveButtons.forEach(function (button) {
+ 							saveButtons.forEach(function(button) {
  								button.classList.remove('d-none');
  							})
  						}
@@ -2058,7 +1859,7 @@
  					column: selectedText,
  					id: vendor_id
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					var data = JSON.parse(response);
  					var stone_setter_rate = element.querySelector('input[id="r_rate"]').value = data[0][
  						selectedText
@@ -2110,7 +1911,7 @@
  						id: id
 
  					},
- 					success: function (data) {
+ 					success: function(data) {
  						Swal.fire({
  							title: 'Success!',
  							text: 'Product Added to Semi-Finished Successfully!',
@@ -2136,7 +1937,7 @@
  					function: "PrintManufacturer",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					let printWindow = window.open("", "_blank");
  					if (data[0].purity == data[0]['18k']) {
@@ -2242,7 +2043,7 @@
  					function: "PrintPolisher",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					let printWindow = window.open("", "_blank");
  					if (data[0].purity == data[0]['manufacturer_18k']) {
@@ -2352,7 +2153,7 @@
  					id: id,
  					vendor_id: vendor_id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					let printWindow = window.open("", "_blank");
  					// Generate slip content
@@ -2449,7 +2250,7 @@
  					id: id,
  					vendor_id: vendor_id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					// Generate slip content
  					let slipContent = `
@@ -2556,7 +2357,7 @@
  					function: "GetManufacturerData",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					var select_manufacturer = $('#select-manufacturer')[0].selectize;
  					select_manufacturer.setValue(data[0].vendor_id);
@@ -2589,10 +2390,10 @@
  							function: "GetVendor",
  							id: data[0].vendor_id
  						},
- 						success: function (response) {
+ 						success: function(response) {
  							var data1 = JSON.parse(response);
  							var selectElement = document.getElementById(
- 							'select-manufacturer-purity');
+ 								'select-manufacturer-purity');
 
  							var newOption = document.createElement("option");
  							newOption.value = data1[0]["18k"];
@@ -2613,13 +2414,13 @@
  							// Append the new option to the select element
  							selectElement.appendChild(newOption2);
  							const optionText = data[0]
- 							.purity_text; // Replace with the text of the option you want to select
+ 								.purity_text; // Replace with the text of the option you want to select
  							const options = selectElement.options;
 
  							for (let i = 0; i < options.length; i++) {
  								if (options[i].text === optionText) {
  									selectElement.selectedIndex =
- 									i; // Set the selectedIndex to the index of the found option
+ 										i; // Set the selectedIndex to the index of the found option
  									break; // Exit the loop once the option is found
  								}
  							}
@@ -2644,7 +2445,7 @@
  					function: "GetPolisherData",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
  						var select_manufacturer = $('#select-polisher')[0].selectize;
@@ -2684,7 +2485,7 @@
  					function: "GetStoneSetterData",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
  						let form = document.querySelectorAll("#stepthree")[0];
@@ -2952,7 +2753,7 @@
  						}
 
  						runLoop();
- 						setTimeout(function () {
+ 						setTimeout(function() {
  							newrunLoop();
  						}, 1000);
  					}
@@ -2987,14 +2788,14 @@
  						id: id,
  						vendor_id: vendor_id
  					},
- 					success: function (data) {
+ 					success: function(data) {
  						if (data !== "[]") {
  							data = JSON.parse(data);
  							var option = document.createElement("option");
  							option.text = data[0].code;
  							option.value = data[0].code;
  							var zircon_code = element.querySelectorAll('select[name="zircon_code[]"]')[
- 							0];
+ 								0];
  							while (zircon_code.options.length > 0) {
  								zircon_code.remove(0);
  							}
@@ -3060,7 +2861,7 @@
  						id: id,
  						vendor_id: vendor_id
  					},
- 					success: function (data) {
+ 					success: function(data) {
  						if (data !== "[]") {
  							data = JSON.parse(data);
  							var option = document.createElement("option");
@@ -3109,18 +2910,18 @@
 									</div>`;
  								area2.appendChild(div2);
  								var stone_weight = element.querySelectorAll(
- 								'input[id="stone_weight[]"]');
+ 									'input[id="stone_weight[]"]');
  								var stone_quantity = element.querySelectorAll(
  									'input[id="stone_quantity[]"]');
- 								stone_quantity.forEach(function (input) {
- 									input.addEventListener('input', function () {
+ 								stone_quantity.forEach(function(input) {
+ 									input.addEventListener('input', function() {
  										let current = this.parentNode.parentNode
  											.parentNode;
  										StoneQuantity(current);
  									});
  								})
- 								stone_weight.forEach(function (input) {
- 									input.addEventListener('input', function () {
+ 								stone_weight.forEach(function(input) {
+ 									input.addEventListener('input', function() {
  										let current = this.parentNode.parentNode
  											.parentNode;
  										StoneWeight(current);
@@ -3145,7 +2946,7 @@
  					id: id,
  					vendor_id: vendor_id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					let element = document.getElementsByClassName('stone-setter' + si)[0];
 
@@ -3361,7 +3162,7 @@
  					id: id,
  					vendor_id: vendor_id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
  						var returned_area = element.querySelectorAll('div[id="returned-area[]"]')[0];
@@ -3416,7 +3217,7 @@
  					function: "GetAdditionalData",
  					id: id
  				},
- 				success: function (data) {
+ 				success: function(data) {
  					if (data !== "[]") {
  						data = JSON.parse(data);
  						let table = document.getElementById('additionalTable');
@@ -3523,7 +3324,7 @@
  						function: "DeleteProduct",
  						id: product.value
  					},
- 					success: function (response) {
+ 					success: function(response) {
  						var data = JSON.parse(response);
  						if (data.status == 'success') {
  							location.reload();
@@ -3550,7 +3351,7 @@
  		function ZirconQuantity(current) {
  			var zircon_quantity = current.querySelectorAll('input[id="zircon_quantity[]"]');
  			var total = 0;
- 			zircon_quantity.forEach(function (input) {
+ 			zircon_quantity.forEach(function(input) {
  				if (input.value) {
  					total += parseFloat(input.value);
  				}
@@ -3577,7 +3378,7 @@
  		function StoneQuantity(current) {
  			var stone_quantity = current.querySelectorAll('input[id="stone_quantity[]"]');
  			var total = 0;
- 			stone_quantity.forEach(function (input) {
+ 			stone_quantity.forEach(function(input) {
  				if (input.value) {
  					total += parseFloat(input.value);
  				}
@@ -3604,7 +3405,7 @@
  		function ReturnedQuantity(element) {
  			var r_quantity = element.querySelectorAll('input[id="r_quantity[]"]');
  			var total = 0;
- 			r_quantity.forEach(function (input) {
+ 			r_quantity.forEach(function(input) {
  				if (input.value) {
  					total += parseFloat(input.value);
  				}
@@ -3688,14 +3489,14 @@
  			area2.appendChild(div2);
  			var stone_weight = document.querySelectorAll('input[id="stone_weight[]"]');
  			var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
- 			stone_quantity.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			stone_quantity.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					StoneQuantity(current);
  				});
  			})
- 			stone_weight.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			stone_weight.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					StoneWeight(current);
  				});
@@ -3742,14 +3543,14 @@
  			area.appendChild(div);
  			var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
  			var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
- 			zircon_quantity.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			zircon_quantity.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					ZirconQuantity(current);
  				});
  			})
- 			zircon_weight.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			zircon_weight.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					ZirconWeight(current);
  				});
@@ -3840,14 +3641,14 @@
  			area.appendChild(div);
  			var zircon_weight = document.querySelectorAll('input[id="zircon_weight[]"]');
  			var zircon_quantity = document.querySelectorAll('input[id="zircon_quantity[]"]');
- 			zircon_quantity.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			zircon_quantity.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					ZirconQuantity(current);
  				});
  			})
- 			zircon_weight.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			zircon_weight.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					ZirconWeight(current);
  				});
@@ -3881,14 +3682,14 @@
  			returned_area.appendChild(div2);
  			var r_weight = document.querySelectorAll('input[id="r_weight[]"]');
  			var r_quantity = document.querySelectorAll('input[id="r_quantity[]"]');
- 			r_quantity.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			r_quantity.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					ReturnedQuantity(current);
  				});
  			})
- 			r_weight.forEach(function (input) {
- 				input.addEventListener('input', function () {
+ 			r_weight.forEach(function(input) {
+ 				input.addEventListener('input', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					ReturnedWeight(current);
  				});
@@ -3976,7 +3777,7 @@
  					column: selectedText,
  					id: code
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					var data = JSON.parse(response);
  					var difference = document.getElementById('difference').value;
  					if (selectedText == '18k') {
@@ -4044,7 +3845,7 @@
  					column: selectedText,
  					id: vendor_id
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					var data = JSON.parse(response);
  					var stone_setter_rate = element.nextElementSibling.querySelector('input[id="r_rate"]')
  						.value = data[0][selectedText];
@@ -4061,7 +3862,7 @@
  				data: {
  					function: "GetStoneSetterNames"
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					const data = JSON.parse(response);
 
  					stonesetters.forEach(selectElement => {
@@ -4111,7 +3912,7 @@
  			});
 
  			const divsWithSiblings = document.querySelectorAll(
- 			'div.selectize-control.single + div.selectize-control.single');
+ 				'div.selectize-control.single + div.selectize-control.single');
  			divsWithSiblings.forEach(div => {
  				div.remove();
  			});
@@ -4144,7 +3945,7 @@
  			var s_total_weight = document.querySelectorAll('input[id="s_total_weight[]"]');
  			var sh_qty = document.querySelectorAll('input[id="sh_qty"]');
  			for (var i = 0; i < sh_qty.length; i++) {
- 				sh_qty[i].addEventListener("change", function () {
+ 				sh_qty[i].addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					CalculateReturnedWastage(current);
  					ReturnedPayable(current);
@@ -4152,89 +3953,89 @@
  			};
 
  			for (var i = 0; i < s_total_weight.length; i++) {
- 				s_total_weight[i].addEventListener("change", function () {
+ 				s_total_weight[i].addEventListener("change", function() {
  					CalculateIssuedWeight(this.parentElement.nextElementSibling.nextElementSibling.children[0]);
  				});
  			};
 
  			for (var i = 0; i < retained_weight.length; i++) {
- 				retained_weight[i].addEventListener("change", function () {
+ 				retained_weight[i].addEventListener("change", function() {
  					CalculateIssuedWeight(this);
  				});
  			};
 
- 			r_grand_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_grand_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					ReturnedPayable(current);
  				});
  			});
- 			r_rate.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_rate.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					CalculateReturnedWastage(current);
  				});
  			});
- 			r_stone_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_stone_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode;
  					TotalWeight(current);
  				});
  			});
- 			r_wastage.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_wastage.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					TotalWeight(current);
  				});
  			});
- 			r_stone_quantity.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_stone_quantity.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					CalculateReturnedWastage(current);
  				});
  			});
- 			received_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			received_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					current = this.parentNode.parentNode.parentNode;
  					ReturnTotalWeight(current);
  				});
  			});
- 			r_stone_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			r_stone_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					current = this.parentNode.parentNode.parentNode;
  					ReturnTotalWeight(current);
  				});
  			});
- 			received_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			received_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode;
  					TotalWeight(current);
  				});
  			});
- 			grand_total_weight.forEach(function (element) {
- 				element.addEventListener("change", function () {
+ 			grand_total_weight.forEach(function(element) {
+ 				element.addEventListener("change", function() {
  					let current = this.parentNode.parentNode.parentNode.nextSibling;
  					ReturnedPayable(current);
  				});
  			});
 
  			for (let i = 0; i < r_quantity.length; i++) {
- 				r_quantity[i].addEventListener('change', function () {
+ 				r_quantity[i].addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					ReturnedQuantity(current);
  				});
- 				r_quantity[i].addEventListener('change', function () {
+ 				r_quantity[i].addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					TotalWeight(current);
  				});
  			}
 
  			for (let i = 0; i < r_weight.length; i++) {
- 				r_weight[i].addEventListener('change', function () {
+ 				r_weight[i].addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					ReturnedWeight(current);
  				});
- 				r_weight[i].addEventListener('change', function () {
+ 				r_weight[i].addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  					TotalWeight(current);
  				});
@@ -4249,32 +4050,32 @@
  			var stone_quantity = document.querySelectorAll('input[id="stone_quantity[]"]');
  			var grand_total_weight = document.querySelectorAll('input[id="grand_total_weight[]"]');
 
- 			grand_total_weight.forEach(function (input) {
- 				input.addEventListener('change', function () {
+ 			grand_total_weight.forEach(function(input) {
+ 				input.addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode.nextElementSibling;
  					ReturnedPayable(current);
  				});
  			})
- 			stone_quantity.forEach(function (input) {
- 				input.addEventListener('change', function () {
+ 			stone_quantity.forEach(function(input) {
+ 				input.addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode;
  					StoneQuantity(current);
  				});
  			})
- 			stone_weight.forEach(function (input) {
- 				input.addEventListener('change', function () {
+ 			stone_weight.forEach(function(input) {
+ 				input.addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode;
  					StoneWeight(current);
  				});
  			})
- 			zircon_quantity.forEach(function (input) {
- 				input.addEventListener('change', function () {
+ 			zircon_quantity.forEach(function(input) {
+ 				input.addEventListener('change', function() {
  					let current = this.parentNode.parentNode.parentNode;
  					ZirconQuantity(current);
  				});
  			})
- 			zircon_weight.forEach(function (input) {
- 				input.addEventListener('change', function () {
+ 			zircon_weight.forEach(function(input) {
+ 				input.addEventListener('change', function() {
 
  					let current = this.parentNode.parentNode.parentNode;
  					ZirconWeight(current);
@@ -4300,9 +4101,9 @@
 
  		window.addEventListener('load', runLoop1());
 
- 		$(document).ready(function () {
+ 		$(document).ready(function() {
 
-
+			GetUniversalProducts();
 
  			$('select:not(#select-manufacturer-purity)').selectize({
  				sortField: 'text',
@@ -4316,7 +4117,7 @@
  					function: "GetModalProducts"
 
  				},
- 				success: function (response) {
+ 				success: function(response) {
 
  					var data = JSON.parse(response);
  					var tbody = document.getElementById("product-table-body");
@@ -4332,7 +4133,7 @@
  						var btn = document.createElement("button");
  						btn.innerHTML = "Select";
  						btn.className = "btn btn-primary";
- 						btn.addEventListener("click", function () {
+ 						btn.addEventListener("click", function() {
  							GetProductId(this);
  						});
  						tr.id = data[i].product_id;
@@ -4365,7 +4166,7 @@
  					function: "GetAllVendorData",
  					type: "manufacturer"
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					var data = JSON.parse(response);
  					var select = $('#select-manufacturer')[0].selectize;
  					for (var i = 0; i < data.length; i++) {
@@ -4387,7 +4188,7 @@
  					function: "GetAllVendorData",
  					type: "polisher"
  				},
- 				success: function (response) {
+ 				success: function(response) {
  					var data = JSON.parse(response);
  					var select = $('#select-polisher')[0].selectize;
  					for (var i = 0; i < data.length; i++) {
@@ -4432,13 +4233,13 @@
  			var retained_weight = document.querySelectorAll('input[id="retained_weight[]"]');
 
 
- 			manufacturer_rate.addEventListener("change", function () {
+ 			manufacturer_rate.addEventListener("change", function() {
  				CalculateWastage();
  			});
  			unpolish_weight.addEventListener('change', CalculateWastage);
  			unpolish_weight.addEventListener('change', CalculateDifference);
  			polish_weight.addEventListener('change', CalculateDifference);
- 			p_rate.addEventListener('change', function () {
+ 			p_rate.addEventListener('change', function() {
  				CalculateNewPayable($(this).val());
  			});
 
@@ -4451,7 +4252,7 @@
 
  		});
 
- 		$(document).on('submit', '#stepone', function (e) {
+ 		$(document).on('submit', '#stepone', function(e) {
  			e.preventDefault();
  			var save = document.getElementById("m_save");
  			save.disabled = true;
@@ -4473,7 +4274,7 @@
  				contentType: false,
  				processData: false,
  				success: function(data) {
-					
+
  					data = JSON.parse(data);
  					if (data[0] == "success" && data[1] == "success") {
  						Swal.fire({
@@ -4497,7 +4298,7 @@
 
  		})
 
- 		$(document).on('submit', '#steptwo', function (e) {
+ 		$(document).on('submit', '#steptwo', function(e) {
  			e.preventDefault();
  			var save = document.getElementById("polisher_save_btn");
  			save.disabled = true;
@@ -4509,7 +4310,7 @@
  				data: form,
  				contentType: false,
  				processData: false,
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					if (data[0] == "success") {
  						Swal.fire({
@@ -4531,7 +4332,7 @@
 
  		})
 
- 		$(document).on('submit', '#stepthree', function (e) {
+ 		$(document).on('submit', '#stepthree', function(e) {
  			e.preventDefault();
  			var save = document.getElementById("s_save");
  			var form = new FormData(this);
@@ -4543,7 +4344,7 @@
  				data: form,
  				contentType: false,
  				processData: false,
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					if (data[0] == "success") {
  						Swal.fire({
@@ -4565,7 +4366,7 @@
 
  		})
 
- 		$(document).on('submit', '#r_stepthree', function (e) {
+ 		$(document).on('submit', '#r_stepthree', function(e) {
  			e.preventDefault();
  			var save = document.getElementById("r_save");
  			save.disabled = true;
@@ -4584,7 +4385,7 @@
  				data: form,
  				contentType: false,
  				processData: false,
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					if (data[0] == "success") {
  						Swal.fire({
@@ -4605,7 +4406,7 @@
  			});
  		});
 
- 		$(document).on('submit', '#stepfour', function (e) {
+ 		$(document).on('submit', '#stepfour', function(e) {
  			e.preventDefault();
  			var save = document.getElementById("a_save");
  			save.disabled = true;
@@ -4619,7 +4420,7 @@
  				data: form,
  				contentType: false,
  				processData: false,
- 				success: function (data) {
+ 				success: function(data) {
  					data = JSON.parse(data);
  					if (data[0] == "success") {
  						Swal.fire({
@@ -4645,7 +4446,7 @@
 
 
 
- 		$(document).on('submit', '#filter-data', function (e) {
+ 		$(document).on('submit', '#filter-data', function(e) {
  			e.preventDefault();
  			var form = new FormData(this);
  			var tbody = document.getElementById('product-table-body');
@@ -4681,7 +4482,7 @@
  							var btn = document.createElement("button");
  							btn.innerHTML = "Select";
  							btn.className = "btn btn-primary";
- 							btn.addEventListener("click", function () {
+ 							btn.addEventListener("click", function() {
  								GetProductId(this);
  							});
  							td1.innerHTML = i + 1;
@@ -4705,28 +4506,28 @@
  			});
  		});
 
- 		$(document).on('click', '.delete-stone', function () {
+ 		$(document).on('click', '.delete-stone', function() {
  			let current = this.parentNode.parentNode.parentNode.parentNode;
  			$(this).parent().parent().remove();
  			StoneQuantity(current);
  			StoneWeight(current);
  		});
 
- 		$(document).on('click', '.delete-zircon', function () {
+ 		$(document).on('click', '.delete-zircon', function() {
  			let current = this.parentNode.parentNode.parentNode.parentNode;
  			$(this).parent().parent().remove();
  			ZirconQuantity(current);
  			ZirconWeight(current);
  		});
 
- 		$(document).on('click', '.delete-returned', function () {
+ 		$(document).on('click', '.delete-returned', function() {
  			let current = this.parentNode.parentNode.parentNode.parentNode.parentNode;
  			$(this).parent().parent().remove();
  			ReturnedQuantity(current);
  			ReturnedWeight(current);
  		});
 
- 		$(document).on('change', '#select-manufacturer', function (e) {
+ 		$(document).on('change', '#select-manufacturer', function(e) {
  			e.preventDefault();
  			var product = document.getElementById('product');
  			if (product.value === "") {
@@ -4738,63 +4539,63 @@
  					data: {
  						function: "ProductCount",
  					},
- 					success: function (response) {
+ 					success: function(response) {
  						var data = JSON.parse(response);
  						for (var i = 0; i < code.length; i++) {
  							code[i].value = select1 + data[0];
  						}
  					}
  				});
-				 $.ajax({
- 				url: "functions.php",
- 				method: "POST",
- 				data: {
- 					function: "GetVendor",
- 					id: select1
- 				},
- 				success: function (response) {
- 					var data = JSON.parse(response);
- 					var selectElement = document.getElementById('select-manufacturer-purity');
-					
- 					selectElement.options.length = 0;
- 					var Option = document.createElement("option");
- 					Option.value = "";
- 					Option.text = "Please Select Purity";
- 					selectElement.appendChild(Option);
- 					var newOption = document.createElement("option");
- 					newOption.value = data[0]["18k"];
- 					newOption.text = "18k";
+ 				$.ajax({
+ 					url: "functions.php",
+ 					method: "POST",
+ 					data: {
+ 						function: "GetVendor",
+ 						id: select1
+ 					},
+ 					success: function(response) {
+ 						var data = JSON.parse(response);
+ 						var selectElement = document.getElementById('select-manufacturer-purity');
 
- 					// Append the new option to the select element
- 					selectElement.appendChild(newOption);
- 					var newOption1 = document.createElement("option");
- 					newOption1.value = data[0]["21k"];
- 					newOption1.text = "21k";
+ 						selectElement.options.length = 0;
+ 						var Option = document.createElement("option");
+ 						Option.value = "";
+ 						Option.text = "Please Select Purity";
+ 						selectElement.appendChild(Option);
+ 						var newOption = document.createElement("option");
+ 						newOption.value = data[0]["18k"];
+ 						newOption.text = "18k";
 
- 					// Append the new option to the select element
- 					selectElement.appendChild(newOption1);
- 					var newOption2 = document.createElement("option");
- 					newOption2.value = data[0]["22k"];
- 					newOption2.text = "22k";
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption);
+ 						var newOption1 = document.createElement("option");
+ 						newOption1.value = data[0]["21k"];
+ 						newOption1.text = "21k";
 
- 					// Append the new option to the select element
- 					selectElement.appendChild(newOption2);
- 				}
- 			});
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption1);
+ 						var newOption2 = document.createElement("option");
+ 						newOption2.value = data[0]["22k"];
+ 						newOption2.text = "22k";
+
+ 						// Append the new option to the select element
+ 						selectElement.appendChild(newOption2);
+ 					}
+ 				});
  			}
 
- 			
+
 
 
 
  		});
 
- 		$(document).on('change', '#select-polisher', function (e) {
+ 		$(document).on('change', '#select-polisher', function(e) {
  			e.preventDefault();
  			CalculatePolisherWastage();
  		});
 
- 		$(document).on('change', '#select-manufacturer-purity', function (e) {
+ 		$(document).on('change', '#select-manufacturer-purity', function(e) {
  			e.preventDefault();
  			var manufacturer_rate = document.getElementById('manufacturer-rate');
  			var selectElement = document.getElementById('select-manufacturer-purity');
@@ -4813,19 +4614,19 @@
 
  		});
 
- 		$(document).on('change', '#select-stone_setter', function (e) {
+ 		$(document).on('change', '#select-stone_setter', function(e) {
  			e.preventDefault();
  			let current = this.parentNode.parentNode.parentNode.parentNode;
  			GetStoneSetterRate(current);
  		});
 
- 		$(document).on('change', '#select-polisher-purity', function (e) {
+ 		$(document).on('change', '#select-polisher-purity', function(e) {
  			e.preventDefault();
  			var polisher_rate = document.getElementById('polisher-rate');
  			polisher_rate.value = this.value;
  		});
 
- 		$(document).on('input', '#product', function (e) {
+ 		$(document).on('input', '#product', function(e) {
  			e.preventDefault();
  			const inputs = document.querySelectorAll('input');
  			const selects = document.querySelectorAll('select:not(#select-manufacturer-purity)');
@@ -4844,13 +4645,13 @@
 
  		})
 
- 		$(document).on('input', '#rate', function (e) {
+ 		$(document).on('input', '#rate', function(e) {
  			e.preventDefault();
  			var constantValue = 96;
  			var rFlowValue = parseFloat($(this).val());
  			var upEmail = parseFloat($(document).find('#unpolish_weight').val());
  			var pValues = [];
- 			$.each($("#pValue option:selected"), function () {
+ 			$.each($("#pValue option:selected"), function() {
  				pValues.push($(this).val());
  			});
  			var sPValue = pValues[0];
@@ -4894,17 +4695,17 @@
  		// Get all save buttons
 
 
- 		$(document).on('input', '#Zircon', function (e) {
+ 		$(document).on('input', '#Zircon', function(e) {
  			e.preventDefault();
  			CalculateTotal();
  		});
 
- 		$(document).on('input', '#stone_weight', function (e) {
+ 		$(document).on('input', '#stone_weight', function(e) {
  			e.preventDefault();
  			CalculateTotal();
  		});
 
- 		$(document).on('input', '#received_weight', function (e) {
+ 		$(document).on('input', '#received_weight', function(e) {
  			e.preventDefault();
  			let current = this.parentNode.parentNode.parentNode.previousElementSibling;
  			GetStoneSetterRate(current);
@@ -4913,12 +4714,12 @@
 
  		});
 
- 		$(document).on('input', '#stone_received', function (e) {
+ 		$(document).on('input', '#stone_received', function(e) {
  			e.preventDefault();
  			CalculatePayable();
  		});
 
- 		$(document).on('input', '#wastage1', function (e) {
+ 		$(document).on('input', '#wastage1', function(e) {
  			e.preventDefault();
  			CalculatePayable();
  		});

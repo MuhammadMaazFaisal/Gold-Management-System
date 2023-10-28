@@ -103,19 +103,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                     <div class="row mb-4">
 
                                                         <label for="name" style="text-align: right;" class=" col-sm-1 col-form-label">Name:</label>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-5">
 
                                                             <input type="text" name="name" id="name" value="" class="form-control" placeholder="Name" required>
                                                         </div>
-                                                        <label for="weight" style="text-align: right;" class=" col-sm-1 col-form-label">Weight:</label>
-                                                        <div class="col-sm-3">
-
-                                                            <input type="text" name="weight" id="weight" value="" class="form-control" placeholder="Weight">
-                                                        </div>
-
                                                         <label for="id" style="text-align: right;" class=" col-sm-1 col-form-label">Id:</label>
 
-                                                        <div class="col-sm-3">
+                                                        <div class="col-5">
                                                             <input type="text" name="id" id="id" value="" class="form-control" placeholder="Id" readonly>
 
                                                         </div>
@@ -283,7 +277,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         document.getElementById("id").value = data[0].id;
                         document.getElementById("name").value = data[0].name;
                         document.getElementById("name").readOnly = true;
-                        document.getElementById("weight").value = data[0].weight;
 
                     }
                 });
