@@ -1872,6 +1872,12 @@ function AddPurchasing()
                 array_push($array, "error");
             }
             for ($i = 0; $i < count($_POST['total']); $i++) {
+                if ($_POST['quantity'][$i] ==null){
+                    $_POST['quantity'][$i] = 0;
+                }
+                if ($_POST['weight'][$i] ==null){
+                    $_POST['weight'][$i] = 0;
+                }
                 $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
                 $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                 $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
@@ -1902,6 +1908,12 @@ function AddPurchasing()
                     } else {
                         array_push($array, "error");
                     }
+                    if ($_POST['quantity'][$i] ==null){
+                        $_POST['quantity'][$i] = 0;
+                    }
+                    if ($_POST['weight'][$i] ==null){
+                        $_POST['weight'][$i] = 0;
+                    }
                     $getRecordQuery2 = "UPDATE `purchasing_details` SET `p_id`=:p_id,`type`=:type,`detail`=:detail,`price_per`=:price_per,`quantity`=:quantity,`weight`=:weight,`rate`=:rate,`total_amount`=:total,`barcode`=:barcode WHERE id = :id";
                     $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                     $getRecordStatement2->bindParam(':id', $_POST['id'][$i]);
@@ -1920,6 +1932,12 @@ function AddPurchasing()
                         array_push($array, "error");
                     }
                 } else {
+                if ($_POST['quantity'][$i] ==null){
+                    $_POST['quantity'][$i] = 0;
+                }
+                if ($_POST['weight'][$i] ==null){
+                    $_POST['weight'][$i] = 0;
+                }
                     $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
                     $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
@@ -1961,8 +1979,8 @@ FROM purchasing
 JOIN vendor ON purchasing.vendor_id = vendor.id 
 JOIN purchasing_details ON purchasing.id = purchasing_details.p_id
 WHERE purchasing.status = 'Active' 
-AND purchasing_details.remaining_quantity <> 0 
-AND purchasing_details.remaining_weight <> 0 
+OR purchasing_details.remaining_quantity <> 0 
+OR purchasing_details.remaining_weight <> 0 
 AND purchasing_details.remaining_total_amount <> 0;
 ";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
@@ -2050,6 +2068,12 @@ function AddStock()
             } else {
                 array_push($array, "error");
             }
+            if ($_POST['quantity'][$i] ==null){
+                $_POST['quantity'][$i] = 0;
+            }
+            if ($_POST['weight'][$i] ==null){
+                $_POST['weight'][$i] = 0;
+            }
             $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
             $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
             $getRecordStatement2->bindParam(':s_id', $_POST['s_invoice']);
@@ -2096,6 +2120,12 @@ function AddExistingStock()
         array_push($array, "error");
     }
     for ($i = 0; $i < count($_POST['rate']); $i++) {
+        if ($_POST['quantity'][$i] ==null){
+            $_POST['quantity'][$i] = 0;
+        }
+        if ($_POST['weight'][$i] ==null){
+            $_POST['weight'][$i] = 0;
+        }
         $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
         $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
         $getRecordStatement2->bindParam(':s_id', $s_invoice);

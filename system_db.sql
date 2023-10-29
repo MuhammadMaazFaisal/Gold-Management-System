@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2023 at 01:47 PM
+-- Generation Time: Oct 29, 2023 at 02:02 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -126,13 +126,6 @@ CREATE TABLE `manufacturing_step` (
   `barcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `manufacturing_step`
---
-
-INSERT INTO `manufacturing_step` (`id`, `vendor_id`, `product_id`, `date`, `image`, `details`, `type`, `quantity`, `purity`, `purity_text`, `unpolish_weight`, `polish_weight`, `rate`, `wastage`, `unpure_weight`, `pure_weight`, `status`, `tValues`, `barcode`) VALUES
-(109, 'MM002', 'C1001', '2023-10-28', 'external-work-directory/images//1698500668-', '', 'C1001', 12, '12', '18k', 30, 28, 12, 3.75, NULL, NULL, 'Active', 25.31, '603480975232');
-
 -- --------------------------------------------------------
 
 --
@@ -184,13 +177,6 @@ CREATE TABLE `product` (
   `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`id`, `status`, `date_created`) VALUES
-('C1001', 'Active', '2023-10-28 13:44:28');
-
 -- --------------------------------------------------------
 
 --
@@ -210,7 +196,7 @@ CREATE TABLE `purchasing` (
 --
 
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
-('existing', 'existing', 0, '2023-09-16 17:17:03', 'active');
+('existing', 'existing', 0, '2023-10-29 13:19:44', 'inactive');
 
 -- --------------------------------------------------------
 
@@ -358,13 +344,6 @@ CREATE TABLE `universal_product` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `universal_product`
---
-
-INSERT INTO `universal_product` (`id`, `name`, `weight`, `status`) VALUES
-('C1001', 'Clip 1.5mm', NULL, 'Active');
-
 -- --------------------------------------------------------
 
 --
@@ -415,8 +394,7 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `type`, `name`, `18k`, `21k`, `22k`, `status`, `date`) VALUES
-('existing', 'existing', 'existing', 0, 0, 0, 'inactive', ''),
-('MM002', 'manufacturer', 'Muhammad Maaz', 12, 13, 14, 'Active', '2023-10-28');
+('existing', 'existing', 'existing', 0, 0, 0, 'inactive', '');
 
 -- --------------------------------------------------------
 
@@ -639,7 +617,7 @@ ALTER TABLE `polisher_step`
 -- AUTO_INCREMENT for table `purchasing_details`
 --
 ALTER TABLE `purchasing_details`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `returned_item`
@@ -657,7 +635,7 @@ ALTER TABLE `returned_stone_step`
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `stone`

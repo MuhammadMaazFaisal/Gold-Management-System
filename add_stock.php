@@ -421,7 +421,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             },
             success: function(response) {
                 data = JSON.parse(response);
-                console.log(data);
                 tbody = document.getElementById("modal-tbody");
                 for (i = 0; i < data.length; i++) {
                     date = data[i].date;
@@ -529,12 +528,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         price_per = document.querySelectorAll('#price_per\\[\\]')[i];
         e_price_per = document.querySelectorAll('#e_price_per\\[\\]')[i];
         qty = document.querySelectorAll('#quantity\\[\\]')[i];
-        console.log("dasd", qty);
         weight = document.querySelectorAll('#weight\\[\\]')[i];
         rate = document.querySelectorAll('#rate\\[\\]')[i];
         total = document.querySelectorAll('#total\\[\\]')[i];
-        console.log(price_per);
-        console.log(e_price_per);
         if (e_price_per != undefined) {
             if (e_price_per.value == "K") {
                 total.value = (weight.value * rate.value * 5).toFixed(0);
@@ -574,7 +570,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         e_price_per = document.querySelectorAll('#e_price_per\\[\\]');
         weight = document.querySelectorAll('#weight\\[\\]');
         qty = document.querySelectorAll('#quantity\\[\\]');
-        console.log("qty", qty);
         rate = document.querySelectorAll('#rate\\[\\]');
         for (let i = 0; i < price_per.length; i++) {
             price_per[i].addEventListener('change', function() {
