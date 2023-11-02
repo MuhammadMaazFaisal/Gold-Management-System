@@ -1875,17 +1875,11 @@ function AddPurchasing()
             }
 
             for ($i = 0; $i < count($_POST['total']); $i++) {
-<<<<<<< Updated upstream
-                if ($_POST['quantity'][$i] ==null){
-                    $_POST['quantity'][$i] = 0;
-                }
-                if ($_POST['weight'][$i] ==null){
-=======
                 if ($_POST['quantity'][$i] == null) {
                     $_POST['quantity'][$i] = 0;
                 }
                 if ($_POST['weight'][$i] == null) {
->>>>>>> Stashed changes
+
                     $_POST['weight'][$i] = 0;
                 }
                 $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
@@ -1918,23 +1912,37 @@ function AddPurchasing()
                     } else {
                         array_push($array, "error");
                     }
-                    if ($_POST['quantity'][$i] ==null){
+                    if ($_POST['quantity'][$i] == null) {
                         $_POST['quantity'][$i] = 0;
                     }
-                    if ($_POST['weight'][$i] ==null){
+                    if ($_POST['weight'][$i] == null) {
                         $_POST['weight'][$i] = 0;
                     }
-                    $getRecordQuery2 = "UPDATE `purchasing_details` SET `p_id`=:p_id,`type`=:type,`detail`=:detail,`price_per`=:price_per,`quantity`=:quantity,`weight`=:weight,`rate`=:rate,`total_amount`=:total,`barcode`=:barcode WHERE id = :id";
+                    $qry01="SELECT * FROM `purchasing_details` WHERE `p_id` = :id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
+                    $qryStatement01 = $pdo->prepare($qry01);
+                    $qryStatement01->bindParam(':id', $_POST['invoice']);
+                    $qryStatement01->bindParam(':type', $_POST['type'][$i]);
+                    $qryStatement01->bindParam(':detail', $_POST['detail'][$i]);
+                    $qryStatement01->bindParam(':price_per', $_POST['price_per'][$i]);
+                    $qryStatement01->bindParam(':barcode', $_POST['barcode'][$i]);
+                    $qryStatement01->execute();
+                    $result01 = $qryStatement01->fetchAll(PDO::FETCH_ASSOC);
+                    $quantity_diff = $_POST['quantity'][$i] - $result01[0]['quantity'];
+                    $weight_diff = $_POST['weight'][$i] - $result01[0]['weight'];
+                    $total_diff = $_POST['total'][$i] - $result01[0]['total_amount'];
+
+                    $getRecordQuery2 = "UPDATE `purchasing_details` SET `quantity`=`quantity`+:quantity,`weight`=`weight`+:weight,`total_amount`=`total_amount`+:total_amount,`remaining_quantity`=`remaining_quantity`+:remaining_quantity,`remaining_weight`=`remaining_weight`+:remaining_weight,`remaining_total_amount`=`remaining_total_amount`+:remaining_total_amount WHERE `p_id` = :p_id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
                     $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
-                    $getRecordStatement2->bindParam(':id', $_POST['id'][$i]);
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                     $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
                     $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
                     $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
-                    $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
-                    $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
-                    $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
-                    $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
+                    $getRecordStatement2->bindParam(':quantity', $quantity_diff);
+                    $getRecordStatement2->bindParam(':weight', $weight_diff);
+                    $getRecordStatement2->bindParam(':total_amount', $total_diff);
+                    $getRecordStatement2->bindParam(':remaining_quantity', $quantity_diff);
+                    $getRecordStatement2->bindParam(':remaining_weight', $weight_diff);
+                    $getRecordStatement2->bindParam(':remaining_total_amount', $total_diff);
                     $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
                     if ($getRecordStatement2->execute()) {
                         array_push($array, "success");
@@ -1942,12 +1950,12 @@ function AddPurchasing()
                         array_push($array, "error");
                     }
                 } else {
-                if ($_POST['quantity'][$i] ==null){
-                    $_POST['quantity'][$i] = 0;
-                }
-                if ($_POST['weight'][$i] ==null){
-                    $_POST['weight'][$i] = 0;
-                }
+                    if ($_POST['quantity'][$i] == null) {
+                        $_POST['quantity'][$i] = 0;
+                    }
+                    if ($_POST['weight'][$i] == null) {
+                        $_POST['weight'][$i] = 0;
+                    }
                     $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
                     $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
@@ -2078,17 +2086,11 @@ function AddStock()
             } else {
                 array_push($array, "error");
             }
-<<<<<<< Updated upstream
-            if ($_POST['quantity'][$i] ==null){
-                $_POST['quantity'][$i] = 0;
-            }
-            if ($_POST['weight'][$i] ==null){
-=======
             if ($_POST['quantity'][$i] == null) {
                 $_POST['quantity'][$i] = 0;
             }
             if ($_POST['weight'][$i] == null) {
->>>>>>> Stashed changes
+
                 $_POST['weight'][$i] = 0;
             }
             $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
@@ -2137,17 +2139,10 @@ function AddExistingStock()
         array_push($array, "error");
     }
     for ($i = 0; $i < count($_POST['rate']); $i++) {
-<<<<<<< Updated upstream
-        if ($_POST['quantity'][$i] ==null){
-            $_POST['quantity'][$i] = 0;
-        }
-        if ($_POST['weight'][$i] ==null){
-=======
         if ($_POST['quantity'][$i] == null) {
             $_POST['quantity'][$i] = 0;
         }
         if ($_POST['weight'][$i] == null) {
->>>>>>> Stashed changes
             $_POST['weight'][$i] = 0;
         }
         $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
@@ -2180,10 +2175,10 @@ function GetStockData()
     require_once "layouts/config.php";
     $array = array();
     $getRecordQuery = "SELECT 
+    MAX(sd.id) AS id,
     MAX(s.date) AS stock_date,
     sd.barcode,
     MAX(s.p_id) AS p_id,
-    
     MAX(v.name) AS name,
     MAX(sd.detail) AS detail,
     MAX(sd.type) AS type,
@@ -2650,50 +2645,58 @@ function DeleteStock()
 
     $array = array();
 
-    // Retrieve the necessary data from the stock_details table
-    $stockDetailId = $_POST['id']; // Assuming this is the ID of the record to be deleted
+    $id = $_POST['id'];
+    $qry = "SELECT * FROM `stock_details` WHERE `id` = :id";
+    $qryStatement = $pdo->prepare($qry);
+    $qryStatement->bindParam(':id', $id);
+    if ($qryStatement->execute()) {
+        $result = $qryStatement->fetchAll(PDO::FETCH_ASSOC);
+        $s_id = $result[0]['s_id'];
+        $type = $result[0]['type'];
+        $detail = $result[0]['detail'];
+        $price_per = $result[0]['price_per'];
+        $quantity = $result[0]['quantity'];
+        $weight = $result[0]['weight'];
+        $total_amount = $result[0]['total_amount'];
+        $qry2 = "UPDATE `stock` SET `total` = `total` - :total WHERE `id` = :id";
+        $qryStatement2 = $pdo->prepare($qry2);
+        $qryStatement2->bindParam(':id', $s_id);
+        $qryStatement2->bindParam(':total', $total_amount);
+        if ($qryStatement2->execute()) {
+            $qry3 = "Select * from stock where id=:id";
+            $qryStatement3 = $pdo->prepare($qry3);
+            $qryStatement3->bindParam(':id', $s_id);
+            if ($qryStatement3->execute()) {
+                $result3 = $qryStatement3->fetchAll(PDO::FETCH_ASSOC);
+                $p_id = $result3[0]['p_id'];
 
-    $getStockDetailQuery = "SELECT * FROM stock_details AS sd
-                       JOIN stock AS s ON s.id = sd.s_id
-                       WHERE sd.id = :id";
-    $getStockDetailStatement = $pdo->prepare($getStockDetailQuery);
-    $getStockDetailStatement->bindParam(':id', $stockDetailId);
-    $getStockDetailStatement->execute();
-    $stockDetailData = $getStockDetailStatement->fetch(PDO::FETCH_ASSOC);
-
-    if ($stockDetailData) {
-        // Delete the record from stock_details
-        $deleteStockDetailQuery = "DELETE FROM stock_details WHERE id = :id";
-        $deleteStockDetailStatement = $pdo->prepare($deleteStockDetailQuery);
-        $deleteStockDetailStatement->bindParam(':id', $stockDetailId);
-
-        if ($deleteStockDetailStatement->execute()) {
-            // Update purchasing_details and stock tables
-            $purchasingDetailId = $stockDetailData['p_id'];
-            $quantityToAdd = $stockDetailData['quantity'];
-            $weightToAdd = $stockDetailData['weight'];
-            $totalToAdd = $stockDetailData['total_amount'];
-
-            // Update purchasing_details table
-            $updatePurchasingDetailQuery = "UPDATE purchasing_details
-                SET
-                    `remaining_quantity` = `remaining_quantity` + :quantityToAdd,
-                    `remaining_weight` = `remaining_weight` + :weightToAdd,
-                    `remaining_total_amount` = `remaining_total_amount` + :totalToAdd
-                WHERE `id` = :purchasingDetailId";
-
-            $updatePurchasingDetailStatement = $pdo->prepare($updatePurchasingDetailQuery);
-            $updatePurchasingDetailStatement->bindParam(':quantityToAdd', $quantityToAdd);
-            $updatePurchasingDetailStatement->bindParam(':weightToAdd', $weightToAdd);
-            $updatePurchasingDetailStatement->bindParam(':totalToAdd', $totalToAdd);
-            $updatePurchasingDetailStatement->bindParam(':purchasingDetailId', $purchasingDetailId);
-            
-            if ($updatePurchasingDetailStatement->execute()) {
-                array_push($array, "success");
-            } else {
-                array_push($array, "error");
+                $qry5 = "UPDATE `purchasing_details` SET `remaining_quantity` = `remaining_quantity` + :quantity, `remaining_weight` = `remaining_weight` + :weight, `remaining_total_amount` = `remaining_total_amount` + :total WHERE `p_id` = :id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per";
+                $qryStatement5 = $pdo->prepare($qry5);
+                $qryStatement5->bindParam(':id', $p_id);
+                $qryStatement5->bindParam(':type', $type);
+                $qryStatement5->bindParam(':detail', $detail);
+                $qryStatement5->bindParam(':price_per', $price_per);
+                $qryStatement5->bindParam(':quantity', $quantity);
+                $qryStatement5->bindParam(':weight', $weight);
+                $qryStatement5->bindParam(':total', $total_amount);
+                if ($qryStatement5->execute()) {
+                    $qry6 = "DELETE FROM `stock_details` WHERE `id` = :id";
+                    $qryStatement6 = $pdo->prepare($qry6);
+                    $qryStatement6->bindParam(':id', $id);
+                    $qryStatement6->execute();
+                    if ($qryStatement6->execute() && $result3[0]['total'] == 0) {
+                        $qry4 = "DELETE FROM `stock` WHERE `id` = :id";
+                        $qryStatement4 = $pdo->prepare($qry4);
+                        $qryStatement4->bindParam(':id', $s_id);
+                        if ($qryStatement4->execute()) {
+                            array_push($array, "success");
+                        }
+                    }
+                }
             }
         }
+    } else {
+        echo json_encode($qryStatement->errorInfo(), true);
     }
 
     echo json_encode($array, true);

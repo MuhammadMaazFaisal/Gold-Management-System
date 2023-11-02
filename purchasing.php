@@ -604,6 +604,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 type: "vendor"
             },
             success: function(response) {
+                console.log(response);
                 var data = JSON.parse(response);
                 var select = $('#select-manufacturer')[0].selectize;
                 for (var i = 0; i < data.length; i++) {

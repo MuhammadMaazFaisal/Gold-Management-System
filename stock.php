@@ -334,27 +334,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             title: 'Rate'
                         },
                         {
-                            data: 'total_amount',
-                            title: 'Total',
-                            data: 'barcode',
-                            title: 'Barcode',
-                            render: function(data, type, row) {
-                                if (type === 'display' || type === 'filter') {
-                                    // Create a button element with the barcode as a data attribute
-                                    return '<button class="print-button" onclick="Print(this)">Print</button>';
-                                } else {
-                                    return data;
-                                }
-                            }
-                        },
-                        {
 
                             data: 'id',
                             title: 'Delete',
                             render: function(data, type, row) {
                                 if (type === 'display' || type === 'filter') {
                                     // Create a button element with the barcode as a data attribute
-                                    return '<button class="delete-button" data-id="' + data + '">Delete</button>';
+                                    return '<button class="delete-button" onclick="Delete(' + data + ')">Delete</button>';
                                 } else {
                                     return data;
                                 }
@@ -364,7 +350,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     responsive: true
                 });
 
-                
+
                 calculateSums(table.data());
 
                 $('#stock-table').on('draw.dt', function() {
@@ -376,11 +362,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
         });
     }
-
-    $(document).on('click', '.delete-button', function() {
-                    var id = $(this).data('id');
-                    Delete(id);
-                });
 
 
     function Print(barcode) {
@@ -469,9 +450,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 id: id
             },
             success: function(data) {
-                console.log(data);
+                console.log('data',data);
                 data = JSON.parse(data);
-                if (data.status == 'success') {
+                if (data == 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
