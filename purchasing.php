@@ -456,7 +456,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             },
             success: function(data) {
                 var data = JSON.parse(data);
-                console.log("purchasing", data);
                 var area = document.getElementById('tbody');
                 area.innerHTML = "";
                 let GrandTotal = document.getElementById('grand_total');
@@ -538,9 +537,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 function: "GetModalInvoices"
             },
             success: function(data) {
-                console.log("modal", data);
                 var data = JSON.parse(data);
-                console.log(data);
                 var tbody = document.getElementById("product-table-body");
                 for (var i = 0; i < data.length; i++) {
                     var tr = document.createElement("tr");
@@ -624,7 +621,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
     $("#form").submit(function(e) {
         e.preventDefault();
-        console.log("form submitted");
         let formData = new FormData(this);
         formData.append('function', 'AddPurchasing');
         $.ajax({

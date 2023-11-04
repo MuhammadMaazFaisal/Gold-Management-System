@@ -281,6 +281,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 function: "GetStockData"
             },
             success: function(data) {
+                console.log(data);
                 data = JSON.parse(data);
                 console.log(data);
                 var table = $('#stock-table').DataTable({
@@ -340,7 +341,20 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             render: function(data, type, row) {
                                 if (type === 'display' || type === 'filter') {
                                     // Create a button element with the barcode as a data attribute
-                                    return '<button class="print-button" onclick=Print(this)>Print</button>';
+                                    return '<button class="print-button" onclick="Print(this)">Print</button>';
+                                } else {
+                                    return data;
+                                }
+                            }
+                        },
+                        {
+
+                            data: 'id',
+                            title: 'Delete',
+                            render: function(data, type, row) {
+                                if (type === 'display' || type === 'filter') {
+                                    // Create a button element with the barcode as a data attribute
+                                    return '<button class="delete-button" data-id="' + data + '">Delete</button>';
                                 } else {
                                     return data;
                                 }
@@ -350,6 +364,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     responsive: true
                 });
 
+                
                 calculateSums(table.data());
 
                 $('#stock-table').on('draw.dt', function() {
@@ -361,6 +376,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
         });
     }
+
+    $(document).on('click', '.delete-button', function() {
+                    var id = $(this).data('id');
+                    Delete(id);
+                });
+
 
     function Print(barcode) {
         var parent = barcode.parentNode.parentNode;
@@ -437,6 +458,37 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 
     }
+
+    function Delete(id) {
+
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "DeleteStock",
+                id: id
+            },
+            success: function(data) {
+                console.log(data);
+                data = JSON.parse(data);
+                if (data.status == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Stock deleted successfully!',
+                    })
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
+            }
+        });
+    }
+
 
 
     function calculateSums(filteredData) {

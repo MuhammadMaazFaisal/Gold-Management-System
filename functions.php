@@ -146,8 +146,10 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetStoneSetterIssued();
 } elseif ($_POST['function'] == 'GetVendorData') {
     GetVendorData();
-}elseif ($_POST['function'] == 'GetUniversalProduct') {
+} elseif ($_POST['function'] == 'GetUniversalProduct') {
     GetUniversalProduct();
+} elseif ($_POST['function'] == 'DeleteStock') {
+    DeleteStock();
 }
 function Logout()
 {
@@ -1871,11 +1873,19 @@ function AddPurchasing()
             } else {
                 array_push($array, "error");
             }
+
             for ($i = 0; $i < count($_POST['total']); $i++) {
+<<<<<<< Updated upstream
                 if ($_POST['quantity'][$i] ==null){
                     $_POST['quantity'][$i] = 0;
                 }
                 if ($_POST['weight'][$i] ==null){
+=======
+                if ($_POST['quantity'][$i] == null) {
+                    $_POST['quantity'][$i] = 0;
+                }
+                if ($_POST['weight'][$i] == null) {
+>>>>>>> Stashed changes
                     $_POST['weight'][$i] = 0;
                 }
                 $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
@@ -2068,10 +2078,17 @@ function AddStock()
             } else {
                 array_push($array, "error");
             }
+<<<<<<< Updated upstream
             if ($_POST['quantity'][$i] ==null){
                 $_POST['quantity'][$i] = 0;
             }
             if ($_POST['weight'][$i] ==null){
+=======
+            if ($_POST['quantity'][$i] == null) {
+                $_POST['quantity'][$i] = 0;
+            }
+            if ($_POST['weight'][$i] == null) {
+>>>>>>> Stashed changes
                 $_POST['weight'][$i] = 0;
             }
             $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
@@ -2120,10 +2137,17 @@ function AddExistingStock()
         array_push($array, "error");
     }
     for ($i = 0; $i < count($_POST['rate']); $i++) {
+<<<<<<< Updated upstream
         if ($_POST['quantity'][$i] ==null){
             $_POST['quantity'][$i] = 0;
         }
         if ($_POST['weight'][$i] ==null){
+=======
+        if ($_POST['quantity'][$i] == null) {
+            $_POST['quantity'][$i] = 0;
+        }
+        if ($_POST['weight'][$i] == null) {
+>>>>>>> Stashed changes
             $_POST['weight'][$i] = 0;
         }
         $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
@@ -2159,6 +2183,7 @@ function GetStockData()
     MAX(s.date) AS stock_date,
     sd.barcode,
     MAX(s.p_id) AS p_id,
+    
     MAX(v.name) AS name,
     MAX(sd.detail) AS detail,
     MAX(sd.type) AS type,
@@ -2615,6 +2640,65 @@ function DeleteCash()
     }
     echo json_encode($result, true);
 }
+
+function DeleteStock()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $array = array();
+
+    // Retrieve the necessary data from the stock_details table
+    $stockDetailId = $_POST['id']; // Assuming this is the ID of the record to be deleted
+
+    $getStockDetailQuery = "SELECT * FROM stock_details AS sd
+                       JOIN stock AS s ON s.id = sd.s_id
+                       WHERE sd.id = :id";
+    $getStockDetailStatement = $pdo->prepare($getStockDetailQuery);
+    $getStockDetailStatement->bindParam(':id', $stockDetailId);
+    $getStockDetailStatement->execute();
+    $stockDetailData = $getStockDetailStatement->fetch(PDO::FETCH_ASSOC);
+
+    if ($stockDetailData) {
+        // Delete the record from stock_details
+        $deleteStockDetailQuery = "DELETE FROM stock_details WHERE id = :id";
+        $deleteStockDetailStatement = $pdo->prepare($deleteStockDetailQuery);
+        $deleteStockDetailStatement->bindParam(':id', $stockDetailId);
+
+        if ($deleteStockDetailStatement->execute()) {
+            // Update purchasing_details and stock tables
+            $purchasingDetailId = $stockDetailData['p_id'];
+            $quantityToAdd = $stockDetailData['quantity'];
+            $weightToAdd = $stockDetailData['weight'];
+            $totalToAdd = $stockDetailData['total_amount'];
+
+            // Update purchasing_details table
+            $updatePurchasingDetailQuery = "UPDATE purchasing_details
+                SET
+                    `remaining_quantity` = `remaining_quantity` + :quantityToAdd,
+                    `remaining_weight` = `remaining_weight` + :weightToAdd,
+                    `remaining_total_amount` = `remaining_total_amount` + :totalToAdd
+                WHERE `id` = :purchasingDetailId";
+
+            $updatePurchasingDetailStatement = $pdo->prepare($updatePurchasingDetailQuery);
+            $updatePurchasingDetailStatement->bindParam(':quantityToAdd', $quantityToAdd);
+            $updatePurchasingDetailStatement->bindParam(':weightToAdd', $weightToAdd);
+            $updatePurchasingDetailStatement->bindParam(':totalToAdd', $totalToAdd);
+            $updatePurchasingDetailStatement->bindParam(':purchasingDetailId', $purchasingDetailId);
+            
+            if ($updatePurchasingDetailStatement->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+        }
+    }
+
+    echo json_encode($array, true);
+}
+
 
 function SelectCash()
 {
