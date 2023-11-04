@@ -334,6 +334,21 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             title: 'Rate'
                         },
                         {
+                            data: 'total_amount',
+                            title: 'Total',
+                            data: 'barcode',
+                            title: 'Barcode',
+                            render: function(data, type, row) {
+                                if (type === 'display' || type === 'filter') {
+                                    // Create a button element with the barcode as a data attribute
+                                    return '<button class="print-button" onclick="Print(this)">Print</button>';
+                                } else {
+                                    return data;
+                                }
+
+                            }
+                        },
+                        {
 
                             data: 'id',
                             title: 'Delete',
@@ -450,7 +465,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 id: id
             },
             success: function(data) {
-                console.log('data',data);
+                console.log('data', data);
                 data = JSON.parse(data);
                 if (data == 'success') {
                     Swal.fire({
