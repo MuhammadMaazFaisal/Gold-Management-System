@@ -1918,7 +1918,7 @@ function AddPurchasing()
                     if ($_POST['weight'][$i] == null) {
                         $_POST['weight'][$i] = 0;
                     }
-                    $qry01="SELECT * FROM `purchasing_details` WHERE `p_id` = :id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
+                    $qry01 = "SELECT * FROM `purchasing_details` WHERE `p_id` = :id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
                     $qryStatement01 = $pdo->prepare($qry01);
                     $qryStatement01->bindParam(':id', $_POST['invoice']);
                     $qryStatement01->bindParam(':type', $_POST['type'][$i]);
@@ -2123,12 +2123,24 @@ function AddExistingStock()
     require_once "layouts/config.php";
     $array = array();
     $s_invoice = '';
-    $getRecordQuery0 = "SELECT lpad(count(*)+1, 4, '0') FROM `stock`";
+    $getRecordQuery0 = "SELECT `id` FROM `stock` ORDER BY `id` DESC LIMIT 1";
     $getRecordStatement0 = $pdo->prepare($getRecordQuery0);
+
     if ($getRecordStatement0->execute()) {
-        $record = $getRecordStatement0->fetchColumn();
-        $s_invoice = "SI-" . $record;
+        $lastRecord = $getRecordStatement0->fetchColumn();
+        if ($lastRecord) {
+            // Extract the numeric part of the ID. Assuming the ID format is "SI-0005".
+            $lastIdNumber = intval(substr($lastRecord, 3));
+            // Increment the ID.
+            $newIdNumber = $lastIdNumber + 1;
+            // Create the new ID with leading zeros.
+            $s_invoice = "SI-" . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
+        } else {
+            // This is the case when there are no records in the table.
+            $s_invoice = "SI-0001";
+        }
     }
+
     $getRecordQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, 'existing', :total, 'Active')";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':id', $s_invoice);
