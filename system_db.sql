@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 29, 2023 at 02:02 PM
+-- Generation Time: Nov 06, 2023 at 02:25 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `system_db`
 --
+CREATE DATABASE IF NOT EXISTS `system_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `system_db`;
 
 -- --------------------------------------------------------
 
@@ -272,6 +274,16 @@ CREATE TABLE `stock` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
+('SI-0001', 'existing', 12758, '2023-11-03 11:32:01', 'Active'),
+('SI-0002', 'existing', 20545, '2023-11-04 12:58:28', 'Active'),
+('SI-0003', 'existing', 58783, '2023-11-04 12:59:35', 'Active'),
+('SI-0005', 'existing', 0, '2023-11-04 14:21:00', 'Active');
+
 -- --------------------------------------------------------
 
 --
@@ -290,6 +302,40 @@ CREATE TABLE `stock_details` (
   `total_amount` float NOT NULL,
   `barcode` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `stock_details`
+--
+
+INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES
+(105, 'SI-0001', 'Natural Stone ', 'Emerald String ', 'K', 0, 17.01, 150, 12758, 1698929896781),
+(106, 'SI-0002', 'Natural Stone ', 'Ruby String ', 'K', 0, 41.09, 100, 20545, 1699101990547),
+(107, 'SI-0002', 'Natural Stone ', 'Turmaline Pearl Shape ', 'K', 0, 67.36, 700, 235760, 1699102055798),
+(108, 'SI-0002', 'Natural Stone ', 'Emerald String', 'K', 0, 70.26, 120, 42156, 1699102055972),
+(109, 'SI-0002', 'Natural Stone ', 'Amethyst String', 'K', 0, 16.1, 80, 6440, 1699102056162),
+(110, 'SI-0002', 'Natural Stone ', 'Turmaline Cabachon', 'K', 0, 171.07, 500, 427675, 1699102056335),
+(111, 'SI-0002', 'Natural Stone ', 'Emerald String', 'K', 0, 29.38, 120, 17628, 1699102056504),
+(112, 'SI-0002', 'Natural Stone ', 'Pearls String', 'Tola', 0, 19.13, 2500, 4100, 1699102056679),
+(113, 'SI-0002', 'Natural Stone ', 'Sunsitara String', 'K', 0, 37.06, 60, 11118, 1699102056847),
+(114, 'SI-0002', 'Natural Stone ', 'Ruby String ', 'K', 0, 23.23, 150, 17423, 1699102057023),
+(115, 'SI-0002', 'Natural Stone ', 'Ruby Baguette', 'K', 0, 12.71, 800, 50840, 1699102057212),
+(116, 'SI-0002', 'Natural Stone ', 'Sapphire Round', 'K', 0, 33.71, 350, 58993, 1699102057766),
+(117, 'SI-0002', 'Crystal', 'Purple Fancy String ', 'K', 0, 32.51, 35, 5689, 1699102058138),
+(118, 'SI-0002', 'Crystal', 'Champion Fancy String ', 'K', 0, 45.51, 35, 7964, 1699102058298),
+(119, 'SI-0002', 'Crystal', 'Green Fancy String ', 'K', 0, 38.87, 35, 6802, 1699102058513),
+(120, 'SI-0003', 'Natural Stone ', 'Turmaline Mix Size ', 'K', 0, 33.59, 350, 58783, 1699102710100),
+(123, 'SI-0005', 'Natural Stone ', 'Feroza String ', 'K', 0, 60.14, 300, 90210, 1699102754952),
+(124, 'SI-0005', 'Natural Stone ', 'Feroza String', 'K', 0, 31.16, 200, 31160, 1699102755140),
+(125, 'SI-0005', 'Natural Stone ', 'Gray String ', 'K', 0, 47.5, 60, 14250, 1699102755319),
+(126, 'SI-0005', 'Natural Stone ', 'Pink String ', 'K', 0, 114.59, 60, 34377, 1699102755548),
+(127, 'SI-0005', 'Natural Stone ', 'SunSitara Mix Size ', 'K', 0, 6.34, 50, 1585, 1699102755710),
+(128, 'SI-0005', 'Natural Stone ', 'Red Coral String', 'K', 0, 18.7, 200, 18700, 1699102755935),
+(129, 'SI-0005', 'Zircon', 'Carrat Princesses ', 'K', 0, 15.48, 20, 1548, 1699102996342),
+(130, 'SI-0005', 'Zircon', 'Purple Mix Size', 'K', 0, 19.1, 20, 1910, 1699102996507),
+(131, 'SI-0005', 'Zircon', 'Purple Fancy Cut ', 'K', 0, 15.13, 20, 1513, 1699102996668),
+(132, 'SI-0005', 'Zircon', 'Purple Fancy Cut ', 'K', 0, 6.83, 20, 683, 1699102996836),
+(133, 'SI-0005', 'Natural Stone ', 'Gomedhikam', 'K', 0, 9.55, 100, 4775, 1699102997005),
+(134, 'SI-0005', 'Natural Stone ', 'Turmaline Green Round ', 'K', 0, 15.88, 350, 27790, 1699102997175);
 
 -- --------------------------------------------------------
 
@@ -635,7 +681,7 @@ ALTER TABLE `returned_stone_step`
 -- AUTO_INCREMENT for table `stock_details`
 --
 ALTER TABLE `stock_details`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `stone`
