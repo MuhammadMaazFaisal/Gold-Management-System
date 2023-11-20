@@ -102,7 +102,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                 echo "<input type='hidden' name='barcode' value='$randomNumber' class='form-control'>";
                                                 ?>
                                                 <div class="row mb-4">
-                                                    <label for="date" class="ps-md-5 col-sm-1 col-form-label">Date:</label>
+                                                    <label for="date" class="ps-md-4 col-sm-1 col-form-label">Date:</label>
                                                     <div class="col-sm-5">
 
                                                         <input type="date" id="date" name="date" class="form-control">
@@ -110,7 +110,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                 </div>
                                                 <div class="row mb-4">
 
-                                                    <label for="name" class="ps-md-5 col-sm-1 col-form-label">Name:</label>
+                                                    <label for="name" class="ps-md-4 col-sm-1 col-form-label">Name:</label>
                                                     <div class="col-sm-5">
 
                                                         <input type="text" name="name" id="name" value="" class="form-control" placeholder="Name" required>
