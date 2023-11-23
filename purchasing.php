@@ -51,7 +51,83 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 <style>
     .price_per.selectize-control {
         width: 100px;
+    } 
+
+    input:disabled, select:disabled, textarea:disabled {
+    background-color: #e9ecef;
+    opacity: 0.5;
     }
+
+    /* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+
 </style>
 
 <body>
@@ -117,7 +193,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <th scope="col">Rate</th>
                                                                     <th scope="col">Total Amount</th>
                                                                     <th scope="col">Barcode</th>
-                                                                    <th scope="col">Action</th>
+                                                                    <th scope="col">Add Stock</th>
                                                                     <th scope="col"></th>
                                                                 </tr>
                                                             </thead>
@@ -143,7 +219,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                                                    <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
+                                                                    <td><label class="container">
+                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                    </label></td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
                                                                 </tr>
                                                             </tbody>
@@ -348,6 +426,18 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 </html>
 
 <script>
+
+function toggleInputs(checkboxElem) {
+    var row = checkboxElem.closest('tr');
+    var inputs = row.querySelectorAll('input, select, textarea');
+
+    inputs.forEach(function(input) {
+        // Check if the input is not the checkbox itself
+        if (input !== checkboxElem) {
+            input.disabled = checkboxElem.checked;
+        }
+    });
+}
     function DeletePurchasing() {
         var product = document.getElementById('invoice');
         if (product.value == '') {
@@ -379,10 +469,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
                             <td> <select id="type_id[]" class="type" name="type_id[]">
     <option value="" disabled selected>Type</option>
-    <!-- Add your options here -->
-    <option value="">Option 1</option>
-    <option value="">Option 2</option>
-    <!-- etc. -->
 </select>
 
                                                             <input type="hidden" id="id" name="id" value=""></td>
@@ -397,7 +483,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                             <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                            <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
+                            <td><label class="container">
+                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                    </label></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
         type_id = tr.querySelectorAll("select[name='type_id[]']");
@@ -530,7 +618,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <td><input type="number" step="any"  id="rate[]" name="rate[]" value="${data[i].rate}" class="form-control" placeholder="Rate" required></td>
                                 <td><input type="number" step="any"  id="total[]" name="total[]" value="${data[i].total_amount}" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                 <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>`;
+                                <td><label class="container">
+                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                    </label></td>`;
                     if (i == 0) {
                         tr += `<td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>`;
                     } else {
