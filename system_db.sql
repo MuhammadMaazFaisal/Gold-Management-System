@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 06, 2023 at 02:25 PM
+-- Generation Time: Nov 23, 2023 at 12:22 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `system_db`
 --
-CREATE DATABASE IF NOT EXISTS `system_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `system_db`;
 
 -- --------------------------------------------------------
 
@@ -380,6 +378,27 @@ CREATE TABLE `stone_setter_step` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `type`
+--
+
+CREATE TABLE `type` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `price_per` varchar(255) NOT NULL,
+  `rate` float NOT NULL,
+  `barcode` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `type`
+--
+
+INSERT INTO `type` (`id`, `name`, `price_per`, `rate`, `barcode`) VALUES
+(1, 'Zircon', 'Tola', 22, '1700322217340');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `universal_product`
 --
 
@@ -586,6 +605,12 @@ ALTER TABLE `stone_setter_step`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `type`
+--
+ALTER TABLE `type`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `universal_product`
 --
 ALTER TABLE `universal_product`
@@ -694,6 +719,12 @@ ALTER TABLE `stone`
 --
 ALTER TABLE `stone_setter_step`
   MODIFY `Ssid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+
+--
+-- AUTO_INCREMENT for table `type`
+--
+ALTER TABLE `type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
