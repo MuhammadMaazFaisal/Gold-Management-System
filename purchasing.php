@@ -125,11 +125,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                 <tr>
                                                                     <td scope="row">1</td>
                                                                     <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td> <select id="type_id" class="type" name="type_id" placeholder="Type">
-                                                                <option value="">Type</option>
+                                                                    <td> <select id="type_id[]" class="type" name="type_id[]" placeholder="Type">
+                                                                            <option value="">Type</option>
 
-                                                            </select>
-                                                            <input type="hidden" id="id" name="id" value=""></td>
+                                                                        </select>
+                                                                        <input type="hidden" id="id" name="id" value="">
+                                                                    </td>
                                                                     <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
                                                                             <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
@@ -370,13 +371,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     }
 
     function AddProduct() {
-        
+
         let area = document.getElementById('tbody');
         let tr = document.createElement('tr');
         tr.innerHTML = `<th scope="row">1</th>
         <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="" placeholder="id" class="form-control d-none"></td>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                            <td> <select id="type_id" class="type" name="type_id">
+                            <td> <select id="type_id[]" class="type" name="type_id[]">
     <option value="" disabled selected>Type</option>
     <!-- Add your options here -->
     <option value="">Option 1</option>
@@ -399,9 +400,35 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             <td><button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
-        
+        type_id = tr.querySelectorAll("select[name='type_id[]']");
+        select = $(type_id).selectize()[0].selectize;
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetAllTypes",
+                type: "vendor"
+            },
+            success: function(response) {
+                console.log(response);
+                var data = JSON.parse(response);
+                for (var i = 0; i < data.length; i++) {
+                    var newOption = {
+                        value: data[i].id,
+                        text: data[i].barcode + " | " + data[i].name
+                    };
+                    select.addOption(newOption);
+                }
+                select.on('change', function(value) {
+                    GetType(type_id[0]);
+
+                });
+
+            }
+        });
+
         AddEventListeners();
-        
+
     }
 
     function DeleteProduct(e) {
@@ -478,7 +505,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <td scope="row">1</td>
                                 <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="${data[i].id}" placeholder="id" class="form-control d-none"></td>
                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
-                                <td> <select id="type_id" class="type" name="type_id" placeholder="Type">
+                                <td> <select id="type_id[]" class="type" name="type_id[]" placeholder="Type">
                                                                 <option value="">Type</option>
 
                                                             </select>
@@ -542,7 +569,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 CalculateTotal(i);
             });
         }
-        
+
     }
 
 
@@ -632,12 +659,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     select.addOption(newOption);
                 }
 
-            } 
-            
+            }
+
         });
         $('select').selectize({
-        sortField: 'text'
-    });
+            sortField: 'text'
+        });
 
     });
 
@@ -676,35 +703,36 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
     });
 
-    function GetType(id) {
+    function GetType(element) {
+        console.log("sada",element);
         $.ajax({
             url: "functions.php",
             method: "POST",
             data: {
                 function: "GetDetailType",
-                id: id
+                id: element.value
             },
             success: function(response) {
-                console.log(response);
                 var data = JSON.parse(response);
-                // document.getElementById("id").value = data.id;
-                // document.getElementById("type").value = data.name;
-                // document.getElementById("barcode").value = data.barcode;
-                document.getElementById("price_per[]").selectize.setValue(data.price_per);
-                document.getElementById("rate[]").value = data.rate;
+                var tr = element.parentNode.parentNode;
+                price_per = tr.querySelectorAll("select[name='price_per[]']");
+                selectizeInstance = $(price_per).selectize()[0].selectize;
+                selectizeInstance.setValue(data.price_per);
+                tr.querySelectorAll("input[name='rate[]']")[0].value = data.rate;
+                tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
             }
         });
     }
 
     $(document).ready(function() {
-       
 
-        $(document).on('change', '#type_id', function(e) {
-            e.preventDefault();
-           
-            GetType(this.value);
-            console.log(this.value)
-        });
+
+        // $(document).on('change', '#type_id', function(e) {
+        //     e.preventDefault();
+
+        //     GetType(this);
+        //     console.log("123123",this)
+        // });
 
         $.ajax({
             url: "functions.php",
@@ -716,7 +744,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             success: function(response) {
                 console.log(response);
                 var data = JSON.parse(response);
-                var select = $('#type_id')[0].selectize;
+                type_id = document.querySelectorAll("select[name='type_id[]']");
+                select = $(type_id).selectize()[0].selectize;
                 for (var i = 0; i < data.length; i++) {
                     var newOption = {
                         value: data[i].id,
@@ -724,8 +753,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     };
                     select.addOption(newOption);
                 }
-                selectize.on('change', function(value) {
-                    var id = this.getValue();
+                select.on('change', function(value) {
+                    GetType(type_id[0]);
 
                 });
 
@@ -737,7 +766,4 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     $('select').selectize({
         sortField: 'text'
     });
-
-
-
 </script>
