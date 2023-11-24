@@ -220,7 +220,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                                                                     <td><label class="container">
-                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
                                                                     </label></td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
                                                                 </tr>
@@ -484,7 +484,7 @@ function toggleInputs(checkboxElem) {
                             <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                             <td><label class="container">
-                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
                                                                     </label></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
@@ -619,7 +619,7 @@ function toggleInputs(checkboxElem) {
                                 <td><input type="number" step="any"  id="total[]" name="total[]" value="${data[i].total_amount}" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                 <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                                 <td><label class="container">
-                                                                        <input type="checkbox" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
+                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
                                                                     </label></td>`;
                     if (i == 0) {
                         tr += `<td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>`;
@@ -760,9 +760,34 @@ function toggleInputs(checkboxElem) {
 
     $("#form").submit(function(e) {
         e.preventDefault();
+        checkbox = document.querySelectorAll('input[id="checkbox[]"]');
+        checkbox_values = [];
+        for (let i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                checkbox_values.push(i);
+            }
+        }
         let formData = new FormData(this);
         formData.append('function', 'AddPurchasing');
+        formData.append("checkbox_values", JSON.stringify(checkbox_values));
+        
+
         $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetStockCount"
+            },
+            success: function(response) {
+                console.log(response);
+                response = JSON.parse(response);
+                console.log(response);
+                var s_invoice = response;
+                formData.append("s_invoice", s_invoice);
+        
+
+        $.ajax({
+
             url: "functions.php",
             type: "POST",
             data: formData,
@@ -788,10 +813,12 @@ function toggleInputs(checkboxElem) {
                         title: 'Oops...',
                         text: 'Something went wrong!',
                     })
+                    }
                 }
-            }
-        });
+            });
+        }
     });
+});
 
     function GetType(element) {
         console.log("sada",element);
@@ -816,13 +843,6 @@ function toggleInputs(checkboxElem) {
 
     $(document).ready(function() {
 
-
-        // $(document).on('change', '#type', function(e) {
-        //     e.preventDefault();
-
-        //     GetType(this);
-        //     console.log("123123",this)
-        // });
 
         $.ajax({
             url: "functions.php",
