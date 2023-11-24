@@ -201,7 +201,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                 <tr>
                                                                     <td scope="row">1</td>
                                                                     <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                    <td> <select id="type_id[]" class="type" name="type_id[]" placeholder="Type">
+                                                                    <td> <select id="type[]" class="type" name="type[]" placeholder="Type">
                                                                             <option value="">Type</option>
 
                                                                         </select>
@@ -467,7 +467,7 @@ function toggleInputs(checkboxElem) {
         tr.innerHTML = `<th scope="row">1</th>
         <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="" placeholder="id" class="form-control d-none"></td>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                            <td> <select id="type_id[]" class="type" name="type_id[]">
+                            <td> <select id="type[]" class="type" name="type[]">
     <option value="" disabled selected>Type</option>
 </select>
 
@@ -488,8 +488,8 @@ function toggleInputs(checkboxElem) {
                                                                     </label></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
-        type_id = tr.querySelectorAll("select[name='type_id[]']");
-        select = $(type_id).selectize()[0].selectize;
+        type = tr.querySelectorAll("select[name='type[]']");
+        select = $(type).selectize()[0].selectize;
         $.ajax({
             url: "functions.php",
             method: "POST",
@@ -508,7 +508,7 @@ function toggleInputs(checkboxElem) {
                     select.addOption(newOption);
                 }
                 select.on('change', function(value) {
-                    GetType(type_id[0]);
+                    GetType(type[0]);
 
                 });
 
@@ -593,7 +593,7 @@ function toggleInputs(checkboxElem) {
                                 <td scope="row">1</td>
                                 <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="${data[i].id}" placeholder="id" class="form-control d-none"></td>
                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
-                                <td> <select id="type_id[]" class="type" name="type_id[]" placeholder="Type">
+                                <td> <select id="type[]" class="type" name="type[]" placeholder="Type">
                                                                 <option value="">Type</option>
 
                                                             </select>
@@ -817,7 +817,7 @@ function toggleInputs(checkboxElem) {
     $(document).ready(function() {
 
 
-        // $(document).on('change', '#type_id', function(e) {
+        // $(document).on('change', '#type', function(e) {
         //     e.preventDefault();
 
         //     GetType(this);
@@ -834,8 +834,8 @@ function toggleInputs(checkboxElem) {
             success: function(response) {
                 console.log(response);
                 var data = JSON.parse(response);
-                type_id = document.querySelectorAll("select[name='type_id[]']");
-                select = $(type_id).selectize()[0].selectize;
+                type = document.querySelectorAll("select[name='type[]']");
+                select = $(type).selectize()[0].selectize;
                 for (var i = 0; i < data.length; i++) {
                     var newOption = {
                         value: data[i].id,
@@ -844,7 +844,7 @@ function toggleInputs(checkboxElem) {
                     select.addOption(newOption);
                 }
                 select.on('change', function(value) {
-                    GetType(type_id[0]);
+                    GetType(type[0]);
 
                 });
 

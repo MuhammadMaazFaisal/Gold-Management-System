@@ -1949,7 +1949,7 @@ function AddPurchasing()
                 array_push($array, "error");
             }
 
-            for ($i = 0; $i < count(isset($_POST['total'])); $i++) {
+            for ($i = 0; $i < count(($_POST['total'])); $i++) {
                 if ($_POST['quantity'][$i] == null) {
                     $_POST['quantity'][$i] = 0;
                 }
@@ -1975,7 +1975,7 @@ function AddPurchasing()
                 }
             }
         } else {
-            for ($i = 0; $i < count(isset($_POST['total'])); $i++) {
+            for ($i = 0; $i < count(($_POST['total'])); $i++) {
                 if ($_POST['total'][$i] != null) {
                     $getRecordQuery = "UPDATE `purchasing` SET `total`=:total,`vendor_id`=:vendor_id WHERE id = :id";
                     $getRecordStatement = $pdo->prepare($getRecordQuery);
