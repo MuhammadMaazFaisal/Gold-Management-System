@@ -53,6 +53,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         width: 100px;
     }
 
+    .price_per_2.selectize-control {
+        width: 100px;
+        display: none;
+    }
+    
+
     input:disabled,
     select:disabled,
     textarea:disabled {
@@ -186,8 +192,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Detail</th>
                                                                     <th>Type</th>
-                                                                    <th colspan="2">Price Per</th>
-                                                                    <th scope="col">Quantity</th>
+                                                                    <th colspan="2">Price Per</th>                                                                    <th scope="col">Quantity</th>
                                                                     <th scope="col">Weight</th>
                                                                     <th scope="col">Rate</th>
                                                                     <th scope="col">Total Amount</th>
@@ -206,7 +211,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </select>
                                                                         <input type="hidden" id="id" name="id" value="">
                                                                     </td>
-                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                    <td colspan="2"><select class="form-control price_per" id="price_per" name="price_per_1" placeholder="Price per">
                                                                             <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
@@ -215,7 +220,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </select></td>
                                                                     <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
                                                                     <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
-                                                                    <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                                                                    <td><input type="number" step="any" value="" id="rate" name="rate_1" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                                                                     <td>
@@ -224,6 +229,14 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </div>
                                                                     </td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
+                                                                    <td colspan="2"><select hidden class="form-control price_per_2" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                            <option value="">Select price per</option>
+                                                                            <option value="Qty">Qty</option>
+                                                                            <option value="Tola">Tola</option>
+                                                                            <option value="K">K</option>
+
+                                                                        </select></td> 
+                                                                        <td><input type="hidden" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -461,7 +474,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 </select>
 
                                                             <input type="hidden" id="id" name="id" value=""></td>
-                            <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
+                            <td colspan="2"><select class="form-control" id="price_per" name="price_per_1" placeholder="Price per">
                                     <option value="">Select price per</option>
                                     <option value="Qty">Qty</option>
                                     <option value="Tola">Tola</option>
@@ -469,13 +482,21 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 </select></td>
                             <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" ></td>
                             <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" ></td>
-                            <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
+                            <td><input type="number" step="any" value="" id="rate" name="rate_1" class="form-control" placeholder="Rate" required></td>
                             <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                             <td><div class="pt-2 form-check d-flex justify-content-center">
                                     <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
                                 </div></td>
-                        <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
+                        <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>
+                        <td colspan="2"><select hidden class="form-control price_per_2" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                            <option value="">Select price per</option>
+                                                                            <option value="Qty">Qty</option>
+                                                                            <option value="Tola">Tola</option>
+                                                                            <option value="K">K</option>
+
+                                                                        </select></td> 
+                                                                        <td><input type="hidden" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>`;
         area.appendChild(tr);
         type = tr.querySelectorAll("select[name='type[]']");
         select = $(type).selectize()[0].selectize;
