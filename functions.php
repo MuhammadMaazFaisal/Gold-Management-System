@@ -1947,16 +1947,16 @@ function AddPurchasing()
                 array_push($array, "success");
             } else {
                 array_push($array, "error");
-            } for ($i = 0; $i < count(($_POST['total'])); $i++) {
+            }
+
+            for ($i = 0; $i < count($_POST['total']); $i++) {
                 if ($_POST['quantity'][$i] == null) {
                     $_POST['quantity'][$i] = 0;
                 }
                 if ($_POST['weight'][$i] == null) {
-        
+
                     $_POST['weight'][$i] = 0;
                 }
-
-            
                 $getRecordQuery2 = "INSERT INTO `purchasing_details`(`p_id`, `type`, `detail`, `price_per`, `remaining_quantity`, `remaining_weight`, `quantity`, `weight`, `rate`, `remaining_total_amount`, `total_amount`, `barcode`) VALUES (:p_id, :type, :detail, :price_per, :quantity, :weight, :quantity, :weight, :rate, :total, :total, :barcode)";
                 $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                 $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
@@ -1973,49 +1973,9 @@ function AddPurchasing()
                 } else {
                     array_push($array, "error");
                 }
-            } 
-    $getRecordQuery3 = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, :p_id,:total, 'Active')";
-    $getRecordStatement3 = $pdo->prepare($getRecordQuery3);
-    $getRecordStatement3->bindParam(':id', $_POST['s_invoice']);
-    $getRecordStatement3->bindParam(':p_id', $_POST['invoice']);
-    $getRecordStatement3->bindParam(':total', $_POST['grand_total']);
-    if ($getRecordStatement3->execute()) {
-        array_push($array, "success");
-    } else {
-        array_push($array, "error");
-    } 
-    // $count = max(json_decode($_POST['checkbox_values'], true));
-    // $values = json_decode($_POST['checkbox_values'], true);
-    for ($i = 0; $i < count(($_POST['total'])); $i++) {
-        if ($_POST['total'][$i] != null) {
-            if ($_POST['quantity'][$i] == null) {
-                $_POST['quantity'][$i] = 0;
             }
-            if ($_POST['weight'][$i] == null) {
-
-                $_POST['weight'][$i] = 0;
-            }
-            $getRecordQuery4 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
-            $getRecordStatement4 = $pdo->prepare($getRecordQuery4);
-            $getRecordStatement4->bindParam(':s_id', $_POST['s_invoice']);
-            $getRecordStatement4->bindParam(':type', $_POST['type'][$i]);
-            $getRecordStatement4->bindParam(':detail', $_POST['detail'][$i]);
-            $getRecordStatement4->bindParam(':price_per', $_POST['price_per'][$i]);
-            $getRecordStatement4->bindParam(':quantity', $_POST['quantity'][$i]);
-            $getRecordStatement4->bindParam(':weight', $_POST['weight'][$i]);
-            $getRecordStatement4->bindParam(':rate', $_POST['rate'][$i]);
-            $getRecordStatement4->bindParam(':total', $_POST['total'][$i]);
-            $getRecordStatement4->bindParam(':barcode', $_POST['barcode'][$i]);
-            if ($getRecordStatement4->execute()) {
-                array_push($array, "success");
-            } else {
-                array_push($array, "error");
-            }
-        }
-    }
-    }
         } else {
-            for ($i = 0; $i < count(($_POST['total'])); $i++) {
+            for ($i = 0; $i < count($_POST['total']); $i++) {
                 if ($_POST['total'][$i] != null) {
                     $getRecordQuery = "UPDATE `purchasing` SET `total`=:total,`vendor_id`=:vendor_id WHERE id = :id";
                     $getRecordStatement = $pdo->prepare($getRecordQuery);
@@ -2080,7 +2040,7 @@ function AddPurchasing()
                     $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
                     $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
                     $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
-                    $getRecordStatement2->bindParam(':total', $_POST['total_amount'][$i]);
+                    $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
                     $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
                     if ($getRecordStatement2->execute()) {
                         array_push($array, "success");
@@ -2090,8 +2050,9 @@ function AddPurchasing()
                 }
             }
         }
-    
-    
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
 
     echo json_encode($array, true);
 }

@@ -51,83 +51,82 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 <style>
     .price_per.selectize-control {
         width: 100px;
-    } 
+    }
 
-    input:disabled, select:disabled, textarea:disabled {
-    background-color: #e9ecef;
-    opacity: 0.5;
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+        background-color: #e9ecef;
+        opacity: 0.5;
     }
 
     /* Customize the label (the container) */
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
 
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+    }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
+    /* On mouse-over, add a grey background color */
+    .container:hover input~.checkmark {
+        background-color: #ccc;
+    }
 
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked~.checkmark {
+        background-color: #2196F3;
+    }
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
 
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
+    /* Show the checkmark when checked */
+    .container input:checked~.checkmark:after {
+        display: block;
+    }
 
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-
-
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
 </style>
 
 <body>
@@ -219,9 +218,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                                                    <td><label class="container">
-                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
-                                                                    </label></td>
+                                                                    <td>
+                                                                        <div class="pt-2 form-check d-flex justify-content-center">
+                                                                            <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
+                                                                        </div>
+                                                                    </td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
                                                                 </tr>
                                                             </tbody>
@@ -426,18 +427,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 </html>
 
 <script>
-
-function toggleInputs(checkboxElem) {
-    var row = checkboxElem.closest('tr');
-    var inputs = row.querySelectorAll('input, select, textarea');
-
-    inputs.forEach(function(input) {
-        // Check if the input is not the checkbox itself
-        if (input !== checkboxElem) {
-            input.disabled = checkboxElem.checked;
-        }
-    });
-}
     function DeletePurchasing() {
         var product = document.getElementById('invoice');
         if (product.value == '') {
@@ -483,9 +472,9 @@ function toggleInputs(checkboxElem) {
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
                             <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" required></td>
                             <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                            <td><label class="container">
-                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
-                                                                    </label></td>
+                            <td><div class="pt-2 form-check d-flex justify-content-center">
+                                    <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
+                                </div></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>`;
         area.appendChild(tr);
         type = tr.querySelectorAll("select[name='type[]']");
@@ -618,9 +607,9 @@ function toggleInputs(checkboxElem) {
                                 <td><input type="number" step="any"  id="rate[]" name="rate[]" value="${data[i].rate}" class="form-control" placeholder="Rate" required></td>
                                 <td><input type="number" step="any"  id="total[]" name="total[]" value="${data[i].total_amount}" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                 <td><input id="barcode[]" name="barcode[]" value="${data[i].barcode}" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
-                                <td><label class="container">
-                                                                        <input type="checkbox" id="checkbox[]" class="form-control select-row" onchange="toggleInputs(this)"> <span class="checkmark"></span>
-                                                                    </label></td>`;
+                                <td><div class="pt-2 form-check d-flex justify-content-center">
+                                    <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
+                                </div></td>`;
                     if (i == 0) {
                         tr += `<td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>`;
                     } else {
@@ -764,13 +753,16 @@ function toggleInputs(checkboxElem) {
         checkbox_values = [];
         for (let i = 0; i < checkbox.length; i++) {
             if (checkbox[i].checked) {
-                checkbox_values.push(i);
+                checkbox_values.push(1);
+            }else{
+                checkbox_values.push(0);
             }
+
         }
         let formData = new FormData(this);
         formData.append('function', 'AddPurchasing');
         formData.append("checkbox_values", JSON.stringify(checkbox_values));
-        
+
 
         $.ajax({
             url: "functions.php",
@@ -784,44 +776,44 @@ function toggleInputs(checkboxElem) {
                 console.log(response);
                 var s_invoice = response;
                 formData.append("s_invoice", s_invoice);
-        
 
-        $.ajax({
 
-            url: "functions.php",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                console.log(data);
-                data = JSON.parse(data);
-                console.log(data);
-                if (data[0] == "success" && data[1] == "success") {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Purchasing Added Successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function() {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                    })
+                $.ajax({
+
+                    url: "functions.php",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        console.log(data);
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if (data[0] == "success" && data[1] == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Purchasing Added Successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
 
     function GetType(element) {
-        console.log("sada",element);
+        console.log("sada", element);
         $.ajax({
             url: "functions.php",
             method: "POST",
