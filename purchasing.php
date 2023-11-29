@@ -211,7 +211,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </select>
                                                                         <input type="hidden" id="id" name="id" value="">
                                                                     </td>
-                                                                    <td colspan="2"><select class="form-control price_per" id="price_per" name="price_per_1" placeholder="Price per">
+                                                                    <td colspan="2"><select class="form-control price_per" id="price_per" name="price_per" placeholder="Price per">
                                                                             <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
@@ -220,7 +220,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </select></td>
                                                                     <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
                                                                     <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
-                                                                    <td><input type="number" step="any" value="" id="rate" name="rate_1" class="form-control" placeholder="Rate" required></td>
+                                                                    <td><input type="number" step="any" value="" id="rate" name="rate" class="form-control" placeholder="Rate" required></td>
                                                                     <td><input type="number" step="any" value="" id="total[]" name="total[]" class="form-control" placeholder="Total" onchange="GrandTotal()" required></td>
                                                                     <td><input id="barcode[]" name="barcode[]" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly></td>
                                                                     <td>
