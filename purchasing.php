@@ -236,7 +236,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                             <option value="K">K</option>
 
                                                                         </select></td> 
-                                                                        <td><input type="hidden" step="any" value="" id="rate[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>
+                                                                        <td><input type="hidden" step="any" value="" id="rate_s[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
