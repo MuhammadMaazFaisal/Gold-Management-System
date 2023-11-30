@@ -2036,7 +2036,7 @@ function AddPurchasing()
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                     $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
                     $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
-                    $getRecordStatement2->bindParam(':price_per',$_POST['price_per_1'][$i]);
+                    $getRecordStatement2->bindParam(':price_per',$_POST['price_per'][$i]);
                     $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
                     $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
                     $getRecordStatement2->bindParam(':rate',$_POST['rate'][$i]);
