@@ -604,7 +604,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="${data[i].id}" placeholder="id" class="form-control d-none"></td>
                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
                                 <td> <select id="type[]" class="type" name="type[]" placeholder="Type">
-                                                                <option value="">Type</option>
+                                                                <option value="${data[i].type}" selected>${data[i].type}</option>
 
                                                             </select>
                                                             <input type="hidden" id="id" name="id" value=""></td>
@@ -840,7 +840,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             method: "POST",
             data: {
                 function: "GetDetailType",
-                id: element.value
+                barcode: element.value
             },
             success: function(response) {
                 var data = JSON.parse(response);
@@ -871,7 +871,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 select = $(type).selectize()[0].selectize;
                 for (var i = 0; i < data.length; i++) {
                     var newOption = {
-                        value: data[i].id,
+                        value: data[i].barcode,
                         text: data[i].barcode + " | " + data[i].name
                     };
                     select.addOption(newOption);

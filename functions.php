@@ -592,9 +592,9 @@ function GetDetailType(){
     require_once "layouts/config.php";
 
     $array = array();
-    $getRecordQuery = "SELECT * FROM `type` WHERE `id` = :id";
+    $getRecordQuery = "SELECT * FROM `type` WHERE `barcode` = :barcode";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
-    $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':barcode', $_POST['barcode'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
