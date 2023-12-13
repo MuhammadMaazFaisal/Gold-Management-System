@@ -154,10 +154,14 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetAllTypes();
 } elseif ($_POST['function'] == 'AddType'){
     AddType();
-}
-elseif ($_POST['function'] == 'GetDetailType'){
+} elseif ($_POST['function'] == 'GetDetailType'){
     GetDetailType();
+} elseif ($_POST['function'] == 'GetTypeData'){
+    GetTypeData();
+} elseif ($_POST['function'] == 'GetProductData2'){
+    GetProductData2();
 }
+
 
 
 function Logout()
@@ -590,11 +594,10 @@ function GetDetailType(){
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-
+    $id=$_POST['id'];
     $array = array();
-    $getRecordQuery = "SELECT * FROM `type` WHERE `barcode` = :barcode";
+    $getRecordQuery = "SELECT * FROM `type` where `id` = '$id' ";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
-    $getRecordStatement->bindParam(':barcode', $_POST['barcode'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
         echo json_encode($array, true);
@@ -2814,6 +2817,52 @@ function SelectCash()
             'total_pure_weight' => $totalPureWeight
         );
         echo json_encode($result, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetTypeData()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    -- t.`id` AS type_ids,
+      t.`id`, 
+      t.`name`,
+      t.`price_per`,
+      t.`rate`, 
+      t.`barcode`
+      FROM `type` t";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
+    } else {
+        echo json_encode($getRecordStatement->errorInfo(), true);
+    }
+}
+
+function GetProductData2()
+{
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+    $array = array();
+    $getRecordQuery = "SELECT 
+    -- t.`id` AS type_ids,
+      p.`id`, 
+      p.`status`,
+      p.`name`
+      FROM `universal_product` p";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    if ($getRecordStatement->execute()) {
+        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($array, true);
     } else {
         echo json_encode($getRecordStatement->errorInfo(), true);
     }

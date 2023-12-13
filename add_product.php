@@ -129,6 +129,44 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card-body px-3 ">
+
+<div class="row">
+
+    <div class="col-lg-12 ms-lg-auto ">
+        <div class="mt-4 mt-lg-0 table-responsive">
+
+            <table id="product-table" class="table table-hover">
+                <thead class="table-dark">
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+
+        </div>
+        <!-- <div class="row my-4 justify-content-end">
+            <div class="col-sm-2">
+
+                <input type="number" step="any" name="quantity" value="" id="quantity" class="form-control form-control card" placeholder="Total Metal">
+            </div>
+            <div class="col-sm-2">
+
+                <input type="number" name="weight" value="" id="weight" class="form-control form-control card" placeholder="Total Jewellery">
+            </div>
+            <div class="col-sm-2">
+
+                <input type="number" name="total" value="" id="total" class="form-control form-control card bg-dark border-dark text-light" placeholder="payable">
+            </div>
+        </div> -->
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" id="printDataTable">Print Data</button>
+
+    </div>
+</div> -->
+</div>
                             </div>
                         </div>
                     </div>
@@ -467,6 +505,71 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     })
                 }
             });
+
+            function GetData() {
+        $.ajax({
+            url: "functions.php",
+            type: "POST",
+            data: {
+                function: "GetProductData2"
+            },
+            success: function(data) {
+                data = JSON.parse(data);
+                var table = $('#product-table').DataTable({
+                    data: data,
+                    columns: [
+                        {
+                            data: 'id',
+                            title: 'id'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Name'
+                        },
+                        {
+                            data: 'status',
+                            title: 'Status'
+                        },
+                        
+                        // {
+                        //     data: 'barcode',
+                        //     title: 'Barcode',
+                        //     render: function(data, type, row) {
+                        //         if (type === 'display' || type === 'filter') {
+                        //             // Create a button element with the barcode as a data attribute
+                        //             return '<button class="print-button" onclick="Print(this)">Print</button>';
+                        //         } else {
+                        //             return data;
+                        //         }
+
+                        //     }
+                        // },
+                        // {
+
+                        //     data: 'id',
+                        //     title: 'Delete',
+                        //     render: function(data, type, row) {
+                        //         if (type === 'display' || type === 'filter') {
+                        //             // Create a button element with the barcode as a data attribute
+                        //             return '<button class="delete-button" onclick="Delete(' + data + ')">Delete</button>';
+                        //         } else {
+                        //             return data;
+                        //         }
+                        //     }
+                        // }
+                    ],
+                    responsive: true
+                });
+
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        GetData();
+
+    });
+
         </script>
 
 
