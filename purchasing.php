@@ -57,7 +57,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         width: 100px;
         display: none;
     }
-    
+
 
     input:disabled,
     select:disabled,
@@ -192,7 +192,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Detail</th>
                                                                     <th>Type</th>
-                                                                    <th colspan="2">Price Per</th>                                                                    <th scope="col">Quantity</th>
+                                                                    <th colspan="2">Price Per</th>
+                                                                    <th scope="col">Quantity</th>
                                                                     <th scope="col">Weight</th>
                                                                     <th scope="col">Rate</th>
                                                                     <th scope="col">Total Amount</th>
@@ -229,14 +230,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </div>
                                                                     </td>
                                                                     <td><i onclick="AddProduct()" class="fa fa-plus-circle fa-1x p-3"></i></td>
-                                                                    <td colspan="2"><select hidden class="form-control price_per_2" id="price_per_s[]" name="price_per_s[]" placeholder="Price per">
-                                                                            <option value="">Select price per</option>
-                                                                            <option value="Qty">Qty</option>
-                                                                            <option value="Tola">Tola</option>
-                                                                            <option value="K">K</option>
-
-                                                                        </select></td> 
-                                                                        <td><input type="hidden" step="any" value="" id="rate_s[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>
+                                                                    <td><input type="hidden" step="any" value="" id="rate_s[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -467,11 +461,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         let area = document.getElementById('tbody');
         let tr = document.createElement('tr');
         tr.innerHTML = `<th scope="row">1</th>
-        <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="" placeholder="id" class="form-control d-none"></td>
+                              <td class="d-none"> <input type="text"  id="id[]" name="id[]" value="" placeholder="id" class="form-control d-none"></td>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
                             <td> <select id="type[]" class="type" name="type[]">
-    <option value="" disabled selected>Type</option>
-</select>
+                                    <option value="" disabled selected>Type</option>
+                                </select>
 
                                                             <input type="hidden" id="id" name="id" value=""></td>
                             <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
@@ -489,13 +483,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                     <input class="form-check-input" type="checkbox" name="checkbox[]" id="checkbox[]">
                                 </div></td>
                         <td><i onclick="DeleteProduct(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>
-                        <td colspan="2"><select hidden class="form-control price_per_2" id="price_per_s[]" name="price_per_s[]" placeholder="Price per">
-                                                                            <option value="">Select price per</option>
-                                                                            <option value="Qty">Qty</option>
-                                                                            <option value="Tola">Tola</option>
-                                                                            <option value="K">K</option>
-
-                                                                        </select></td> 
                                                                         <td><input type="hidden" step="any" value="" id="rate_s[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>`;
         area.appendChild(tr);
         type = tr.querySelectorAll("select[name='type[]']");
@@ -512,7 +499,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 var data = JSON.parse(response);
                 for (var i = 0; i < data.length; i++) {
                     var newOption = {
-                        value: data[i].id,
+                        value: data[i].barcode,
                         text: data[i].barcode + " | " + data[i].name
                     };
                     select.addOption(newOption);
@@ -592,6 +579,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             },
             success: function(data) {
                 var data = JSON.parse(data);
+                console.log(data);
                 var area = document.getElementById('tbody');
                 area.innerHTML = "";
                 let GrandTotal = document.getElementById('grand_total');
@@ -609,15 +597,15 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                             </select>
                                                             <input type="hidden" id="id" name="id" value=""></td>
                                 <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">`;
-                    if (data[0].price_per == "Qty") {
+                    if (data[i].price_per == "Qty") {
                         tr += `<option value="Qty" selected>Qty</option>
                                         <option value="Tola">Tola</option>
                                         <option value="K">K</option>`;
-                    } else if (data[0].price_per == "Tola") {
+                    } else if (data[i].price_per == "Tola") {
                         tr += `<option value="Qty">Qty</option>
                                         <option value="Tola" selected>Tola</option>
                                         <option value="K">K</option>`;
-                    } else if (data[0].price_per == "K") {
+                    } else if (data[i].price_per == "K") {
                         tr += `<option value="Qty">Qty</option>
                                         <option value="Tola">Tola</option>
                                         <option value="K" selected>K</option>`;
@@ -775,7 +763,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         for (let i = 0; i < checkbox.length; i++) {
             if (checkbox[i].checked) {
                 checkbox_values.push(1);
-            }else{
+            } else {
                 checkbox_values.push(0);
             }
 
@@ -800,14 +788,12 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
 
                 $.ajax({
-
                     url: "functions.php",
                     type: "POST",
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function(data) {
-                        console.log(data);
                         data = JSON.parse(data);
                         console.log(data);
                         if (data[0] == "success" && data[1] == "success") {
@@ -834,7 +820,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     });
 
     function GetType(element) {
-        console.log("sada", element);
         $.ajax({
             url: "functions.php",
             method: "POST",
@@ -843,11 +828,13 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 barcode: element.value
             },
             success: function(response) {
+                console.log(response);
                 var data = JSON.parse(response);
                 var tr = element.parentNode.parentNode;
-                price_per = tr.querySelectorAll("select[name='price_per_s[]']");
+                price_per = tr.querySelectorAll("select[name='price_per[]']");
                 selectizeInstance = $(price_per).selectize()[0].selectize;
                 selectizeInstance.setValue(data.price_per);
+                selectizeInstance.disable();
                 tr.querySelectorAll("input[name='rate_s[]']")[0].value = data.rate;
                 tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
             }

@@ -89,10 +89,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                     <div class="row mb-4 justify-content-between">
                                                         <div class="col-sm-3">
 
-                                                            <select id="type_id" class="type" name="type_id" placeholder="Pick a type...">
-                                                                <option value="">Select a type...</option>
-
-                                                            </select>
+                                                           
                                                             <input type="hidden" id="id" name="id" value="">
                                                         </div>
                                                         <div class="col-sm-2">
@@ -142,28 +139,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                 </table>
 
                                             </div>
-                                            <!-- <div class="row my-4 justify-content-end">
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" step="any" name="quantity" value="" id="quantity" class="form-control form-control card" placeholder="Total Metal">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="weight" value="" id="weight" class="form-control form-control card" placeholder="Total Jewellery">
-                                                </div>
-                                                <div class="col-sm-2">
-
-                                                    <input type="number" name="total" value="" id="total" class="form-control form-control card bg-dark border-dark text-light" placeholder="payable">
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
-                                    <!-- <div class="row">
-                                        <div class="d-flex justify-content-end mt-3">
-                                            <button class="btn btn-primary" id="printDataTable">Print Data</button>
-
-                                        </div>
-                                    </div> -->
                                 </div>
                                     </div>
                                 </div>
@@ -347,43 +324,57 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
     }
 
+    function DeleteType(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to delete this type!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "functions.php",
+                    method: "POST",
+                    data: {
+                        function: "DeleteType",
+                        id: id
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var data = JSON.parse(response);
+                        console.log(data);
+                        if (data[0] == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Type Deleted Successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
+                        }
+                    }
+                });
+            }
+        })
+    }
+
     $(document).ready(function() {
         var type = document.getElementById("type");
         type.addEventListener("keyup", function(event) {
             GenerateBarcode();
         });
-
-        $(document).on('change', '#type_id', function(e) {
-            e.preventDefault();
-            GetType(this.value);
-        });
-
-        $.ajax({
-            url: "functions.php",
-            method: "POST",
-            data: {
-                function: "GetAllTypes",
-                type: "vendor"
-            },
-            success: function(response) {
-                console.log(response);
-                var data = JSON.parse(response);
-                var select = $('#type_id')[0].selectize;
-                for (var i = 0; i < data.length; i++) {
-                    var newOption = {
-                        value: data[i].id,
-                        text: data[i].barcode + " | " + data[i].name
-                    };
-                    select.addOption(newOption);
-                }
-                select.on('change', function(value) {
-                    var id = this.getValue();
-
-                });
-
-            }
-        });
-
     });
 
 
@@ -457,32 +448,18 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             data: 'barcode',
                             title: 'Barcode'
                         },
-                        // {
-                        //     data: 'barcode',
-                        //     title: 'Barcode',
-                        //     render: function(data, type, row) {
-                        //         if (type === 'display' || type === 'filter') {
-                        //             // Create a button element with the barcode as a data attribute
-                        //             return '<button class="print-button" onclick="Print(this)">Print</button>';
-                        //         } else {
-                        //             return data;
-                        //         }
-
-                        //     }
-                        // },
-                        // {
-
-                        //     data: 'id',
-                        //     title: 'Delete',
-                        //     render: function(data, type, row) {
-                        //         if (type === 'display' || type === 'filter') {
-                        //             // Create a button element with the barcode as a data attribute
-                        //             return '<button class="delete-button" onclick="Delete(' + data + ')">Delete</button>';
-                        //         } else {
-                        //             return data;
-                        //         }
-                        //     }
-                        // }
+                        {
+                            data: 'id',
+                            render: function(data, type, row, meta) {
+                                return '<button class="btn btn-primary btn-sm" onclick="GetType(this.value)" value="' + data + '">Edit</button>';
+                            }
+                        },
+                        {
+                            data: 'id',
+                            render: function(data, type, row, meta) {
+                                return '<button class="btn btn-danger btn-sm" onclick="DeleteType(this.value)" value="' + data + '">Delete</button>';
+                            }
+                        }
                     ],
                     responsive: true
                 });

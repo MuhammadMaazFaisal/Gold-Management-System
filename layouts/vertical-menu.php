@@ -93,7 +93,7 @@
 
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="production_page.php" data-key="t-register">Add Production</a></li>
-                        
+                        <li><a href="add_product.php" data-key="t-register">Add Type</a></li>
                     </ul>
 
                 </li>
@@ -105,9 +105,8 @@
                     </a>
 
                     <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="semi_finish.php" data-key="t-register">Semi-Finished</a></li>
-                    <li><a href="add_product.php" data-key="t-register">Add Product</a></li>
-                        
+                        <li><a href="semi_finish.php" data-key="t-register">Semi-Finished</a></li>
+
                     </ul>
 
                 </li>
@@ -139,7 +138,7 @@
                     </ul>
 
                 </li>
-               <li>
+                <li>
                     <a href="javascript: void(0);" class=" ">
                         <i data-feather="file-text"></i>
                         <span data-key="t-bank">Cash</span>

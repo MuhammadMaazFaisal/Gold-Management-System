@@ -158,9 +158,9 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetDetailType();
 } elseif ($_POST['function'] == 'GetTypeData'){
     GetTypeData();
-} elseif ($_POST['function'] == 'GetProductData2'){
-    GetProductData2();
-}
+} elseif ($_POST['function'] == 'DeleteType'){
+    DeleteType();
+} 
 
 
 
@@ -489,7 +489,6 @@ function GetAllSemiProductData()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $type = $_POST['type'];
     $getRecordQuery = "SELECT * FROM `universal_product` WHERE `status` = 'Active'";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
@@ -589,14 +588,34 @@ function AddType()
     }
 }
 
+function DeleteType(){
+    include 'layouts/session.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    require_once "layouts/config.php";
+
+    $array = array();
+    $getRecordQuery = "DELETE FROM `type` WHERE `id` = :id";
+    $getRecordStatement = $pdo->prepare($getRecordQuery);
+    $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+
+    if ($getRecordStatement->execute()) {
+        array_push($array, 'success');
+        echo json_encode($array, true);
+        die;
+    }
+
+
+}
+
 function GetDetailType(){
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-    $id=$_POST['id'];
+    $barcode=$_POST['barcode'];
     $array = array();
-    $getRecordQuery = "SELECT * FROM `type` where `id` = '$id' ";
+    $getRecordQuery = "SELECT * FROM `type` where `barcode` = '$barcode' ";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetch(PDO::FETCH_ASSOC);
@@ -629,10 +648,12 @@ function AddSemiProduct()
     require_once "layouts/config.php";
 
     $array = array();
-    $getRecordQuery = "INSERT INTO `universal_product`(`id`,`name`,`status`) VALUES (:id,:name,'Active')";
+    $getRecordQuery = "INSERT INTO `universal_product`(`id`,`name`,`purity`,`rate`,`status`) VALUES (:id,:name,:purity,:rate,'Active')";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':purity', $_POST['purity'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':rate', $_POST['rate'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         array_push($array, 'success');
         echo json_encode($array, true);
@@ -754,10 +775,12 @@ function UpdateSemiProduct()
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
     $array = array();
-    $getRecordQuery = "UPDATE `universal_product` SET `name` = :name WHERE `id` = :id";
+    $getRecordQuery = "UPDATE `universal_product` SET `name` = :name,`purity`= :purity, `rate` = :rate WHERE `id` = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     $getRecordStatement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
     $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':purity', $_POST['purity'], PDO::PARAM_STR);
+    $getRecordStatement->bindParam(':rate', $_POST['rate'], PDO::PARAM_STR);
     if ($getRecordStatement->execute()) {
         array_push($array, 'success');
         echo json_encode($array, true);
@@ -1996,12 +2019,9 @@ function AddPurchasing()
                     if ($_POST['weight'][$i] == null) {
                         $_POST['weight'][$i] = 0;
                     }
-                    $qry01 = "SELECT * FROM `purchasing_details` WHERE `p_id` = :id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
+                    $qry01 = "SELECT * FROM `purchasing_details` WHERE `p_id` = :id AND `barcode` = :barcode";
                     $qryStatement01 = $pdo->prepare($qry01);
                     $qryStatement01->bindParam(':id', $_POST['invoice']);
-                    $qryStatement01->bindParam(':type', $_POST['type'][$i]);
-                    $qryStatement01->bindParam(':detail', $_POST['detail'][$i]);
-                    $qryStatement01->bindParam(':price_per',$_POST['price_per'][$i]);
                     $qryStatement01->bindParam(':barcode', $_POST['barcode'][$i]);
                     $qryStatement01->execute();
                     $result01 = $qryStatement01->fetchAll(PDO::FETCH_ASSOC);
@@ -2009,7 +2029,7 @@ function AddPurchasing()
                     $weight_diff = $_POST['weight'][$i] - $result01[0]['weight'];
                     $total_diff = $_POST['total'][$i] - $result01[0]['total_amount'];
 
-                    $getRecordQuery2 = "UPDATE `purchasing_details` SET `quantity`=`quantity`+:quantity,`weight`=`weight`+:weight,`total_amount`=`total_amount`+:total_amount,`remaining_quantity`=`remaining_quantity`+:remaining_quantity,`remaining_weight`=`remaining_weight`+:remaining_weight,`remaining_total_amount`=`remaining_total_amount`+:remaining_total_amount WHERE `p_id` = :p_id AND `type` = :type AND `detail` = :detail AND `price_per` = :price_per AND `barcode` = :barcode";
+                    $getRecordQuery2 = "UPDATE `purchasing_details` SET `quantity`=`quantity`+:quantity,`weight`=`weight`+:weight,`total_amount`=`total_amount`+:total_amount,`remaining_quantity`=`remaining_quantity`+:remaining_quantity,`remaining_weight`=`remaining_weight`+:remaining_weight,`remaining_total_amount`=`remaining_total_amount`+:remaining_total_amount, `price_per`=:price_per, `rate`=:rate, `detail`=:detail, `type`=:type WHERE `p_id` = :p_id AND `barcode` = :barcode";
                     $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                     $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
@@ -2017,6 +2037,7 @@ function AddPurchasing()
                     $getRecordStatement2->bindParam(':price_per',$_POST['price_per'][$i]);
                     $getRecordStatement2->bindParam(':quantity', $quantity_diff);
                     $getRecordStatement2->bindParam(':weight', $weight_diff);
+                    $getRecordStatement2->bindParam(':rate',$_POST['rate'][$i]);
                     $getRecordStatement2->bindParam(':total_amount', $total_diff);
                     $getRecordStatement2->bindParam(':remaining_quantity', $quantity_diff);
                     $getRecordStatement2->bindParam(':remaining_weight', $weight_diff);
@@ -2027,6 +2048,7 @@ function AddPurchasing()
                     } else {
                         array_push($array, "error");
                     }
+                   
                 } else {
                     if ($_POST['quantity'][$i] == null) {
                         $_POST['quantity'][$i] = 0;
@@ -2837,28 +2859,6 @@ function GetTypeData()
       t.`rate`, 
       t.`barcode`
       FROM `type` t";
-    $getRecordStatement = $pdo->prepare($getRecordQuery);
-    if ($getRecordStatement->execute()) {
-        $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($array, true);
-    } else {
-        echo json_encode($getRecordStatement->errorInfo(), true);
-    }
-}
-
-function GetProductData2()
-{
-    include 'layouts/session.php';
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    require_once "layouts/config.php";
-    $array = array();
-    $getRecordQuery = "SELECT 
-    -- t.`id` AS type_ids,
-      p.`id`, 
-      p.`status`,
-      p.`name`
-      FROM `universal_product` p";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
     if ($getRecordStatement->execute()) {
         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);

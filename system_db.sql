@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 23, 2023 at 12:22 PM
+-- Generation Time: Dec 14, 2023 at 01:03 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -196,7 +196,9 @@ CREATE TABLE `purchasing` (
 --
 
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
-('existing', 'existing', 0, '2023-10-29 13:19:44', 'inactive');
+('existing', 'existing', 0, '2023-10-29 13:19:44', 'inactive'),
+('PI-0002', 'MM002', 2665, '2023-12-09 15:17:06', 'Inactive'),
+('PI-0003', 'MM002', 1519, '2023-12-09 15:17:58', 'Active');
 
 -- --------------------------------------------------------
 
@@ -219,6 +221,16 @@ CREATE TABLE `purchasing_details` (
   `remaining_total_amount` float NOT NULL,
   `barcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `purchasing_details`
+--
+
+INSERT INTO `purchasing_details` (`id`, `p_id`, `type`, `detail`, `price_per`, `quantity`, `remaining_quantity`, `weight`, `remaining_weight`, `rate`, `total_amount`, `remaining_total_amount`, `barcode`) VALUES
+(71, 'PI-0002', '1700322217340', '', 'Qty', 350, 350, 0, 0, 1.9, 665, 665, '1700322217340'),
+(72, 'PI-0002', '1702132190937', '', 'Qty', 1000, 1000, 0, 0, 2, 2000, 2000, '1702132190937'),
+(73, 'PI-0003', '1700322217340', '', 'K', 0, 0, 200, 200, 1.5, 1500, 1500, '1700322217340'),
+(74, 'PI-0003', '1702132190937', '', 'Tola', 0, 0, 150, 150, 1.5, 19, 19, '1702132190937');
 
 -- --------------------------------------------------------
 
@@ -272,16 +284,6 @@ CREATE TABLE `stock` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `stock`
---
-
-INSERT INTO `stock` (`id`, `p_id`, `total`, `date`, `status`) VALUES
-('SI-0001', 'existing', 12758, '2023-11-03 11:32:01', 'Active'),
-('SI-0002', 'existing', 20545, '2023-11-04 12:58:28', 'Active'),
-('SI-0003', 'existing', 58783, '2023-11-04 12:59:35', 'Active'),
-('SI-0005', 'existing', 0, '2023-11-04 14:21:00', 'Active');
-
 -- --------------------------------------------------------
 
 --
@@ -300,40 +302,6 @@ CREATE TABLE `stock_details` (
   `total_amount` float NOT NULL,
   `barcode` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `stock_details`
---
-
-INSERT INTO `stock_details` (`id`, `s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES
-(105, 'SI-0001', 'Natural Stone ', 'Emerald String ', 'K', 0, 17.01, 150, 12758, 1698929896781),
-(106, 'SI-0002', 'Natural Stone ', 'Ruby String ', 'K', 0, 41.09, 100, 20545, 1699101990547),
-(107, 'SI-0002', 'Natural Stone ', 'Turmaline Pearl Shape ', 'K', 0, 67.36, 700, 235760, 1699102055798),
-(108, 'SI-0002', 'Natural Stone ', 'Emerald String', 'K', 0, 70.26, 120, 42156, 1699102055972),
-(109, 'SI-0002', 'Natural Stone ', 'Amethyst String', 'K', 0, 16.1, 80, 6440, 1699102056162),
-(110, 'SI-0002', 'Natural Stone ', 'Turmaline Cabachon', 'K', 0, 171.07, 500, 427675, 1699102056335),
-(111, 'SI-0002', 'Natural Stone ', 'Emerald String', 'K', 0, 29.38, 120, 17628, 1699102056504),
-(112, 'SI-0002', 'Natural Stone ', 'Pearls String', 'Tola', 0, 19.13, 2500, 4100, 1699102056679),
-(113, 'SI-0002', 'Natural Stone ', 'Sunsitara String', 'K', 0, 37.06, 60, 11118, 1699102056847),
-(114, 'SI-0002', 'Natural Stone ', 'Ruby String ', 'K', 0, 23.23, 150, 17423, 1699102057023),
-(115, 'SI-0002', 'Natural Stone ', 'Ruby Baguette', 'K', 0, 12.71, 800, 50840, 1699102057212),
-(116, 'SI-0002', 'Natural Stone ', 'Sapphire Round', 'K', 0, 33.71, 350, 58993, 1699102057766),
-(117, 'SI-0002', 'Crystal', 'Purple Fancy String ', 'K', 0, 32.51, 35, 5689, 1699102058138),
-(118, 'SI-0002', 'Crystal', 'Champion Fancy String ', 'K', 0, 45.51, 35, 7964, 1699102058298),
-(119, 'SI-0002', 'Crystal', 'Green Fancy String ', 'K', 0, 38.87, 35, 6802, 1699102058513),
-(120, 'SI-0003', 'Natural Stone ', 'Turmaline Mix Size ', 'K', 0, 33.59, 350, 58783, 1699102710100),
-(123, 'SI-0005', 'Natural Stone ', 'Feroza String ', 'K', 0, 60.14, 300, 90210, 1699102754952),
-(124, 'SI-0005', 'Natural Stone ', 'Feroza String', 'K', 0, 31.16, 200, 31160, 1699102755140),
-(125, 'SI-0005', 'Natural Stone ', 'Gray String ', 'K', 0, 47.5, 60, 14250, 1699102755319),
-(126, 'SI-0005', 'Natural Stone ', 'Pink String ', 'K', 0, 114.59, 60, 34377, 1699102755548),
-(127, 'SI-0005', 'Natural Stone ', 'SunSitara Mix Size ', 'K', 0, 6.34, 50, 1585, 1699102755710),
-(128, 'SI-0005', 'Natural Stone ', 'Red Coral String', 'K', 0, 18.7, 200, 18700, 1699102755935),
-(129, 'SI-0005', 'Zircon', 'Carrat Princesses ', 'K', 0, 15.48, 20, 1548, 1699102996342),
-(130, 'SI-0005', 'Zircon', 'Purple Mix Size', 'K', 0, 19.1, 20, 1910, 1699102996507),
-(131, 'SI-0005', 'Zircon', 'Purple Fancy Cut ', 'K', 0, 15.13, 20, 1513, 1699102996668),
-(132, 'SI-0005', 'Zircon', 'Purple Fancy Cut ', 'K', 0, 6.83, 20, 683, 1699102996836),
-(133, 'SI-0005', 'Natural Stone ', 'Gomedhikam', 'K', 0, 9.55, 100, 4775, 1699102997005),
-(134, 'SI-0005', 'Natural Stone ', 'Turmaline Green Round ', 'K', 0, 15.88, 350, 27790, 1699102997175);
 
 -- --------------------------------------------------------
 
@@ -394,7 +362,9 @@ CREATE TABLE `type` (
 --
 
 INSERT INTO `type` (`id`, `name`, `price_per`, `rate`, `barcode`) VALUES
-(1, 'Zircon', 'Tola', 22, '1700322217340');
+(1, 'Zircon', 'Tola', 23, '1700322217340'),
+(2, 'Pearls', 'Qty', 255, '1702132190937'),
+(3, 'Zircon Korian 1.00mm-4.00mm', 'K', 145, '1702139380652');
 
 -- --------------------------------------------------------
 
@@ -405,9 +375,18 @@ INSERT INTO `type` (`id`, `name`, `price_per`, `rate`, `barcode`) VALUES
 CREATE TABLE `universal_product` (
   `id` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `weight` varchar(255) DEFAULT NULL,
+  `purity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `rate` float DEFAULT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `universal_product`
+--
+
+INSERT INTO `universal_product` (`id`, `name`, `purity`, `rate`, `status`) VALUES
+('C001', 'Clip', '22k', 1.7, 'Active'),
+('CC001', 'Custom Clip', NULL, NULL, 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -459,7 +438,9 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `type`, `name`, `18k`, `21k`, `22k`, `status`, `date`) VALUES
-('existing', 'existing', 'existing', 0, 0, 0, 'inactive', '');
+('existing', 'existing', 'existing', 0, 0, 0, 'inactive', ''),
+('MM002', 'vendor', 'Muhammad Maaz', 0, 0, 0, 'Active', '2023-11-25'),
+('W003', 'manufacturer', 'Waqas', 1, 2, 3, 'Active', '2023-12-09');
 
 -- --------------------------------------------------------
 
@@ -688,7 +669,7 @@ ALTER TABLE `polisher_step`
 -- AUTO_INCREMENT for table `purchasing_details`
 --
 ALTER TABLE `purchasing_details`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `returned_item`
@@ -724,7 +705,7 @@ ALTER TABLE `stone_setter_step`
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

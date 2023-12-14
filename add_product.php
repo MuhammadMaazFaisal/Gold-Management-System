@@ -69,7 +69,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     <div class="row">
 
                         <div class="col-lg-12">
-                            <div class="row mb-2">
+                            <!-- <div class="row mb-2">
                                 <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Products:</label>
                                 <div class="col-sm-3">
 
@@ -78,11 +78,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="card ">
                                 <div class="card-header card border border-danger">
                                     <h4 class="card-title">
-                                        ADD PRODUCT
+                                        ADD PRODUCT TYPE
                                     </h4>
 
                                 </div>
@@ -102,11 +102,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                     ?>
                                                     <div class="row mb-4">
 
-                                                        <label for="name" style="text-align: right;" class=" col-sm-1 col-form-label">Name:</label>
-                                                        <div class="col-5">
-
-                                                            <input type="text" name="name" id="name" value="" class="form-control" placeholder="Name" required>
-                                                        </div>
                                                         <label for="id" style="text-align: right;" class=" col-sm-1 col-form-label">Id:</label>
 
                                                         <div class="col-5">
@@ -114,11 +109,31 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                                                         </div>
                                                     </div>
+                                                    <div class="row mb-4">
+
+                                                        <label for="name" style="text-align: right;" class=" col-md-1 col-form-label">Type:</label>
+                                                        <div class="col-md-3">
+
+                                                            <input type="text" name="name" id="name" value="" class="form-control" placeholder="Type" required>
+                                                        </div>
+                                                        <label for="purity" style="text-align: right;" class=" col-md-1 col-form-label">Purity:</label>
+                                                        <div class="col-md-3">
+
+                                                            <select type="text" name="purity" id="purity" value="" class="form-control" placeholder="Purity" required>
+                                                                <option value="18k">18k</option>
+                                                                <option value="21k">21k</option>
+                                                                <option value="22k">22k</option>
+                                                            </select>
+                                                        </div>
+                                                        <label for="rate" style="text-align: right;" class=" col-md-1 col-form-label">Rate:</label>
+                                                        <div class="col-md-3">
+
+                                                            <input type="text" name="rate" id="rate" value="" class="form-control" placeholder="Rate" required>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="row justify-content-end">
                                                         <div class="col-sm-9 d-flex justify-content-end me-4">
-
-
                                                             <button type="button" id="delete" class="btn btn-danger px-3 me-3 disabled" onclick="Delete()">Delete</button>
                                                             <button type="submit" class="btn btn-success px-4">Save</button>
 
@@ -131,42 +146,22 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 </div>
                                 <div class="card-body px-3 ">
 
-<div class="row">
+                                    <div class="row">
 
-    <div class="col-lg-12 ms-lg-auto ">
-        <div class="mt-4 mt-lg-0 table-responsive">
+                                        <div class="col-lg-12 ms-lg-auto ">
+                                            <div class="mt-4 mt-lg-0 table-responsive">
 
-            <table id="product-table" class="table table-hover">
-                <thead class="table-dark">
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
+                                                <table id="product-table" class="table table-hover">
+                                                    <thead class="table-dark">
+                                                    </thead>
+                                                    <tbody id="tbody">
+                                                    </tbody>
+                                                </table>
 
-        </div>
-        <!-- <div class="row my-4 justify-content-end">
-            <div class="col-sm-2">
-
-                <input type="number" step="any" name="quantity" value="" id="quantity" class="form-control form-control card" placeholder="Total Metal">
-            </div>
-            <div class="col-sm-2">
-
-                <input type="number" name="weight" value="" id="weight" class="form-control form-control card" placeholder="Total Jewellery">
-            </div>
-            <div class="col-sm-2">
-
-                <input type="number" name="total" value="" id="total" class="form-control form-control card bg-dark border-dark text-light" placeholder="payable">
-            </div>
-        </div> -->
-    </div>
-</div>
-<!-- <div class="row">
-    <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-primary" id="printDataTable">Print Data</button>
-
-    </div>
-</div> -->
-</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -299,6 +294,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         <?php include 'layouts/vendor-scripts.php'; ?>
 
         <script>
+            var update=0;
             function GetValue(id) {
                 var delete1 = document.getElementById("delete");
                 $.ajax({
@@ -315,6 +311,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         document.getElementById("id").value = data[0].id;
                         document.getElementById("name").value = data[0].name;
                         document.getElementById("name").readOnly = true;
+                        document.getElementById("purity").selectize.setValue(data[0].purity);
+                        document.getElementById("rate").value = data[0].rate;
+                        update=1;
 
                     }
                 });
@@ -392,26 +391,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 $('select').selectize({
                     sortField: 'text'
                 });
-                $.ajax({
-                    url: "functions.php",
-                    method: "POST",
-                    data: {
-                        function: "GetAllSemiProductData",
-                        type: "vendor"
-                    },
-                    success: function(response) {
-                        var data = JSON.parse(response);
-                        var select = $('#select-vendor')[0].selectize;
-                        for (var i = 0; i < data.length; i++) {
-                            var newOption = {
-                                value: data[i].id,
-                                text: data[i].id + " | " + data[i].name
-                            };
-                            select.addOption(newOption);
-                        }
-
-                    }
-                })
 
 
                 var date = new Date().toISOString().slice(0, 10);
@@ -425,18 +404,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 getInitials();
             });
 
-            $(document).on('change', '#select-vendor', function(e) {
-                e.preventDefault();
-                GetValue($(this).val());
-            });
-
             var form = document.getElementById("form");
             form.addEventListener("submit", function(event) {
                 event.preventDefault();
-                var select = $('#select-vendor')[0].selectize;
-                var id1 = select.getValue();
-                var id = document.getElementById("id").value;
-                if (id1 === id) {
+                console.log("id ",update);
+                if (update == 1) {
                     var data = new FormData(form);
                     data.append("function", "UpdateSemiProduct");
                     $.ajax({
@@ -470,7 +442,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         }
                     })
                 } else {
-
                     var data = new FormData(form);
                     data.append("function", "AddSemiProduct");
                     $.ajax({
@@ -507,69 +478,53 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             });
 
             function GetData() {
-        $.ajax({
-            url: "functions.php",
-            type: "POST",
-            data: {
-                function: "GetProductData2"
-            },
-            success: function(data) {
-                data = JSON.parse(data);
-                var table = $('#product-table').DataTable({
-                    data: data,
-                    columns: [
-                        {
-                            data: 'id',
-                            title: 'id'
-                        },
-                        {
-                            data: 'name',
-                            title: 'Name'
-                        },
-                        {
-                            data: 'status',
-                            title: 'Status'
-                        },
-                        
-                        // {
-                        //     data: 'barcode',
-                        //     title: 'Barcode',
-                        //     render: function(data, type, row) {
-                        //         if (type === 'display' || type === 'filter') {
-                        //             // Create a button element with the barcode as a data attribute
-                        //             return '<button class="print-button" onclick="Print(this)">Print</button>';
-                        //         } else {
-                        //             return data;
-                        //         }
+                $.ajax({
+                    url: "functions.php",
+                    type: "POST",
+                    data: {
+                        function: "GetAllSemiProductData"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        data = JSON.parse(data);
+                        console.log(data);
+                        var table = $('#product-table').DataTable({
+                            data: data,
+                            columns: [{
+                                    data: 'id',
+                                    title: 'id'
+                                },
+                                {
+                                    data: 'name',
+                                    title: 'Name'
+                                },
+                                {
+                                    data: 'purity',
+                                    title: 'Purity'
+                                },
+                                {
+                                    data: 'rate',
+                                    title: 'Rate'
+                                },
+                                {
+                                   data: 'id',
+                                    render: function(data, type, row) {
+                                        return '<button class="edit-button" onclick="GetValue(this.id)" id="' + data + '">Edit</button>';
 
-                        //     }
-                        // },
-                        // {
+                                    }
+                                },
+                            ],
+                            responsive: true
+                        });
 
-                        //     data: 'id',
-                        //     title: 'Delete',
-                        //     render: function(data, type, row) {
-                        //         if (type === 'display' || type === 'filter') {
-                        //             // Create a button element with the barcode as a data attribute
-                        //             return '<button class="delete-button" onclick="Delete(' + data + ')">Delete</button>';
-                        //         } else {
-                        //             return data;
-                        //         }
-                        //     }
-                        // }
-                    ],
-                    responsive: true
+                    }
                 });
-
             }
-        });
-    }
 
-    $(document).ready(function() {
-        GetData();
+            $(document).ready(function() {
+                GetData();
 
-    });
-
+            });
         </script>
 
 

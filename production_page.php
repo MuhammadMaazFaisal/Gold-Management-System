@@ -1165,6 +1165,27 @@
  		function GetUId(id) {
  			var code=document.getElementsByClassName('code');
 			code[0].value=id;
+			$.ajax({
+                    url: "functions.php",
+                    method: "POST",
+                    data: {
+                        function: "GetSemiProduct",
+                        id: id
+                    },
+                    success: function(response) {
+                        var data = JSON.parse(response);
+                        var select= document.getElementById("select-manufacturer-purity");
+						for(var i=0;i<select.length;i++){
+							console.log(select.options[i].text);
+							if(select.options[i].text==data[0].purity){
+								select.selectedIndex=i;
+							}
+						}
+                        document.getElementById("manufacturer-rate").value = data[0].rate;
+
+                    }
+                });
+			
  		}
 
  		function GetAllAdditionals() {
