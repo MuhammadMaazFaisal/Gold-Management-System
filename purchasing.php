@@ -213,7 +213,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         <input type="hidden" id="id" name="id" value="">
                                                                     </td>
                                                                     <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
-                                                                            <option value="">Select price per</option>
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
                                                                             <option value="K">K</option>
@@ -469,7 +468,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
 
                                                             <input type="hidden" id="id" name="id" value=""></td>
                             <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
-                                    <option value="">Select price per</option>
                                     <option value="Qty">Qty</option>
                                     <option value="Tola">Tola</option>
                                     <option value="K">K</option>
@@ -486,7 +484,10 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         <td><input type="hidden" step="any" value="" id="rate_s[]" name="rate_s[]" class="form-control" placeholder="Rate" required></td>`;
         area.appendChild(tr);
         type = tr.querySelectorAll("select[name='type[]']");
-        select = $(type).selectize()[0].selectize;
+        select = $(type).selectize({
+            create: true, // Allows users to create new items
+            sortField: 'text'
+        })[0].selectize;
         $.ajax({
             url: "functions.php",
             method: "POST",
@@ -593,7 +594,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details">${data[i].detail}</textarea></td>
                                 <td> <select id="type[]" class="type" name="type[]" placeholder="Type">
                                                                 <option value="${data[i].type}" selected>${data[i].type}</option>
-
                                                             </select>
                                                             <input type="hidden" id="id" name="id" value=""></td>
                                 <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">`;
@@ -633,7 +633,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     }
 
     function AddEventListeners() {
-        $('select').selectize({
+        $('select').not("select[name='type[]']").selectize({
             sortField: 'text'
         });
         price_per = document.querySelectorAll('#price_per\\[\\]');
@@ -657,6 +657,52 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 CalculateTotal(i);
             });
         }
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetAllTypes",
+                type: "vendor"
+            },
+            success: function(response) {
+                console.log(response);
+                var data = JSON.parse(response);
+                type = document.querySelectorAll("select[name='type[]']");
+                for (var j=0; j<type.length; j++){
+                    select = $(type[j]).selectize({
+                        create: true,
+                        sortField: 'text'
+                    })[0].selectize;
+                
+                    for (var i = 0; i < data.length; i++) {
+                        var newOption = {
+                            value: data[i].barcode,
+                            text: data[i].barcode + " | " + data[i].name
+                        };
+                        select.addOption(newOption);
+                    }
+                    select.on('change', function(value) {
+                        GetType(type[j]);
+                    });
+                }
+                // select = $(type).selectize({
+                //     create: true,
+                //     sortField: 'text'
+                // })[0].selectize;
+            
+                // for (var i = 0; i < data.length; i++) {
+                //     var newOption = {
+                //         value: data[i].barcode,
+                //         text: data[i].barcode + " | " + data[i].name
+                //     };
+                //     select.addOption(newOption);
+                // }
+                // select.on('change', function(value) {
+                //     GetType(type[0]);
+                // });
+
+            }
+        });
 
     }
 
@@ -750,9 +796,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             }
 
         });
-        $('select').selectize({
-            sortField: 'text'
-        });
 
     });
 
@@ -771,7 +814,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         let formData = new FormData(this);
         formData.append('function', 'AddPurchasing');
         formData.append("checkbox_values", JSON.stringify(checkbox_values));
-
 
         $.ajax({
             url: "functions.php",
@@ -794,6 +836,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     contentType: false,
                     processData: false,
                     success: function(data) {
+                        console.log(data);
                         data = JSON.parse(data);
                         console.log(data);
                         if (data[0] == "success" && data[1] == "success") {
@@ -829,51 +872,22 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             },
             success: function(response) {
                 console.log(response);
-                var data = JSON.parse(response);
                 var tr = element.parentNode.parentNode;
-                price_per = tr.querySelectorAll("select[name='price_per[]']");
-                selectizeInstance = $(price_per).selectize()[0].selectize;
-                selectizeInstance.setValue(data.price_per);
-                selectizeInstance.disable();
-                tr.querySelectorAll("input[name='rate_s[]']")[0].value = data.rate;
-                tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
+                if (response != "false") {
+                    var data = JSON.parse(response);
+                    price_per = tr.querySelectorAll("select[name='price_per[]']");
+                    selectizeInstance = $(price_per).selectize()[0].selectize;
+                    selectizeInstance.setValue(data.price_per);
+                    selectizeInstance.disable();
+                    tr.querySelectorAll("input[name='rate_s[]']")[0].value = data.rate;
+                    tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
+                } else {
+                    price_per = tr.querySelectorAll("select[name='price_per[]']");
+                    selectizeInstance = $(price_per).selectize()[0].selectize;
+                    selectizeInstance.enable();
+                    tr.querySelectorAll("input[name='barcode[]']")[0].value = Math.floor(new Date().getTime() + Math.random());
+                }
             }
         });
     }
-
-    $(document).ready(function() {
-
-
-        $.ajax({
-            url: "functions.php",
-            method: "POST",
-            data: {
-                function: "GetAllTypes",
-                type: "vendor"
-            },
-            success: function(response) {
-                console.log(response);
-                var data = JSON.parse(response);
-                type = document.querySelectorAll("select[name='type[]']");
-                select = $(type).selectize()[0].selectize;
-                for (var i = 0; i < data.length; i++) {
-                    var newOption = {
-                        value: data[i].barcode,
-                        text: data[i].barcode + " | " + data[i].name
-                    };
-                    select.addOption(newOption);
-                }
-                select.on('change', function(value) {
-                    GetType(type[0]);
-
-                });
-
-            }
-        });
-
-    });
-
-    $('select').selectize({
-        sortField: 'text'
-    });
 </script>

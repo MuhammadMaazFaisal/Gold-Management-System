@@ -1957,6 +1957,7 @@ function AddPurchasing()
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
+    // var_dump($_POST);
     $array = array();
     $getRecordQuery = "Select * from purchasing where id = :id";
     $getRecordStatement = $pdo->prepare($getRecordQuery);

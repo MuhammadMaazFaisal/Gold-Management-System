@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 14, 2023 at 01:03 AM
+-- Generation Time: Dec 15, 2023 at 12:32 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -198,7 +198,11 @@ CREATE TABLE `purchasing` (
 INSERT INTO `purchasing` (`id`, `vendor_id`, `total`, `date`, `status`) VALUES
 ('existing', 'existing', 0, '2023-10-29 13:19:44', 'inactive'),
 ('PI-0002', 'MM002', 2665, '2023-12-09 15:17:06', 'Inactive'),
-('PI-0003', 'MM002', 1519, '2023-12-09 15:17:58', 'Active');
+('PI-0003', 'MM002', 1519, '2023-12-09 15:17:58', 'Active'),
+('PI-0004', 'MM002', 166, '2023-12-15 11:30:30', 'Inactive'),
+('PI-0005', 'MM002', 36, '2023-12-15 11:30:24', 'Inactive'),
+('PI-0006', 'MM002', 147, '2023-12-15 11:35:35', 'Inactive'),
+('PI-0007', 'MM002', 147, '2023-12-15 11:52:57', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -211,7 +215,7 @@ CREATE TABLE `purchasing_details` (
   `p_id` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `detail` varchar(255) NOT NULL,
-  `price_per` varchar(255) NOT NULL,
+  `price_per` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `quantity` int DEFAULT NULL,
   `remaining_quantity` int DEFAULT NULL,
   `weight` float DEFAULT NULL,
@@ -230,7 +234,12 @@ INSERT INTO `purchasing_details` (`id`, `p_id`, `type`, `detail`, `price_per`, `
 (71, 'PI-0002', '1700322217340', '', 'Qty', 350, 350, 0, 0, 1.9, 665, 665, '1700322217340'),
 (72, 'PI-0002', '1702132190937', '', 'Qty', 1000, 1000, 0, 0, 2, 2000, 2000, '1702132190937'),
 (73, 'PI-0003', '1700322217340', '', 'K', 0, 0, 200, 200, 1.5, 1500, 1500, '1700322217340'),
-(74, 'PI-0003', '1702132190937', '', 'Tola', 0, 0, 150, 150, 1.5, 19, 19, '1702132190937');
+(74, 'PI-0003', '1702132190937', '', 'Tola', 0, 0, 150, 150, 1.5, 19, 19, '1702132190937'),
+(75, 'PI-0004', '1700322217340', '', 'Qty', 50, 50, 50, 50, 1.5, 6, 6, '1700322217340'),
+(76, 'PI-0005', '1700322217340', '', '', 100, 100, 100, 100, 1.7, 16, 16, '1700322217340'),
+(77, 'PI-0006', '1700322217340', '', 'Qty', 50, 50, 50, 50, 1.7, 7, 7, '1700322217340'),
+(78, 'PI-0007', '1700322217340', '', 'Qty', 50, 50, 50, 50, 1.7, 7, 7, '1700322217340'),
+(79, 'PI-0007', '232423423', '', NULL, 70, 70, 70, 70, 2, 140, 140, '1702640155284');
 
 -- --------------------------------------------------------
 
@@ -669,7 +678,7 @@ ALTER TABLE `polisher_step`
 -- AUTO_INCREMENT for table `purchasing_details`
 --
 ALTER TABLE `purchasing_details`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `returned_item`
