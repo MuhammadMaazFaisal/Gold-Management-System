@@ -174,7 +174,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                             <tr>
                                                                 <td scope="row">1</td>
                                                                 <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                                                                <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="" placeholder="Type"></td>
+                                                                <td colspan="2"> <select id="type[]" class="type" name="type[]" placeholder="Type">
+                                                                        <option value="">Type</option>
+                                                                    </select>
+                                                                    <input type="hidden" id="id" name="id" value="">
+                                                                </td>
                                                                 <td colspan="2"><select class="form-control price_per" id="e_price_per[]" name="price_per[]" placeholder="Price per">
                                                                         <option value="">Select price per</option>
                                                                         <option value="Qty">Qty</option>
@@ -562,7 +566,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     }
 
     function AddEventListeners() {
-        $('select').selectize({
+        $('select').not("select[name='type[]']").selectize({
             sortField: 'text'
         });
         price_per = document.querySelectorAll('#price_per\\[\\]');
@@ -597,7 +601,11 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         tr.innerHTML = `<tr>
                             <td scope="row">1</td>
                             <td><textarea type="text" name="detail[]" id="detail[]" class="form-control" style="height: 20px;" placeholder="Details"></textarea></td>
-                            <td colspan="2"><input type="text" class="form-control" id="type[]" name="type[]" value="" placeholder="Type"></td>
+                            <td colspan="2"> <select id="type[]" class="type" name="type[]" placeholder="Type">
+                                    <option value="">Type</option>
+                                </select>
+                                <input type="hidden" id="id" name="id" value="">
+                            </td>
                             <td colspan="2"><select class="form-control price_per" id="e_price_per[]" name="price_per[]" placeholder="Price per">
                                     <option value="">Select price per</option>
                                     <option value="Qty">Qty</option>
@@ -608,12 +616,41 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             <td> <input type="number" step="any" placeholder="" id="weight[]" name="weight[]" class="form-control"></td>
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control"></td>
                             <td><input type="number" step="any" placeholder="" id="total[]" name="total[]" class="form-control"></td>
-                            <td><input id="barcode[]" name="barcode[]" value="${Math.floor(new Date().getTime() + Math.random())}" type="text" class="form-control"></td>
+                            <td><input id="barcode[]" name="barcode[]" value="" type="text" class="form-control"></td>
                             <td><i onclick="DeleteStock(this)" class="fa fa-minus-circle fa-1x p-3"></i></td>
 
                             <td class="d-none"><input type="text" class="form-control" id="pd_id[]" name="pd_id[]" value="existing"></td>
                         </tr>`;
         area.appendChild(tr);
+        type = tr.querySelectorAll("select[name='type[]']");
+        select = $(type).selectize({
+            create: true, // Allows users to create new items
+            sortField: 'text'
+        })[0].selectize;
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetAllTypes",
+                type: "vendor"
+            },
+            success: function(response) {
+                console.log("all types", response);
+                var data = JSON.parse(response);
+                for (var i = 0; i < data.length; i++) {
+                    var newOption = {
+                        value: data[i].barcode,
+                        text: data[i].barcode + " | " + data[i].name
+                    };
+                    select.addOption(newOption);
+                }
+                select.on('change', function(value) {
+                    GetType(type[0]);
+
+                });
+
+            }
+        });
         AddEventListeners();
     }
 
@@ -625,9 +662,9 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         GetDate();
         AddEventListeners();
 
-        document.getElementById("barcode[]").value = Math.floor(new Date().getTime() + Math.random());
+        
 
-        $('select').selectize({
+        $('select').not("select[name='type[]']").selectize({
             sortField: 'text'
         });
 
@@ -641,8 +678,76 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
         });
 
         $("#select-invoice").click(GetInvoices());
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetAllTypes",
+                type: "vendor"
+            },
+            success: function(response) {
+                console.log("all types in event", response);
+                var data = JSON.parse(response);
+                type = document.querySelectorAll("select[name='type[]']");
+                for (var j = 0; j < type.length; j++) {
+                    select = $(type[j]).selectize({
+                        create: true,
+                        sortField: 'text'
+                    })[0].selectize;
+
+                    for (var i = 0; i < data.length; i++) {
+                        var newOption = {
+                            value: data[i].barcode,
+                            text: data[i].barcode + " | " + data[i].name
+                        };
+                        select.addOption(newOption);
+                    }
+                    select.on('change', function(value) {
+                        GetType(this.$input[0]);
+                    });
+                }
+            }
+        });
 
     });
+
+    function GetType(element) {
+        console.log("element", element);
+        console.log(element.value);
+        $.ajax({
+            url: "functions.php",
+            method: "POST",
+            data: {
+                function: "GetDetailType",
+                barcode: element.value
+            },
+            success: function(response) {
+                console.log("detail type", response);
+                var tr = element.parentNode.parentNode;
+                if (response != "false") {
+                    var data = JSON.parse(response);
+                    price_per = tr.querySelectorAll("select[name='price_per[]']");
+                    selectizeInstance = $(price_per).selectize()[0].selectize;
+                    selectizeInstance.setValue(data.price_per);
+                    // Prevent opening the dropdown
+                    selectizeInstance.$control.css({
+                        'pointer-events': 'none',
+                        'background-color': '#eee', // Optional: visual feedback that it's read-only
+                        'color': '#666' // Optional: visual feedback
+                    });
+                    tr.querySelectorAll("input[name='rate[]']")[0].value = data.rate;
+                    tr.querySelectorAll("input[name='rate[]']")[0].readOnly = true;
+                    tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
+                    tr.querySelectorAll("input[name='barcode[]']")[0].readOnly = true;
+                } else {
+                    price_per = tr.querySelectorAll("select[name='price_per[]']");
+                    selectizeInstance = $(price_per).selectize()[0].selectize;
+                    selectizeInstance.enable();
+                    tr.querySelectorAll("input[name='barcode[]']")[0].value = Math.floor(new Date().getTime() + Math.random());
+                }
+            }
+        });
+    }
 
     $(document).on("submit", "#stock-form", function(e) {
         e.preventDefault();

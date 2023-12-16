@@ -150,17 +150,17 @@ if ($_POST['function'] == 'GetAllVendorData') {
     GetUniversalProduct();
 } elseif ($_POST['function'] == 'DeleteStock') {
     DeleteStock();
-} elseif($_POST['function'] == 'GetAllTypes'){
+} elseif ($_POST['function'] == 'GetAllTypes') {
     GetAllTypes();
-} elseif ($_POST['function'] == 'AddType'){
+} elseif ($_POST['function'] == 'AddType') {
     AddType();
-} elseif ($_POST['function'] == 'GetDetailType'){
+} elseif ($_POST['function'] == 'GetDetailType') {
     GetDetailType();
-} elseif ($_POST['function'] == 'GetTypeData'){
+} elseif ($_POST['function'] == 'GetTypeData') {
     GetTypeData();
-} elseif ($_POST['function'] == 'DeleteType'){
+} elseif ($_POST['function'] == 'DeleteType') {
     DeleteType();
-} 
+}
 
 
 
@@ -563,7 +563,7 @@ function AddType()
     require_once "layouts/config.php";
     $array = array();
 
-    $checktype="SELECT * FROM `type` WHERE `id` = :id";
+    $checktype = "SELECT * FROM `type` WHERE `id` = :id";
     $checktypeStatement = $pdo->prepare($checktype);
     $checktypeStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
     $checktypeStatement->execute();
@@ -573,7 +573,7 @@ function AddType()
         $getRecordQuery = "UPDATE `type` SET `name` = :name,`price_per`= :price_per, `rate` = :rate, `barcode` = :barcode WHERE `id` = :id";
         $getRecordStatement = $pdo->prepare($getRecordQuery);
         $getRecordStatement->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
-    }else{
+    } else {
         $getRecordQuery = "INSERT INTO `type`( `name`, `price_per`, `rate`, `barcode`) VALUES (:name, :price_per, :rate, :barcode)";
         $getRecordStatement = $pdo->prepare($getRecordQuery);
     }
@@ -588,7 +588,8 @@ function AddType()
     }
 }
 
-function DeleteType(){
+function DeleteType()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -604,16 +605,15 @@ function DeleteType(){
         echo json_encode($array, true);
         die;
     }
-
-
 }
 
-function GetDetailType(){
+function GetDetailType()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once "layouts/config.php";
-    $barcode=$_POST['barcode'];
+    $barcode = $_POST['barcode'];
     $array = array();
     $getRecordQuery = "SELECT * FROM `type` where `barcode` = '$barcode' ";
     $getRecordStatement = $pdo->prepare($getRecordQuery);
@@ -624,7 +624,8 @@ function GetDetailType(){
     }
 }
 
-function GetAllTypes(){
+function GetAllTypes()
+{
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -1953,6 +1954,8 @@ function GetPurchasingCount()
 
 function AddPurchasing()
 {
+    // var_dump($_POST);
+    // die();
     include 'layouts/session.php';
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -1989,10 +1992,10 @@ function AddPurchasing()
                 $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                 $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
                 $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
-                $getRecordStatement2->bindParam(':price_per',$_POST['price_per'][$i]);
+                $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
                 $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
                 $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
-                $getRecordStatement2->bindParam(':rate',$_POST['rate'][$i]);
+                $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
                 $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
                 $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
                 if ($getRecordStatement2->execute()) {
@@ -2035,10 +2038,10 @@ function AddPurchasing()
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                     $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
                     $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
-                    $getRecordStatement2->bindParam(':price_per',$_POST['price_per'][$i]);
+                    $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
                     $getRecordStatement2->bindParam(':quantity', $quantity_diff);
                     $getRecordStatement2->bindParam(':weight', $weight_diff);
-                    $getRecordStatement2->bindParam(':rate',$_POST['rate'][$i]);
+                    $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
                     $getRecordStatement2->bindParam(':total_amount', $total_diff);
                     $getRecordStatement2->bindParam(':remaining_quantity', $quantity_diff);
                     $getRecordStatement2->bindParam(':remaining_weight', $weight_diff);
@@ -2049,7 +2052,6 @@ function AddPurchasing()
                     } else {
                         array_push($array, "error");
                     }
-                   
                 } else {
                     if ($_POST['quantity'][$i] == null) {
                         $_POST['quantity'][$i] = 0;
@@ -2062,16 +2064,102 @@ function AddPurchasing()
                     $getRecordStatement2->bindParam(':p_id', $_POST['invoice']);
                     $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
                     $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
-                    $getRecordStatement2->bindParam(':price_per',$_POST['price_per'][$i]);
+                    $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
                     $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
                     $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
-                    $getRecordStatement2->bindParam(':rate',$_POST['rate'][$i]);
+                    $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
                     $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
                     $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
                     if ($getRecordStatement2->execute()) {
                         array_push($array, "success");
                     } else {
                         array_push($array, "error");
+                    }
+                }
+            }
+        }
+        if ($array[0] == "success" && $array[1] == "success") {
+            $s_invoice = '';
+
+            // Check if there is a record with p_id='existing'
+            $checkStockQuery = "SELECT `id` FROM `stock` WHERE `p_id` = 'existing'";
+            $checkStockStatement = $pdo->prepare($checkStockQuery);
+            if ($checkStockStatement->execute() && $checkStockStatement->rowCount() > 0) {
+                // Use the existing record
+                $s_invoice = $checkStockStatement->fetchColumn();
+            } else {
+                // Create a new record
+                $getRecordQuery0 = "SELECT `id` FROM `stock` ORDER BY `id` DESC LIMIT 1";
+                $getRecordStatement0 = $pdo->prepare($getRecordQuery0);
+                if ($getRecordStatement0->execute()) {
+                    $lastRecord = $getRecordStatement0->fetchColumn();
+                    if ($lastRecord) {
+                        $lastIdNumber = intval(substr($lastRecord, 3));
+                        $newIdNumber = $lastIdNumber + 1;
+                        $s_invoice = "SI-" . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
+                    } else {
+                        $s_invoice = "SI-0001";
+                    }
+                }
+                $insertStockQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, 'existing', :total, 'Active')";
+                $insertStockStatement = $pdo->prepare($insertStockQuery);
+                $insertStockStatement->bindParam(':id', $s_invoice);
+                $insertStockStatement->bindParam(':total', $_POST['total'][0]);
+                if ($insertStockStatement->execute()) {
+                    array_push($array, "success");
+                } else {
+                    array_push($array, "error");
+                }
+            }
+
+            // Insert or Update stock_details
+            $_POST['checkbox_values'] = json_decode($_POST['checkbox_values']);
+            for ($i = 0; $i < count($_POST['checkbox_values']); $i++) {
+                if ($_POST['checkbox_values'][$i] == 1) {
+                    $barcode = $_POST['barcode'][$i];
+                    $checkDetailQuery = "SELECT * FROM `stock_details` WHERE `s_id` = :s_id AND `barcode` = :barcode";
+                    $checkDetailStatement = $pdo->prepare($checkDetailQuery);
+                    $checkDetailStatement->bindParam(':s_id', $s_invoice);
+                    $checkDetailStatement->bindParam(':barcode', $barcode);
+                    $checkDetailStatement->execute();
+                    if ($checkDetailStatement->rowCount() > 0) {
+                        // Update existing record
+                        $existingDetail = $checkDetailStatement->fetch(PDO::FETCH_ASSOC);
+                        $updatedQuantity = $existingDetail['quantity'] + $_POST['quantity'][$i];
+                        $updatedWeight = $existingDetail['weight'] + $_POST['weight'][$i];
+                        $updateDetailQuery = "UPDATE `stock_details` SET `quantity` = :quantity, `weight` = :weight WHERE `s_id` = :s_id AND `barcode` = :barcode";
+                        $updateDetailStatement = $pdo->prepare($updateDetailQuery);
+                        $updateDetailStatement->bindParam(':quantity', $updatedQuantity);
+                        $updateDetailStatement->bindParam(':weight', $updatedWeight);
+                        $updateDetailStatement->bindParam(':s_id', $s_invoice);
+                        $updateDetailStatement->bindParam(':barcode', $barcode);
+                        if ($updateDetailStatement->execute()) {
+                            array_push($array, "success");
+                        } else {
+                            array_push($array, "error");
+                        }
+                    } else {
+                        // Insert new record
+                        $insertDetailQuery = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+                        $insertDetailStatement = $pdo->prepare($insertDetailQuery);
+                        $insertDetailStatement->bindParam(':s_id', $s_invoice);
+                        $insertDetailStatement->bindParam(':type', $_POST['type'][$i]);
+                        $insertDetailStatement->bindParam(':detail', $_POST['detail'][$i]);
+                        $insertDetailStatement->bindParam(':price_per', $_POST['price_per'][$i]);
+                        $insertDetailStatement->bindParam(':quantity', $_POST['quantity'][$i]);
+                        $insertDetailStatement->bindParam(':weight', $_POST['weight'][$i]);
+                        if ($_POST['rate_s'][$i] == '') {
+                            $insertDetailStatement->bindParam(':rate', $_POST['rate'][$i]);
+                        }else{
+                            $insertDetailStatement->bindParam(':rate', $_POST['rate_s'][$i]);
+                        }
+                        $insertDetailStatement->bindParam(':total', $_POST['total'][$i]);
+                        $insertDetailStatement->bindParam(':barcode', $barcode);
+                        if ($insertDetailStatement->execute()) {
+                            array_push($array, "success");
+                        } else {
+                            array_push($array, "error");
+                        }
                     }
                 }
             }
@@ -2224,59 +2312,85 @@ function AddExistingStock()
     require_once "layouts/config.php";
     $array = array();
     $s_invoice = '';
-    $getRecordQuery0 = "SELECT `id` FROM `stock` ORDER BY `id` DESC LIMIT 1";
-    $getRecordStatement0 = $pdo->prepare($getRecordQuery0);
 
-    if ($getRecordStatement0->execute()) {
-        $lastRecord = $getRecordStatement0->fetchColumn();
-        if ($lastRecord) {
-            // Extract the numeric part of the ID. Assuming the ID format is "SI-0005".
-            $lastIdNumber = intval(substr($lastRecord, 3));
-            // Increment the ID.
-            $newIdNumber = $lastIdNumber + 1;
-            // Create the new ID with leading zeros.
-            $s_invoice = "SI-" . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
-        } else {
-            // This is the case when there are no records in the table.
-            $s_invoice = "SI-0001";
-        }
-    }
-
-    $getRecordQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, 'existing', :total, 'Active')";
-    $getRecordStatement = $pdo->prepare($getRecordQuery);
-    $getRecordStatement->bindParam(':id', $s_invoice);
-    $getRecordStatement->bindParam(':total', $_POST['total'][0]);
-    if ($getRecordStatement->execute()) {
-        array_push($array, "success");
+    // Check if there is a record with p_id='existing'
+    $checkStockQuery = "SELECT `id` FROM `stock` WHERE `p_id` = 'existing'";
+    $checkStockStatement = $pdo->prepare($checkStockQuery);
+    if ($checkStockStatement->execute() && $checkStockStatement->rowCount() > 0) {
+        // Use the existing record
+        $s_invoice = $checkStockStatement->fetchColumn();
     } else {
-        array_push($array, "error");
-    }
-    for ($i = 0; $i < count($_POST['rate']); $i++) {
-        if ($_POST['quantity'][$i] == null) {
-            $_POST['quantity'][$i] = 0;
+        // Create a new record
+        $getRecordQuery0 = "SELECT `id` FROM `stock` ORDER BY `id` DESC LIMIT 1";
+        $getRecordStatement0 = $pdo->prepare($getRecordQuery0);
+        if ($getRecordStatement0->execute()) {
+            $lastRecord = $getRecordStatement0->fetchColumn();
+            if ($lastRecord) {
+                $lastIdNumber = intval(substr($lastRecord, 3));
+                $newIdNumber = $lastIdNumber + 1;
+                $s_invoice = "SI-" . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
+            } else {
+                $s_invoice = "SI-0001";
+            }
         }
-        if ($_POST['weight'][$i] == null) {
-            $_POST['weight'][$i] = 0;
-        }
-        $getRecordQuery2 = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
-        $getRecordStatement2 = $pdo->prepare($getRecordQuery2);
-        $getRecordStatement2->bindParam(':s_id', $s_invoice);
-        $getRecordStatement2->bindParam(':type', $_POST['type'][$i]);
-        $getRecordStatement2->bindParam(':detail', $_POST['detail'][$i]);
-        $getRecordStatement2->bindParam(':price_per', $_POST['price_per'][$i]);
-        $getRecordStatement2->bindParam(':quantity', $_POST['quantity'][$i]);
-        $getRecordStatement2->bindParam(':weight', $_POST['weight'][$i]);
-        $getRecordStatement2->bindParam(':rate', $_POST['rate'][$i]);
-        $getRecordStatement2->bindParam(':total', $_POST['total'][$i]);
-        $getRecordStatement2->bindParam(':barcode', $_POST['barcode'][$i]);
-        if ($getRecordStatement2->execute()) {
+        $insertStockQuery = "INSERT INTO `stock`(`id`, `p_id`, `total`, `status`) VALUES (:id, 'existing', :total, 'Active')";
+        $insertStockStatement = $pdo->prepare($insertStockQuery);
+        $insertStockStatement->bindParam(':id', $s_invoice);
+        $insertStockStatement->bindParam(':total', $_POST['total'][0]);
+        if ($insertStockStatement->execute()) {
             array_push($array, "success");
         } else {
             array_push($array, "error");
         }
     }
+
+    // Insert or Update stock_details
+    for ($i = 0; $i < count($_POST['rate']); $i++) {
+        $barcode = $_POST['barcode'][$i];
+        $checkDetailQuery = "SELECT * FROM `stock_details` WHERE `s_id` = :s_id AND `barcode` = :barcode";
+        $checkDetailStatement = $pdo->prepare($checkDetailQuery);
+        $checkDetailStatement->bindParam(':s_id', $s_invoice);
+        $checkDetailStatement->bindParam(':barcode', $barcode);
+        $checkDetailStatement->execute();
+        if ($checkDetailStatement->rowCount() > 0) {
+            // Update existing record
+            $existingDetail = $checkDetailStatement->fetch(PDO::FETCH_ASSOC);
+            $updatedQuantity = $existingDetail['quantity'] + $_POST['quantity'][$i];
+            $updatedWeight = $existingDetail['weight'] + $_POST['weight'][$i];
+            $updateDetailQuery = "UPDATE `stock_details` SET `quantity` = :quantity, `weight` = :weight WHERE `s_id` = :s_id AND `barcode` = :barcode";
+            $updateDetailStatement = $pdo->prepare($updateDetailQuery);
+            $updateDetailStatement->bindParam(':quantity', $updatedQuantity);
+            $updateDetailStatement->bindParam(':weight', $updatedWeight);
+            $updateDetailStatement->bindParam(':s_id', $s_invoice);
+            $updateDetailStatement->bindParam(':barcode', $barcode);
+            if ($updateDetailStatement->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+        } else {
+            // Insert new record
+            $insertDetailQuery = "INSERT INTO `stock_details`(`s_id`, `type`, `detail`, `price_per`, `quantity`, `weight`, `rate`, `total_amount`, `barcode`) VALUES (:s_id, :type, :detail, :price_per, :quantity, :weight, :rate, :total, :barcode)";
+            $insertDetailStatement = $pdo->prepare($insertDetailQuery);
+            $insertDetailStatement->bindParam(':s_id', $s_invoice);
+            $insertDetailStatement->bindParam(':type', $_POST['type'][$i]);
+            $insertDetailStatement->bindParam(':detail', $_POST['detail'][$i]);
+            $insertDetailStatement->bindParam(':price_per', $_POST['price_per'][$i]);
+            $insertDetailStatement->bindParam(':quantity', $_POST['quantity'][$i]);
+            $insertDetailStatement->bindParam(':weight', $_POST['weight'][$i]);
+            $insertDetailStatement->bindParam(':rate', $_POST['rate'][$i]);
+            $insertDetailStatement->bindParam(':total', $_POST['total'][$i]);
+            $insertDetailStatement->bindParam(':barcode', $barcode);
+            if ($insertDetailStatement->execute()) {
+                array_push($array, "success");
+            } else {
+                array_push($array, "error");
+            }
+        }
+    }
     echo json_encode($array, true);
 }
+
 
 // -------------------Stock Page---------------------- //
 

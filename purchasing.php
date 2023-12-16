@@ -496,7 +496,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 type: "vendor"
             },
             success: function(response) {
-                console.log(response);
+                console.log("all types", response);
                 var data = JSON.parse(response);
                 for (var i = 0; i < data.length; i++) {
                     var newOption = {
@@ -580,7 +580,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
             },
             success: function(data) {
                 var data = JSON.parse(data);
-                console.log(data);
                 var area = document.getElementById('tbody');
                 area.innerHTML = "";
                 let GrandTotal = document.getElementById('grand_total');
@@ -665,15 +664,15 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 type: "vendor"
             },
             success: function(response) {
-                console.log(response);
+                console.log("all types in event", response);
                 var data = JSON.parse(response);
                 type = document.querySelectorAll("select[name='type[]']");
-                for (var j=0; j<type.length; j++){
+                for (var j = 0; j < type.length; j++) {
                     select = $(type[j]).selectize({
                         create: true,
                         sortField: 'text'
                     })[0].selectize;
-                
+
                     for (var i = 0; i < data.length; i++) {
                         var newOption = {
                             value: data[i].barcode,
@@ -682,14 +681,14 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                         select.addOption(newOption);
                     }
                     select.on('change', function(value) {
-                        GetType(type[j]);
+                        GetType(this.$input[0]);
                     });
                 }
                 // select = $(type).selectize({
                 //     create: true,
                 //     sortField: 'text'
                 // })[0].selectize;
-            
+
                 // for (var i = 0; i < data.length; i++) {
                 //     var newOption = {
                 //         value: data[i].barcode,
@@ -782,7 +781,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 type: "vendor"
             },
             success: function(response) {
-                console.log(response);
                 var data = JSON.parse(response);
                 var select = $('#select-manufacturer')[0].selectize;
                 for (var i = 0; i < data.length; i++) {
@@ -822,9 +820,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 function: "GetStockCount"
             },
             success: function(response) {
-                console.log(response);
                 response = JSON.parse(response);
-                console.log(response);
                 var s_invoice = response;
                 formData.append("s_invoice", s_invoice);
 
@@ -836,9 +832,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                     contentType: false,
                     processData: false,
                     success: function(data) {
-                        console.log(data);
+                        console.log("form submit", data);
                         data = JSON.parse(data);
-                        console.log(data);
                         if (data[0] == "success" && data[1] == "success") {
                             Swal.fire({
                                 icon: 'success',
@@ -863,6 +858,8 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
     });
 
     function GetType(element) {
+        console.log("element", element);
+        console.log(element.value);
         $.ajax({
             url: "functions.php",
             method: "POST",
@@ -871,14 +868,19 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                 barcode: element.value
             },
             success: function(response) {
-                console.log(response);
+                console.log("detail type", response);
                 var tr = element.parentNode.parentNode;
                 if (response != "false") {
                     var data = JSON.parse(response);
                     price_per = tr.querySelectorAll("select[name='price_per[]']");
                     selectizeInstance = $(price_per).selectize()[0].selectize;
                     selectizeInstance.setValue(data.price_per);
-                    selectizeInstance.disable();
+                    // Prevent opening the dropdown
+                    selectizeInstance.$control.css({
+                        'pointer-events': 'none',
+                        'background-color': '#eee', // Optional: visual feedback that it's read-only
+                        'color': '#666' // Optional: visual feedback
+                    });
                     tr.querySelectorAll("input[name='rate_s[]']")[0].value = data.rate;
                     tr.querySelectorAll("input[name='barcode[]']")[0].value = data.barcode;
                 } else {

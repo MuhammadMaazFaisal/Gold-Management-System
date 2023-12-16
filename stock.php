@@ -302,14 +302,6 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                             title: 'Barcode'
                         },
                         {
-                            data: 'p_id',
-                            title: 'P-Invoice'
-                        },
-                        {
-                            data: 'name',
-                            title: 'Vendor Name'
-                        },
-                        {
                             data: 'detail',
                             title: 'Detail'
                         },
