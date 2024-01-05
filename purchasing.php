@@ -212,12 +212,17 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                         </select>
                                                                         <input type="hidden" id="id" name="id" value="">
                                                                     </td>
-                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">
+                                                                    <td colspan="2"><select class="form-control price_per" id="price_per[]" name="p_price_per[]" placeholder="Price per">
                                                                             <option value="Qty">Qty</option>
                                                                             <option value="Tola">Tola</option>
                                                                             <option value="K">K</option>
-
-                                                                        </select></td>
+                                                                        </select>
+                                                                        <select class="form-control price_per d-none" id="s_price_per[]" name="price_per[]" placeholder="Price per">
+                                                                            <option value="Qty">Qty</option>
+                                                                            <option value="Tola">Tola</option>
+                                                                            <option value="K">K</option>
+                                                                        </select>
+                                                                    </td>
                                                                     <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity"></td>
                                                                     <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight"></td>
                                                                     <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
@@ -467,11 +472,16 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                 </select>
 
                                                             <input type="hidden" id="id" name="id" value=""></td>
-                            <td colspan="2"><select class="form-control" id="price_per[]" name="price_per[]" placeholder="Price per">
-                                    <option value="Qty">Qty</option>
-                                    <option value="Tola">Tola</option>
-                                    <option value="K">K</option>
-                                </select></td>
+                            <td colspan="2"><select class="form-control price_per" id="price_per[]" name="p_price_per[]" placeholder="Price per">
+                                <option value="Qty">Qty</option>
+                                <option value="Tola">Tola</option>
+                                <option value="K">K</option>
+                            </select>
+                            <select class="form-control price_per d-none" id="s_price_per[]" name="price_per[]" placeholder="Price per">
+                                <option value="Qty">Qty</option>
+                                <option value="Tola">Tola</option>
+                                <option value="K">K</option>
+                            </select></td>
                             <td> <input type="number" value="" id="quantity[]" name="quantity[]" class="form-control" placeholder="Quantity" ></td>
                             <td> <input type="number" step="any" value="" id="weight[]" name="weight[]" class="form-control" placeholder="Weight" ></td>
                             <td><input type="number" step="any" value="" id="rate[]" name="rate[]" class="form-control" placeholder="Rate" required></td>
@@ -595,7 +605,7 @@ define('root', $_SERVER['DOCUMENT_ROOT']);
                                                                 <option value="${data[i].type}" selected>${data[i].type}</option>
                                                             </select>
                                                             <input type="hidden" id="id" name="id" value=""></td>
-                                <td colspan="2"><select class="form-control price_per" id="price_per[]" name="price_per[]" placeholder="Price per">`;
+                                <td colspan="2"><select class="form-control price_per" id="price_per[]" name="p_price_per[]" placeholder="Price per">`;
                     if (data[i].price_per == "Qty") {
                         tr += `<option value="Qty" selected>Qty</option>
                                         <option value="Tola">Tola</option>
